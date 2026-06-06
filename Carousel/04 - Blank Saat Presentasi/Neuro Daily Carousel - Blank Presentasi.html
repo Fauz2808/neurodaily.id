@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Neuro Daily — Blank Saat Presentasi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#0D2E28;
+    --teal:#1A6B5A;
+    --green:#5EC9A7;
+    --parchment:#F5F3EE;
+    --amber:#C9A96E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#1a1a1a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+  body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px}
+
+  .topbar{
+    width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;
+    color:#9aa39f;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;
+    margin-bottom:24px;
+  }
+  .topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+
+  .stage{position:relative;width:min(440px,92vw);aspect-ratio:4/5}
+  .viewport{
+    position:relative;width:100%;height:100%;
+    border-radius:18px;overflow:hidden;
+    box-shadow:0 30px 80px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04);
+  }
+  .track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+  .slide{
+    flex:0 0 100%;height:100%;
+    display:flex;flex-direction:column;
+    padding:36px 32px 28px;
+    position:relative;overflow:hidden;
+  }
+
+  .bg-dark{background:var(--forest);color:var(--parchment)}
+  .bg-light{background:var(--parchment);color:var(--forest)}
+  .bg-teal{background:var(--teal);color:var(--parchment)}
+
+  .slide .header{
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'DM Sans',sans-serif;font-weight:500;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.85;
+  }
+  .bg-light .header{opacity:.7}
+  .pillar-tag{display:inline-flex;align-items:center;gap:6px}
+  .pillar-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--green)}
+  .bg-light .pillar-tag::before{background:var(--teal)}
+  .slide .footer{
+    margin-top:auto;
+    display:flex;justify-content:space-between;align-items:flex-end;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;opacity:.55;text-transform:uppercase;
+  }
+
+  /* ── SLIDE 1 — HOOK ──────────────────────────────── */
+  .s1 .body{margin-top:auto;margin-bottom:auto}
+  .s1 h1{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:48px;line-height:1.05;letter-spacing:-.01em;color:var(--parchment);
+  }
+  .s1 h1 em{color:var(--amber);font-style:italic}
+  .s1 .lead{margin-top:18px;font-size:13px;line-height:1.7;opacity:.7;max-width:300px}
+  .s1 .swipe{
+    position:absolute;bottom:24px;right:32px;
+    display:flex;align-items:center;gap:8px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6;
+  }
+  .s1 .arrow{display:inline-block;animation:nudge 1.6s ease-in-out infinite}
+  @keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+
+  /* Noise static bg suggestion */
+  .static-bg{position:absolute;inset:0;pointer-events:none;opacity:.045}
+
+  /* ── SLIDE 2 — DIAGNOSIS ─────────────────────────── */
+  .s2-diag{justify-content:space-between}
+  .s2-diag .eyebrow{
+    margin-top:28px;
+    font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--teal);opacity:.8;
+  }
+  .s2-diag h2{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:36px;line-height:1.1;letter-spacing:-.01em;margin-top:12px;color:var(--forest);
+  }
+  .s2-diag h2 em{font-style:italic;color:var(--teal)}
+  .s2-diag .desc{margin-top:18px;font-size:13.5px;line-height:1.65;color:var(--forest);opacity:.8;max-width:340px}
+  .s2-diag .pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+  .s2-diag .pill{
+    padding:7px 14px;border-radius:99px;font-size:11px;font-weight:500;letter-spacing:.06em;
+  }
+  .pill-red{background:rgba(201,169,110,.15);color:#9a7940;border:1px solid rgba(201,169,110,.3)}
+  .pill-green{background:rgba(26,107,90,.1);color:var(--teal);border:1px solid rgba(26,107,90,.2)}
+  .s2-diag .note{margin-top:18px;font-size:12px;line-height:1.6;color:var(--forest);opacity:.6;border-top:1px solid rgba(13,46,40,.1);padding-top:14px}
+
+  /* ── SLIDE 3 — MECHANISM ─────────────────────────── */
+  .s3 h2{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:28px;line-height:1.2;letter-spacing:-.01em;margin-top:24px;
+  }
+  .s3 h2 em{font-style:italic;color:var(--amber)}
+  .s3 .term{
+    margin-top:22px;padding:18px 20px;border-radius:10px;
+    background:rgba(94,201,167,.08);border-left:2px solid var(--green);
+  }
+  .s3 .term .name{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+  .s3 .term .def{margin-top:8px;font-size:13px;line-height:1.65;color:var(--parchment);opacity:.92}
+  .s3 .two-col{display:flex;gap:12px;margin-top:18px}
+  .s3 .box{
+    flex:1;padding:12px 14px;border-radius:8px;
+    font-size:11px;line-height:1.55;
+  }
+  .box-amyg{background:rgba(201,169,110,.12);border:1px solid rgba(201,169,110,.2);color:var(--parchment);opacity:.88}
+  .box-pfc{background:rgba(94,201,167,.08);border:1px solid rgba(94,201,167,.18);color:var(--parchment);opacity:.88}
+  .s3 .box .box-label{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px;display:block}
+  .box-amyg .box-label{color:var(--amber)}
+  .box-pfc .box-label{color:var(--green)}
+  .s3 .source{margin-top:14px;font-size:10.5px;color:var(--parchment);opacity:.5;line-height:1.55}
+
+  /* ── SLIDE 4 — SEQUENCE ──────────────────────────── */
+  .s4-seq h2{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:23px;line-height:1.25;margin-top:18px;color:var(--forest);
+  }
+  .s4-seq h2 em{font-style:italic;color:var(--teal)}
+  .s4-seq .steps{margin-top:20px;display:flex;flex-direction:column;gap:0}
+  .s4-seq .step{
+    display:flex;align-items:flex-start;gap:12px;padding:10px 0;
+    border-bottom:1px solid rgba(13,46,40,.08);
+  }
+  .s4-seq .step:last-child{border-bottom:none}
+  .s4-seq .step-num{
+    width:22px;height:22px;border-radius:99px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:500;
+    margin-top:1px;
+  }
+  .step-num-normal{background:rgba(26,107,90,.12);color:var(--teal)}
+  .step-num-alert{background:rgba(201,169,110,.2);color:#9a7940}
+  .step-num-crisis{background:rgba(201,80,80,.15);color:#c05050}
+  .s4-seq .step-body{flex:1}
+  .s4-seq .step-title{font-size:12px;font-weight:500;color:var(--forest);line-height:1.3}
+  .s4-seq .step-desc{font-size:11px;color:var(--forest);opacity:.6;line-height:1.5;margin-top:2px}
+
+  /* ── SLIDE 5 — CONSEQUENCE ──────────────────────── */
+  .s5{padding-top:28px}
+  .s5 .stat-big{margin-top:auto;display:flex;align-items:baseline;gap:14px}
+  .s5 .stat-big .n{
+    font-family:'DM Serif Display',serif;font-size:100px;line-height:.85;
+    color:var(--parchment);letter-spacing:-.03em;
+  }
+  .s5 .stat-big .n em{color:var(--amber);font-style:italic}
+  .s5 .stat-big .u{font-family:'DM Sans';font-weight:500;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);max-width:130px;line-height:1.5}
+  .s5 .copy{margin-top:18px;font-size:13px;line-height:1.65;opacity:.85;max-width:340px}
+  .s5 .copy strong{font-weight:500;color:var(--green)}
+  .s5 .math{
+    margin-top:20px;padding:14px 18px;border:1px dashed rgba(94,201,167,.3);border-radius:10px;
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--green);letter-spacing:.04em;line-height:1.8;
+  }
+
+  /* ── SLIDE 6 — REFRAME ──────────────────────────── */
+  .s6 h2{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:34px;line-height:1.12;margin-top:28px;letter-spacing:-.01em;
+  }
+  .s6 h2 em{font-style:italic;color:var(--green)}
+  .s6 .ps{margin-top:20px;font-size:13.5px;line-height:1.65;opacity:.88;max-width:340px}
+  .s6 .ps+.ps{margin-top:14px;opacity:.72}
+  .s6 .tip{
+    margin-top:20px;padding:14px 18px;border-radius:10px;
+    background:rgba(94,201,167,.07);border-left:2px solid var(--green);
+    font-size:12px;line-height:1.6;opacity:.9;
+  }
+  .s6 .tip .tip-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+
+  /* ── SLIDE 7 — CTA ──────────────────────────────── */
+  .s7{justify-content:space-between}
+  .s7 .lead-q{
+    font-family:'DM Serif Display',serif;font-size:27px;line-height:1.22;letter-spacing:-.01em;
+    margin-top:30px;color:var(--forest);
+  }
+  .s7 .lead-q em{font-style:italic;color:var(--teal)}
+  .s7 .ask{margin-top:16px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.7;max-width:300px}
+  .s7 .actions{margin-top:22px;display:flex;flex-direction:column;gap:10px}
+  .s7 .btn{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 18px;border:1px solid rgba(13,46,40,.15);border-radius:10px;
+    font-size:12.5px;color:var(--forest);
+  }
+  .s7 .btn .ic{width:18px;height:18px;color:var(--teal);flex-shrink:0}
+  .s7 .signoff{margin-top:20px;padding-top:16px;border-top:1px solid rgba(13,46,40,.12)}
+  .s7 .tag{font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;color:var(--teal);line-height:1.3}
+  .s7 .sub{margin-top:6px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--forest);opacity:.6;font-weight:500}
+
+  /* dots & nav */
+  .dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+  .dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+  .dot.active{background:var(--green);width:22px}
+  .controls{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+    display:flex;gap:8px;z-index:5;
+  }
+  .controls button{
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);
+    width:42px;height:42px;border-radius:99px;cursor:pointer;font-size:18px;
+    display:flex;align-items:center;justify-content:center;transition:background .2s;
+  }
+  .controls button:hover{background:rgba(94,201,167,.12);border-color:rgba(94,201,167,.3)}
+  .controls button:disabled{opacity:.3;cursor:not-allowed}
+  .counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 8px}
+
+  .caption-panel{
+    width:min(440px,92vw);margin-top:32px;padding:22px 22px 24px;
+    background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;
+    color:#cfd3d1;font-size:13px;line-height:1.7;
+  }
+  .caption-panel .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+  .caption-panel .char-count{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--amber);margin-top:10px;opacity:.7}
+  .caption-panel p{margin-bottom:10px}
+  .caption-panel p:last-child{margin-bottom:0}
+  .caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:14px;display:block;line-height:1.7}
+  /* ── EXPORT MODE ── */
+  html.export-html{width:440px!important;height:550px!important;min-height:0!important;overflow:hidden!important;margin:0!important;padding:0!important;background:#0D2E28}
+  body.export-mode{width:440px!important;height:550px!important;min-height:0!important;overflow:hidden!important;padding:0!important;margin:0!important;background:#0D2E28;display:block!important}
+  body.export-mode .topbar,body.export-mode .caption-panel,body.export-mode .dots,body.export-mode .controls{display:none!important}
+  body.export-mode .stage{position:relative!important;width:440px!important;height:550px!important;aspect-ratio:auto!important}
+  body.export-mode .viewport{position:absolute!important;inset:0!important;border-radius:0!important;box-shadow:none!important;overflow:hidden!important}
+  body.export-mode .track{position:absolute!important;top:0!important;left:0!important;height:100%!important;display:flex!important}
+  body.export-mode .slide{height:550px!important;min-height:550px!important;flex-shrink:0!important}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Brain at Work ]</span>
+</div>
+
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- ── SLIDE 1 — HOOK ─────────────────────────── -->
+      <section class="slide bg-dark s1" data-screen-label="01 Hook">
+        <!-- Subtle "signal lost" visual bg -->
+        <svg class="static-bg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <!-- Abstract brain outline suggestion -->
+          <ellipse cx="200" cy="200" rx="110" ry="90" fill="none" stroke="rgba(245,243,238,1)" stroke-width="1"/>
+          <ellipse cx="200" cy="200" rx="70" ry="56" fill="none" stroke="rgba(94,201,167,1)" stroke-width=".8"/>
+          <!-- Amygdala spot -->
+          <circle cx="162" cy="218" r="12" fill="none" stroke="rgba(201,169,110,1)" stroke-width="1.5"/>
+          <circle cx="162" cy="218" r="4" fill="rgba(201,169,110,.6)"/>
+          <circle cx="238" cy="218" r="12" fill="none" stroke="rgba(201,169,110,1)" stroke-width="1.5"/>
+          <circle cx="238" cy="218" r="4" fill="rgba(201,169,110,.6)"/>
+          <!-- Signal disruption lines -->
+          <line x1="162" y1="206" x2="162" y2="160" stroke="rgba(201,169,110,1)" stroke-width="1" stroke-dasharray="3,4"/>
+          <line x1="238" y1="206" x2="238" y2="160" stroke="rgba(201,169,110,1)" stroke-width="1" stroke-dasharray="3,4"/>
+          <!-- PFC area blocked -->
+          <rect x="155" y="130" width="90" height="30" rx="4" fill="none" stroke="rgba(94,201,167,.5)" stroke-width="1" stroke-dasharray="4,4"/>
+          <line x1="155" y1="130" x2="245" y2="160" stroke="rgba(94,201,167,.3)" stroke-width="1"/>
+          <line x1="245" y1="130" x2="155" y2="160" stroke="rgba(94,201,167,.3)" stroke-width="1"/>
+        </svg>
+
+        <div class="header">
+          <span class="pillar-tag">Brain at Work</span>
+          <span>01 / 07</span>
+        </div>
+        <div class="body">
+          <h1>Sudah latihan <em>10 kali.</em> Begitu giliran bicara — semua lupa.</h1>
+          <p class="lead">Ini bukan gugup biasa. Dan bukan berarti persiapanmu kurang. Ada mekanisme otak yang jauh lebih besar yang sedang bekerja.</p>
+        </div>
+        <div class="swipe">
+          <span>Geser</span><span class="arrow">→</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 2 — DIAGNOSIS ────────────────────── -->
+      <section class="slide bg-light s2-diag" data-screen-label="02 Diagnosis">
+        <div class="header">
+          <span class="pillar-tag">Diagnosisnya</span>
+          <span>02 / 07</span>
+        </div>
+        <div class="eyebrow">Bukan masalah disiplin atau persiapan</div>
+        <h2>Itu <em>Amygdala Hijack</em> — dan otakmu melakukannya untuk melindungimu.</h2>
+        <p class="desc">Saat kamu berdiri di depan audiens, otakmu mendeteksi sesuatu yang dulu sangat berbahaya: <strong style="font-weight:500">penilaian dari kelompok</strong>. Respons bertahan hidup aktif — dan dia tidak peduli kamu sudah latihan atau belum.</p>
+        <div class="pill-row">
+          <span class="pill pill-red">Ancaman terdeteksi</span>
+          <span class="pill pill-red">Amygdala aktif</span>
+          <span class="pill pill-green">Survival mode ON</span>
+        </div>
+        <p class="note">Istilah ini dipopulerkan oleh Daniel Goleman (1995), berdasarkan riset neurobiologis Joseph LeDoux (NYU) tentang respons ketakutan dan amygdala.</p>
+        <div class="footer">
+          <span>NEURO DAILY</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 3 — MECHANISM ────────────────────── -->
+      <section class="slide bg-dark s3" data-screen-label="03 Mechanism">
+        <div class="header">
+          <span class="pillar-tag">Yang terjadi di otakmu</span>
+          <span>03 / 07</span>
+        </div>
+        <h2>Dua bagian otakmu tiba-tiba <em>bertentangan</em> — dan yang menang bukan yang kamu inginkan.</h2>
+        <div class="term">
+          <div class="name">Amygdala Hijack</div>
+          <div class="def">Kondisi di mana amygdala — pusat deteksi ancaman — mengambil alih respons otak dan memblokir sinyal ke prefrontal cortex, yaitu bagian yang mengelola logika, memori kerja, dan kemampuan berbicara terstruktur.</div>
+        </div>
+        <div class="two-col">
+          <div class="box box-amyg">
+            <span class="box-label">Amygdala</span>
+            Aktif penuh. Membanjiri otak dengan kortisol & adrenalin. Tujuan: bertahan hidup.
+          </div>
+          <div class="box box-pfc">
+            <span class="box-label">Prefrontal Cortex</span>
+            Koneksi terputus sementara. Memori jangka pendek & speech production → offline.
+          </div>
+        </div>
+        <p class="source">Arnsten et al. (Nature Reviews Neuroscience) mendokumentasikan bagaimana hormon stres akut menurunkan fungsi PFC secara signifikan.</p>
+        <div class="footer" style="margin-top:auto">
+          <span>03 — MECHANISM</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 4 — SEQUENCE ─────────────────────── -->
+      <section class="slide bg-light s4-seq" data-screen-label="04 Sequence">
+        <div class="header">
+          <span class="pillar-tag">Dalam hitungan detik</span>
+          <span>04 / 07</span>
+        </div>
+        <h2>Inilah yang terjadi <em>saat namamu dipanggil</em> untuk presentasi.</h2>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num step-num-normal">1</div>
+            <div class="step-body">
+              <div class="step-title">Nama kamu dipanggil</div>
+              <div class="step-desc">Otak memindai situasi: ada banyak mata yang menunggu.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num step-num-alert">2</div>
+            <div class="step-body">
+              <div class="step-title">Amygdala deteksi "ancaman sosial"</div>
+              <div class="step-desc">Penilaian kelompok = potensi penolakan = ancaman survival.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num step-num-alert">3</div>
+            <div class="step-body">
+              <div class="step-title">Kortisol & adrenalin membanjir</div>
+              <div class="step-desc">Dalam hitungan detik. Jantung cepat, napas pendek, tangan dingin.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num step-num-crisis">4</div>
+            <div class="step-body">
+              <div class="step-title">Prefrontal cortex terdisrupsi</div>
+              <div class="step-desc">Memori latihan, urutan poin, kata-kata yang dipersiapkan — semua sulit diakses.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num step-num-crisis">5</div>
+            <div class="step-body">
+              <div class="step-title">Blank</div>
+              <div class="step-desc">Bukan karena kurang latihan. Karena otakmu sedang menyelamatkan nyawa.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <span>04 — URUTAN KEJADIAN</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 5 — CONSEQUENCE ──────────────────── -->
+      <section class="slide bg-teal s5" data-screen-label="05 Consequence">
+        <div class="header">
+          <span class="pillar-tag" style="color:#fff">Skala masalahnya</span>
+          <span>05 / 07</span>
+        </div>
+        <p class="copy" style="margin-top:24px">Survei konsisten menunjukkan public speaking masuk dalam daftar ketakutan terbesar manusia — bahkan melampaui kematian.</p>
+
+        <div class="stat-big">
+          <span class="n"><em>#1</em></span>
+          <span class="u">ketakutan paling umum di banyak survei global</span>
+        </div>
+
+        <div class="math">
+          Bukan karena manusia pengecut.<br>
+          Tapi karena otak kita <span style="color:var(--amber)">belum berevolusi</span> untuk<br>
+          membedakan "presentasi ke 30 orang"<br>
+          dengan "diserang oleh kawanan musuh."<br>
+          <span style="opacity:.6;font-size:10px">*Chapman University Survey of American Fears, berbagai tahun</span>
+        </div>
+
+        <div class="footer">
+          <span>05 — SKALA</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 6 — REFRAME ───────────────────────── -->
+      <section class="slide bg-dark s6" data-screen-label="06 Reframe">
+        <div class="header">
+          <span class="pillar-tag">Reframe</span>
+          <span>06 / 07</span>
+        </div>
+        <h2>Amygdala hijack bukan kelemahan — dan bisa <em>dilatih ulang.</em></h2>
+        <p class="ps">Otak yang pernah mengalami situasi yang sama berulang kali mulai belajar bahwa "berbicara di depan orang banyak" bukan ancaman fisik nyata. Respons amygdala melemah seiring eksposur yang terkontrol.</p>
+        <p class="ps">Ini bukan soal "lebih percaya diri." Ini soal membangun neural pathway baru yang secara harfiah mengubah cara otak membaca situasi presentasi.</p>
+        <div class="tip">
+          <div class="tip-label">Prinsip berbasis sains</div>
+          Latihan simulasi di depan orang nyata — bukan sendiri di cermin — adalah cara paling efektif melatih respons amygdala.
+        </div>
+        <div class="footer">
+          <span>06 — REFRAME</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 7 — CTA ───────────────────────────── -->
+      <section class="slide bg-light s7" data-screen-label="07 CTA">
+        <div class="header">
+          <span class="pillar-tag">Sekarang giliranmu</span>
+          <span>07 / 07</span>
+        </div>
+
+        <div>
+          <p class="lead-q">Situasi presentasi paling <em>awkward</em> yang pernah kamu alami — apa yang terjadi?</p>
+          <p class="ask">Tulis di komentar. Cerita kamu mungkin persis yang dibutuhkan seseorang hari ini untuk tahu bahwa mereka tidak sendirian.</p>
+        </div>
+
+        <div class="actions">
+          <div class="btn">
+            <span>Simpan — baca lagi sebelum presentasi berikutnya</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+          </div>
+          <div class="btn">
+            <span>Kirim ke teman yang takut public speaking</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </div>
+
+        <div class="signoff">
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="1.5">
+              <path d="M4 14c0-5 3-8 8-8 4 0 6 2 6 5 0 2-1.5 3.5-4 3.5-2 0-3 1-3 2.5 0 1.5 1 2.5 2.5 2.5"/>
+              <circle cx="15" cy="9" r="1" fill="#1A6B5A"/>
+            </svg>
+            <span class="tag">Neuro Daily</span>
+          </div>
+          <div class="sub">Kerja lebih cerdas, bukan lebih keras. Ini sains-nya.</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<!-- CAPTION PANEL -->
+<div class="caption-panel">
+  <div class="label">Caption · Formula B — Explain Your Life · ≤ 500 karakter</div>
+  <p><strong style="color:var(--parchment)">Kamu sudah latihan 10 kali. Tapi begitu giliran bicara, semua lupa.</strong></p>
+  <p>Itu amygdala hijack — otakmu membaca audiens besar sebagai ancaman fisik dan memblokir prefrontal cortex.</p>
+  <p>Hasilnya: memori dan kemampuan bicara terstruktur offline di momen paling penting.</p>
+  <p>Ini bukan gugup biasa. Ini respons survival yang bisa dilatih ulang.</p>
+  <p>Pernah alami ini? Cerita situasi paling awkward kamu saat presentasi.</p>
+  <span class="hash">#NeuroDaily #NeurosainsKerja #BrainAtWork #AmygdalaHijack #PublicSpeaking</span>
+  <div class="char-count" id="charCount"></div>
+</div>
+
+<div class="controls">
+  <button id="prev" aria-label="Sebelumnya">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next" aria-label="Berikutnya">›</button>
+</div>
+
+<script>
+  const track=document.getElementById('track');
+  const dotsEl=document.getElementById('dots');
+  const counter=document.getElementById('counter');
+  const prevBtn=document.getElementById('prev');
+  const nextBtn=document.getElementById('next');
+  const total=track.children.length;
+  let i=0;
+
+  for(let k=0;k<total;k++){
+    const b=document.createElement('button');
+    b.className='dot'+(k===0?' active':'');
+    b.addEventListener('click',()=>go(k));
+    dotsEl.appendChild(b);
+  }
+  const dots=[...dotsEl.children];
+
+  function go(n){
+    i=Math.max(0,Math.min(total-1,n));
+    track.style.transform=`translateX(-${i*100}%)`;
+    dots.forEach((d,k)=>d.classList.toggle('active',k===i));
+    counter.textContent=`${i+1} / ${total}`;
+    prevBtn.disabled=i===0;
+    nextBtn.disabled=i===total-1;
+  }
+  prevBtn.addEventListener('click',()=>go(i-1));
+  nextBtn.addEventListener('click',()=>go(i+1));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight')go(i+1);
+    if(e.key==='ArrowLeft')go(i-1);
+  });
+  let sx=0,dx=0,dragging=false;
+  const vp=document.querySelector('.viewport');
+  vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;dragging=true;dx=0});
+  vp.addEventListener('touchmove',e=>{if(!dragging)return;dx=e.touches[0].clientX-sx});
+  vp.addEventListener('touchend',()=>{
+    if(!dragging)return;
+    if(Math.abs(dx)>40)go(i+(dx<0?1:-1));
+    dragging=false;
+  });
+
+  const captionText=`Kamu sudah latihan 10 kali. Tapi begitu giliran bicara, semua lupa.
+
+Itu amygdala hijack — otakmu membaca audiens besar sebagai ancaman fisik dan memblokir prefrontal cortex.
+
+Hasilnya: memori dan kemampuan bicara terstruktur offline di momen paling penting.
+
+Ini bukan gugup biasa. Ini respons survival yang bisa dilatih ulang.
+
+Pernah alami ini? Cerita situasi paling awkward kamu saat presentasi.
+
+#NeuroDaily #NeurosainsKerja #BrainAtWork #AmygdalaHijack #PublicSpeaking`;
+
+  const cc=document.getElementById('charCount');
+  const len=captionText.length;
+  cc.textContent=`${len} / 500 karakter ${len<=500?'✓':'⚠ Melebihi batas Threads'}`;
+  if(len>500)cc.style.color='#e05252';
+
+    const params=new URLSearchParams(location.search),sp=params.get('slide');
+  if(sp){document.documentElement.classList.add('export-html');document.body.classList.add('export-mode');go(parseInt(sp)-1)}else{go(0)}
+</script>
+</body>
+</html>

@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Neuro Daily — Susah Bilang Tidak</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#0D2E28;
+    --teal:#1A6B5A;
+    --green:#5EC9A7;
+    --parchment:#F5F3EE;
+    --amber:#C9A96E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#1a1a1a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+  body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px}
+
+  .topbar{
+    width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;
+    color:#9aa39f;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;
+    margin-bottom:24px;
+  }
+  .topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+
+  .stage{position:relative;width:min(440px,92vw);aspect-ratio:4/5}
+  .viewport{
+    position:relative;width:100%;height:100%;
+    border-radius:18px;overflow:hidden;
+    box-shadow:0 30px 80px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04);
+  }
+  .track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+  .slide{
+    flex:0 0 100%;height:100%;
+    display:flex;flex-direction:column;
+    padding:36px 32px 28px;
+    position:relative;overflow:hidden;
+  }
+
+  .bg-dark{background:var(--forest);color:var(--parchment)}
+  .bg-light{background:var(--parchment);color:var(--forest)}
+  .bg-teal{background:var(--teal);color:var(--parchment)}
+
+  .slide .header{
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'DM Sans',sans-serif;font-weight:500;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.85;
+  }
+  .bg-light .header{opacity:.7}
+  .pillar-tag{display:inline-flex;align-items:center;gap:6px}
+  .pillar-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--green)}
+  .bg-light .pillar-tag::before{background:var(--teal)}
+  .slide .footer{
+    margin-top:auto;
+    display:flex;justify-content:space-between;align-items:flex-end;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;opacity:.55;text-transform:uppercase;
+  }
+
+  /* ── SLIDE 1 — HOOK ──────────────────────────────── */
+  .s1 .body{margin-top:auto;margin-bottom:auto}
+  .s1 h1{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:44px;line-height:1.06;letter-spacing:-.01em;color:var(--parchment);
+  }
+  .s1 h1 em{color:var(--amber);font-style:italic}
+  .s1 .lead{margin-top:18px;font-size:13px;line-height:1.7;opacity:.7;max-width:300px}
+  .s1 .swipe{
+    position:absolute;bottom:24px;right:32px;
+    display:flex;align-items:center;gap:8px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6;
+  }
+  .s1 .arrow{display:inline-block;animation:nudge 1.6s ease-in-out infinite}
+  @keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+  .static-bg{position:absolute;inset:0;pointer-events:none;opacity:.045}
+
+  /* ── SLIDE 2 — SOCIAL THREAT ─────────────────────── */
+  .s2-social{justify-content:space-between}
+  .s2-social .eyebrow{
+    margin-top:28px;
+    font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--teal);opacity:.8;
+  }
+  .s2-social h2{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:33px;line-height:1.13;letter-spacing:-.01em;margin-top:12px;color:var(--forest);
+  }
+  .s2-social h2 em{font-style:italic;color:var(--teal)}
+  .s2-social .desc{margin-top:16px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.8;max-width:340px}
+  .s2-social .pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+  .s2-social .pill{
+    padding:7px 13px;border-radius:99px;font-size:11px;font-weight:500;letter-spacing:.06em;
+  }
+  .pill-red{background:rgba(201,169,110,.15);color:#9a7940;border:1px solid rgba(201,169,110,.3)}
+  .pill-green{background:rgba(26,107,90,.1);color:var(--teal);border:1px solid rgba(26,107,90,.2)}
+  .s2-social .note{margin-top:14px;font-size:11.5px;line-height:1.6;color:var(--forest);opacity:.6;border-top:1px solid rgba(13,46,40,.1);padding-top:14px}
+
+  /* ── SLIDE 3 — MECHANISM ─────────────────────────── */
+  .s3 h2{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:26px;line-height:1.24;letter-spacing:-.01em;margin-top:22px;
+  }
+  .s3 h2 em{font-style:italic;color:var(--amber)}
+  .s3 .term{
+    margin-top:18px;padding:16px 18px;border-radius:10px;
+    background:rgba(94,201,167,.08);border-left:2px solid var(--green);
+  }
+  .s3 .term .name{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+  .s3 .term .def{margin-top:8px;font-size:12.5px;line-height:1.65;color:var(--parchment);opacity:.92}
+  .s3 .two-col{display:flex;gap:12px;margin-top:16px}
+  .s3 .box{flex:1;padding:12px 14px;border-radius:8px;font-size:11px;line-height:1.55}
+  .box-amyg{background:rgba(201,169,110,.12);border:1px solid rgba(201,169,110,.2);color:var(--parchment);opacity:.88}
+  .box-pfc{background:rgba(94,201,167,.08);border:1px solid rgba(94,201,167,.18);color:var(--parchment);opacity:.88}
+  .s3 .box .box-label{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px;display:block}
+  .box-amyg .box-label{color:var(--amber)}
+  .box-pfc .box-label{color:var(--green)}
+  .s3 .source{margin-top:14px;font-size:10.5px;color:var(--parchment);opacity:.5;line-height:1.55}
+
+  /* ── SLIDE 4 — PERSPEKTIF ────────────────────────── */
+  .s4-persp h2{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:22px;line-height:1.28;margin-top:16px;color:var(--forest);
+  }
+  .s4-persp h2 em{font-style:italic;color:var(--teal)}
+  .s4-persp .compare{margin-top:16px;border:1px solid rgba(13,46,40,.12);border-radius:12px;overflow:hidden}
+  .s4-persp .compare-header{display:flex;border-bottom:1px solid rgba(13,46,40,.12)}
+  .s4-persp .ch{
+    flex:1;padding:9px 14px;
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;
+  }
+  .s4-persp .kamu-h{color:var(--teal);background:rgba(26,107,90,.05);border-right:1px solid rgba(13,46,40,.1)}
+  .s4-persp .otak-h{color:#9a7940;background:rgba(201,169,110,.07)}
+  .s4-persp .compare-row{display:flex;border-bottom:1px solid rgba(13,46,40,.06)}
+  .s4-persp .compare-row:last-child{border-bottom:none}
+  .s4-persp .cell{flex:1;padding:9px 14px;font-size:11.5px;line-height:1.45;color:var(--forest);opacity:.8}
+  .s4-persp .cell:first-child{border-right:1px solid rgba(13,46,40,.08)}
+  .s4-persp .otak-cell{background:rgba(201,169,110,.04);color:var(--forest);opacity:.85}
+  .s4-persp .conclusion{
+    margin-top:14px;padding:12px 16px;border-radius:8px;
+    background:rgba(13,46,40,.05);border:1px solid rgba(13,46,40,.1);
+    font-size:12px;line-height:1.55;color:var(--forest);
+  }
+  .s4-persp .conclusion strong{color:var(--teal);font-weight:500}
+
+  /* ── SLIDE 5 — CONSEQUENCE ──────────────────────── */
+  .s5{padding-top:28px}
+  .s5 .stat-big{margin-top:auto;display:flex;align-items:baseline;gap:16px}
+  .s5 .stat-big .n{
+    font-family:'DM Serif Display',serif;font-size:80px;line-height:.85;
+    color:var(--parchment);letter-spacing:-.03em;
+  }
+  .s5 .stat-big .n em{color:var(--amber);font-style:italic}
+  .s5 .stat-big .u{font-family:'DM Sans';font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);max-width:130px;line-height:1.5}
+  .s5 .copy{margin-top:20px;font-size:13px;line-height:1.65;opacity:.85;max-width:340px}
+  .s5 .copy strong{font-weight:500;color:var(--green)}
+  .s5 .math{
+    margin-top:18px;padding:14px 18px;border:1px dashed rgba(94,201,167,.3);border-radius:10px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);letter-spacing:.04em;line-height:1.85;
+  }
+
+  /* ── SLIDE 6 — REFRAME ──────────────────────────── */
+  .s6 h2{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:31px;line-height:1.16;margin-top:26px;letter-spacing:-.01em;
+  }
+  .s6 h2 em{font-style:italic;color:var(--green)}
+  .s6 .ps{margin-top:18px;font-size:13px;line-height:1.65;opacity:.88;max-width:340px}
+  .s6 .ps+.ps{margin-top:14px;opacity:.72}
+  .s6 .tip{
+    margin-top:18px;padding:14px 18px;border-radius:10px;
+    background:rgba(94,201,167,.07);border-left:2px solid var(--green);
+    font-size:12px;line-height:1.6;opacity:.9;
+  }
+  .s6 .tip .tip-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+
+  /* ── SLIDE 7 — CTA ──────────────────────────────── */
+  .s7{justify-content:space-between}
+  .s7 .lead-q{
+    font-family:'DM Serif Display',serif;font-size:26px;line-height:1.24;letter-spacing:-.01em;
+    margin-top:28px;color:var(--forest);
+  }
+  .s7 .lead-q em{font-style:italic;color:var(--teal)}
+  .s7 .ask{margin-top:14px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.7;max-width:300px}
+  .s7 .actions{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+  .s7 .btn{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 18px;border:1px solid rgba(13,46,40,.15);border-radius:10px;
+    font-size:12.5px;color:var(--forest);
+  }
+  .s7 .btn .ic{width:18px;height:18px;color:var(--teal);flex-shrink:0}
+  .s7 .signoff{margin-top:18px;padding-top:14px;border-top:1px solid rgba(13,46,40,.12)}
+  .s7 .tag{font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;color:var(--teal);line-height:1.3}
+  .s7 .sub{margin-top:6px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--forest);opacity:.6;font-weight:500}
+
+  /* dots & nav */
+  .dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+  .dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+  .dot.active{background:var(--green);width:22px}
+  .controls{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+    display:flex;gap:8px;z-index:5;
+  }
+  .controls button{
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);
+    width:42px;height:42px;border-radius:99px;cursor:pointer;font-size:18px;
+    display:flex;align-items:center;justify-content:center;transition:background .2s;
+  }
+  .controls button:hover{background:rgba(94,201,167,.12);border-color:rgba(94,201,167,.3)}
+  .controls button:disabled{opacity:.3;cursor:not-allowed}
+  .counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 8px}
+
+  .caption-panel{
+    width:min(440px,92vw);margin-top:32px;padding:22px 22px 24px;
+    background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;
+    color:#cfd3d1;font-size:13px;line-height:1.7;
+  }
+  .caption-panel .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+  .caption-panel .char-count{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--amber);margin-top:10px;opacity:.7}
+  .caption-panel p{margin-bottom:10px}
+  .caption-panel p:last-child{margin-bottom:0}
+  .caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:14px;display:block;line-height:1.7}
+  /* ── EXPORT MODE ── */
+  html.export-html{width:440px!important;height:550px!important;min-height:0!important;overflow:hidden!important;margin:0!important;padding:0!important;background:#0D2E28}
+  body.export-mode{width:440px!important;height:550px!important;min-height:0!important;overflow:hidden!important;padding:0!important;margin:0!important;background:#0D2E28;display:block!important}
+  body.export-mode .topbar,body.export-mode .caption-panel,body.export-mode .dots,body.export-mode .controls{display:none!important}
+  body.export-mode .stage{position:relative!important;width:440px!important;height:550px!important;aspect-ratio:auto!important}
+  body.export-mode .viewport{position:absolute!important;inset:0!important;border-radius:0!important;box-shadow:none!important;overflow:hidden!important}
+  body.export-mode .track{position:absolute!important;top:0!important;left:0!important;height:100%!important;display:flex!important}
+  body.export-mode .slide{height:550px!important;min-height:550px!important;flex-shrink:0!important}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Brain at Work ]</span>
+</div>
+
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- ── SLIDE 1 — HOOK ─────────────────────────── -->
+      <section class="slide bg-dark s1" data-screen-label="01 Hook">
+        <!-- Social network nodes — suggest threat in group dynamics -->
+        <svg class="static-bg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <!-- Center node (self) -->
+          <circle cx="200" cy="260" r="20" fill="none" stroke="rgba(245,243,238,1)" stroke-width="1.2"/>
+          <!-- Surrounding peer nodes -->
+          <circle cx="118" cy="185" r="11" fill="none" stroke="rgba(245,243,238,1)" stroke-width="1"/>
+          <circle cx="282" cy="185" r="11" fill="none" stroke="rgba(245,243,238,1)" stroke-width="1"/>
+          <circle cx="100" cy="320" r="11" fill="none" stroke="rgba(245,243,238,1)" stroke-width="1"/>
+          <circle cx="300" cy="320" r="11" fill="none" stroke="rgba(245,243,238,1)" stroke-width="1"/>
+          <circle cx="200" cy="145" r="9" fill="none" stroke="rgba(94,201,167,1)" stroke-width="1"/>
+          <!-- Connection lines from center -->
+          <line x1="200" y1="240" x2="118" y2="196" stroke="rgba(245,243,238,.4)" stroke-width=".9"/>
+          <line x1="200" y1="240" x2="282" y2="196" stroke="rgba(245,243,238,.4)" stroke-width=".9"/>
+          <line x1="200" y1="280" x2="100" y2="309" stroke="rgba(245,243,238,.4)" stroke-width=".9"/>
+          <line x1="200" y1="280" x2="300" y2="309" stroke="rgba(245,243,238,.4)" stroke-width=".9"/>
+          <line x1="200" y1="240" x2="200" y2="154" stroke="rgba(94,201,167,.4)" stroke-width=".9"/>
+          <!-- Threat highlight: one peer node with amber danger ring -->
+          <circle cx="282" cy="185" r="22" fill="none" stroke="rgba(201,169,110,1)" stroke-width="1.2" stroke-dasharray="3,3"/>
+          <circle cx="282" cy="185" r="5" fill="rgba(201,169,110,.5)"/>
+          <!-- Danger signal radiating from threat node -->
+          <line x1="282" y1="163" x2="282" y2="140" stroke="rgba(201,169,110,.8)" stroke-width="1" stroke-dasharray="2,4"/>
+          <line x1="298" y1="172" x2="316" y2="156" stroke="rgba(201,169,110,.8)" stroke-width="1" stroke-dasharray="2,4"/>
+          <!-- Lateral peer connections -->
+          <line x1="118" y1="185" x2="200" y2="145" stroke="rgba(94,201,167,.2)" stroke-width=".7" stroke-dasharray="4,5"/>
+          <line x1="282" y1="185" x2="200" y2="145" stroke="rgba(94,201,167,.2)" stroke-width=".7" stroke-dasharray="4,5"/>
+        </svg>
+
+        <div class="header">
+          <span class="pillar-tag">Brain at Work</span>
+          <span>01 / 07</span>
+        </div>
+        <div class="body">
+          <h1>Sudah overload. Deadline menumpuk. Tapi tetap bilang <em>"oke, bisa."</em></h1>
+          <p class="lead">Ini bukan karena kamu terlalu baik hati. Ada mekanisme otak primitif yang membuat menolak terasa seperti ancaman nyata.</p>
+        </div>
+        <div class="swipe">
+          <span>Geser</span><span class="arrow">→</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 2 — SOCIAL THREAT ────────────────── -->
+      <section class="slide bg-light s2-social" data-screen-label="02 Social Threat">
+        <div class="header">
+          <span class="pillar-tag">Bukan soal karakter</span>
+          <span>02 / 07</span>
+        </div>
+        <div class="eyebrow">Mekanisme yang selama ini tidak kamu sadari</div>
+        <h2>Ini <em>Social Threat Response</em> — otakmu memproses konflik sosial seperti ancaman fisik.</h2>
+        <p class="desc">Saat ada risiko penilaian negatif dari rekan — misalnya karena menolak permintaan — otak mengirimkan sinyal bahaya. Sama seperti saat kamu menghadapi ancaman fisik nyata.</p>
+        <div class="pill-row">
+          <span class="pill pill-red">Konflik sosial terdeteksi</span>
+          <span class="pill pill-red">Amygdala aktif</span>
+          <span class="pill pill-green">Survival mode ON</span>
+        </div>
+        <p class="note">Riset Naomi Eisenberger (UCLA, 2003) membuktikan: penolakan sosial mengaktifkan area otak yang sama dengan rasa sakit fisik — dorsal anterior cingulate cortex.</p>
+        <div class="footer">
+          <span>NEURO DAILY</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 3 — MECHANISM ────────────────────── -->
+      <section class="slide bg-dark s3" data-screen-label="03 Mechanism">
+        <div class="header">
+          <span class="pillar-tag">Yang terjadi di otakmu</span>
+          <span>03 / 07</span>
+        </div>
+        <h2>Otakmu tidak membedakan ancaman fisik dan <em>ancaman sosial.</em></h2>
+        <div class="term">
+          <div class="name">Social Threat Response</div>
+          <div class="def">Respons di mana otak memperlakukan ancaman terhadap status, penerimaan, dan hubungan sosial sama seperti ancaman fisik — mengaktifkan amygdala dan menurunkan kapasitas prefrontal cortex untuk berpikir rasional.</div>
+        </div>
+        <div class="two-col">
+          <div class="box box-amyg">
+            <span class="box-label">Amygdala</span>
+            Aktif penuh. Membaca "kemungkinan ditolak rekan" sebagai sinyal bahaya. Memicu kortisol.
+          </div>
+          <div class="box box-pfc">
+            <span class="box-label">Prefrontal Cortex</span>
+            Kapasitas menurun. Evaluasi logis terganggu — "oke, bisa" keluar otomatis.
+          </div>
+        </div>
+        <p class="source">Eisenberger & Lieberman (Science, 2003): dorsal ACC & anterior insula aktif pada social exclusion — area identik dengan nyeri fisik.</p>
+        <div class="footer" style="margin-top:auto">
+          <span>03 — MECHANISM</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 4 — PERSPEKTIF ───────────────────── -->
+      <section class="slide bg-light s4-persp" data-screen-label="04 Perspektif">
+        <div class="header">
+          <span class="pillar-tag">Dua perspektif berbeda</span>
+          <span>04 / 07</span>
+        </div>
+        <h2>Setiap kali ada request masuk, otak menjalankan <em>kalkulasinya sendiri.</em></h2>
+
+        <div class="compare">
+          <div class="compare-header">
+            <div class="ch kamu-h">Kamu pikir</div>
+            <div class="ch otak-h">Otak kamu</div>
+          </div>
+          <div class="compare-row">
+            <div class="cell">Request ini cukup wajar</div>
+            <div class="cell otak-cell">Ancaman status terdeteksi</div>
+          </div>
+          <div class="compare-row">
+            <div class="cell">Bisa aku tolak dengan sopan</div>
+            <div class="cell otak-cell">Penolakan = risiko konflik</div>
+          </div>
+          <div class="compare-row">
+            <div class="cell">Dia pasti bisa memahami</div>
+            <div class="cell otak-cell">Penilaian negatif = bahaya</div>
+          </div>
+          <div class="compare-row">
+            <div class="cell">Ini cuma satu kali lagi</div>
+            <div class="cell otak-cell">Ambil jalan aman: setuju</div>
+          </div>
+        </div>
+
+        <div class="conclusion">
+          Hasilnya: <strong>otak selalu memilih jalan aman</strong> — setuju, meski kamu sudah overload.
+        </div>
+
+        <div class="footer">
+          <span>04 — KALKULASI OTAK</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 5 — CONSEQUENCE ──────────────────── -->
+      <section class="slide bg-teal s5" data-screen-label="05 Consequence">
+        <div class="header">
+          <span class="pillar-tag" style="color:#fff">Faktanya</span>
+          <span>05 / 07</span>
+        </div>
+        <p class="copy" style="margin-top:24px">Rasa sakit karena ditolak secara sosial dan rasa sakit fisik diproses oleh area otak yang <strong>persis sama.</strong></p>
+
+        <div class="stat-big">
+          <span class="n"><em>Sama</em></span>
+          <span class="u">area otak aktif saat nyeri fisik & penolakan sosial</span>
+        </div>
+
+        <div class="math">
+          Nyeri fisik &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ dACC + insula aktif<br>
+          Penolakan sosial → dACC + insula aktif<br>
+          <span style="color:var(--amber)">─────────────────────────</span><br>
+          Otak tidak membedakan keduanya.<br>
+          <span style="opacity:.6;font-size:10px">*Eisenberger et al., Science (2003) — fMRI study</span>
+        </div>
+
+        <div class="footer">
+          <span>05 — FAKTA</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 6 — REFRAME ───────────────────────── -->
+      <section class="slide bg-dark s6" data-screen-label="06 Reframe">
+        <div class="header">
+          <span class="pillar-tag">Reframe</span>
+          <span>06 / 07</span>
+        </div>
+        <h2>Susah bilang tidak bukan lemah — itu <em>fitur evolusi</em> yang salah konteks.</h2>
+        <p class="ps">Dulu, dikeluarkan dari kelompok = mati. Otak berkembang untuk menghindari konflik sosial sebagai strategi survival. Ini bukan bug — ini fitur yang sangat berguna di savana.</p>
+        <p class="ps">Di tempat kerja modern, menolak request rekan bukan ancaman kelangsungan hidup. Tapi otakmu belum mendapat memo itu.</p>
+        <div class="tip">
+          <div class="tip-label">Teknik berbasis sains</div>
+          Sebelum menjawab, beri jeda 3 detik. Bukan untuk berpikir — tapi untuk memberi PFC kesempatan mengambil alih dari amygdala sebelum "oke, bisa" keluar otomatis.
+        </div>
+        <div class="footer">
+          <span>06 — REFRAME</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 7 — CTA ───────────────────────────── -->
+      <section class="slide bg-light s7" data-screen-label="07 CTA">
+        <div class="header">
+          <span class="pillar-tag">Sekarang giliranmu</span>
+          <span>07 / 07</span>
+        </div>
+
+        <div>
+          <p class="lead-q">Kamu paling susah bilang tidak di situasi <em>yang mana?</em></p>
+          <p class="ask">Tulis di komentar. Jawaban kamu mungkin persis situasi yang dialami orang lain — tapi mereka belum berani ngomong.</p>
+        </div>
+
+        <div class="actions">
+          <div class="btn">
+            <span>Simpan — baca lagi sebelum ada request berikutnya</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+          </div>
+          <div class="btn">
+            <span>Kirim ke teman yang juga susah bilang tidak</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </div>
+
+        <div class="signoff">
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="1.5">
+              <path d="M4 14c0-5 3-8 8-8 4 0 6 2 6 5 0 2-1.5 3.5-4 3.5-2 0-3 1-3 2.5 0 1.5 1 2.5 2.5 2.5"/>
+              <circle cx="15" cy="9" r="1" fill="#1A6B5A"/>
+            </svg>
+            <span class="tag">Neuro Daily</span>
+          </div>
+          <div class="sub">Kerja lebih cerdas, bukan lebih keras. Ini sains-nya.</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<!-- CAPTION PANEL -->
+<div class="caption-panel">
+  <div class="label">Caption · Formula B — Explain Your Life · ≤ 500 karakter</div>
+  <p><strong style="color:var(--parchment)">Kamu sudah overload. Deadline menumpuk. Tapi rekan kerja minta tolong — dan kamu tetap bilang 'oke, bisa.'</strong></p>
+  <p>Ini bukan lemah. Otakmu memproses konflik sosial seperti ancaman fisik nyata.</p>
+  <p>Menolak = risiko penilaian negatif = sinyal bahaya untuk amygdala. Jadi otak memilih jalan aman: setuju.</p>
+  <p>Itu survival, bukan ketidakmampuan bilang tidak.</p>
+  <p>Kamu paling susah bilang tidak di situasi apa?</p>
+  <span class="hash">#NeuroDaily #NeurosainsKerja #BrainAtWork #SocialThreat #WorkBoundaries</span>
+  <div class="char-count" id="charCount"></div>
+</div>
+
+<div class="controls">
+  <button id="prev" aria-label="Sebelumnya">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next" aria-label="Berikutnya">›</button>
+</div>
+
+<script>
+  const track=document.getElementById('track');
+  const dotsEl=document.getElementById('dots');
+  const counter=document.getElementById('counter');
+  const prevBtn=document.getElementById('prev');
+  const nextBtn=document.getElementById('next');
+  const total=track.children.length;
+  let i=0;
+
+  for(let k=0;k<total;k++){
+    const b=document.createElement('button');
+    b.className='dot'+(k===0?' active':'');
+    b.addEventListener('click',()=>go(k));
+    dotsEl.appendChild(b);
+  }
+  const dots=[...dotsEl.children];
+
+  function go(n){
+    i=Math.max(0,Math.min(total-1,n));
+    track.style.transform=`translateX(-${i*100}%)`;
+    dots.forEach((d,k)=>d.classList.toggle('active',k===i));
+    counter.textContent=`${i+1} / ${total}`;
+    prevBtn.disabled=i===0;
+    nextBtn.disabled=i===total-1;
+  }
+  prevBtn.addEventListener('click',()=>go(i-1));
+  nextBtn.addEventListener('click',()=>go(i+1));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight')go(i+1);
+    if(e.key==='ArrowLeft')go(i-1);
+  });
+  let sx=0,dx=0,dragging=false;
+  const vp=document.querySelector('.viewport');
+  vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;dragging=true;dx=0});
+  vp.addEventListener('touchmove',e=>{if(!dragging)return;dx=e.touches[0].clientX-sx});
+  vp.addEventListener('touchend',()=>{
+    if(!dragging)return;
+    if(Math.abs(dx)>40)go(i+(dx<0?1:-1));
+    dragging=false;
+  });
+
+  const captionText=`Kamu sudah overload. Deadline menumpuk. Tapi rekan kerja minta tolong — dan kamu tetap bilang 'oke, bisa.'
+
+Ini bukan lemah. Otakmu memproses konflik sosial seperti ancaman fisik nyata.
+
+Menolak = risiko penilaian negatif = sinyal bahaya untuk amygdala. Jadi otak memilih jalan aman: setuju.
+
+Itu survival, bukan ketidakmampuan bilang tidak.
+
+Kamu paling susah bilang tidak di situasi apa?
+
+#NeuroDaily #NeurosainsKerja #BrainAtWork #SocialThreat #WorkBoundaries`;
+
+  const cc=document.getElementById('charCount');
+  const len=captionText.length;
+  cc.textContent=`${len} / 500 karakter ${len<=500?'✓':'⚠ Melebihi batas Threads'}`;
+  if(len>500)cc.style.color='#e05252';
+
+    const params=new URLSearchParams(location.search),sp=params.get('slide');
+  if(sp){document.documentElement.classList.add('export-html');document.body.classList.add('export-mode');go(parseInt(sp)-1)}else{go(0)}
+</script>
+</body>
+</html>

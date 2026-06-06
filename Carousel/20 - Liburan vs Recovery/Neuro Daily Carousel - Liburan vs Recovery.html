@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Neuro Daily — Liburan 2 Hari Tidak Cukup Memulihkan Burnout 6 Bulan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;--red:#D96A6A}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#1a1a1a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#9aa39f;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(440px,92vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;display:flex;flex-direction:column;padding:36px 32px 28px;position:relative;overflow:hidden}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.slide .header{display:flex;justify-content:space-between;align-items:center;font-family:'DM Sans',sans-serif;font-weight:500;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.85}
+.bg-light .header{opacity:.7}
+.pillar-tag{display:inline-flex;align-items:center;gap:6px}
+.pillar-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--green)}
+.bg-light .pillar-tag::before{background:var(--teal)}
+.slide .footer{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;opacity:.55;text-transform:uppercase}
+.static-bg{position:absolute;inset:0;pointer-events:none;opacity:.045}
+
+/* S1 — HOOK */
+.s1 .body{margin-top:auto;margin-bottom:auto}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:40px;line-height:1.07;letter-spacing:-.01em;color:var(--parchment)}
+.s1 h1 em{color:var(--amber);font-style:italic}
+.s1 .lead{margin-top:18px;font-size:13px;line-height:1.7;opacity:.7;max-width:310px}
+.s1 .swipe{position:absolute;bottom:24px;right:32px;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.s1 .arrow{display:inline-block;animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+
+/* S2 — MYTH BUSTER */
+.s2 .eyebrow{margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);opacity:.8}
+.s2 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:27px;line-height:1.16;letter-spacing:-.01em;margin-top:10px;color:var(--forest)}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .compare{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.s2 .compare-row{padding:11px 14px;border-radius:9px;font-size:11.5px;line-height:1.55}
+.compare-myth{background:rgba(217,106,106,.08);border:1px solid rgba(217,106,106,.18);color:var(--forest)}
+.compare-fact{background:rgba(26,107,90,.08);border:1px solid rgba(26,107,90,.2);color:var(--forest)}
+.compare-row .label{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:4px;opacity:.7}
+.compare-myth .label{color:var(--red)}
+.compare-fact .label{color:var(--teal)}
+.s2 .note{margin-top:12px;font-size:11px;line-height:1.6;color:var(--forest);opacity:.6;border-top:1px solid rgba(13,46,40,.1);padding-top:10px}
+
+/* S3 — MECHANISM */
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:25px;line-height:1.24;letter-spacing:-.01em;margin-top:20px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .term{margin-top:14px;padding:13px 15px;border-radius:10px;background:rgba(94,201,167,.08);border-left:2px solid var(--green)}
+.s3 .term .name{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+.s3 .term .def{margin-top:7px;font-size:12.5px;line-height:1.65;color:var(--parchment);opacity:.9}
+.s3 .mech-list{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+.s3 .mech-item{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;border-radius:7px}
+.mech-a{background:rgba(201,169,110,.1);border:1px solid rgba(201,169,110,.2)}
+.mech-b{background:rgba(217,106,106,.08);border:1px solid rgba(217,106,106,.18)}
+.mech-c{background:rgba(94,201,167,.08);border:1px solid rgba(94,201,167,.15)}
+.s3 .mech-icon{font-size:11px;flex-shrink:0;margin-top:1px;width:16px;text-align:center;font-family:'JetBrains Mono',monospace;color:var(--amber)}
+.s3 .mech-text{font-size:11px;line-height:1.5;color:var(--parchment);opacity:.85}
+.s3 .mech-text strong{color:var(--parchment);opacity:1;font-weight:500}
+.s3 .source{margin-top:10px;font-size:10px;color:var(--parchment);opacity:.45;line-height:1.55}
+
+/* S4 — CONSEQUENCE */
+.s4 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:22px;line-height:1.28;margin-top:14px;color:var(--forest)}
+.s4 h2 em{font-style:italic;color:var(--teal)}
+.s4 .sub{margin-top:8px;font-size:12px;line-height:1.6;color:var(--forest);opacity:.65}
+.s4 .change-list{margin-top:14px;display:flex;flex-direction:column;gap:7px}
+.change-item{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;background:rgba(255,255,255,.55);border:1px solid rgba(13,46,40,.1);border-radius:9px}
+.change-num{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--red);font-weight:500;flex-shrink:0;margin-top:2px;width:16px}
+.change-body .change-title{font-size:11.5px;font-weight:500;color:var(--forest);margin-bottom:3px;line-height:1.3}
+.change-body .change-sub{font-size:10.5px;color:var(--forest);opacity:.62;line-height:1.45}
+
+/* S5 — STAT */
+.s5{padding-top:28px}
+.s5 .stat-big{margin-top:auto;display:flex;align-items:baseline;gap:12px}
+.s5 .stat-big .n{font-family:'DM Serif Display',serif;font-size:76px;line-height:.85;color:var(--parchment);letter-spacing:-.03em}
+.s5 .stat-big .n em{color:var(--amber);font-style:italic}
+.s5 .stat-big .u{font-family:'DM Sans';font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--green);max-width:140px;line-height:1.5}
+.s5 .copy{margin-top:16px;font-size:13px;line-height:1.65;opacity:.85;max-width:340px}
+.s5 .copy strong{font-weight:500;color:var(--green)}
+.s5 .math{margin-top:16px;padding:13px 16px;border:1px dashed rgba(94,201,167,.3);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);letter-spacing:.04em;line-height:1.9}
+
+/* S6 — STRATEGY */
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:25px;line-height:1.2;margin-top:22px;letter-spacing:-.01em}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .ps{margin-top:12px;font-size:12.5px;line-height:1.65;opacity:.78;max-width:340px}
+.s6 .steps{margin-top:14px;display:flex;flex-direction:column;gap:0}
+.s6 .step{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(245,243,238,.07)}
+.s6 .step:last-child{border-bottom:none}
+.s6 .step-num{width:20px;height:20px;border-radius:50%;background:rgba(94,201,167,.15);color:var(--green);font-family:'JetBrains Mono',monospace;font-size:8.5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.s6 .step-title{font-size:11.5px;font-weight:500;color:var(--parchment);line-height:1.3;margin-bottom:2px}
+.s6 .step-desc{font-size:10.5px;color:var(--parchment);opacity:.62;line-height:1.5}
+
+/* S7 — CTA */
+.s7{justify-content:space-between}
+.s7 .lead-q{font-family:'DM Serif Display',serif;font-size:26px;line-height:1.24;letter-spacing:-.01em;margin-top:22px;color:var(--forest)}
+.s7 .lead-q em{font-style:italic;color:var(--teal)}
+.s7 .ask{margin-top:13px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.7;max-width:310px}
+.s7 .poll{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.s7 .poll-btn{padding:12px 16px;border:1px solid rgba(13,46,40,.15);border-radius:9px;font-size:12.5px;color:var(--forest);display:flex;align-items:center;gap:10px}
+.s7 .poll-btn .emoji{font-size:16px}
+.s7 .actions{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.s7 .btn{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border:1px solid rgba(13,46,40,.15);border-radius:10px;font-size:12px;color:var(--forest)}
+.s7 .btn .ic{width:16px;height:16px;color:var(--teal);flex-shrink:0}
+.s7 .signoff{margin-top:14px;padding-top:12px;border-top:1px solid rgba(13,46,40,.12)}
+.s7 .tag{font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;color:var(--teal);line-height:1.3}
+.s7 .sub{margin-top:6px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--forest);opacity:.6;font-weight:500}
+
+/* Nav */
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:22px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:42px;height:42px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.controls button:hover{background:rgba(94,201,167,.12);border-color:rgba(94,201,167,.3)}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 8px}
+
+/* Caption Panel */
+.caption-panel{width:min(440px,92vw);margin-top:32px;padding:22px 22px 24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:13px;line-height:1.7}
+.caption-panel .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+.caption-panel .char-count{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--amber);margin-top:10px;opacity:.7}
+.caption-panel p{margin-bottom:10px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:14px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Burnout & Recovery · P4 ]</span>
+</div>
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- SLIDE 1 — HOOK -->
+      <section class="slide bg-dark s1">
+        <svg class="static-bg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <!-- Calendar grid — representing months of stress vs. 2 days recovery -->
+          <rect x="60" y="80" width="280" height="200" rx="8" fill="none" stroke="rgba(94,201,167,.15)" stroke-width=".8"/>
+          <!-- Month blocks — 6 months stressed (red tint) -->
+          <rect x="74" y="96" width="38" height="28" rx="3" fill="rgba(217,106,106,.12)" stroke="rgba(217,106,106,.25)" stroke-width=".6"/>
+          <rect x="118" y="96" width="38" height="28" rx="3" fill="rgba(217,106,106,.12)" stroke="rgba(217,106,106,.25)" stroke-width=".6"/>
+          <rect x="162" y="96" width="38" height="28" rx="3" fill="rgba(217,106,106,.12)" stroke="rgba(217,106,106,.25)" stroke-width=".6"/>
+          <rect x="206" y="96" width="38" height="28" rx="3" fill="rgba(217,106,106,.12)" stroke="rgba(217,106,106,.25)" stroke-width=".6"/>
+          <rect x="250" y="96" width="38" height="28" rx="3" fill="rgba(217,106,106,.12)" stroke="rgba(217,106,106,.25)" stroke-width=".6"/>
+          <rect x="294" y="96" width="38" height="28" rx="3" fill="rgba(217,106,106,.12)" stroke="rgba(217,106,106,.25)" stroke-width=".6"/>
+          <!-- Labels: 6 months -->
+          <text x="93" y="115" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="rgba(217,106,106,.5)" letter-spacing=".5">JAN</text>
+          <text x="137" y="115" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="rgba(217,106,106,.5)" letter-spacing=".5">FEB</text>
+          <text x="181" y="115" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="rgba(217,106,106,.5)" letter-spacing=".5">MAR</text>
+          <text x="225" y="115" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="rgba(217,106,106,.5)" letter-spacing=".5">APR</text>
+          <text x="269" y="115" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="rgba(217,106,106,.5)" letter-spacing=".5">MEI</text>
+          <text x="313" y="115" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="rgba(217,106,106,.5)" letter-spacing=".5">JUN</text>
+          <!-- Arrow down -->
+          <line x1="200" y1="140" x2="200" y2="160" stroke="rgba(245,243,238,.15)" stroke-width=".8" stroke-dasharray="2 2"/>
+          <!-- 2 day recovery block — tiny -->
+          <rect x="164" y="168" width="72" height="20" rx="3" fill="rgba(94,201,167,.1)" stroke="rgba(94,201,167,.3)" stroke-width=".7"/>
+          <text x="200" y="182" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="rgba(94,201,167,.6)" letter-spacing=".5">SAB · MIN</text>
+          <!-- X mark -->
+          <text x="200" y="215" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(217,106,106,.4)">tidak sebanding</text>
+          <!-- Subtle grid lines -->
+          <line x1="60" y1="236" x2="340" y2="236" stroke="rgba(245,243,238,.04)" stroke-width=".6"/>
+          <!-- Bottom label -->
+          <text x="200" y="380" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(245,243,238,.08)" letter-spacing="2">ALLOSTATIC LOAD · RECOVERY MATH</text>
+        </svg>
+        <div class="header">
+          <span class="pillar-tag">Burnout & Recovery · P4</span>
+          <span>01 / 07</span>
+        </div>
+        <div class="body">
+          <h1>Kamu libur panjang. Senin pagi, <em>kelelahan lagi.</em></h1>
+          <p class="lead">Bukan karena kamu tidak cukup istirahat. Otakmu bekerja dengan matematika yang berbeda dari yang kamu kira.</p>
+        </div>
+        <div class="swipe"><span>Geser</span><span class="arrow">→</span></div>
+      </section>
+
+      <!-- SLIDE 2 — MYTH BUSTER -->
+      <section class="slide bg-light s2">
+        <div class="header">
+          <span class="pillar-tag">Mitos vs Fakta</span>
+          <span>02 / 07</span>
+        </div>
+        <div class="eyebrow">Myth Buster · Formula A</div>
+        <h2>Weekend tidak bisa <em>membayar hutang 6 bulan</em> tekanan kerja.</h2>
+        <div class="compare">
+          <div class="compare-row compare-myth">
+            <div class="label">Yang kamu percaya</div>
+            Liburan 2–3 hari sudah cukup untuk reset. Kalau masih lelah setelah libur, berarti kamu kurang bersyukur atau terlalu lemah.
+          </div>
+          <div class="compare-row compare-fact">
+            <div class="label">Yang neurosains katakan</div>
+            Otak mengakumulasi stres secara proporsional dengan durasi paparan. Recovery juga membutuhkan waktu yang proporsional — bukan liburan singkat yang memberimu ilusi pulih.
+          </div>
+        </div>
+        <p class="note">Konsep "allostatic load" menjelaskan bagaimana tubuh dan otak menyimpan beban stres kumulatif. Semakin lama stres berlangsung, semakin besar deposit yang harus dilunasi — dan 48 jam tidak cukup untuk melunasi 6 bulan.</p>
+        <div class="footer"><span>NEURO DAILY</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 3 — MECHANISM -->
+      <section class="slide bg-dark s3">
+        <div class="header">
+          <span class="pillar-tag">Yang terjadi di otakmu</span>
+          <span>03 / 07</span>
+        </div>
+        <h2>Otak mencatat stres seperti <em>hutang yang berbunga.</em></h2>
+        <div class="term">
+          <div class="name">Allostatic Load</div>
+          <div class="def">Akumulasi "biaya biologis" dari paparan stres berkepanjangan — kortisol, inflamasi, dan perubahan struktural yang bertumpuk di otak dan tubuh. Tidak hilang begitu saja saat tekanan berhenti.</div>
+        </div>
+        <div class="mech-list">
+          <div class="mech-item mech-a">
+            <span class="mech-icon">01</span>
+            <span class="mech-text"><strong>Stres 1 minggu</strong> → beberapa hari istirahat sudah cukup untuk reset kortisol</span>
+          </div>
+          <div class="mech-item mech-b">
+            <span class="mech-icon">02</span>
+            <span class="mech-text"><strong>Stres 3 bulan</strong> → butuh beberapa minggu recovery aktif, bukan pasif</span>
+          </div>
+          <div class="mech-item mech-c">
+            <span class="mech-icon">03</span>
+            <span class="mech-text"><strong>Burnout 6+ bulan</strong> → recovery bisa butuh berbulan-bulan dengan pendekatan yang benar</span>
+          </div>
+        </div>
+        <p class="source">McEwen & Stellar (1993): Stress and the individual · Mechanisms leading to disease · Archives of Internal Medicine</p>
+      </section>
+
+      <!-- SLIDE 4 — CONSEQUENCE -->
+      <section class="slide bg-light s4">
+        <div class="header">
+          <span class="pillar-tag">Tanda kamu belum pulih</span>
+          <span>04 / 07</span>
+        </div>
+        <h2>Kamu sudah libur, tapi ini <em>masih terasa.</em></h2>
+        <p class="sub">Ini bukan tanda kelemahan atau kurang semangat — ini sinyal neurologis bahwa allostatic load belum lunas.</p>
+        <div class="change-list">
+          <div class="change-item">
+            <span class="change-num">01</span>
+            <div class="change-body">
+              <div class="change-title">Senin pagi sudah exhausted sebelum mulai</div>
+              <div class="change-sub">Sunday scaries yang berubah jadi Sunday dread — amygdala sudah mengantisipasi tekanan sebelum tekanan datang</div>
+            </div>
+          </div>
+          <div class="change-item">
+            <span class="change-num">02</span>
+            <div class="change-body">
+              <div class="change-title">Hiburan tidak terasa menyenangkan seperti dulu</div>
+              <div class="change-sub">Anhedonia — sistem reward dopamin melemah akibat kortisol kronis. Hal yang dulunya menyenangkan tidak lagi memicu respons yang sama</div>
+            </div>
+          </div>
+          <div class="change-item">
+            <span class="change-num">03</span>
+            <div class="change-body">
+              <div class="change-title">Recovery dari hal kecil butuh lebih lama</div>
+              <div class="change-sub">Satu rapat panjang menguras energi berhari-hari. Otak kehilangan resiliensi — kapasitas untuk bounce back mengkerut seiring burnout berlanjut</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>04 — SINYAL</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 5 — STAT -->
+      <section class="slide bg-teal s5">
+        <div class="header">
+          <span class="pillar-tag" style="color:#fff">Matematikanya</span>
+          <span>05 / 07</span>
+        </div>
+        <p class="copy" style="margin-top:24px">Ini bukan soal mental yang lemah. Ini soal <strong>proporsionalitas biologis</strong> yang sering diabaikan karena tidak terlihat dari luar.</p>
+        <div class="stat-big">
+          <span class="n">180<em>:</em><span style="font-size:48px">2</span></span>
+        </div>
+        <p class="copy" style="margin-top:12px;font-size:12px;opacity:.75">Hari stres yang terakumulasi vs. hari "recovery" yang kamu berikan ke otakmu.</p>
+        <div class="math">
+          6 bulan burnout  = ± 180 hari beban stres<br>
+          Weekend recovery = 2 hari<br>
+          <span style="color:var(--amber)">────────────────────────────────</span><br>
+          Rasio recovery   = <span style="color:#fff;font-weight:500">1.1% dari total exposure</span><br>
+          <span style="opacity:.55;font-size:9px">*Allostatic load tidak direset oleh absensi singkat dari stres (McEwen, 2007)</span>
+        </div>
+        <div class="footer"><span>05 — DATA</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 6 — STRATEGY -->
+      <section class="slide bg-dark s6">
+        <div class="header">
+          <span class="pillar-tag">Recovery yang benar-benar bekerja</span>
+          <span>06 / 07</span>
+        </div>
+        <h2>Recovery bukan <em>nunggu weekend.</em> Ini cara yang benar.</h2>
+        <p class="ps">Allostatic load tidak bisa dilunasi dalam satu sesi — tapi bisa dikurangi secara konsisten jika pendekatannya tepat.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <div class="step-title">Microrecovery setiap hari, bukan marathon weekend</div>
+              <div class="step-desc">10 menit istirahat kognitif sejati (tanpa layar) setiap 90 menit lebih efektif dari libur panjang yang tetap diisi scrolling. Otak butuh idle time setiap hari — bukan sekali seminggu.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <div class="step-title">Ukur durasi burnout, bukan perasaannya</div>
+              <div class="step-desc">Hitung aktual: sudah berapa bulan kamu merasa seperti ini? Recovery yang realistis butuh setidaknya seperempat dari durasi itu dalam kondisi yang benar-benar berbeda.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <div class="step-title">Recovery aktif berbeda dari pasif</div>
+              <div class="step-desc">Tidur, olahraga ringan, dan koneksi sosial bermakna secara aktif menurunkan kortisol. Berbaring sambil netflix masih mempertahankan amygdala dalam mode siaga.</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>06 — RECOVERY</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 7 — CTA -->
+      <section class="slide bg-light s7">
+        <div class="header">
+          <span class="pillar-tag">Sekarang giliranmu</span>
+          <span>07 / 07</span>
+        </div>
+        <div>
+          <p class="lead-q">2 hari libur cukup <em>pulihkan kamu?</em></p>
+          <p class="ask">Jawab jujur di komentar — dan kalau bisa, ceritakan sudah berapa lama kamu merasa seperti ini.</p>
+        </div>
+        <div class="poll">
+          <div class="poll-btn"><span class="emoji">✅</span><span>Cukup — saya pulih setelah libur</span></div>
+          <div class="poll-btn"><span class="emoji">⚠️</span><span>Tidak cukup — Senin tetap berat</span></div>
+          <div class="poll-btn"><span class="emoji">🔴</span><span>Butuh lebih lama dari itu</span></div>
+        </div>
+        <div class="actions">
+          <div class="btn">
+            <span>Simpan — baca ulang sebelum ambil cuti</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+          </div>
+          <div class="btn">
+            <span>Kirim ke rekan kerja yang terlihat kelelahan</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </div>
+        <div class="signoff">
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="1.5"><path d="M4 14c0-5 3-8 8-8 4 0 6 2 6 5 0 2-1.5 3.5-4 3.5-2 0-3 1-3 2.5 0 1.5 1 2.5 2.5 2.5"/><circle cx="15" cy="9" r="1" fill="#1A6B5A"/></svg>
+            <span class="tag">Neuro Daily</span>
+          </div>
+          <div class="sub">Kerja lebih cerdas, bukan lebih keras. Ini sains-nya.</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="caption-panel">
+  <div class="label">Caption · Formula C — Number Hook · ≤ 500 karakter</div>
+  <p><strong style="color:var(--parchment)">Kamu baru saja libur panjang. Senin pagi, kelelahan lagi.</strong></p>
+  <p>Bukan karena kamu lemah. Otakmu menyimpan stres seperti hutang yang berbunga — 6 bulan burnout tidak bisa dilunasi dalam 2 hari.</p>
+  <p>2 hari libur cukup pulihkan kamu? Jawab: cukup / tidak cukup / butuh lebih lama 👇</p>
+  <span class="hash">#neurosains #produktivitas #burnout #recovery #kerjacerdas #istirahat #otakmanusia</span>
+  <div class="char-count" id="charCount"></div>
+</div>
+
+<div class="controls">
+  <button id="prev">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next">›</button>
+</div>
+
+<script>
+const track=document.getElementById('track'),dotsEl=document.getElementById('dots'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next');
+const total=track.children.length;let i=0;
+for(let k=0;k<total;k++){const b=document.createElement('button');b.className='dot'+(k===0?' active':'');b.addEventListener('click',()=>go(k));dotsEl.appendChild(b)}
+const dots=[...dotsEl.children];
+function go(n){i=Math.max(0,Math.min(total-1,n));track.style.transform=`translateX(-${i*100}%)`;dots.forEach((d,k)=>d.classList.toggle('active',k===i));counter.textContent=`${i+1} / ${total}`;prevBtn.disabled=i===0;nextBtn.disabled=i===total-1}
+prevBtn.addEventListener('click',()=>go(i-1));nextBtn.addEventListener('click',()=>go(i+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(i+1);if(e.key==='ArrowLeft')go(i-1)});
+let sx=0,dx=0,drag=false;const vp=document.querySelector('.viewport');
+vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;drag=true;dx=0});
+vp.addEventListener('touchmove',e=>{if(!drag)return;dx=e.touches[0].clientX-sx});
+vp.addEventListener('touchend',()=>{if(!drag)return;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));drag=false});
+
+const captionText=`Kamu baru saja libur panjang. Senin pagi, kelelahan lagi.
+
+Bukan karena kamu lemah. Otakmu menyimpan stres seperti hutang yang berbunga — 6 bulan burnout tidak bisa dilunasi dalam 2 hari.
+
+2 hari libur cukup pulihkan kamu? Jawab: cukup / tidak cukup / butuh lebih lama 👇
+
+#neurosains #produktivitas #burnout #recovery #kerjacerdas #istirahat #otakmanusia`;
+const cc=document.getElementById('charCount'),len=captionText.length;
+cc.textContent=`${len} / 500 karakter ${len<=500?'✓':'⚠ Melebihi batas Threads'}`;
+if(len>500)cc.style.color='#e05252';
+go(0)
+</script>
+</body>
+</html>

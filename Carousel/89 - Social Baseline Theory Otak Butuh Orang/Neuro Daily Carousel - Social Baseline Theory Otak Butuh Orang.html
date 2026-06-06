@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Neuro Daily — Social Baseline Theory: Otak Tidak Dirancang Untuk Bekerja Sendirian</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;--red:#D96A6A;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0a0a0a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 100px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#7a807d;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(540px,94vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;position:relative;overflow:hidden}
+.cvs{width:1080px;height:1350px;transform-origin:top left;position:absolute;top:0;left:0;font-family:'DM Sans',sans-serif}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.cvs .head,.cvs .foot{position:absolute;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 64px;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase}
+.cvs .head{top:0;height:78px;border-bottom:1px solid rgba(245,243,238,.12)}
+.cvs .foot{bottom:0;height:64px;border-top:1px solid rgba(245,243,238,.12)}
+.bg-light .head,.bg-light .foot{border-color:rgba(13,46,40,.12)}
+.bg-teal .head,.bg-teal .foot{border-color:rgba(245,243,238,.18)}
+.cvs .head span,.cvs .foot span{opacity:.55}
+.cvs .head .dotmark::before{content:"◆ ";color:var(--green);opacity:1}
+.bg-light .head .dotmark::before{color:var(--teal)}
+.bg-teal .head .dotmark::before{color:var(--amber)}
+.nd-logo{display:flex;align-items:center;gap:10px;opacity:1!important}
+.nd-logo svg{width:30px;height:30px;flex-shrink:0}
+.body{position:absolute;top:78px;bottom:64px;left:0;right:0;padding:56px 72px;display:flex;flex-direction:column}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.18em;text-transform:uppercase}
+.bg-dark .eyebrow{color:var(--green)}
+.bg-light .eyebrow{color:var(--teal)}
+.bg-teal .eyebrow{color:var(--amber)}
+.rule{width:48px;height:3px;border-radius:2px;margin-top:20px}
+.bg-dark .rule{background:var(--green)}
+.bg-light .rule{background:var(--teal)}
+.bg-teal .rule{background:var(--amber)}
+
+/* S1 DARK */
+.s1 .ghost{position:absolute;font-family:'DM Serif Display',serif;font-size:480px;line-height:.9;color:rgba(94,201,167,.04);pointer-events:none;right:-10px;top:110px}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:92px;line-height:1.02;letter-spacing:-.02em;margin-top:52px;max-width:880px;position:relative;z-index:2}
+.s1 h1 em{font-style:italic;color:var(--amber)}
+.s1 .lead{margin-top:34px;font-size:28px;line-height:1.6;opacity:.72;max-width:760px;font-weight:300;position:relative;z-index:2}
+.s1 .cost-row{position:absolute;bottom:80px;left:72px;right:72px;z-index:2;display:flex;gap:14px}
+.cost-box{flex:1;padding:26px 22px;border-radius:14px;text-align:center}
+.cost-box.alone{background:rgba(217,106,106,.1);border:1.5px solid rgba(217,106,106,.28)}
+.cost-box.together{background:rgba(94,201,167,.1);border:1.5px solid rgba(94,201,167,.28)}
+.cb-icon{font-size:34px;margin-bottom:10px}
+.cb-label{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.cost-box.alone .cb-label{color:rgba(217,106,106,.85)}
+.cost-box.together .cb-label{color:rgba(94,201,167,.85)}
+.cb-text{font-size:25px;line-height:1.45;font-weight:300;opacity:.82}
+
+/* S2 LIGHT */
+.s2 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:76px;line-height:1.04;letter-spacing:-.02em;margin-top:36px;color:var(--forest);max-width:880px}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .stat-row{margin-top:44px;display:flex;gap:24px}
+.stat-card{flex:1;padding:36px 28px;border-radius:18px;display:flex;flex-direction:column;gap:12px}
+.stat-card.a{background:rgba(217,106,106,.06);border:1.5px solid rgba(217,106,106,.22)}
+.stat-card.b{background:rgba(94,201,167,.06);border:1.5px solid rgba(94,201,167,.2)}
+.stat-num{font-family:'DM Serif Display',serif;font-size:76px;line-height:1;letter-spacing:-.03em}
+.stat-card.a .stat-num{color:var(--red)}
+.stat-card.b .stat-num{color:var(--teal)}
+.stat-label{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.12em;text-transform:uppercase;opacity:.55;color:var(--forest)}
+.stat-desc{font-size:26px;line-height:1.5;opacity:.68;font-weight:300;color:var(--forest)}
+.s2 .insight{margin-top:36px;padding:28px 30px;border-radius:14px;background:rgba(13,46,40,.04);border:1px solid rgba(13,46,40,.1);display:flex;gap:20px;align-items:flex-start}
+.ins-ic{font-family:'DM Serif Display',serif;font-style:italic;font-size:40px;color:var(--teal);flex-shrink:0;line-height:1;margin-top:2px}
+.ins-text{font-size:26px;line-height:1.55;color:var(--forest);opacity:.72;font-weight:300}
+.s2 .source{margin-top:auto;font-size:20px;color:var(--forest);opacity:.4;font-family:'JetBrains Mono',monospace;line-height:1.7;border-top:1px solid rgba(13,46,40,.1);padding-top:16px}
+
+/* S3 DARK */
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:80px;line-height:1.03;letter-spacing:-.02em;margin-top:40px;max-width:880px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .mech-cards{margin-top:52px;display:flex;flex-direction:column;gap:22px}
+.mech-card{padding:32px 34px;border-radius:16px;display:flex;align-items:center;gap:28px}
+.mech-card.a{background:rgba(94,201,167,.08);border:1.5px solid rgba(94,201,167,.22)}
+.mech-card.b{background:rgba(201,169,110,.08);border:1.5px solid rgba(201,169,110,.22)}
+.mc-icon{width:60px;height:60px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:28px}
+.mech-card.a .mc-icon{background:rgba(94,201,167,.2)}
+.mech-card.b .mc-icon{background:rgba(201,169,110,.2)}
+.mc-label{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px}
+.mech-card.a .mc-label{color:var(--green)}
+.mech-card.b .mc-label{color:var(--amber)}
+.mc-text{font-size:26px;line-height:1.5;font-weight:300;opacity:.88}
+.s3 .bottom-note{margin-top:auto;padding:24px 30px;border-radius:12px;background:rgba(245,243,238,.05);border:1px solid rgba(245,243,238,.12);font-size:26px;line-height:1.55;opacity:.65;font-weight:300;display:flex;align-items:center;gap:16px}
+.note-pre{font-family:'DM Serif Display',serif;font-style:italic;font-size:24px;color:var(--amber);flex-shrink:0}
+
+/* S4 TEAL */
+.s4 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:74px;line-height:1.04;letter-spacing:-.02em;margin-top:36px;max-width:880px}
+.s4 h2 em{font-style:italic;color:var(--amber)}
+.s4 .def-card{margin-top:30px;background:rgba(245,243,238,.1);border:1.5px solid rgba(245,243,238,.2);border-radius:16px;padding:30px 34px}
+.def-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:12px}
+.def-text{font-size:27px;line-height:1.6;opacity:.88;font-weight:300}
+.s4 .load-compare{margin-top:28px;display:flex;flex-direction:column;gap:16px}
+.lc-row{padding:24px 28px;border-radius:14px;display:flex;align-items:center;gap:20px}
+.lc-row.high{background:rgba(217,106,106,.1);border:1px solid rgba(217,106,106,.22)}
+.lc-row.low{background:rgba(94,201,167,.1);border:1px solid rgba(94,201,167,.22)}
+.lc-tag{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.1em;text-transform:uppercase;flex-shrink:0;min-width:150px}
+.lc-row.high .lc-tag{color:rgba(217,106,106,.9)}
+.lc-row.low .lc-tag{color:rgba(94,201,167,.9)}
+.lc-text{font-size:26px;line-height:1.45;font-weight:300;opacity:.85}
+
+/* S5 LIGHT */
+.s5 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:76px;line-height:1.04;letter-spacing:-.02em;margin-top:36px;color:var(--forest);max-width:880px}
+.s5 h2 em{font-style:italic;color:var(--teal)}
+.s5 .scenarios{margin-top:44px;display:flex;flex-direction:column;gap:22px}
+.scenario{padding:30px 32px;border-radius:16px;display:flex;align-items:flex-start;gap:22px}
+.scenario.bad{background:rgba(217,106,106,.05);border:1.5px solid rgba(217,106,106,.2)}
+.scenario.good{background:rgba(26,107,90,.06);border:1.5px solid rgba(26,107,90,.22)}
+.s-tag{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;padding:6px 16px;border-radius:99px;flex-shrink:0;margin-top:4px}
+.scenario.bad .s-tag{background:var(--red);color:#fff}
+.scenario.good .s-tag{background:var(--teal);color:#fff}
+.s-title{font-size:26px;font-weight:500;color:var(--forest);margin-bottom:8px}
+.s-desc{font-size:25px;line-height:1.55;color:var(--forest);opacity:.65;font-weight:300}
+.s5 .rn{margin-top:auto;padding:22px 28px;background:rgba(26,107,90,.05);border:1px solid rgba(26,107,90,.15);border-radius:12px;font-size:25px;line-height:1.6;color:var(--forest);font-weight:300}
+.s5 .rn strong{font-weight:500;color:var(--teal)}
+
+/* S6 DARK */
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:80px;line-height:1.03;letter-spacing:-.02em;margin-top:40px;max-width:880px}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .steps{margin-top:48px;display:flex;flex-direction:column;gap:18px}
+.step{padding:30px 34px;border-radius:16px;display:flex;align-items:flex-start;gap:26px}
+.step.a{background:rgba(94,201,167,.1);border:2px solid rgba(94,201,167,.28)}
+.step.b{background:rgba(201,169,110,.1);border:2px solid rgba(201,169,110,.25)}
+.step.c{background:rgba(94,201,167,.15);border:2px solid rgba(94,201,167,.45)}
+.step-num{font-family:'DM Serif Display',serif;font-size:54px;line-height:1;flex-shrink:0;margin-top:-4px}
+.step.a .step-num{color:var(--green)}
+.step.b .step-num{color:var(--amber)}
+.step.c .step-num{color:var(--green)}
+.step-title{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+.step.a .step-title{color:var(--green)}
+.step.b .step-title{color:var(--amber)}
+.step.c .step-title{color:var(--green)}
+.step-desc{font-size:26px;line-height:1.5;opacity:.85;font-weight:300}
+.s6 .p-note{margin-top:auto;font-family:'JetBrains Mono',monospace;font-size:20px;color:rgba(245,243,238,.45);line-height:1.8;border-top:1px solid rgba(245,243,238,.1);padding-top:20px}
+.punch{color:var(--green);font-weight:500}
+
+/* S7 LIGHT */
+.s7 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:78px;line-height:1.04;letter-spacing:-.02em;margin-top:36px;color:var(--forest);max-width:880px}
+.s7 h2 em{font-style:italic;color:var(--teal)}
+.s7 .sub{margin-top:24px;font-size:27px;line-height:1.6;color:var(--forest);opacity:.65;max-width:820px;font-weight:300}
+.s7 .disc-list{margin-top:38px;display:flex;flex-direction:column;gap:18px}
+.disc-item{display:flex;align-items:center;gap:20px;padding:24px 28px;border:1.5px solid rgba(13,46,40,.12);border-radius:14px;font-size:25px;color:var(--forest);background:rgba(255,255,255,.46);line-height:1.4}
+.disc-ic{width:44px;height:44px;border-radius:10px;background:rgba(26,107,90,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.disc-ic svg{width:24px;height:24px;color:var(--teal)}
+.s7 .shift{margin-top:auto;padding:22px 28px;border-radius:12px;border:1px dashed rgba(26,107,90,.35);font-size:26px;line-height:1.55;color:var(--forest);opacity:.62;font-weight:300;display:flex;align-items:center;gap:16px}
+.shift-arr{font-family:'DM Serif Display',serif;font-style:italic;font-size:26px;color:var(--teal);flex-shrink:0}
+
+/* Nav */
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:24px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:46px;height:46px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.1em;align-self:center;padding:0 10px}
+.caption-panel{width:min(540px,94vw);margin-top:32px;padding:26px 26px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:20px;line-height:1.7}
+.caption-panel .cap-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+.caption-panel p{margin-bottom:12px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel strong{color:var(--parchment);font-weight:500}
+.caption-panel .hash{color:#7a8480;font-size:18px;margin-top:16px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="topbar"><span>Neuro Daily · Carousel Preview</span><span class="pill">[ Vol. 89 · Social Baseline Theory · Coan ]</span></div>
+<div class="stage"><div class="viewport"><div class="track" id="track">
+
+<!-- S1 DARK -->
+<section class="slide"><div class="cvs bg-dark s1">
+  <div class="head"><span class="dotmark">Neuro Daily · Vol. 89 · Social Baseline Theory</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Social Baseline Theory · Allostatic Load · James Coan</div>
+    <div class="rule"></div>
+    <div class="ghost">◈</div>
+    <h1>Otakmu tidak<br>pernah dirancang<br>untuk menanggung<br><em>beban sendirian.</em></h1>
+    <p class="lead">Bekerja sendirian bukan hanya lebih melelahkan secara mental — secara biologis, otak harus mengeluarkan lebih banyak energi untuk hal yang sama saat dilakukan tanpa kehadiran orang yang dipercaya.</p>
+    <div class="cost-row">
+      <div class="cost-box alone">
+        <div class="cb-icon">👤</div>
+        <div class="cb-label">Sendirian</div>
+        <div class="cb-text">Otak menanggung beban penuh — lebih mahal secara energi</div>
+      </div>
+      <div class="cost-box together">
+        <div class="cb-icon">👥</div>
+        <div class="cb-label">Ada Ally</div>
+        <div class="cb-text">Otak berbagi beban — respons ancaman lebih rendah</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>01 / 07</span></div>
+</div></section>
+
+<!-- S2 LIGHT -->
+<section class="slide"><div class="cvs bg-light s2">
+  <div class="head"><span class="dotmark">Social Baseline Theory · Coan · Eksperimen</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Eksperimen yang mengubah cara kita memahami otak sosial</div>
+    <div class="rule"></div>
+    <h2>Memegang tangan orang yang dipercaya <em>secara harfiah mengurangi aktivasi ancaman</em> di otak.</h2>
+    <div class="stat-row">
+      <div class="stat-card a">
+        <div class="stat-num">↓</div>
+        <div class="stat-label">Neural Threat Turun</div>
+        <div class="stat-desc">Subjek yang memegang tangan pasangan saat menghadapi ancaman menunjukkan aktivasi otak yang jauh lebih rendah di area stres dibanding yang sendirian</div>
+      </div>
+      <div class="stat-card b">
+        <div class="stat-num">↑</div>
+        <div class="stat-label">Stranger = Efektif</div>
+        <div class="stat-desc">Bahkan memegang tangan orang asing pun sudah mengurangi respons ancaman — meski efeknya lebih kecil dari orang yang dipercaya</div>
+      </div>
+    </div>
+    <div class="insight">
+      <div class="ins-ic">→</div>
+      <div class="ins-text">Coan, Schaefer & Davidson (2006): kualitas hubungan sosial menentukan seberapa besar "diskon energi" yang diberikan otak. Makin tinggi kepercayaan, makin besar efisiensi yang didapat</div>
+    </div>
+    <div class="source">Coan, Schaefer & Davidson (2006) Psychological Science · Coan & Beckes (2015) Current Directions in Psychological Science · Lane et al. (2013) Social Cognitive & Affective Neuroscience</div>
+  </div>
+  <div class="foot"><span class="dotmark nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>02 / 07</span></div>
+</div></section>
+
+<!-- S3 DARK -->
+<section class="slide"><div class="cvs bg-dark s3">
+  <div class="head"><span class="dotmark">Neural Mechanism · Allostatic Load · Efisiensi Sosial</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Mengapa kehadiran orang lain mengubah cara kerja otak</div>
+    <div class="rule"></div>
+    <h2>Dua cara otak <em>menghemat energi</em> saat ada orang yang dipercaya.</h2>
+    <div class="mech-cards">
+      <div class="mech-card a">
+        <div class="mc-icon">⚡</div>
+        <div>
+          <div class="mc-label">Social Load Sharing</div>
+          <div class="mc-text">Otak memperlakukan orang yang dipercaya sebagai "perpanjangan diri" — secara harfiah mendistribusikan beban pemrosesan ancaman dan regulasi emosi ke dalam sistem sosial, bukan hanya diri sendiri</div>
+        </div>
+      </div>
+      <div class="mech-card b">
+        <div class="mc-icon">◎</div>
+        <div>
+          <div class="mc-label">Baseline Resource Economy</div>
+          <div class="mc-text">Otak mengasumsikan kehadiran ally berarti sumber daya tersedia — sehingga menetapkan "alarm" ancaman lebih rendah. Ini bukan naif, ini efisiensi evolutif yang terbentuk selama jutaan tahun</div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-note">
+      <span class="note-pre">Intinya:</span>
+      Isolasi bukan hanya sepi — secara biologis, itu kondisi di mana otak harus bekerja jauh lebih keras untuk hal yang sama.
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>03 / 07</span></div>
+</div></section>
+
+<!-- S4 TEAL -->
+<section class="slide"><div class="cvs bg-teal s4">
+  <div class="head"><span class="dotmark">Social Baseline Theory · Definisi</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Memahami teorinya secara ilmiah</div>
+    <div class="rule"></div>
+    <h2>Social Baseline Theory — <em>otak mematok "normal" pada kondisi bersama</em> orang lain.</h2>
+    <div class="def-card">
+      <div class="def-label">Social Baseline Theory</div>
+      <div class="def-text">Teori yang menyatakan bahwa otak manusia berevolusi dengan asumsi dasar bahwa individu selalu berada dalam kelompok sosial. Kesendirian bukan kondisi default — tapi kondisi yang memerlukan pengeluaran energi ekstra.</div>
+    </div>
+    <div class="load-compare">
+      <div class="lc-row high">
+        <div class="lc-tag">Sendirian</div>
+        <div class="lc-text">Otak menanggung beban regulasi secara penuh — lebih mahal, lebih mudah lelah</div>
+      </div>
+      <div class="lc-row low">
+        <div class="lc-tag">Dengan Ally</div>
+        <div class="lc-text">Beban terdistribusi — otak lebih efisien, kapasitas tersisa untuk kerja yang lebih baik</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(201,169,110,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#C9A96E">N</text></svg>NEURODAILY.ID</span><span>04 / 07</span></div>
+</div></section>
+
+<!-- S5 LIGHT -->
+<section class="slide"><div class="cvs bg-light s5">
+  <div class="head"><span class="dotmark">Social Baseline Theory · Di Tempat Kerja</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Dampak nyata di lingkungan kerja modern</div>
+    <div class="rule"></div>
+    <h2>Kerja remote yang terisolasi vs terhubung — <em>bedanya bukan soal disiplin.</em></h2>
+    <div class="scenarios">
+      <div class="scenario bad">
+        <div class="s-tag">Terisolasi</div>
+        <div>
+          <div class="s-title">Bekerja sendirian tanpa koneksi sosial bermakna</div>
+          <div class="s-desc">Otak bekerja di "high-cost mode" — alarm ancaman lebih sensitif, regulasi emosi lebih mahal, kapasitas kognitif terkuras lebih cepat. Burnout bukan karena lemah, tapi karena biologi tidak mendapat kondisi optimalnya</div>
+        </div>
+      </div>
+      <div class="scenario good">
+        <div class="s-tag">Terhubung</div>
+        <div>
+          <div class="s-title">Ada ally yang dipercaya — meski hanya satu orang</div>
+          <div class="s-desc">Otak beroperasi lebih efisien. Stres yang sama terasa lebih ringan. Bukan karena masalahnya berkurang — tapi karena otak tidak harus menanggungnya sendirian secara neurologis</div>
+        </div>
+      </div>
+    </div>
+    <div class="rn">Coan & Beckes (2015): <strong>kualitas satu hubungan yang dipercaya lebih berdampak pada performa otak daripada jumlah koneksi sosial yang dimiliki.</strong> Satu ally yang benar lebih baik dari seratus kenalan.</div>
+  </div>
+  <div class="foot"><span class="dotmark nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>05 / 07</span></div>
+</div></section>
+
+<!-- S6 DARK -->
+<section class="slide"><div class="cvs bg-dark s6">
+  <div class="head"><span class="dotmark">Praktis · Ally Building · Social Load Sharing</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Cara mengaktifkan social baseline di tempat kerja</div>
+    <div class="rule"></div>
+    <h2>Tiga cara <em>memanfaatkan otak sosial</em> untuk performa yang lebih baik.</h2>
+    <div class="steps">
+      <div class="step a">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">Identifikasi Satu Ally</div>
+          <div class="step-desc">Satu orang yang kamu percaya di lingkungan kerja sudah cukup mengaktifkan social baseline. Investasikan kualitas hubungan itu — bukan kuantitas koneksi yang kamu punya</div>
+        </div>
+      </div>
+      <div class="step b">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">Co-working, Bukan Isolation</div>
+          <div class="step-desc">Bahkan bekerja di dekat orang lain — meski tidak berbicara — sudah mengurangi allostatic load otak. Kehadiran fisik yang aman cukup untuk mengaktifkan efisiensi sosial</div>
+        </div>
+      </div>
+      <div class="step c">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">Share the Load, Bukan Semua</div>
+          <div class="step-desc">Ceritakan satu tantangan yang kamu hadapi — bukan untuk solusi, tapi agar otak "tahu" ada yang bersamamu. Verbalisasi beban ke ally yang dipercaya sudah cukup mengaktifkan load sharing</div>
+        </div>
+      </div>
+    </div>
+    <div class="p-note">Minta bantuan bukan kelemahan. <span class="punch">Itu cara otak beroperasi di kondisi optimalnya.</span></div>
+  </div>
+  <div class="foot"><span class="dotmark nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>06 / 07</span></div>
+</div></section>
+
+<!-- S7 LIGHT -->
+<section class="slide"><div class="cvs bg-light s7">
+  <div class="head"><span class="dotmark">Social Baseline Theory · Refleksi</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Refleksi & diskusi</div>
+    <div class="rule"></div>
+    <h2>Kuat bukan berarti <em>menanggung segalanya sendiri.</em> Justru sebaliknya.</h2>
+    <p class="sub">Otak yang paling efisien bukan otak yang paling tangguh sendirian — tapi otak yang tahu cara memanfaatkan sumber daya sosial yang ada di sekitarnya.</p>
+    <div class="disc-list">
+      <div class="disc-item">
+        <div class="disc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
+        Siapa satu orang di lingkungan kerjamu yang bisa kamu jadikan ally yang sesungguhnya?
+      </div>
+      <div class="disc-item">
+        <div class="disc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        Kapan terakhir kali kamu mencoba menanggung beban besar sendirian — dan apa yang terjadi?
+      </div>
+    </div>
+    <div class="shift">
+      <span class="shift-arr">→</span>
+      Coba hari ini: ceritakan satu tantangan yang sedang kamu hadapi ke seseorang yang kamu percaya. Bukan untuk solusi — tapi agar otak tahu ada yang bersamamu.
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>07 / 07</span></div>
+</div></section>
+
+</div></div></div>
+<div class="dots"><button class="dot active" onclick="goTo(0)"></button><button class="dot" onclick="goTo(1)"></button><button class="dot" onclick="goTo(2)"></button><button class="dot" onclick="goTo(3)"></button><button class="dot" onclick="goTo(4)"></button><button class="dot" onclick="goTo(5)"></button><button class="dot" onclick="goTo(6)"></button></div>
+<div class="controls"><button id="prev" onclick="prev()" disabled>←</button><span class="counter" id="counter">1 / 7</span><button id="next" onclick="next()">→</button></div>
+<div class="caption-panel">
+  <div class="cap-label">Caption · Instagram / TikTok</div>
+  <p>Otakmu tidak pernah dirancang untuk menanggung beban sendirian. Secara biologis. ◈</p>
+  <p>Social Baseline Theory (Coan & Beckes, 2015): otak manusia berevolusi dengan asumsi bahwa kita selalu berada dalam kelompok sosial yang aman. <strong>Kesendirian bukan kondisi default otak — tapi kondisi yang membutuhkan pengeluaran energi ekstra.</strong></p>
+  <p>Eksperimen Coan et al. (2006): subjek yang memegang tangan pasangan saat menghadapi ancaman menunjukkan aktivasi otak yang jauh lebih rendah di area stres — otak secara harfiah berbagi beban dengan orang yang dipercaya.</p>
+  <p>Minta bantuan bukan kelemahan. Itu cara otak beroperasi di kondisi paling efisiennya.</p>
+  <span class="hash">#NeuroscienceIndonesia #SocialBaselineTheory #JamesCoan #NeurodailyID #BrainScience #Kolaborasi #Burnout #Produktivitas #SocialNeuroscience</span>
+</div>
+<script>
+const track=document.getElementById('track'),dots=document.querySelectorAll('.dot'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next'),TOTAL=7;let cur=0;
+function scale(){const vw=document.querySelector('.viewport').offsetWidth;document.querySelectorAll('.cvs').forEach(c=>{c.style.transform=`scale(${vw/1080})`});}
+scale();window.addEventListener('resize',scale);
+function goTo(i){cur=i;track.style.transform=`translateX(-${cur*100}%)`;dots.forEach((d,j)=>d.classList.toggle('active',j===cur));counter.textContent=`${cur+1} / ${TOTAL}`;prevBtn.disabled=cur===0;nextBtn.disabled=cur===TOTAL-1;}
+function prev(){if(cur>0)goTo(cur-1);}function next(){if(cur<TOTAL-1)goTo(cur+1);}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')prev();if(e.key==='ArrowRight')next();});
+</script>
+</body>
+</html>

@@ -1,0 +1,1833 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<title>Brain Kit for Work — Neuro Daily</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest:    #0D2E28;
+    --teal:      #1A6B5A;
+    --green:     #5EC9A7;
+    --parchment: #F5F3EE;
+    --amber:     #C9A96E;
+    --dark-text: #0D2E28;
+    --light-text:#F5F3EE;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #2a2a2a; font-family: 'DM Sans', sans-serif; }
+  body { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 32px 16px 80px; }
+
+  /* ── PAGE BASE ──────────────────────────────── */
+  .page {
+    width: 210mm;
+    height: 297mm;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+    page-break-after: always;
+  }
+  @media print {
+    body { background: white; padding: 0; gap: 0; }
+    .page { page-break-after: always; }
+  }
+  @page { size: A4; margin: 0; }
+
+  /* ── PAGE VARIANTS ──────────────────────────── */
+  .pg-dark    { background: var(--forest); color: var(--parchment); }
+  .pg-light   { background: var(--parchment); color: var(--forest); }
+  .pg-teal    { background: var(--teal); color: var(--parchment); }
+  .pg-cover   { background: var(--forest); color: var(--parchment); }
+
+  /* ── SHARED LAYOUT ──────────────────────────── */
+  .pad { padding: 14mm 16mm; }
+  .pad-sm { padding: 10mm 16mm; }
+
+  /* ── COVER ──────────────────────────────────── */
+  .cover-inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20mm 18mm;
+    position: relative;
+  }
+  .cover-brain { width: 64mm; margin-bottom: 10mm; opacity: .9; }
+  .cover-series {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8pt;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 6mm;
+    opacity: .8;
+  }
+  .cover-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 38pt;
+    line-height: 1.05;
+    letter-spacing: -.02em;
+    color: var(--parchment);
+    margin-bottom: 5mm;
+  }
+  .cover-subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 11.5pt;
+    line-height: 1.6;
+    color: var(--parchment);
+    opacity: .72;
+    max-width: 120mm;
+    margin-bottom: 14mm;
+  }
+  .cover-bar {
+    width: 18mm;
+    height: 1.5px;
+    background: var(--green);
+    margin-bottom: 14mm;
+    opacity: .5;
+  }
+  .cover-brand {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 16pt;
+    color: var(--teal);
+    letter-spacing: .01em;
+  }
+  .cover-tagline {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 8pt;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--parchment);
+    opacity: .62;
+    margin-top: 2.5mm;
+    font-weight: 500;
+  }
+  .cover-footer {
+    position: absolute;
+    bottom: 12mm;
+    left: 0; right: 0;
+    text-align: center;
+  }
+
+  /* ── TOC ────────────────────────────────────── */
+  .toc-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8pt;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 8mm;
+  }
+  .toc-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26pt;
+    color: var(--parchment);
+    line-height: 1.1;
+    margin-bottom: 10mm;
+  }
+  .toc-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0;
+    padding: 5mm 0;
+    border-bottom: 1px solid rgba(245,243,238,.08);
+  }
+  .toc-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8pt;
+    color: var(--amber);
+    letter-spacing: .1em;
+    min-width: 12mm;
+    flex-shrink: 0;
+  }
+  .toc-chapter {
+    flex: 1;
+    font-family: 'DM Serif Display', serif;
+    font-size: 12pt;
+    color: var(--parchment);
+    line-height: 1.3;
+  }
+  .toc-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 8.5pt;
+    color: var(--parchment);
+    opacity: .5;
+    margin-top: 1.5mm;
+  }
+  .toc-pg {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8pt;
+    color: var(--parchment);
+    opacity: .55;
+    min-width: 8mm;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* ── CHAPTER OPENER ─────────────────────────── */
+  .ch-opener {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 16mm 14mm;
+    position: relative;
+  }
+  .ch-num {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 110pt;
+    color: var(--amber);
+    opacity: .18;
+    line-height: 1;
+    position: absolute;
+    top: 10mm;
+    right: 14mm;
+    letter-spacing: -.04em;
+  }
+  .ch-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8pt;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 5mm;
+    opacity: .85;
+  }
+  .ch-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28pt;
+    line-height: 1.12;
+    color: var(--parchment);
+    letter-spacing: -.01em;
+    margin-bottom: 7mm;
+    max-width: 150mm;
+  }
+  .ch-quote {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 11pt;
+    line-height: 1.65;
+    color: var(--parchment);
+    opacity: .6;
+    max-width: 140mm;
+    padding-left: 5mm;
+    border-left: 2px solid var(--green);
+  }
+  .ch-bar {
+    width: 10mm;
+    height: 2px;
+    background: var(--amber);
+    margin-bottom: 7mm;
+    opacity: .7;
+  }
+
+  /* ── BODY PAGES ─────────────────────────────── */
+  .pg-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 7mm;
+    padding-bottom: 3mm;
+    border-bottom: 1px solid rgba(13,46,40,.1);
+  }
+  .pg-dark .pg-header { border-color: rgba(245,243,238,.08); }
+  .pg-header-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8pt;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    opacity: .62;
+  }
+  .pg-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8pt;
+    opacity: .55;
+    letter-spacing: .1em;
+  }
+
+  .section-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8pt;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 3mm;
+  }
+  .pg-dark .section-eyebrow { color: var(--green); }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20pt;
+    line-height: 1.15;
+    letter-spacing: -.01em;
+    margin-bottom: 5mm;
+  }
+  .pg-light .section-title { color: var(--forest); }
+  .pg-dark .section-title  { color: var(--parchment); }
+  .section-title em { font-style: italic; color: var(--amber); }
+  .pg-light .section-title em { color: var(--teal); }
+
+  .body-text {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 10.5pt;
+    line-height: 1.72;
+    margin-bottom: 4mm;
+  }
+  .pg-light .body-text { color: var(--forest); opacity: .85; }
+  .pg-dark .body-text  { color: var(--parchment); opacity: .82; }
+
+  .body-text strong { font-weight: 500; }
+  .pg-light .body-text strong { color: var(--teal); }
+  .pg-dark  .body-text strong { color: var(--green); }
+
+  /* ── COMPONENTS ─────────────────────────────── */
+  .term-box {
+    padding: 4.5mm 5mm;
+    border-radius: 3mm;
+    border-left: 2.5px solid var(--green);
+    background: rgba(94,201,167,.07);
+    margin: 4mm 0;
+  }
+  .term-box .term-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8pt;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 2mm;
+  }
+  .term-box .term-def {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 10pt;
+    line-height: 1.65;
+    color: var(--parchment);
+    opacity: .9;
+  }
+  .pg-light .term-box .term-def { color: var(--forest); opacity: 1; }
+
+  .callout {
+    padding: 4mm 5mm;
+    border-radius: 3mm;
+    background: rgba(201,169,110,.1);
+    border: 1px solid rgba(201,169,110,.22);
+    margin: 4mm 0;
+  }
+  .callout .callout-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8pt;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 2mm;
+  }
+  .callout .callout-text {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 10pt;
+    line-height: 1.62;
+  }
+  .pg-dark .callout .callout-text { color: var(--parchment); opacity: .85; }
+  .pg-light .callout .callout-text { color: var(--forest); opacity: .85; }
+
+  .two-col { display: flex; gap: 4mm; margin: 4mm 0; }
+  .col-box {
+    flex: 1; padding: 4mm; border-radius: 3mm;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9.5pt;
+    line-height: 1.58;
+  }
+  .col-box .col-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8pt;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    margin-bottom: 2mm;
+    display: block;
+  }
+  .col-amyg { background: rgba(201,169,110,.1); border: 1px solid rgba(201,169,110,.2); color: var(--parchment); }
+  .col-amyg .col-label { color: var(--amber); }
+  .col-pfc  { background: rgba(94,201,167,.07); border: 1px solid rgba(94,201,167,.18); color: var(--parchment); }
+  .col-pfc  .col-label { color: var(--green); }
+  .pg-light .col-amyg,
+  .pg-light .col-pfc  { color: var(--forest); }
+
+  .strategy {
+    display: flex;
+    gap: 4mm;
+    padding: 3.5mm 0;
+    border-bottom: 1px solid rgba(13,46,40,.08);
+  }
+  .pg-dark .strategy { border-color: rgba(245,243,238,.07); }
+  .strategy:last-child { border-bottom: none; }
+  .s-num {
+    width: 7mm; height: 7mm;
+    border-radius: 50%;
+    background: rgba(94,201,167,.15);
+    color: var(--green);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8pt;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.5mm;
+  }
+  .s-title {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 10pt;
+    margin-bottom: 1.5mm;
+  }
+  .pg-light .s-title { color: var(--forest); }
+  .pg-dark  .s-title { color: var(--parchment); }
+  .s-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 9.5pt;
+    line-height: 1.6;
+  }
+  .pg-light .s-desc { color: var(--forest); opacity: .72; }
+  .pg-dark  .s-desc { color: var(--parchment); opacity: .68; }
+
+  .source-note {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 8.5pt;
+    opacity: .60;
+    line-height: 1.5;
+    margin-top: 3mm;
+  }
+
+  /* ── SUMMARY PAGE ───────────────────────────── */
+  .summary-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22pt;
+    color: var(--parchment);
+    margin-bottom: 6mm;
+    letter-spacing: -.01em;
+  }
+  .summary-item {
+    display: flex;
+    gap: 3.5mm;
+    margin-bottom: 3.5mm;
+    align-items: flex-start;
+  }
+  .s-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--green);
+    flex-shrink: 0;
+    margin-top: 3mm;
+  }
+  .s-item-text {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 10pt;
+    line-height: 1.62;
+    color: var(--parchment);
+    opacity: .82;
+  }
+  .s-item-text strong { font-weight: 500; color: var(--green); opacity: 1; }
+  .action-box {
+    margin-top: 5mm;
+    padding: 4mm 5mm;
+    border-radius: 3mm;
+    background: rgba(94,201,167,.07);
+    border-left: 2px solid var(--green);
+  }
+  .action-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7.5pt;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 2mm;
+  }
+  .action-text {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 9.5pt;
+    line-height: 1.62;
+    color: var(--parchment);
+    opacity: .85;
+  }
+
+  /* ── INFOGRAPHIC PAGES ──────────────────────── */
+  .infographic-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 16pt;
+    color: var(--parchment);
+    text-align: center;
+    margin-bottom: 2mm;
+    letter-spacing: -.01em;
+  }
+  .infographic-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 9pt;
+    color: var(--parchment);
+    opacity: .5;
+    text-align: center;
+    margin-bottom: 6mm;
+    letter-spacing: .04em;
+  }
+  .infographic-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+  }
+
+  /* ── BACK COVER ─────────────────────────────── */
+  .back-inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20mm 18mm;
+  }
+  .back-quote {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 18pt;
+    line-height: 1.45;
+    color: var(--parchment);
+    opacity: .85;
+    max-width: 130mm;
+    margin-bottom: 10mm;
+  }
+  .back-bar { width: 12mm; height: 1.5px; background: var(--green); opacity: .5; margin-bottom: 10mm; }
+  .back-cta {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 10pt;
+    color: var(--parchment);
+    opacity: .6;
+    margin-bottom: 2mm;
+  }
+  .back-handle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10pt;
+    color: var(--green);
+    letter-spacing: .08em;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P01 — COVER                                 -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-cover">
+  <div class="cover-inner">
+    <!-- Brain mark SVG -->
+    <svg class="cover-brain" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="100" cy="105" rx="70" ry="58" stroke="#1A6B5A" stroke-width="1.5" opacity=".4"/>
+      <path d="M100 47 C62 47 34 72 34 108 C34 144 62 163 100 160" stroke="#5EC9A7" stroke-width="2" fill="none"/>
+      <path d="M100 47 C138 47 166 72 166 108 C166 144 138 163 100 160" stroke="#5EC9A7" stroke-width="2" fill="none"/>
+      <path d="M82 105 C82 90 118 90 118 105" stroke="#C9A96E" stroke-width="2" fill="none"/>
+      <path d="M100 160 C100 168 100 172 100 172" stroke="#5EC9A7" stroke-width="1.5" stroke-dasharray="2,3" opacity=".5"/>
+      <circle cx="58"  cy="100" r="4" fill="#5EC9A7" opacity=".5"/>
+      <circle cx="75"  cy="82"  r="2.5" fill="#C9A96E" opacity=".65"/>
+      <circle cx="125" cy="82"  r="2.5" fill="#C9A96E" opacity=".65"/>
+      <circle cx="142" cy="100" r="4" fill="#5EC9A7" opacity=".5"/>
+      <circle cx="100" cy="138" r="5" fill="#5EC9A7" opacity=".4"/>
+      <circle cx="68"  cy="122" r="2" fill="#5EC9A7" opacity=".4"/>
+      <circle cx="132" cy="122" r="2" fill="#5EC9A7" opacity=".4"/>
+      <line x1="58" y1="96"  x2="75"  y2="85"  stroke="#5EC9A7" stroke-width=".8" opacity=".3"/>
+      <line x1="142" y1="96" x2="125" y2="85"  stroke="#5EC9A7" stroke-width=".8" opacity=".3"/>
+      <line x1="100" y1="133" x2="68" y2="124" stroke="#5EC9A7" stroke-width=".8" opacity=".3"/>
+      <line x1="100" y1="133" x2="132" y2="124" stroke="#5EC9A7" stroke-width=".8" opacity=".3"/>
+    </svg>
+
+    <div class="cover-series">Neuro Daily · Panduan Performa Kerja</div>
+    <div class="cover-title">Brain Kit<br>for Work</div>
+    <div class="cover-subtitle">7 Cara Otak Kamu Sabotase Performa Kerjamu — dan Cara Mengatasinya</div>
+    <div class="cover-bar"></div>
+    <div class="cover-footer">
+      <div class="cover-brand">Neuro Daily</div>
+      <div class="cover-tagline">Neurosains untuk Karir &amp; Performa Kerja</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P02 — DAFTAR ISI                            -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark pad">
+  <div class="toc-label">Daftar Isi</div>
+  <div class="toc-title">7 Bab.<br>Satu Panduan.</div>
+
+  <div class="toc-item">
+    <div class="toc-num">00</div>
+    <div>
+      <div class="toc-chapter">Otakmu Adalah Aset Kerjamu yang Paling Underrated</div>
+      <div class="toc-sub">Pengantar · Kenapa buku ini berbeda</div>
+    </div>
+    <div class="toc-pg">03</div>
+  </div>
+  <div class="toc-item">
+    <div class="toc-num">01</div>
+    <div>
+      <div class="toc-chapter">Kenapa Kamu Blank Saat Presentasi Padahal Sudah Siap</div>
+      <div class="toc-sub">Amygdala Hijack · Brain at Work</div>
+    </div>
+    <div class="toc-pg">05</div>
+  </div>
+  <div class="toc-item">
+    <div class="toc-num">02</div>
+    <div>
+      <div class="toc-chapter">Kenapa Otakmu Tidak Bisa Multitasking</div>
+      <div class="toc-sub">Task-switching Cost · Attention Residue</div>
+    </div>
+    <div class="toc-pg">11</div>
+  </div>
+  <div class="toc-item">
+    <div class="toc-num">03</div>
+    <div>
+      <div class="toc-chapter">Prokrastinasi Bukan Kemalasan</div>
+      <div class="toc-sub">Dopamine Loop · Limbic Friction</div>
+    </div>
+    <div class="toc-pg">17</div>
+  </div>
+  <div class="toc-item">
+    <div class="toc-num">04</div>
+    <div>
+      <div class="toc-chapter">Otak Kamu Sedang Dalam Mode Survival</div>
+      <div class="toc-sub">Hyper-vigilance · Allostatic Overload</div>
+    </div>
+    <div class="toc-pg">23</div>
+  </div>
+  <div class="toc-item">
+    <div class="toc-num">05</div>
+    <div>
+      <div class="toc-chapter">Kenapa Otak Sabotase Keputusan Karirmu</div>
+      <div class="toc-sub">Loss Aversion · Anchoring · Status Quo Bias</div>
+    </div>
+    <div class="toc-pg">29</div>
+  </div>
+  <div class="toc-item">
+    <div class="toc-num">06</div>
+    <div>
+      <div class="toc-chapter">Peak Performance Protocol</div>
+      <div class="toc-sub">Circadian Rhythm · Ultradian Cycle · Chronotype</div>
+    </div>
+    <div class="toc-pg">35</div>
+  </div>
+  <div class="toc-item">
+    <div class="toc-num">—</div>
+    <div>
+      <div class="toc-chapter">Penutup</div>
+      <div class="toc-sub">Otak yang Dirawat Adalah Karir yang Lebih Kuat</div>
+    </div>
+    <div class="toc-pg">41</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P03 — INTRO                                 -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-light pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Pengantar</span>
+    <span class="pg-num">03</span>
+  </div>
+  <div class="section-eyebrow">Bab 00</div>
+  <div class="section-title">Otakmu Adalah Aset Kerjamu yang Paling <em>Underrated</em></div>
+  <p class="body-text">Kamu sudah investasi banyak untuk karir. Pendidikan. Kursus. Buku pengembangan diri. Kamu tahu cara menulis CV, cara bicara di interview, cara deliver project tepat waktu.</p>
+  <p class="body-text">Tapi ada satu hal yang hampir tidak pernah diajarkan di mana pun: <strong>cara kerja hardware yang menjalankan semua itu. Otakmu.</strong></p>
+  <p class="body-text">Setiap keputusan yang kamu buat di tempat kerja — dari memilih task mana yang dikerjakan duluan, sampai memutuskan apakah akan angkat bicara di rapat — semua diproses oleh 86 miliar neuron yang mengikuti aturan biologis yang ada jauh sebelum dunia kerja modern ada.</p>
+  <div class="callout">
+    <div class="callout-label">Inti masalahnya</div>
+    <div class="callout-text">Otakmu dirancang untuk bertahan hidup di savana Afrika — bukan untuk bertahan dalam meeting marathon jam 4 sore atau mengambil keputusan strategis di tengah notifikasi yang tidak pernah berhenti. Ini bukan kelemahan. Ini <strong>mismatch</strong> antara hardware biologis dengan tuntutan lingkungan yang berubah dalam hitungan dekade.</div>
+  </div>
+  <p class="body-text" style="margin-top:3mm">Mismatch ini punya konsekuensi nyata: kamu blank saat presentasi, prokrastinasi bukan karena malas, mudah terpancing di rapat, lelah bukan karena volume kerja — tapi karena cara kerja yang melawan ritme biologis otakmu.</p>
+  <p class="body-text"><strong>Semua ini bukan masalah karakter. Ini neurosains.</strong></p>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P04 — INTRO 2                               -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Pengantar</span>
+    <span class="pg-num">04</span>
+  </div>
+  <div class="section-title">Tentang <em>Panduan Ini</em></div>
+  <p class="body-text">Brain Kit for Work menjelaskan 7 cara otak bereaksi di tempat kerja — dan strategi berbasis sains untuk bekerja <strong>dengan otak, bukan melawannya.</strong></p>
+  <p class="body-text">Tidak ada motivasi kosong di sini. Yang ada adalah penjelasan tentang mekanisme biologis yang sedang bekerja di balik pengalaman kerja sehari-harimu — dan langkah konkret berdasarkan pemahaman itu.</p>
+  <div class="term-box">
+    <div class="term-name">Cara menggunakan panduan ini</div>
+    <div class="term-def">Mulai dari bab manapun yang paling relevan dengan situasimu sekarang. Setiap bab bisa selesai dibaca dalam 15 menit dan langsung bisa dipraktikkan hari yang sama. Kembali ke bab yang relevan saat situasimu berubah.</div>
+  </div>
+  <p class="body-text" style="margin-top:4mm">Setiap bab memiliki struktur yang sama:</p>
+  <div class="strategy">
+    <div class="s-num">1</div>
+    <div><div class="s-title">Situasi yang kamu kenal</div><div class="s-desc">Pengalaman nyata yang familiar sebelum penjelasan ilmiah</div></div>
+  </div>
+  <div class="strategy">
+    <div class="s-num">2</div>
+    <div><div class="s-title">Mekanisme neurologis</div><div class="s-desc">Apa yang sebenarnya terjadi di otakmu dan mengapa</div></div>
+  </div>
+  <div class="strategy">
+    <div class="s-num">3</div>
+    <div><div class="s-title">3 strategi berbasis sains</div><div class="s-desc">Langkah konkret yang bekerja pada level neurologis</div></div>
+  </div>
+  <div class="strategy">
+    <div class="s-num">4</div>
+    <div><div class="s-title">Satu hal yang bisa dilakukan hari ini</div><div class="s-desc">Tindakan paling kecil untuk mulai hari ini</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P05 — BAB 01 OPENER                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark">
+  <div class="ch-num">01</div>
+  <div class="ch-opener">
+    <div class="ch-eyebrow">Brain at Work · Amygdala Hijack</div>
+    <div class="ch-bar"></div>
+    <div class="ch-title">Kenapa Kamu Blank Saat Presentasi Padahal Sudah Siap</div>
+    <div class="ch-quote">"Kamu tidak grogi karena tidak persiapan. Kamu grogi karena otakmu sedang menyelamatkan hidupmu — di momen yang paling tidak tepat."</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P06 — BAB 01 BODY 1                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-light pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 01 · Blank Saat Presentasi</span>
+    <span class="pg-num">06</span>
+  </div>
+  <div class="section-eyebrow">Situasi yang kamu kenal</div>
+  <div class="section-title">Sudah latihan. Tapi begitu giliran bicara — <em>semua lupa.</em></div>
+  <p class="body-text">Semalam kamu buka slide sampai jam 11 malam. Kamu hafalkan poin-poin utama. Latihan di depan cermin, di depan teman. Kamu siap.</p>
+  <p class="body-text">Tapi begitu nama kamu dipanggil — begitu semua mata berpindah ke arahmu — otakmu kosong. Kata-kata yang tadi terasa jelas tiba-tiba lenyap. Kamu mencari kalimat pembuka yang sudah dilatih puluhan kali, tapi tidak menemukannya.</p>
+  <p class="body-text">Kamu mungkin menyebutnya gugup, atau kurang percaya diri. <strong>Tapi tidak satu pun dari itu yang benar.</strong></p>
+  <div class="callout">
+    <div class="callout-label">Diagnosisnya</div>
+    <div class="callout-text">Yang terjadi punya nama ilmiah: <strong>Amygdala Hijack</strong>. Istilah yang dipopulerkan Daniel Goleman (1995), berdasarkan riset Joseph LeDoux (NYU) tentang respons ketakutan. Dan memahaminya adalah langkah pertama untuk mengatasinya.</div>
+  </div>
+  <p class="body-text" style="margin-top:3mm">Otak manusia memiliki amygdala — dua kelompok neuron berbentuk almond di dalam otak. Tugasnya satu: mendeteksi ancaman dan memicu respons darurat. Amygdala tidak membedakan antara ancaman fisik dan ancaman sosial. Bagi amygdala, tatapan 20 orang yang menunggu kamu berbicara diproses sama seperti predator yang mendekat.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P07 — BAB 01 BODY 2                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 01 · Mekanisme</span>
+    <span class="pg-num">07</span>
+  </div>
+  <div class="section-eyebrow">Mekanisme neurologis</div>
+  <div class="section-title">Dua bagian otakmu tiba-tiba <em>bertentangan.</em></div>
+  <div class="term-box">
+    <div class="term-name">Amygdala Hijack</div>
+    <div class="term-def">Kondisi di mana amygdala — pusat deteksi ancaman — mengambil alih respons otak dan memblokir sinyal ke prefrontal cortex, yaitu bagian yang mengelola logika, memori kerja, dan kemampuan berbicara terstruktur.</div>
+  </div>
+  <div class="two-col" style="margin-top:3mm">
+    <div class="col-box col-amyg">
+      <span class="col-label">Amygdala</span>
+      Aktif penuh. Membanjiri otak dengan kortisol &amp; adrenalin. Tujuan: bertahan hidup. Tidak peduli kamu sudah latihan atau belum.
+    </div>
+    <div class="col-box col-pfc">
+      <span class="col-label">Prefrontal Cortex</span>
+      Koneksi terputus sementara. Memori latihan, urutan poin, speech production — semua offline.
+    </div>
+  </div>
+  <p class="body-text" style="margin-top:4mm">Kenapa latihan sendiri tidak cukup? Latihan membangun memori prosedural dalam kondisi "aman". Tapi social evaluative threat — situasi di mana kita merasa dinilai — mengaktifkan respons ancaman yang jauh lebih kuat. Otak memperlakukan kondisi latihan secara fundamental berbeda dari kondisi "di depan audiens nyata."</p>
+  <p class="source-note">Arnsten et al. (Nature Reviews Neuroscience): hormon stres akut menurunkan fungsi PFC secara signifikan. · Dickerson &amp; Kemeny (Psychological Bulletin, 2004): social evaluative threat.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P08 — BAB 01 INFOGRAFIS                     -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark" style="display:flex;flex-direction:column;padding:10mm 16mm 8mm">
+  <div class="pg-header" style="margin-bottom:5mm">
+    <span class="pg-header-label">Bab 01 · Infografis</span>
+    <span class="pg-num">08</span>
+  </div>
+  <div class="infographic-title">Yang Terjadi di Otak dalam 60 Detik Presentasi</div>
+  <div class="infographic-sub">Lima titik kritis dari nama dipanggil hingga blank</div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center">
+    <svg viewBox="0 0 560 310" style="width:100%;max-width:170mm" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Timeline bar -->
+      <line x1="40" y1="130" x2="520" y2="130" stroke="#1A6B5A" stroke-width="2"/>
+      <!-- Arrow end -->
+      <polyline points="516,124 522,130 516,136" stroke="#1A6B5A" stroke-width="2" fill="none"/>
+
+      <!-- T-30s marker (teal) -->
+      <circle cx="80"  cy="130" r="10" fill="#1A6B5A"/>
+      <text x="80"  y="134" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#5EC9A7">1</text>
+      <text x="80"  y="112" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#5EC9A7" letter-spacing="1">T-30s</text>
+      <text x="80"  y="155" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#F5F3EE" opacity=".7">Nama</text>
+      <text x="80"  y="167" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#F5F3EE" opacity=".7">dipanggil</text>
+
+      <!-- T-15s marker (amber) -->
+      <circle cx="180" cy="130" r="10" fill="#9A7940"/>
+      <text x="180" y="134" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#F5F3EE">2</text>
+      <text x="180" y="112" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#C9A96E" letter-spacing="1">T-15s</text>
+      <text x="180" y="155" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#F5F3EE" opacity=".7">Amygdala</text>
+      <text x="180" y="167" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#F5F3EE" opacity=".7">aktif</text>
+
+      <!-- T-0 marker (large, crisis) -->
+      <circle cx="295" cy="130" r="14" fill="#8B3A3A"/>
+      <text x="295" y="135" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#F5F3EE" font-weight="bold">3</text>
+      <text x="295" y="109" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#E07070" letter-spacing="1">T-0</text>
+      <text x="295" y="159" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#F5F3EE" opacity=".7">Berbicara</text>
+      <text x="295" y="171" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#E07070" opacity=".85">PFC offline</text>
+
+      <!-- T+10s marker (crisis) -->
+      <circle cx="400" cy="130" r="12" fill="#6B2020"/>
+      <text x="400" y="134" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#F5F3EE">4</text>
+      <text x="400" y="112" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#E07070" letter-spacing="1">T+10s</text>
+      <text x="400" y="155" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#F5F3EE" opacity=".7">BLANK</text>
+      <text x="400" y="167" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#E07070" opacity=".75">kortisol peak</text>
+
+      <!-- T+60s marker (recovery) -->
+      <circle cx="490" cy="130" r="10" fill="#0D4A3A"/>
+      <text x="490" y="134" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#5EC9A7">5</text>
+      <text x="490" y="112" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#5EC9A7" letter-spacing="1">T+60s</text>
+      <text x="490" y="155" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#F5F3EE" opacity=".7">Otak mulai</text>
+      <text x="490" y="167" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#5EC9A7" opacity=".8">kalibrasi</text>
+
+      <!-- Legend boxes -->
+      <rect x="40" y="210" width="140" height="52" rx="6" fill="rgba(26,107,90,.2)" stroke="#1A6B5A" stroke-width="1"/>
+      <text x="55"  y="228" font-family="JetBrains Mono" font-size="7.5" fill="#5EC9A7" letter-spacing="1.5">NORMAL</text>
+      <text x="55"  y="244" font-family="DM Sans" font-size="9" fill="#F5F3EE" opacity=".65">PFC aktif penuh</text>
+      <text x="55"  y="256" font-family="DM Sans" font-size="9" fill="#F5F3EE" opacity=".65">Memori tersedia</text>
+
+      <rect x="210" y="210" width="140" height="52" rx="6" fill="rgba(139,58,58,.2)" stroke="#8B3A3A" stroke-width="1"/>
+      <text x="225" y="228" font-family="JetBrains Mono" font-size="7.5" fill="#E07070" letter-spacing="1.5">HIJACK</text>
+      <text x="225" y="244" font-family="DM Sans" font-size="9" fill="#F5F3EE" opacity=".65">Amygdala dominan</text>
+      <text x="225" y="256" font-family="DM Sans" font-size="9" fill="#F5F3EE" opacity=".65">PFC terdisrupsi</text>
+
+      <rect x="380" y="210" width="140" height="52" rx="6" fill="rgba(13,46,40,.4)" stroke="#1A6B5A" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="395" y="228" font-family="JetBrains Mono" font-size="7.5" fill="#5EC9A7" letter-spacing="1.5">RECOVERY</text>
+      <text x="395" y="244" font-family="DM Sans" font-size="9" fill="#F5F3EE" opacity=".65">Bisa dipercepat</text>
+      <text x="395" y="256" font-family="DM Sans" font-size="9" fill="#F5F3EE" opacity=".65">dengan teknik sains</text>
+    </svg>
+  </div>
+  <p class="source-note" style="text-align:center">Berdasarkan riset Goleman (1995), LeDoux (NYU), dan Arnsten et al. (Nature Reviews Neuroscience)</p>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P09 — BAB 01 STRATEGI                       -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-light pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 01 · Strategi</span>
+    <span class="pg-num">09</span>
+  </div>
+  <div class="section-eyebrow">3 Strategi Berbasis Sains</div>
+  <div class="section-title">Amygdala hijack bisa <em>dikelola</em> — dengan teknik yang bekerja pada level neurologis.</div>
+  <div class="strategy">
+    <div class="s-num">1</div>
+    <div>
+      <div class="s-title">Physiological Sigh — Reset dalam 5 Detik</div>
+      <div class="s-desc">Tarik napas panjang lewat hidung, lalu satu tarikan napas pendek tambahan, kemudian hembuskan perlahan lewat mulut. Hembusan panjang mengaktifkan sistem saraf parasimpatik lebih kuat dari tarikan napas — mempercepat penurunan denyut jantung. (Balban et al., Cell Reports Medicine, 2023)</div>
+    </div>
+  </div>
+  <div class="strategy">
+    <div class="s-num">2</div>
+    <div>
+      <div class="s-title">Pre-Performance Reappraisal</div>
+      <div class="s-desc">Katakan "aku bersemangat" — bukan "aku tenang". Respons fisiologis dari kecemasan dan kegembiraan hampir identik. Yang berbeda adalah interpretasi kognitif. Reframing ini mengubah jalur neural yang aktif tanpa perlu mengubah kondisi fisiologis. (Brooks, Journal of Experimental Psychology, 2014)</div>
+    </div>
+  </div>
+  <div class="strategy">
+    <div class="s-num">3</div>
+    <div>
+      <div class="s-title">Exposure Bertahap — Latih Amygdala</div>
+      <div class="s-desc">Latihan presentasi yang benar-benar efektif bukan latihan sendirian. Tapi latihan di depan orang — meski 2–3 orang, meski informal. Setiap exposure nyata membangun data historis agar amygdala mengkalibrasi ulang tingkat ancaman situasi ini secara permanen.</div>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:4mm">
+    <div class="callout-label">Mulai hari ini</div>
+    <div class="callout-text">Latih physiological sigh di luar konteks presentasi — saat tegang sebelum rapat, atau saat macet. Tujuannya: jadikan ini respons otomatis yang bisa diakses tanpa berpikir ketika kamu benar-benar membutuhkannya.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P10 — BAB 01 RINGKASAN                      -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 01 · Ringkasan</span>
+    <span class="pg-num">10</span>
+  </div>
+  <div class="summary-title">Ringkasan<br>Bab 01</div>
+  <div class="summary-item"><div class="s-dot"></div><div class="s-item-text"><strong>Amygdala hijack</strong> membuat kamu blank saat presentasi — bukan kurang persiapan. Amygdala membaca audiens sebagai "ancaman sosial" dan memblokir prefrontal cortex.</div></div>
+  <div class="summary-item"><div class="s-dot"></div><div class="s-item-text"><strong>Latihan sendirian tidak cukup</strong> karena memori terbentuk dalam kondisi "aman" — berbeda secara neurologis dari kondisi di depan audiens yang mengevaluasi kamu.</div></div>
+  <div class="summary-item"><div class="s-dot"></div><div class="s-item-text"><strong>Tiga strategi:</strong> (1) Physiological sigh — reset sistem saraf dalam 5 detik. (2) Reappraisal — ubah "cemas" menjadi "bersemangat". (3) Exposure bertahap — bangun data historis agar amygdala mengkalibrasi ulang.</div></div>
+  <div class="action-box">
+    <div class="action-label">Satu hal yang bisa kamu lakukan hari ini</div>
+    <div class="action-text">Latih physiological sigh sekarang, sebelum ada situasi penting. Dua tarikan napas lewat hidung, satu hembusan panjang lewat mulut. Rasakan efeknya. Lakukan 3x berturut-turut.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P11 — BAB 02 OPENER                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark">
+  <div class="ch-num">02</div>
+  <div class="ch-opener">
+    <div class="ch-eyebrow">Peak Performance · Task-switching · Attention Residue</div>
+    <div class="ch-bar"></div>
+    <div class="ch-title">Kenapa Otakmu Tidak Bisa Multitasking — dan Kamu Kehilangan 40% Performa Karenanya</div>
+    <div class="ch-quote">"Multitasking bukan skill yang bisa diasah. Ini ilusi yang otakmu ciptakan untuk membuatmu merasa produktif."</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P12 — BAB 02 BODY 1                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-light pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 02 · Multitasking Myth</span>
+    <span class="pg-num">12</span>
+  </div>
+  <div class="section-eyebrow">Mitos yang paling mahal</div>
+  <div class="section-title">Multitasking adalah <em>task-switching</em> — dan setiap perpindahan punya biaya tersembunyi.</div>
+  <p class="body-text">Otak manusia tidak dirancang untuk memproses dua tugas kognitif secara bersamaan. Yang terasa seperti multitasking sebenarnya adalah berpindah-pindah dengan sangat cepat antara satu tugas ke tugas lain.</p>
+  <div class="callout">
+    <div class="callout-label">Angka yang mengejutkan</div>
+    <div class="callout-text">Penelitian Rubinstein, Meyer &amp; Evans (Journal of Experimental Psychology, 2001) menemukan task-switching menurunkan efisiensi kognitif hingga <strong>40%</strong> — bahkan untuk tugas-tugas familiar. Kamu yang bekerja 8 jam dengan terus berpindah task, efektifnya hanya menghasilkan setara 4–5 jam kerja berkualitas.</div>
+  </div>
+  <p class="body-text" style="margin-top:3mm">Dan itu belum termasuk biaya dari <strong>Attention Residue</strong> — konsep yang diidentifikasi Sophie Leroy (University of Washington). Ketika kamu berpindah dari satu task ke task lain, sebagian perhatianmu tetap tertinggal di task sebelumnya. Seperti jejak kognitif yang belum sepenuhnya pergi.</p>
+  <p class="body-text">Penelitian Gloria Mark (UC Irvine) menemukan: setelah diinterupsi, rata-rata orang membutuhkan <strong>23 menit 15 detik</strong> untuk benar-benar kembali ke level fokus penuh. Rata-rata pekerja kantoran modern diinterupsi setiap 11 menit. Fokus penuh hampir tidak pernah benar-benar tercapai.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P13 — BAB 02 BODY 2                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 02 · Mekanisme</span>
+    <span class="pg-num">13</span>
+  </div>
+  <div class="section-eyebrow">Kenapa notifikasi selalu menang</div>
+  <div class="section-title">Dopamine membuat notifikasi terasa <em>lebih penting</em> dari deep work.</div>
+  <div class="term-box">
+    <div class="term-name">Dopamine &amp; Notifikasi</div>
+    <div class="term-def">Setiap kali notifikasi baru masuk, otak melepaskan microhit dopamine — neurotransmitter yang terlibat dalam sistem reward. Otak yang dioptimalkan untuk survival selalu memilih reward yang lebih pasti dan lebih cepat. Notifikasi selalu menang atas deep work — kecuali kamu aktif menciptakan kondisi yang melindungi fokus.</div>
+  </div>
+  <div class="two-col" style="margin-top:3mm">
+    <div class="col-box col-amyg">
+      <span class="col-label">Notifikasi</span>
+      Reward instan. Dopamine release segera. Otak belajar: "ini sumber reward yang pasti."
+    </div>
+    <div class="col-box col-pfc">
+      <span class="col-label">Deep Work</span>
+      Reward tertunda. Terasa memuaskan nanti. Otak menilai: "tidak worth it secara neurological."
+    </div>
+  </div>
+  <p class="body-text" style="margin-top:4mm">Hasilnya: otak yang terlatih dengan notifikasi dan konten digital secara aktif memberi sinyal bahwa deep work tidak worth it — bukan karena salah, tapi karena sistem reward-nya sudah terkondisi dengan pola tersebut.</p>
+  <p class="body-text">Solusinya bukan willpower lebih besar. <strong>Solusinya adalah mengubah sistem sehingga otak tidak butuh willpower untuk mempertahankan fokus.</strong></p>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P14 — BAB 02 INFOGRAFIS                     -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark" style="display:flex;flex-direction:column;padding:10mm 16mm 8mm">
+  <div class="pg-header" style="margin-bottom:4mm">
+    <span class="pg-header-label">Bab 02 · Infografis</span>
+    <span class="pg-num">14</span>
+  </div>
+  <div class="infographic-title">Persepsi Kamu vs Realitas Neurologis</div>
+  <div class="infographic-sub">Satu hari kerja — dua versi yang sangat berbeda</div>
+
+  <div style="flex:1;display:flex;gap:5mm;align-items:stretch">
+    <!-- LEFT COLUMN -->
+    <div style="flex:1;display:flex;flex-direction:column;gap:2mm">
+      <div style="background:rgba(26,107,90,.2);border:1px solid #1A6B5A;border-radius:4mm;padding:3mm 4mm;text-align:center">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:7.5pt;letter-spacing:.18em;color:#5EC9A7;text-transform:uppercase">Yang Kamu Pikir</span>
+      </div>
+      <div style="background:rgba(245,243,238,.04);border:1px solid rgba(245,243,238,.1);border-radius:3mm;padding:3mm 4mm;flex:1">
+        <p style="font-family:'JetBrains Mono',monospace;font-size:7.5pt;color:#C9A96E;margin-bottom:1.5mm">08:00</p>
+        <p style="font-family:'DM Sans',sans-serif;font-size:9pt;color:#F5F3EE;opacity:.75;line-height:1.5">Mulai kerja, fokus penuh</p>
+      </div>
+      <div style="background:rgba(245,243,238,.04);border:1px solid rgba(245,243,238,.1);border-radius:3mm;padding:3mm 4mm;flex:1">
+        <p style="font-family:'JetBrains Mono',monospace;font-size:7.5pt;color:#C9A96E;margin-bottom:1.5mm">08:30</p>
+        <p style="font-family:'DM Sans',sans-serif;font-size:9pt;color:#F5F3EE;opacity:.75;line-height:1.5">Balas email sebentar → lanjut kerja</p>
+      </div>
+      <div style="background:rgba(245,243,238,.04);border:1px solid rgba(245,243,238,.1);border-radius:3mm;padding:3mm 4mm;flex:1">
+        <p style="font-family:'JetBrains Mono',monospace;font-size:7.5pt;color:#C9A96E;margin-bottom:1.5mm">09:45</p>
+        <p style="font-family:'DM Sans',sans-serif;font-size:9pt;color:#F5F3EE;opacity:.75;line-height:1.5">Cek WA cepat → lanjut kerja</p>
+      </div>
+      <div style="background:rgba(94,201,167,.1);border:1px solid rgba(94,201,167,.25);border-radius:3mm;padding:3mm 4mm">
+        <p style="font-family:'DM Sans',sans-serif;font-size:9pt;color:#5EC9A7;font-weight:500">"Aku produktif hari ini ✓"</p>
+      </div>
+    </div>
+
+    <!-- DIVIDER -->
+    <div style="width:1px;background:rgba(245,243,238,.1);flex-shrink:0"></div>
+
+    <!-- RIGHT COLUMN -->
+    <div style="flex:1;display:flex;flex-direction:column;gap:2mm">
+      <div style="background:rgba(139,58,58,.2);border:1px solid #8B3A3A;border-radius:4mm;padding:3mm 4mm;text-align:center">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:7.5pt;letter-spacing:.18em;color:#E07070;text-transform:uppercase">Realitas Neurologis</span>
+      </div>
+      <div style="background:rgba(245,243,238,.04);border:1px solid rgba(245,243,238,.1);border-radius:3mm;padding:3mm 4mm;flex:1">
+        <p style="font-family:'JetBrains Mono',monospace;font-size:7.5pt;color:#C9A96E;margin-bottom:1.5mm">08:00 — 08:15</p>
+        <p style="font-family:'DM Sans',sans-serif;font-size:9pt;color:#F5F3EE;opacity:.75;line-height:1.5">Ramp-up: otak butuh ~15 menit untuk fokus penuh</p>
+      </div>
+      <div style="background:rgba(139,58,58,.1);border:1px solid rgba(139,58,58,.2);border-radius:3mm;padding:3mm 4mm;flex:1">
+        <p style="font-family:'JetBrains Mono',monospace;font-size:7.5pt;color:#E07070;margin-bottom:1.5mm">08:30 — 08:53</p>
+        <p style="font-family:'DM Sans',sans-serif;font-size:9pt;color:#F5F3EE;opacity:.75;line-height:1.5">Interupsi email → attention residue aktif → 23 menit pemulihan</p>
+      </div>
+      <div style="background:rgba(139,58,58,.1);border:1px solid rgba(139,58,58,.2);border-radius:3mm;padding:3mm 4mm;flex:1">
+        <p style="font-family:'JetBrains Mono',monospace;font-size:7.5pt;color:#E07070;margin-bottom:1.5mm">09:45 — 10:08</p>
+        <p style="font-family:'DM Sans',sans-serif;font-size:9pt;color:#F5F3EE;opacity:.75;line-height:1.5">Interupsi WA → siklus reset ulang sebelum recovery selesai</p>
+      </div>
+      <div style="background:rgba(139,58,58,.15);border:1px solid rgba(139,58,58,.3);border-radius:3mm;padding:3mm 4mm">
+        <p style="font-family:'DM Sans',sans-serif;font-size:9pt;color:#E07070;font-weight:500">Total fokus aktual: ~2.5 jam dari 8 jam</p>
+      </div>
+    </div>
+  </div>
+  <p class="source-note" style="margin-top:3mm;text-align:center">Rubinstein et al. (2001) · Leroy (2009) · Mark, UC Irvine (2008)</p>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P15 — BAB 02 STRATEGI                       -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-light pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 02 · Strategi</span>
+    <span class="pg-num">15</span>
+  </div>
+  <div class="section-eyebrow">3 Strategi Berbasis Sains</div>
+  <div class="section-title">Bekerja <em>sesuai ritme otak,</em> bukan melawan arus biologis.</div>
+  <div class="strategy">
+    <div class="s-num">1</div>
+    <div>
+      <div class="s-title">Time Blocking Berbasis Ultradian Rhythm</div>
+      <div class="s-desc">Otak beroperasi dalam siklus fokus ~90 menit yang diselingi recovery 20 menit. Jadwalkan deep work dalam blok 90 menit dengan semua notifikasi dimatikan. Ini bukan soal willpower — ini menyesuaikan jadwal dengan ritme biologis yang sudah ada. (Kleitman &amp; Lavie)</div>
+    </div>
+  </div>
+  <div class="strategy">
+    <div class="s-num">2</div>
+    <div>
+      <div class="s-title">Single-Tasking dengan Task Hierarchy</div>
+      <div class="s-desc">Tentukan satu task paling penting sebelum membuka email atau aplikasi apapun — dan kerjakan itu pertama kali. Kemampuan pengambilan keputusan menurun seiring berjalannya hari (ego depletion, Baumeister). Gunakan otak tersegar untuk task yang paling penting.</div>
+    </div>
+  </div>
+  <div class="strategy">
+    <div class="s-num">3</div>
+    <div>
+      <div class="s-title">Notification Batching</div>
+      <div class="s-desc">Tetapkan 2–3 "jendela komunikasi" yang terjadwal (misal: jam 9, 12, 16). Di luar itu, semua notifikasi dimatikan. Memeriksa email secara terjadwal tidak menurunkan kualitas respons — tapi meningkatkan kualitas kerja di antara jendela secara signifikan.</div>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:4mm">
+    <div class="callout-label">Mulai hari ini</div>
+    <div class="callout-text">Besok pagi, sebelum membuka email, luangkan 2 menit tentukan satu task terpenting. Kerjakan selama 45 menit dengan notifikasi dimatikan. Lakukan ini 5 hari berturut-turut dan perhatikan perbedaan kualitas output.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P16 — BAB 02 RINGKASAN                      -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 02 · Ringkasan</span>
+    <span class="pg-num">16</span>
+  </div>
+  <div class="summary-title">Ringkasan<br>Bab 02</div>
+  <div class="summary-item"><div class="s-dot"></div><div class="s-item-text"><strong>Otak tidak bisa multitasking.</strong> Yang terjadi adalah task-switching yang menurunkan efisiensi kognitif hingga 40%. Bukan kelemahan — ini cara otak bekerja.</div></div>
+  <div class="summary-item"><div class="s-dot"></div><div class="s-item-text"><strong>Attention residue</strong> membutuhkan rata-rata 23 menit untuk clear setelah satu interupsi. Pekerja kantoran modern diinterupsi setiap 11 menit — fokus penuh hampir tidak pernah tercapai.</div></div>
+  <div class="summary-item"><div class="s-dot"></div><div class="s-item-text"><strong>Tiga strategi:</strong> (1) Time blocking 90 menit sesuai ultradian rhythm. (2) Single-tasking dengan satu prioritas di pagi hari. (3) Notification batching — jendela komunikasi terjadwal, bukan real-time.</div></div>
+  <div class="action-box">
+    <div class="action-label">Satu hal yang bisa kamu lakukan hari ini</div>
+    <div class="action-text">Matikan semua notifikasi dan kerjakan satu task penting selama 45 menit pertama hari kerjamu besok. Hanya 45 menit, sebelum dunia kerja menyerang dengan segala interupsinya.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P17 — BAB 03 OPENER                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark">
+  <div class="ch-num">03</div>
+  <div class="ch-opener">
+    <div class="ch-eyebrow">Peak Performance · Dopamine Loop · Limbic Friction</div>
+    <div class="ch-bar"></div>
+    <div class="ch-title">Prokrastinasi Bukan Kemalasan — Ini yang Sebenarnya Terjadi di Otakmu</div>
+    <div class="ch-quote">"Kamu tidak menunda karena tidak mau bekerja. Kamu menunda karena otakmu sedang memilih — dan memilih dengan sangat rasional berdasarkan data yang dimilikinya."</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P18 — BAB 03 BODY 1                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-light pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 03 · Prokrastinasi</span>
+    <span class="pg-num">18</span>
+  </div>
+  <div class="section-eyebrow">Bukan soal disiplin</div>
+  <div class="section-title">Prokrastinasi adalah <em>konflik neurologis</em> antara dua sistem otak.</div>
+  <p class="body-text">Ada satu task di to-do list kamu yang sudah ada di sana selama tiga hari. Kamu tahu itu penting, dan kamu tahu konsekuensinya. Tapi setiap kali mau mengerjakan, ada saja yang lebih mendesak.</p>
+  <p class="body-text">Ini bukan masalah manajemen waktu. Bukan soal disiplin. <strong>Prokrastinasi adalah konflik antara dua sistem otak yang berbeda — dan sistem yang menang bukan yang lebih kuat, tapi yang menawarkan reward paling cepat.</strong></p>
+  <div class="two-col">
+    <div class="col-box col-pfc">
+      <span class="col-label">Prefrontal Cortex</span>
+      Berpikir jangka panjang. Tahu bahwa menyelesaikan task akan memberi hasil baik. Bisa merencanakan dan memahami konsekuensi.
+    </div>
+    <div class="col-box col-amyg">
+      <span class="col-label">Limbic System</span>
+      Beroperasi berdasarkan prinsip: cari reward, hindari rasa tidak nyaman, dan lakukan itu <em>sekarang</em>.
+    </div>
+  </div>
+  <div class="term-box" style="margin-top:3mm">
+    <div class="term-name">Limbic Friction</div>
+    <div class="term-def">Resistensi yang muncul ketika kita mencoba melakukan sesuatu yang membutuhkan effort atau mengandung ketidakpastian. Task yang kompleks, ambigu, atau berisiko tinggi secara otomatis dipersepsikan sebagai sumber ketidaknyamanan — bahkan sebelum kamu mulai mengerjakannya.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P19 — BAB 03 BODY 2                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 03 · Mekanisme</span>
+    <span class="pg-num">19</span>
+  </div>
+  <div class="section-eyebrow">Peran dopamine</div>
+  <div class="section-title">Dopamine memprogram otakmu untuk <em>menghindari deep work.</em></div>
+  <p class="body-text">Setiap kali kamu mengecek notifikasi atau membuka media sosial — ada microhit dopamine. Kecil tapi instan. Otak mulai belajar bahwa aktivitas ini adalah sumber reward yang lebih dapat diandalkan dibanding menyelesaikan laporan yang hasilnya baru terasa berminggu-minggu kemudian.</p>
+  <div class="term-box">
+    <div class="term-name">Reward Prediction Error</div>
+    <div class="term-def">Mekanisme di mana otak terus-menerus memperbarui prediksinya tentang di mana reward bisa ditemukan dan berapa cepat. Otak yang terlatih dengan notifikasi digital secara aktif memberi sinyal bahwa deep work "tidak worth it" secara neurologis.</div>
+  </div>
+  <p class="body-text" style="margin-top:3mm">Kenapa "paksa diri" tidak bekerja jangka panjang? Penelitian Baumeister tentang ego depletion menunjukkan bahwa pengendalian diri menggunakan "sumber daya" kognitif yang sama yang digunakan untuk tugas lain. <strong>Solusi yang lebih kuat: ubah lingkungan dan sistem sehingga tidak butuh willpower untuk memulai.</strong></p>
+  <p class="source-note">Dopamine reward prediction error → Wolfram Schultz (1990s–2000s). Ego depletion → Baumeister et al. (Journal of Personality and Social Psychology, 1998). Limbic friction → Huberman Lab.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P20 — BAB 03 INFOGRAFIS                     -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark" style="display:flex;flex-direction:column;padding:10mm 16mm 8mm">
+  <div class="pg-header" style="margin-bottom:4mm">
+    <span class="pg-header-label">Bab 03 · Infografis</span>
+    <span class="pg-num">20</span>
+  </div>
+  <div class="infographic-title">Prokrastinasi Loop — Dilihat dari Sisi Neurologis</div>
+  <div class="infographic-sub">7 langkah yang berulang — dan satu titik keluar</div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center">
+    <svg viewBox="0 0 520 420" style="width:100%;max-width:160mm" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Outer circle -->
+      <circle cx="260" cy="210" r="155" stroke="#1A6B5A" stroke-width="1" stroke-dasharray="4,3" opacity=".3"/>
+
+      <!-- Step positions (7 steps around circle, clockwise from top) -->
+      <!-- Step 1: top (270deg) -->
+      <!-- Step 2: top-right (320deg) -->
+      <!-- Step 3: right (10deg) -->
+      <!-- Step 4: bottom-right (60deg) -->
+      <!-- Step 5: bottom (130deg) -->
+      <!-- Step 6: left (180deg) -->
+      <!-- Step 7: top-left (230deg) -->
+
+      <!-- Circles for each step -->
+      <circle cx="260" cy="58"  r="22" fill="#0D2E28" stroke="#1A6B5A" stroke-width="1.5"/>
+      <circle cx="390" cy="110" r="22" fill="#0D2E28" stroke="#C9A96E" stroke-width="1.5"/>
+      <circle cx="410" cy="240" r="22" fill="#0D2E28" stroke="#C9A96E" stroke-width="1.5"/>
+      <circle cx="345" cy="355" r="22" fill="#0D2E28" stroke="#8B3A3A" stroke-width="1.5"/>
+      <circle cx="175" cy="355" r="22" fill="#0D2E28" stroke="#8B3A3A" stroke-width="1.5"/>
+      <circle cx="110" cy="240" r="22" fill="#0D2E28" stroke="#C9A96E" stroke-width="1.5"/>
+      <circle cx="130" cy="110" r="22" fill="#0D2E28" stroke="#1A6B5A" stroke-width="1.5"/>
+
+      <!-- Step numbers -->
+      <text x="260" y="63"  text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#5EC9A7" font-weight="500">1</text>
+      <text x="390" y="115" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#C9A96E" font-weight="500">2</text>
+      <text x="410" y="245" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#C9A96E" font-weight="500">3</text>
+      <text x="345" y="360" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#E07070" font-weight="500">4</text>
+      <text x="175" y="360" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#E07070" font-weight="500">5</text>
+      <text x="110" y="245" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#C9A96E" font-weight="500">6</text>
+      <text x="130" y="115" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#5EC9A7" font-weight="500">7</text>
+
+      <!-- Arrows between steps (clockwise) -->
+      <path d="M278 68  Q335 72 373 100"  stroke="#1A6B5A" stroke-width="1.2" marker-end="url(#arr)"/>
+      <path d="M406 128 Q420 180 408 220" stroke="#C9A96E" stroke-width="1.2" marker-end="url(#arr)"/>
+      <path d="M398 258 Q385 310 362 338" stroke="#C9A96E" stroke-width="1.2" marker-end="url(#arr)"/>
+      <path d="M325 362 Q260 375 196 363" stroke="#8B3A3A" stroke-width="1.2" marker-end="url(#arr)"/>
+      <path d="M158 338 Q133 308 118 260" stroke="#8B3A3A" stroke-width="1.2" marker-end="url(#arr)"/>
+      <path d="M112 220 Q120 162 142 126" stroke="#C9A96E" stroke-width="1.2" marker-end="url(#arr)"/>
+      <path d="M150 96  Q200 65 240 62"   stroke="#1A6B5A" stroke-width="1.2" marker-end="url(#arr)"/>
+
+      <defs>
+        <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#5EC9A7" opacity=".7"/>
+        </marker>
+      </defs>
+
+      <!-- Labels -->
+      <text x="260" y="30"  text-anchor="middle" font-family="DM Sans" font-size="8.5" fill="#F5F3EE" opacity=".7">Task kompleks muncul</text>
+      <text x="450" y="100" font-family="DM Sans" font-size="8.5" fill="#F5F3EE" opacity=".7">Otak deteksi</text>
+      <text x="450" y="112" font-family="DM Sans" font-size="8.5" fill="#F5F3EE" opacity=".7">ketidaknyamanan</text>
+      <text x="438" y="238" font-family="DM Sans" font-size="8.5" fill="#F5F3EE" opacity=".7">Cari alternatif</text>
+      <text x="438" y="250" font-family="DM Sans" font-size="8.5" fill="#F5F3EE" opacity=".7">yang nyaman</text>
+      <text x="358" y="388" text-anchor="middle" font-family="DM Sans" font-size="8.5" fill="#F5F3EE" opacity=".7">Dopamine hit</text>
+      <text x="175" y="388" text-anchor="middle" font-family="DM Sans" font-size="8.5" fill="#F5F3EE" opacity=".7">Otak belajar</text>
+      <text x="20"  y="238" font-family="DM Sans" font-size="8.5" fill="#F5F3EE" opacity=".7">Resistensi</text>
+      <text x="20"  y="250" font-family="DM Sans" font-size="8.5" fill="#F5F3EE" opacity=".7">makin kuat</text>
+      <text x="30"  y="106" font-family="DM Sans" font-size="8.5" fill="#F5F3EE" opacity=".7" text-anchor="end">Task belum</text>
+      <text x="30"  y="118" font-family="DM Sans" font-size="8.5" fill="#F5F3EE" opacity=".7" text-anchor="end">selesai</text>
+
+      <!-- Center: cara keluar -->
+      <circle cx="260" cy="210" r="45" fill="rgba(26,107,90,.15)" stroke="#5EC9A7" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <text x="260" y="205" text-anchor="middle" font-family="DM Sans" font-size="8.5" fill="#5EC9A7" font-weight="500">Cara keluar:</text>
+      <text x="260" y="218" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#F5F3EE" opacity=".7">Min. Viable</text>
+      <text x="260" y="230" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#F5F3EE" opacity=".7">Action</text>
+    </svg>
+  </div>
+  <p class="source-note" style="text-align:center">Schultz (Dopamine reward prediction error) · Gollwitzer (Implementation intention) · Baumeister (Ego depletion)</p>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P21 — BAB 03 STRATEGI                       -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-light pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 03 · Strategi</span>
+    <span class="pg-num">21</span>
+  </div>
+  <div class="section-eyebrow">3 Strategi Berbasis Sains</div>
+  <div class="section-title">Manfaatkan sistem dopamine — <em>jangan lawan.</em></div>
+  <div class="strategy">
+    <div class="s-num">1</div>
+    <div>
+      <div class="s-title">Implementation Intention — Format "Jika–Maka"</div>
+      <div class="s-desc">Bukan "aku akan mulai laporan itu besok." Tapi: <em>"Jika sudah jam 9 pagi dan aku sudah duduk di meja kerja, maka aku akan buka dokumen laporan dan menulis selama 25 menit sebelum membuka email."</em> Spesifisitas mengurangi beban keputusan saat momen itu tiba. (Gollwitzer, American Psychologist, 1999)</div>
+    </div>
+  </div>
+  <div class="strategy">
+    <div class="s-num">2</div>
+    <div>
+      <div class="s-title">Minimum Viable Action</div>
+      <div class="s-desc">Limbic friction paling kuat saat kamu membayangkan keseluruhan task. Tentukan tindakan terkecil: bukan "selesaikan laporan" → tapi "buka dokumen dan tulis satu kalimat pertama." Tindakan menciptakan motivasi, bukan sebaliknya. Begitu mulai, momentum membawa lebih jauh.</div>
+    </div>
+  </div>
+  <div class="strategy">
+    <div class="s-num">3</div>
+    <div>
+      <div class="s-title">Reward Stacking — Bangun Loop Dopamine Baru</div>
+      <div class="s-desc">Asosiasikan task yang cenderung kamu tunda dengan sesuatu yang kamu nikmati — minuman favorit, playlist tertentu. Ini tidak menghilangkan limbic friction, tapi menambahkan antisipasi reward sehingga dopamine dari memulai task menjadi lebih kompetitif.</div>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:4mm">
+    <div class="callout-label">Mulai hari ini</div>
+    <div class="callout-text">Ambil satu task yang sudah ditunda. Tulis: <em>"Besok pukul [jam], di [tempat], aku akan [tindakan paling kecil] selama 10–25 menit."</em> Hanya memulai. Spesifisitas waktu dan tempat adalah kuncinya.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P22 — BAB 03 RINGKASAN                      -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 03 · Ringkasan</span>
+    <span class="pg-num">22</span>
+  </div>
+  <div class="summary-title">Ringkasan<br>Bab 03</div>
+  <div class="summary-item"><div class="s-dot"></div><div class="s-item-text"><strong>Prokrastinasi adalah konflik neurologis</strong> antara prefrontal cortex (jangka panjang) dan limbic system (reward instan) — bukan tanda kemalasan atau kurang disiplin.</div></div>
+  <div class="summary-item"><div class="s-dot"></div><div class="s-item-text"><strong>Limbic friction</strong> membuat task kompleks terasa tidak nyaman sebelum dimulai. Dopamine reward dari aktivitas alternatif selalu terasa lebih instan dan pasti.</div></div>
+  <div class="summary-item"><div class="s-dot"></div><div class="s-item-text"><strong>Tiga strategi:</strong> (1) Implementation intention: format "jika X, maka Y". (2) Minimum Viable Action: mulai dari tindakan terkecil. (3) Reward stacking: manfaatkan dopamine, bukan lawan.</div></div>
+  <div class="action-box">
+    <div class="action-label">Satu hal yang bisa kamu lakukan hari ini</div>
+    <div class="action-text">Tulis satu implementation intention untuk task yang paling kamu tunda hari ini. Format "Jika–Maka" dengan waktu dan tempat yang spesifik. Hanya satu. Tulis sekarang sebelum menutup halaman ini.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P23 — BAB 04 OPENER                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark">
+  <div class="ch-num">04</div>
+  <div class="ch-opener">
+    <div class="ch-eyebrow">Burnout &amp; Recovery · Hyper-vigilance · Allostatic Overload</div>
+    <div class="ch-bar"></div>
+    <div class="ch-title">Otak Kamu Sedang Dalam Mode Survival — Bukan Produktivitas</div>
+    <div class="ch-quote">"Merasa sibuk bukan sama dengan bekerja efektif. Bedanya bukan soal jam kerja — tapi soal kondisi sistem sarafmu."</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P24 — BAB 04 BODY 1                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-light pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 04 · Mode Survival</span>
+    <span class="pg-num">24</span>
+  </div>
+  <div class="section-eyebrow">Dua mode operasi otak</div>
+  <div class="section-title">Otak beroperasi dalam dua mode yang <em>fundamentally berbeda.</em></div>
+  <p class="body-text">Kamu bekerja keras. Kamu responsif, selalu ada. Tapi hasilnya terasa tidak sebanding. Keputusan sederhana terasa berat. Kreativitas kering. Mudah terpancing.</p>
+  <p class="body-text"><strong>Yang mungkin tidak kamu sadari: otakmu sudah beralih ke mode yang dirancang untuk bertahan hidup — bukan untuk produktivitas.</strong></p>
+  <div class="two-col">
+    <div class="col-box col-pfc">
+      <span class="col-label">Mode Thriving</span>
+      Prefrontal cortex aktif penuh. Berpikir kreatif, keputusan kompleks, empati, rencana jangka panjang — semua bekerja optimal. Mode terbaik untuk pekerjaan berkualitas tinggi.
+    </div>
+    <div class="col-box col-amyg">
+      <span class="col-label">Mode Surviving</span>
+      Amygdala mendominan. Perhatian menyempit ke ancaman terdekat. Kreativitas dan keputusan kompleks menurun drastis. Ini mode untuk menghadapi bahaya — bukan untuk laporan strategis.
+    </div>
+  </div>
+  <p class="body-text" style="margin-top:3mm">Masalahnya: otak tidak membedakan ancaman fisik nyata dengan tekanan kerja kronis. Deadline yang terus datang, atasan yang tidak puas, konflik dengan rekan — semua diproses amygdala dengan cara yang sama. Banyak profesional menghabiskan sebagian besar hari kerja dalam <strong>mode survival</strong> tanpa sadar.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P25 — BAB 04 BODY 2                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 04 · Mekanisme</span>
+    <span class="pg-num">25</span>
+  </div>
+  <div class="section-eyebrow">Hyper-vigilance dan allostatic overload</div>
+  <div class="section-title">Mode survival yang berlangsung lama menciptakan <em>bahaya tersembunyi.</em></div>
+  <div class="term-box">
+    <div class="term-name">Hyper-vigilance</div>
+    <div class="term-def">State di mana sistem deteksi ancaman bekerja overdrive. Otak secara aktif memindai lingkungan untuk ancaman potensial bahkan saat tidak ada ancaman nyata. Respons emosional lebih cepat dan intens. Kemampuan untuk "matikan" mode waspada terganggu. Yang berbahaya: ini sering terasa seperti "produktivitas" — selalu on, selalu responsif.</div>
+  </div>
+  <div class="term-box" style="margin-top:3mm">
+    <div class="term-name">Allostatic Overload</div>
+    <div class="term-def">Tahap ketika total beban adaptasi melampaui kapasitas recovery. Otak dan tubuh memiliki kapasitas adaptasi yang luar biasa — tapi tidak tak terbatas. Allostatic overload adalah tahap awal burnout. Ia menumpuk bertahap, sering tidak terdeteksi, sampai kapasitas habis. Ini kenapa burnout sering terasa "tiba-tiba" meski berkembang berbulan-bulan.</div>
+  </div>
+  <p class="source-note">McEwen &amp; Stellar (Archives of Internal Medicine, 1993). Zijlstra &amp; Sonnentag (Journal of Occupational Health Psychology): kualitas recovery menentukan kemampuan otak kembali ke mode thriving.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P26 — BAB 04 INFOGRAFIS                     -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark" style="display:flex;flex-direction:column;padding:10mm 16mm 8mm">
+  <div class="pg-header" style="margin-bottom:4mm">
+    <span class="pg-header-label">Bab 04 · Infografis</span>
+    <span class="pg-num">26</span>
+  </div>
+  <div class="infographic-title">5 Tanda Otakmu Sedang dalam Mode Survival</div>
+  <div class="infographic-sub">Jika 3 atau lebih berlaku — otakmu butuh recovery, bukan lebih banyak effort</div>
+
+  <div style="flex:1;display:flex;flex-direction:column;gap:3.5mm;justify-content:center">
+    <!-- Item 1 -->
+    <div style="display:flex;align-items:flex-start;gap:4mm;padding:3.5mm 4mm;border-radius:3mm;background:rgba(245,243,238,.04);border:1px solid rgba(245,243,238,.08)">
+      <div style="width:7mm;height:7mm;border-radius:2mm;border:1.5px solid #1A6B5A;flex-shrink:0;margin-top:.5mm"></div>
+      <div>
+        <p style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:10pt;color:#F5F3EE;margin-bottom:1mm">Keputusan kecil terasa menguras energi</p>
+        <p style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:8.5pt;color:#F5F3EE;opacity:.55;line-height:1.45">Prefrontal cortex depleted — setiap keputusan butuh lebih banyak resources dari biasanya</p>
+      </div>
+    </div>
+    <!-- Item 2 -->
+    <div style="display:flex;align-items:flex-start;gap:4mm;padding:3.5mm 4mm;border-radius:3mm;background:rgba(245,243,238,.04);border:1px solid rgba(245,243,238,.08)">
+      <div style="width:7mm;height:7mm;border-radius:2mm;border:1.5px solid #1A6B5A;flex-shrink:0;margin-top:.5mm"></div>
+      <div>
+        <p style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:10pt;color:#F5F3EE;margin-bottom:1mm">Mudah reaktif terhadap hal yang biasanya tidak mengganggu</p>
+        <p style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:8.5pt;color:#F5F3EE;opacity:.55;line-height:1.45">Amygdala threshold lebih rendah — sensitivitas terhadap "ancaman" meningkat drastis</p>
+      </div>
+    </div>
+    <!-- Item 3 -->
+    <div style="display:flex;align-items:flex-start;gap:4mm;padding:3.5mm 4mm;border-radius:3mm;background:rgba(245,243,238,.04);border:1px solid rgba(245,243,238,.08)">
+      <div style="width:7mm;height:7mm;border-radius:2mm;border:1.5px solid #1A6B5A;flex-shrink:0;margin-top:.5mm"></div>
+      <div>
+        <p style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:10pt;color:#F5F3EE;margin-bottom:1mm">Sulit berpikir kreatif atau menemukan solusi baru</p>
+        <p style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:8.5pt;color:#F5F3EE;opacity:.55;line-height:1.45">Default mode network tidak mendapat cukup idle time untuk konsolidasi dan insight</p>
+      </div>
+    </div>
+    <!-- Item 4 -->
+    <div style="display:flex;align-items:flex-start;gap:4mm;padding:3.5mm 4mm;border-radius:3mm;background:rgba(201,169,110,.07);border:1px solid rgba(201,169,110,.18)">
+      <div style="width:7mm;height:7mm;border-radius:2mm;border:1.5px solid #C9A96E;flex-shrink:0;margin-top:.5mm"></div>
+      <div>
+        <p style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:10pt;color:#F5F3EE;margin-bottom:1mm">Merasa sibuk tapi tidak ada yang benar-benar maju</p>
+        <p style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:8.5pt;color:#F5F3EE;opacity:.55;line-height:1.45">Mode survival memfokuskan energi ke ancaman terdekat, bukan tujuan jangka panjang</p>
+      </div>
+    </div>
+    <!-- Item 5 -->
+    <div style="display:flex;align-items:flex-start;gap:4mm;padding:3.5mm 4mm;border-radius:3mm;background:rgba(201,169,110,.07);border:1px solid rgba(201,169,110,.18)">
+      <div style="width:7mm;height:7mm;border-radius:2mm;border:1.5px solid #C9A96E;flex-shrink:0;margin-top:.5mm"></div>
+      <div>
+        <p style="font-family:'DM Sans',sans-serif;font-weight:500;font-size:10pt;color:#F5F3EE;margin-bottom:1mm">Tidur tidak terasa restoratif meski cukup jam tidurnya</p>
+        <p style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:8.5pt;color:#F5F3EE;opacity:.55;line-height:1.45">Kortisol elevated mengganggu siklus tidur restoratif — otak tidak pernah benar-benar "mati"</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P27 — BAB 04 STRATEGI                       -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-light pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 04 · Strategi</span>
+    <span class="pg-num">27</span>
+  </div>
+  <div class="section-eyebrow">3 Strategi Berbasis Sains</div>
+  <div class="section-title">Kembali ke <em>mode thriving</em> — bukan dengan lebih banyak effort.</div>
+  <div class="strategy">
+    <div class="s-num">1</div>
+    <div>
+      <div class="s-title">Kenali Tanda-Tanda Lebih Awal</div>
+      <div class="s-desc">Gunakan checklist 5 tanda sebagai alat monitoring sederhana — tinjau sekali seminggu. Deteksi awal jauh lebih mudah ditangani daripada allostatic overload yang sudah berlangsung berbulan-bulan. Informasi adalah titik awalnya, bukan diagnosis.</div>
+    </div>
+  </div>
+  <div class="strategy">
+    <div class="s-num">2</div>
+    <div>
+      <div class="s-title">Micro-Recovery yang Terstruktur</div>
+      <div class="s-desc">Recovery efektif bukan sekadar berhenti bekerja — ini aktivitas yang aktif menurunkan sistem saraf simpatik. Yang terbukti efektif: berjalan di luar tanpa tujuan (10–20 menit), aktivitas fisik ringan non-kompetitif, percakapan sosial yang genuinely menyenangkan. Yang tidak termasuk: scrolling atau istirahat sambil memikirkan pekerjaan.</div>
+    </div>
+  </div>
+  <div class="strategy">
+    <div class="s-num">3</div>
+    <div>
+      <div class="s-title">Protective Boundaries untuk Prefrontal Cortex</div>
+      <div class="s-desc">Satu keputusan sederhana yang tidak bisa dinegosiasikan: ada satu waktu per hari di mana kamu benar-benar tidak bisa diakses untuk pekerjaan. Mulai dari 30 menit. Prefrontal cortex membutuhkan periode deaktivasi reguler untuk mempertahankan kapasitas fungsinya.</div>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:4mm">
+    <div class="callout-label">Mulai hari ini</div>
+    <div class="callout-text">Tinjau checklist 5 tanda. Berapa yang berlaku untuk situasimu sekarang? Lalu tetapkan satu waktu 30 menit hari ini yang benar-benar bebas dari semua hal yang berhubungan dengan pekerjaan.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P28 — BAB 04 RINGKASAN                      -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 04 · Ringkasan</span>
+    <span class="pg-num">28</span>
+  </div>
+  <div class="summary-title">Ringkasan<br>Bab 04</div>
+  <div class="summary-item"><div class="s-dot"></div><div class="s-item-text"><strong>Dua mode otak:</strong> Thriving (PFC dominan) vs Surviving (amygdala dominan). Tekanan kerja kronis mendorong ke mode survival tanpa disadari.</div></div>
+  <div class="summary-item"><div class="s-dot"></div><div class="s-item-text"><strong>Hyper-vigilance</strong> terasa seperti "selalu on" tapi menguras energi kognitif yang dibutuhkan untuk pekerjaan mendalam. <strong>Allostatic overload</strong> berkembang bertahap — dan sering tidak terdeteksi.</div></div>
+  <div class="summary-item"><div class="s-dot"></div><div class="s-item-text"><strong>Tiga strategi:</strong> (1) Monitor dengan checklist mingguan. (2) Micro-recovery yang benar-benar restoratif. (3) Protective boundary 30 menit per hari yang tidak bisa dinegosiasikan.</div></div>
+  <div class="action-box">
+    <div class="action-label">Satu hal yang bisa kamu lakukan hari ini</div>
+    <div class="action-text">Tinjau checklist 5 tanda di halaman sebelumnya. Jujur. Jika 3 atau lebih berlaku — ini informasi penting, bukan kelemahan. Jadwalkan 30 menit recovery hari ini sebelum menutup panduan ini.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P29 — BAB 05 OPENER                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark">
+  <div class="ch-num">05</div>
+  <div class="ch-opener">
+    <div class="ch-eyebrow">Career Neuroscience · Cognitive Bias · Decision Making</div>
+    <div class="ch-bar"></div>
+    <div class="ch-title">Kenapa Otak Sabotase Keputusan Karirmu</div>
+    <div class="ch-quote">"Keputusan karir yang paling penting dalam hidupmu tidak dibuat oleh logikamu. Mereka dibuat oleh bias neurologis yang sudah ada jauh sebelum kamu lahir."</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P30 — BAB 05 BODY 1                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-light pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 05 · Keputusan Karir</span>
+    <span class="pg-num">30</span>
+  </div>
+  <div class="section-eyebrow">Tiga bias utama</div>
+  <div class="section-title">Otak mengembangkan shortcut mental yang <em>menyelamatkan di savana</em> — tapi merusak di karir modern.</div>
+  <p class="body-text">Kamu tahu gaji kamu di bawah pasar. Kamu sudah riset angkanya. Tapi begitu momen negosiasi tiba, angka yang kamu sebut lebih kecil dari yang direncanakan. Atau kamu tahu pekerjaan ini tidak sesuai lagi — tapi tetap ada, bulan demi bulan.</p>
+  <div class="term-box">
+    <div class="term-name">Loss Aversion</div>
+    <div class="term-def">Kahneman &amp; Tversky (Nobel Ekonomi) menemukan manusia mengevaluasi kerugian 2× lebih kuat dibanding keuntungan yang setara. Kehilangan Rp 1 juta terasa 2× lebih menyakitkan dari mendapat Rp 1 juta. Dalam karir: otak memperbesar risiko bergerak dan mengecilkan biaya diam.</div>
+  </div>
+  <div class="term-box" style="margin-top:3mm">
+    <div class="term-name">Anchoring Bias</div>
+    <div class="term-def">Kecenderungan otak untuk terlalu bergantung pada informasi pertama yang diterima. Dalam negosiasi gaji: angka pertama yang disebut menjadi jangkar yang mempengaruhi seluruh negosiasi selanjutnya — bahkan ketika orang tahu mereka sedang dipengaruhi anchor yang tidak relevan.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P31 — BAB 05 BODY 2                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 05 · Mekanisme</span>
+    <span class="pg-num">31</span>
+  </div>
+  <div class="section-eyebrow">Bias ketiga yang paling sering diabaikan</div>
+  <div class="section-title">Status quo bias membuat "tetap diam" selalu terasa <em>lebih aman.</em></div>
+  <div class="term-box">
+    <div class="term-name">Status Quo Bias</div>
+    <div class="term-def">Preferensi otak untuk mempertahankan kondisi saat ini, bahkan ketika ada bukti jelas bahwa perubahan akan menghasilkan hasil lebih baik. Bukan inersia atau kemalasan — ini bias kognitif yang berakar dari loss aversion: perubahan selalu mengandung ketidakpastian, dan ketidakpastian dipersepsi otak sebagai potensi kerugian.</div>
+  </div>
+  <p class="body-text" style="margin-top:3mm">Kenapa "lebih rasional" tidak cukup? Bias kognitif ini tidak hilang hanya karena kamu mengetahuinya. Kahneman sendiri, setelah puluhan tahun meneliti bias kognitif, mengakui ia masih menjadi korbannya. <strong>Bias ini beroperasi lebih cepat dari pemikiran sadar — memengaruhi keputusan sebelum kamu sempat "berpikir rasional."</strong></p>
+  <p class="body-text">Solusi yang lebih efektif bukan menghilangkan bias — tapi <strong>merancang proses pengambilan keputusan yang memperhitungkan keberadaan bias ini.</strong></p>
+  <p class="source-note">Kahneman &amp; Tversky, Prospect Theory (Econometrica, 1979). Anchoring bias (Science, 1974). Status quo bias → Samuelson &amp; Zeckhauser (Journal of Risk and Uncertainty, 1988).</p>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P32 — BAB 05 INFOGRAFIS                     -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark" style="display:flex;flex-direction:column;padding:10mm 16mm 8mm">
+  <div class="pg-header" style="margin-bottom:4mm">
+    <span class="pg-header-label">Bab 05 · Infografis</span>
+    <span class="pg-num">32</span>
+  </div>
+  <div class="infographic-title">3 Bias Kognitif yang Paling Sering Merusak Keputusan Karir</div>
+  <div class="infographic-sub">Kenali untuk mengatasinya — bukan untuk menghilangkannya</div>
+  <div style="flex:1;display:flex;gap:4mm;align-items:stretch;justify-content:center">
+
+    <!-- Card 1: Loss Aversion -->
+    <div style="flex:1;padding:5mm 4mm;border-radius:4mm;background:rgba(245,243,238,.04);border:1px solid rgba(245,243,238,.1);display:flex;flex-direction:column;align-items:center;text-align:center">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:7pt;letter-spacing:.16em;color:#C9A96E;text-transform:uppercase;margin-bottom:4mm">Loss Aversion</div>
+      <svg viewBox="0 0 80 80" style="width:20mm;height:20mm;margin-bottom:4mm" fill="none">
+        <line x1="40" y1="10" x2="40" y2="70" stroke="#1A6B5A" stroke-width="2"/>
+        <line x1="15" y1="40" x2="65" y2="40" stroke="#1A6B5A" stroke-width="2"/>
+        <!-- Left pan (heavy - loss side) -->
+        <path d="M10 45 L30 45 L28 58 L12 58 Z" stroke="#E07070" stroke-width="1.5" fill="rgba(224,112,112,.1)"/>
+        <line x1="20" y1="40" x2="20" y2="45" stroke="#E07070" stroke-width="1.5"/>
+        <text x="20" y="56" text-anchor="middle" font-family="DM Sans" font-size="7" fill="#E07070">2×</text>
+        <!-- Right pan (light - gain side) -->
+        <path d="M50 35 L70 35 L68 48 L52 48 Z" stroke="#5EC9A7" stroke-width="1.5" fill="rgba(94,201,167,.1)"/>
+        <line x1="60" y1="40" x2="60" y2="35" stroke="#5EC9A7" stroke-width="1.5"/>
+        <text x="60" y="46" text-anchor="middle" font-family="DM Sans" font-size="7" fill="#5EC9A7">1×</text>
+      </svg>
+      <p style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:9pt;color:#F5F3EE;opacity:.7;line-height:1.55">Kerugian terasa <strong style="color:#E07070;font-weight:500">2× lebih kuat</strong> dari keuntungan yang setara nilainya</p>
+      <div style="margin-top:auto;padding-top:3mm;border-top:1px solid rgba(245,243,238,.1);font-family:'DM Sans',sans-serif;font-size:8pt;color:#5EC9A7;line-height:1.5">Strategi: Pre-mortem — bayangkan biaya dari tidak bergerak</div>
+    </div>
+
+    <!-- Card 2: Anchoring -->
+    <div style="flex:1;padding:5mm 4mm;border-radius:4mm;background:rgba(245,243,238,.04);border:1px solid rgba(245,243,238,.1);display:flex;flex-direction:column;align-items:center;text-align:center">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:7pt;letter-spacing:.16em;color:#C9A96E;text-transform:uppercase;margin-bottom:4mm">Anchoring Bias</div>
+      <svg viewBox="0 0 80 80" style="width:20mm;height:20mm;margin-bottom:4mm" fill="none">
+        <circle cx="40" cy="22" r="10" stroke="#C9A96E" stroke-width="1.5"/>
+        <line x1="40" y1="32" x2="40" y2="55" stroke="#C9A96E" stroke-width="1.5"/>
+        <line x1="25" y1="55" x2="55" y2="55" stroke="#C9A96E" stroke-width="1.5"/>
+        <line x1="25" y1="55" x2="28" y2="48" stroke="#C9A96E" stroke-width="1.5"/>
+        <line x1="55" y1="55" x2="52" y2="48" stroke="#C9A96E" stroke-width="1.5"/>
+        <text x="40" y="26" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#C9A96E" font-weight="bold">Rp</text>
+        <!-- Chain -->
+        <line x1="40" y1="65" x2="40" y2="75" stroke="#1A6B5A" stroke-width="2" stroke-dasharray="2,2"/>
+      </svg>
+      <p style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:9pt;color:#F5F3EE;opacity:.7;line-height:1.55">Angka pertama yang disebut menjadi <strong style="color:#C9A96E;font-weight:500">jangkar</strong> yang menentukan rentang negosiasi</p>
+      <div style="margin-top:auto;padding-top:3mm;border-top:1px solid rgba(245,243,238,.1);font-family:'DM Sans',sans-serif;font-size:8pt;color:#5EC9A7;line-height:1.5">Strategi: Riset &amp; anchor angkamu sendiri sebelum negosiasi</div>
+    </div>
+
+    <!-- Card 3: Status Quo -->
+    <div style="flex:1;padding:5mm 4mm;border-radius:4mm;background:rgba(245,243,238,.04);border:1px solid rgba(245,243,238,.1);display:flex;flex-direction:column;align-items:center;text-align:center">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:7pt;letter-spacing:.16em;color:#C9A96E;text-transform:uppercase;margin-bottom:4mm">Status Quo Bias</div>
+      <svg viewBox="0 0 80 80" style="width:20mm;height:20mm;margin-bottom:4mm" fill="none">
+        <!-- Comfort zone bubble -->
+        <ellipse cx="30" cy="50" rx="22" ry="18" stroke="#C9A96E" stroke-width="1.5" fill="rgba(201,169,110,.1)"/>
+        <text x="30" y="48" text-anchor="middle" font-family="DM Sans" font-size="7" fill="#C9A96E">Sekarang</text>
+        <text x="30" y="57" text-anchor="middle" font-family="DM Sans" font-size="6.5" fill="#C9A96E" opacity=".7">familiar</text>
+        <!-- New zone -->
+        <ellipse cx="62" cy="32" rx="14" ry="12" stroke="#5EC9A7" stroke-width="1.5" fill="rgba(94,201,167,.07)" stroke-dasharray="3,2"/>
+        <text x="62" y="30" text-anchor="middle" font-family="DM Sans" font-size="7" fill="#5EC9A7">Baru</text>
+        <text x="62" y="39" text-anchor="middle" font-family="DM Sans" font-size="6.5" fill="#5EC9A7" opacity=".7">lebih baik</text>
+        <!-- Arrow blocked -->
+        <path d="M50 44 Q56 40 50 35" stroke="#E07070" stroke-width="1.5" stroke-dasharray="2,2" marker-end="url(#arr2)"/>
+        <defs><marker id="arr2" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#E07070" opacity=".7"/></marker></defs>
+      </svg>
+      <p style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:9pt;color:#F5F3EE;opacity:.7;line-height:1.55">Otak memperbesar <strong style="color:#E07070;font-weight:500">risiko perubahan</strong> dan mengecilkan biaya dari kondisi yang tidak berubah</p>
+      <div style="margin-top:auto;padding-top:3mm;border-top:1px solid rgba(245,243,238,.1);font-family:'DM Sans',sans-serif;font-size:8pt;color:#5EC9A7;line-height:1.5">Strategi: 10/10/10 framework — perspektif 3 rentang waktu</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P33 — BAB 05 STRATEGI                       -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-light pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 05 · Strategi</span>
+    <span class="pg-num">33</span>
+  </div>
+  <div class="section-eyebrow">3 Strategi Berbasis Sains</div>
+  <div class="section-title">Rancang proses keputusan yang <em>memperhitungkan bias,</em> bukan mengabaikannya.</div>
+  <div class="strategy">
+    <div class="s-num">1</div>
+    <div>
+      <div class="s-title">Pre-mortem — Melawan Loss Aversion</div>
+      <div class="s-desc">Bayangkan keputusan yang sudah kamu buat ternyata gagal — dan jelaskan kenapa. Ini membalik cara kerja loss aversion: daripada hanya membayangkan yang hilang jika kamu bergerak, kamu juga membayangkan yang hilang jika kamu tidak bergerak. Data yang lebih seimbang untuk otak. (Gary Klein / Kahneman)</div>
+    </div>
+  </div>
+  <div class="strategy">
+    <div class="s-num">2</div>
+    <div>
+      <div class="s-title">Anchor Diri Sendiri Sebelum Negosiasi</div>
+      <div class="s-desc">Sebelum negosiasi gaji: tentukan angka minimummu, angka ideal, dan angka pembuka (selalu lebih tinggi dari ideal). Jika kamu yang pertama sebut angka, kamu yang menetapkan jangkar. Jika pihak lain menyebut angka terlalu rendah: "Berdasarkan riset pasar, range untuk posisi ini adalah X–Y."</div>
+    </div>
+  </div>
+  <div class="strategy">
+    <div class="s-num">3</div>
+    <div>
+      <div class="s-title">10/10/10 Framework — Melawan Status Quo Bias</div>
+      <div class="s-desc">Tiga pertanyaan: Bagaimana perasaanmu 10 menit dari sekarang? 10 bulan? 10 tahun? Status quo bias paling kuat di perspektif jangka pendek. Framework ini memaksa otak memproses perspektif yang lebih panjang — di mana biaya dari tidak berubah biasanya jauh lebih jelas terlihat. (Suzy Welch)</div>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:4mm">
+    <div class="callout-label">Mulai hari ini</div>
+    <div class="callout-text">Ada keputusan karir yang sudah kamu tunda? Luangkan 10 menit untuk menulis jawaban 10/10/10. Bukan untuk memutuskan — tapi untuk memberi data yang lebih lengkap kepada otakmu.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P34 — BAB 05 RINGKASAN                      -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 05 · Ringkasan</span>
+    <span class="pg-num">34</span>
+  </div>
+  <div class="summary-title">Ringkasan<br>Bab 05</div>
+  <div class="summary-item"><div class="s-dot"></div><div class="s-item-text"><strong>Loss aversion:</strong> otak mengevaluasi kerugian 2× lebih kuat dari keuntungan setara. Membuat "diam" selalu terasa lebih aman secara neurologis, meski tidak selalu secara logis.</div></div>
+  <div class="summary-item"><div class="s-dot"></div><div class="s-item-text"><strong>Anchoring bias:</strong> informasi pertama yang diterima mendominasi seluruh proses keputusan. Siapa yang menyebut angka pertama dalam negosiasi memegang kekuatan terbesar.</div></div>
+  <div class="summary-item"><div class="s-dot"></div><div class="s-item-text"><strong>Tiga strategi:</strong> (1) Pre-mortem: bayangkan biaya dari tidak bergerak. (2) Anchor sendiri sebelum negosiasi. (3) 10/10/10 framework: perspektif 3 rentang waktu.</div></div>
+  <div class="action-box">
+    <div class="action-label">Satu hal yang bisa kamu lakukan hari ini</div>
+    <div class="action-text">Pilih satu keputusan karir yang tertunda. Tulis jawaban singkat untuk 10/10/10: bagaimana perasaanmu dalam 10 menit, 10 bulan, dan 10 tahun jika kamu mengambil keputusan itu — dan jika tidak.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P35 — BAB 06 OPENER                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark">
+  <div class="ch-num">06</div>
+  <div class="ch-opener">
+    <div class="ch-eyebrow">Peak Performance Protocol · Circadian Rhythm · Ultradian Cycle</div>
+    <div class="ch-bar"></div>
+    <div class="ch-title">Peak Performance Protocol: Jadwal Kerja Ideal Versi Neurosains</div>
+    <div class="ch-quote">"Kamu tidak bisa mengubah kapan otakmu berada di kondisi terbaik. Tapi kamu bisa berhenti menjadwalkan pekerjaan terpenting di jam yang paling salah."</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P36 — BAB 06 BODY 1                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-light pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 06 · Peak Performance</span>
+    <span class="pg-num">36</span>
+  </div>
+  <div class="section-eyebrow">Tiga ritme biologis</div>
+  <div class="section-title">Otak tidak berada dalam kondisi yang sama <em>sepanjang hari.</em></div>
+  <p class="body-text">Bagaimana kamu memulai hari kerja? Kemungkinan besar: buka email, lihat pesan yang masuk, mulai membalas. Dari sudut pandang neurosains, ini salah satu cara paling tidak efisien untuk memulai hari.</p>
+  <div class="term-box">
+    <div class="term-name">Circadian Rhythm</div>
+    <div class="term-def">Siklus biologis 24 jam yang mengatur fungsi fisiologis termasuk kemampuan kognitif. Menciptakan 2 peak fokus: (1) ~2–4 jam setelah bangun saat kortisol dan norepinephrine tertinggi, (2) peak kedua yang lebih kecil di sore hari untuk sebagian orang. Di antara dua peak: "through" di mana kewaspadaan menurun alami (~jam 1–3 siang).</div>
+  </div>
+  <div class="term-box" style="margin-top:3mm">
+    <div class="term-name">Cortisol Awakening Response (CAR)</div>
+    <div class="term-def">Lonjakan kortisol signifikan dalam 30–45 menit setelah bangun — bukan respons stres, tapi sinyal biologis yang mempersiapkan otak untuk fungsi optimal. Langsung menatap layar HP setelah bangun dapat mengganggu proses ini. 30–60 menit pertama setelah bangun adalah "golden window" yang harus dilindungi. (Pruessner et al., 1997)</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P37 — BAB 06 BODY 2                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 06 · Mekanisme</span>
+    <span class="pg-num">37</span>
+  </div>
+  <div class="section-eyebrow">Ultradian cycle dan chronotype</div>
+  <div class="section-title">Siklus 90 menit dan mengapa tidak semua otak <em>peak di waktu yang sama.</em></div>
+  <div class="term-box">
+    <div class="term-name">Ultradian Cycle</div>
+    <div class="term-def">Siklus ~90–120 menit di dalam siklus 24 jam yang bergantian antara periode aktivitas tinggi dan recovery. Pertama diidentifikasi oleh Nathaniel Kleitman (penemu REM sleep). Ketika kamu memaksakan kerja melampaui 90 menit tanpa recovery — muncul kesulitan berkonsentrasi, menguap, distraksi meningkat — itu sinyal biologis, bukan kelemahan willpower.</div>
+  </div>
+  <div class="term-box" style="margin-top:3mm">
+    <div class="term-name">Chronotype</div>
+    <div class="term-def">Kecenderungan biologis seseorang untuk aktif di waktu yang berbeda. ~40% orang adalah morning chronotype (optimal di pagi hari), ~30% evening chronotype (optimal di sore/malam), sisanya di antara keduanya. Ini bukan soal kebiasaan atau disiplin — ini perbedaan biologis yang tercermin dalam pola ekspresi gen circadian rhythm. (Roenneberg et al., Current Biology, 2004)</div>
+  </div>
+  <p class="body-text" style="margin-top:3mm">Implikasinya: jadwal ideal adalah <strong>panduan, bukan aturan kaku.</strong> Observasi ritme personalmu selama 1–2 minggu: kapan kamu secara konsisten paling tajam? Kapan energi kognitif paling sering menurun? Jawaban itu lebih berharga dari jadwal manapun.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P38 — BAB 06 INFOGRAFIS                     -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark" style="display:flex;flex-direction:column;padding:10mm 16mm 8mm">
+  <div class="pg-header" style="margin-bottom:4mm">
+    <span class="pg-header-label">Bab 06 · Infografis</span>
+    <span class="pg-num">38</span>
+  </div>
+  <div class="infographic-title">Blueprint Hari Kerja Ideal — Versi Neurosains</div>
+  <div class="infographic-sub">Berdasarkan circadian rhythm (asumsi bangun 06:00)</div>
+
+  <div style="flex:1;display:flex;flex-direction:column;gap:2.5mm;justify-content:center">
+    <!-- Golden Window -->
+    <div style="display:flex;gap:3mm;align-items:center">
+      <div style="width:18mm;flex-shrink:0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:7.5pt;color:#C9A96E;opacity:.7">06:00–06:45</div>
+      <div style="flex:1;height:9mm;background:rgba(94,201,167,.25);border:1px solid rgba(94,201,167,.4);border-radius:2mm;display:flex;align-items:center;padding:0 3mm">
+        <span style="font-family:'DM Sans',sans-serif;font-size:8.5pt;color:#5EC9A7;font-weight:500">Golden Window</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:8pt;color:#F5F3EE;opacity:.55;margin-left:3mm">Hindari layar · Cahaya alami · CAR berlangsung</span>
+      </div>
+    </div>
+    <!-- Deep Work 1 -->
+    <div style="display:flex;gap:3mm;align-items:center">
+      <div style="width:18mm;flex-shrink:0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:7.5pt;color:#C9A96E;opacity:.7">07:30–09:00</div>
+      <div style="flex:1;height:9mm;background:rgba(94,201,167,.35);border:1px solid rgba(94,201,167,.5);border-radius:2mm;display:flex;align-items:center;padding:0 3mm">
+        <span style="font-family:'DM Sans',sans-serif;font-size:8.5pt;color:#5EC9A7;font-weight:700">PEAK #1 — Deep Work</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:8pt;color:#F5F3EE;opacity:.55;margin-left:3mm">Task kognitif terberat · TANPA INTERUPSI</span>
+      </div>
+    </div>
+    <!-- Recovery 1 -->
+    <div style="display:flex;gap:3mm;align-items:center">
+      <div style="width:18mm;flex-shrink:0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:7.5pt;color:#C9A96E;opacity:.7">09:00–09:20</div>
+      <div style="flex:1;height:9mm;background:rgba(245,243,238,.05);border:1px solid rgba(245,243,238,.12);border-radius:2mm;display:flex;align-items:center;padding:0 3mm">
+        <span style="font-family:'DM Sans',sans-serif;font-size:8.5pt;color:#F5F3EE;opacity:.7">Recovery</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:8pt;color:#F5F3EE;opacity:.45;margin-left:3mm">Jalan kaki · Peregangan · Bukan scrolling</span>
+      </div>
+    </div>
+    <!-- Deep Work 2 -->
+    <div style="display:flex;gap:3mm;align-items:center">
+      <div style="width:18mm;flex-shrink:0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:7.5pt;color:#C9A96E;opacity:.7">09:20–11:00</div>
+      <div style="flex:1;height:9mm;background:rgba(94,201,167,.25);border:1px solid rgba(94,201,167,.35);border-radius:2mm;display:flex;align-items:center;padding:0 3mm">
+        <span style="font-family:'DM Sans',sans-serif;font-size:8.5pt;color:#5EC9A7;font-weight:500">Deep Work Blok 2</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:8pt;color:#F5F3EE;opacity:.55;margin-left:3mm">Task menengah berat · Meeting penting</span>
+      </div>
+    </div>
+    <!-- Communication Window 1 -->
+    <div style="display:flex;gap:3mm;align-items:center">
+      <div style="width:18mm;flex-shrink:0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:7.5pt;color:#C9A96E;opacity:.7">11:00–12:00</div>
+      <div style="flex:1;height:9mm;background:rgba(201,169,110,.12);border:1px solid rgba(201,169,110,.25);border-radius:2mm;display:flex;align-items:center;padding:0 3mm">
+        <span style="font-family:'DM Sans',sans-serif;font-size:8.5pt;color:#C9A96E;font-weight:500">Komunikasi Window 1</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:8pt;color:#F5F3EE;opacity:.55;margin-left:3mm">Email · Slack · Meeting rutin</span>
+      </div>
+    </div>
+    <!-- Valley -->
+    <div style="display:flex;gap:3mm;align-items:center">
+      <div style="width:18mm;flex-shrink:0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:7.5pt;color:#C9A96E;opacity:.7">13:00–15:00</div>
+      <div style="flex:1;height:9mm;background:rgba(224,112,112,.08);border:1px solid rgba(224,112,112,.18);border-radius:2mm;display:flex;align-items:center;padding:0 3mm">
+        <span style="font-family:'DM Sans',sans-serif;font-size:8.5pt;color:#E07070;font-weight:500">Valley / Through</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:8pt;color:#F5F3EE;opacity:.55;margin-left:3mm">Hindari keputusan besar · Tugas rutin &amp; administratif</span>
+      </div>
+    </div>
+    <!-- Secondary Peak -->
+    <div style="display:flex;gap:3mm;align-items:center">
+      <div style="width:18mm;flex-shrink:0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:7.5pt;color:#C9A96E;opacity:.7">15:00–16:30</div>
+      <div style="flex:1;height:9mm;background:rgba(94,201,167,.18);border:1px solid rgba(94,201,167,.28);border-radius:2mm;display:flex;align-items:center;padding:0 3mm">
+        <span style="font-family:'DM Sans',sans-serif;font-size:8.5pt;color:#5EC9A7;font-weight:500">Peak #2 (sebagian orang)</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:8pt;color:#F5F3EE;opacity:.55;margin-left:3mm">Creative work · Brainstorming · Review strategis</span>
+      </div>
+    </div>
+    <!-- Wind Down -->
+    <div style="display:flex;gap:3mm;align-items:center">
+      <div style="width:18mm;flex-shrink:0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:7.5pt;color:#C9A96E;opacity:.7">17:30+</div>
+      <div style="flex:1;height:9mm;background:rgba(245,243,238,.04);border:1px solid rgba(245,243,238,.08);border-radius:2mm;display:flex;align-items:center;padding:0 3mm">
+        <span style="font-family:'DM Sans',sans-serif;font-size:8.5pt;color:#F5F3EE;opacity:.55">Wind Down</span>
+        <span style="font-family:'DM Sans',sans-serif;font-size:8pt;color:#F5F3EE;opacity:.35;margin-left:3mm">Tidak ada email kerja · Aktivitas menurunkan kortisol</span>
+      </div>
+    </div>
+  </div>
+  <p class="source-note" style="margin-top:3mm;text-align:center">Kleitman (Ultradian cycle) · Pruessner et al. (CAR, 1997) · Roenneberg et al. (Chronotype, 2004)</p>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P39 — BAB 06 STRATEGI                       -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-light pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 06 · Strategi</span>
+    <span class="pg-num">39</span>
+  </div>
+  <div class="section-eyebrow">3 Prinsip Berbasis Sains</div>
+  <div class="section-title">Lindungi jam terbaikmu — itu sumber daya <em>paling langka yang kamu miliki.</em></div>
+  <div class="strategy">
+    <div class="s-num">1</div>
+    <div>
+      <div class="s-title">Protect Your Peak</div>
+      <div class="s-desc">Jam-jam di mana kemampuan kognitifmu paling tinggi adalah sumber daya terlangka setiap hari. Jangan isi dengan email, rapat rutin, atau tugas administratif yang bisa dilakukan kapan saja. Gunakan untuk satu task yang benar-benar membutuhkan kemampuan berpikir terbaikmu — bahkan jika itu berarti menolak meeting pagi.</div>
+    </div>
+  </div>
+  <div class="strategy">
+    <div class="s-num">2</div>
+    <div>
+      <div class="s-title">Match Task to State</div>
+      <div class="s-desc">Tidak semua pekerjaan membutuhkan kondisi kognitif yang sama. Tugas administratif → lakukan di valley. Komunikasi → di jendela terjadwal. Brainstorming → secondary peak sore. Keputusan strategis → harus di peak pertama. Matching task ke state yang tepat, bukan hanya ke slot waktu yang tersedia.</div>
+    </div>
+  </div>
+  <div class="strategy">
+    <div class="s-num">3</div>
+    <div>
+      <div class="s-title">Recovery Adalah Bagian dari Pekerjaan</div>
+      <div class="s-desc">Otak yang tidak pernah mendapat recovery yang cukup tidak bekerja lebih keras — ia bekerja lebih lambat, kualitas menurun, risiko error lebih tinggi. Jadwalkan recovery dengan keseriusan yang sama seperti meeting penting. Recovery bukan pemborosan waktu — ini investasi kapasitas kognitif.</div>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:4mm">
+    <div class="callout-label">Mulai hari ini</div>
+    <div class="callout-text">Selama satu minggu ke depan, catat: kapan kamu paling fokus, kapan energi paling sering turun, kapan paling kreatif. Tidak perlu mengubah jadwal dulu — hanya observasi. Data personal ini lebih berharga dari jadwal manapun.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P40 — BAB 06 RINGKASAN                      -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-dark pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Bab 06 · Ringkasan</span>
+    <span class="pg-num">40</span>
+  </div>
+  <div class="summary-title">Ringkasan<br>Bab 06</div>
+  <div class="summary-item"><div class="s-dot"></div><div class="s-item-text"><strong>Tiga ritme biologis:</strong> Circadian rhythm (24 jam), Cortisol Awakening Response (peak 30–45 menit setelah bangun), dan Ultradian cycle (siklus fokus 90 menit).</div></div>
+  <div class="summary-item"><div class="s-dot"></div><div class="s-item-text"><strong>Chronotype berbeda:</strong> tidak semua orang peak di waktu yang sama. Temukan pola personalmu dengan observasi 1–2 minggu sebelum mengubah jadwal.</div></div>
+  <div class="summary-item"><div class="s-dot"></div><div class="s-item-text"><strong>Tiga prinsip:</strong> (1) Protect your peak untuk task terpenting. (2) Match task to state, bukan ke slot waktu tersedia. (3) Recovery adalah investasi kognitif, bukan pemborosan.</div></div>
+  <div class="action-box">
+    <div class="action-label">Satu hal yang bisa kamu lakukan hari ini</div>
+    <div class="action-text">Pindahkan satu task terpentingmu ke jam pertama kamu merasa paling tajam — bukan jam yang nyaman secara sosial, tapi yang paling optimal secara neurologis. Lakukan ini besok, hanya sekali, dan perhatikan perbedaannya.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P41 — PENUTUP                               -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-light pad">
+  <div class="pg-header">
+    <span class="pg-header-label">Penutup</span>
+    <span class="pg-num">41</span>
+  </div>
+  <div class="section-eyebrow">Penutup</div>
+  <div class="section-title">Otak yang Dirawat Adalah Karir yang <em>Lebih Kuat</em></div>
+  <p class="body-text">Kamu sudah membaca tentang amygdala yang membajak kemampuanmu saat presentasi. Tentang attention residue yang mencuri fokus tanpa disadari. Tentang dopamine loop yang membuat prokrastinasi terasa lebih nyaman dari memulai. Tentang survival mode yang menyamar sebagai produktivitas. Tentang bias kognitif yang membentuk keputusan karirmu. Dan tentang ritme biologis yang menentukan kapan otakmu benar-benar siap untuk pekerjaan terbaik.</p>
+  <p class="body-text"><strong>Semua ini adalah mekanisme yang sedang bekerja setiap hari</strong> — di setiap meeting yang kamu masuki, setiap keputusan yang kamu buat.</p>
+  <div class="callout">
+    <div class="callout-label">Yang paling penting untuk diingat</div>
+    <div class="callout-text">Tidak ada satu pun dari hal-hal yang dibahas di sini yang berarti kamu kurang mampu atau kurang berusaha. Sebaliknya. Fakta bahwa kamu blank saat presentasi, prokrastinasi, atau menghindari keputusan besar — semua itu adalah tanda otakmu bekerja <strong>persis seperti yang seharusnya.</strong> Masalahnya bukan otakmu. Masalahnya adalah mismatch antara otak yang berevolusi untuk satu jenis dunia, dengan tuntutan dunia kerja yang sangat berbeda. Dan mismatch itu bisa dikelola.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- P42 — BACK COVER                            -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="page pg-cover">
+  <div class="back-inner">
+    <svg viewBox="0 0 80 80" style="width:16mm;margin-bottom:8mm;opacity:.5" fill="none">
+      <path d="M40 14 C24 14 12 26 12 42 C12 58 24 66 40 64" stroke="#5EC9A7" stroke-width="1.8" fill="none"/>
+      <path d="M40 14 C56 14 68 26 68 42 C68 58 56 66 40 64" stroke="#5EC9A7" stroke-width="1.8" fill="none"/>
+      <path d="M33 42 C33 34 47 34 47 42" stroke="#C9A96E" stroke-width="1.5" fill="none"/>
+      <circle cx="24" cy="40" r="3" fill="#5EC9A7" opacity=".6"/>
+      <circle cx="56" cy="40" r="3" fill="#5EC9A7" opacity=".6"/>
+      <circle cx="40" cy="56" r="3.5" fill="#5EC9A7" opacity=".4"/>
+    </svg>
+
+    <div class="back-quote">"Kerja lebih cerdas, bukan lebih keras. Ini sains-nya."</div>
+    <div class="back-bar"></div>
+    <div class="back-cta">Konten neurosains untuk karir &amp; performa kerja, setiap hari:</div>
+    <div class="back-handle">@neurodaily.id</div>
+
+    <div style="position:absolute;bottom:12mm;left:0;right:0;text-align:center">
+      <div style="font-family:'DM Serif Display',serif;font-style:italic;font-size:14pt;color:#1A6B5A">Neuro Daily</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:7.5pt;letter-spacing:.16em;text-transform:uppercase;color:#F5F3EE;opacity:.3;margin-top:2mm;font-weight:500">Brain Kit for Work · Vol. 1</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

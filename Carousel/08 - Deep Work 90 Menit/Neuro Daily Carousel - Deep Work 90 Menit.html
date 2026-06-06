@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Neuro Daily — Deep Work 90 Menit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#1a1a1a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+  body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px}
+
+  .topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#9aa39f;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px}
+  .topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+
+  .stage{position:relative;width:min(440px,92vw);aspect-ratio:4/5}
+  .viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04)}
+  .track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+  .slide{flex:0 0 100%;height:100%;display:flex;flex-direction:column;padding:36px 32px 28px;position:relative;overflow:hidden}
+
+  .bg-dark{background:var(--forest);color:var(--parchment)}
+  .bg-light{background:var(--parchment);color:var(--forest)}
+  .bg-teal{background:var(--teal);color:var(--parchment)}
+
+  .slide .header{display:flex;justify-content:space-between;align-items:center;font-family:'DM Sans',sans-serif;font-weight:500;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.85}
+  .bg-light .header{opacity:.7}
+  .pillar-tag{display:inline-flex;align-items:center;gap:6px}
+  .pillar-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--green)}
+  .bg-light .pillar-tag::before{background:var(--teal)}
+  .slide .footer{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;opacity:.55;text-transform:uppercase}
+
+  /* ── SLIDE 1 ── */
+  .s1 .body{margin-top:auto;margin-bottom:auto}
+  .s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:46px;line-height:1.05;letter-spacing:-.01em;color:var(--parchment)}
+  .s1 h1 em{color:var(--amber);font-style:italic}
+  .s1 .lead{margin-top:18px;font-size:13px;line-height:1.7;opacity:.7;max-width:300px}
+  .s1 .swipe{position:absolute;bottom:24px;right:32px;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+  .s1 .arrow{display:inline-block;animation:nudge 1.6s ease-in-out infinite}
+  @keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+  .static-bg{position:absolute;inset:0;pointer-events:none;opacity:.045}
+
+  /* ── SLIDE 2 — MYTH BUST ── */
+  .s2-diag{justify-content:space-between}
+  .s2-diag .eyebrow{margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);opacity:.8}
+  .s2-diag h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:32px;line-height:1.13;letter-spacing:-.01em;margin-top:10px;color:var(--forest)}
+  .s2-diag h2 em{font-style:italic;color:var(--teal)}
+  .s2-diag .desc{margin-top:14px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.8;max-width:340px}
+  .s2-diag .pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+  .s2-diag .pill{padding:7px 13px;border-radius:99px;font-size:11px;font-weight:500;letter-spacing:.06em}
+  .pill-amber{background:rgba(201,169,110,.15);color:#9a7940;border:1px solid rgba(201,169,110,.3)}
+  .pill-teal{background:rgba(26,107,90,.1);color:var(--teal);border:1px solid rgba(26,107,90,.2)}
+  .pill-red{background:rgba(224,112,112,.1);color:#c05050;border:1px solid rgba(224,112,112,.25)}
+  .s2-diag .note{margin-top:14px;font-size:11.5px;line-height:1.6;color:var(--forest);opacity:.6;border-top:1px solid rgba(13,46,40,.1);padding-top:12px}
+
+  /* ── SLIDE 3 — MECHANISM ── */
+  .s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:26px;line-height:1.24;letter-spacing:-.01em;margin-top:20px}
+  .s3 h2 em{font-style:italic;color:var(--amber)}
+  .s3 .term{margin-top:16px;padding:14px 16px;border-radius:10px;background:rgba(94,201,167,.08);border-left:2px solid var(--green)}
+  .s3 .term .name{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+  .s3 .term .def{margin-top:7px;font-size:12.5px;line-height:1.65;color:var(--parchment);opacity:.92}
+  .s3 .priority-list{margin-top:14px;display:flex;flex-direction:column;gap:6px}
+  .s3 .prio-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:7px}
+  .prio-high{background:rgba(94,201,167,.1);border:1px solid rgba(94,201,167,.18)}
+  .prio-med{background:rgba(201,169,110,.08);border:1px solid rgba(201,169,110,.15)}
+  .prio-low{background:rgba(224,112,112,.08);border:1px solid rgba(224,112,112,.15)}
+  .s3 .prio-num{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;width:18px;flex-shrink:0}
+  .prio-high .prio-num{color:var(--green)}
+  .prio-med  .prio-num{color:var(--amber)}
+  .prio-low  .prio-num{color:#e07070}
+  .s3 .prio-text{font-size:11px;line-height:1.4;color:var(--parchment);opacity:.85}
+  .s3 .source{margin-top:10px;font-size:10.5px;color:var(--parchment);opacity:.5;line-height:1.55}
+
+  /* ── SLIDE 4 — COMPARISON VISUAL ── */
+  .s4-comp h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:22px;line-height:1.28;margin-top:14px;color:var(--forest)}
+  .s4-comp h2 em{font-style:italic;color:var(--teal)}
+  .comp-row{margin-top:18px;display:flex;flex-direction:column;gap:14px}
+  .comp-item{background:rgba(255,255,255,.6);border:1px solid rgba(13,46,40,.1);border-radius:10px;padding:14px 16px}
+  .comp-item.highlight{background:rgba(26,107,90,.06);border-color:rgba(26,107,90,.2)}
+  .comp-label{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+  .comp-item .comp-label.muted{color:#9a7940}
+  .comp-bar-track{height:12px;border-radius:6px;background:rgba(13,46,40,.08);overflow:hidden;margin-bottom:6px}
+  .comp-fill{height:100%;border-radius:6px;transition:width .4s}
+  .fill-high{background:var(--teal);width:88%}
+  .fill-low{background:rgba(201,169,110,.5);width:38%}
+  .comp-desc{font-size:11px;line-height:1.5;color:var(--forest);opacity:.7}
+  .comp-desc strong{font-weight:500;opacity:1;color:var(--forest)}
+  .s4-comp .conclusion{margin-top:14px;padding:10px 13px;border-radius:7px;background:rgba(26,107,90,.06);border:1px solid rgba(26,107,90,.18);font-size:11.5px;line-height:1.55;color:var(--forest);opacity:.85}
+  .s4-comp .conclusion strong{color:var(--teal);font-weight:500}
+
+  /* ── SLIDE 5 — CONSEQUENCE ── */
+  .s5{padding-top:28px}
+  .s5 .stat-big{margin-top:auto;display:flex;align-items:baseline;gap:12px}
+  .s5 .stat-big .n{font-family:'DM Serif Display',serif;font-size:86px;line-height:.85;color:var(--parchment);letter-spacing:-.03em}
+  .s5 .stat-big .n em{color:var(--amber);font-style:italic}
+  .s5 .stat-big .u{font-family:'DM Sans';font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);max-width:130px;line-height:1.5}
+  .s5 .copy{margin-top:16px;font-size:13px;line-height:1.65;opacity:.85;max-width:340px}
+  .s5 .copy strong{font-weight:500;color:var(--green)}
+  .s5 .math{margin-top:16px;padding:13px 16px;border:1px dashed rgba(94,201,167,.3);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);letter-spacing:.04em;line-height:1.85}
+
+  /* ── SLIDE 6 — STRATEGI ── */
+  .s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:28px;line-height:1.18;margin-top:22px;letter-spacing:-.01em}
+  .s6 h2 em{font-style:italic;color:var(--green)}
+  .s6 .ps{margin-top:14px;font-size:12.5px;line-height:1.65;opacity:.82;max-width:340px}
+  .s6 .steps{margin-top:14px;display:flex;flex-direction:column;gap:0}
+  .s6 .step{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(245,243,238,.07)}
+  .s6 .step:last-child{border-bottom:none}
+  .s6 .step-num{width:20px;height:20px;border-radius:50%;background:rgba(94,201,167,.15);color:var(--green);font-family:'JetBrains Mono',monospace;font-size:8.5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .s6 .step-title{font-size:11.5px;font-weight:500;color:var(--parchment);line-height:1.3;margin-bottom:2px}
+  .s6 .step-desc{font-size:10.5px;color:var(--parchment);opacity:.62;line-height:1.5}
+
+  /* ── SLIDE 7 — CTA ── */
+  .s7{justify-content:space-between}
+  .s7 .lead-q{font-family:'DM Serif Display',serif;font-size:26px;line-height:1.24;letter-spacing:-.01em;margin-top:26px;color:var(--forest)}
+  .s7 .lead-q em{font-style:italic;color:var(--teal)}
+  .s7 .ask{margin-top:13px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.7;max-width:300px}
+  .s7 .actions{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+  .s7 .btn{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border:1px solid rgba(13,46,40,.15);border-radius:10px;font-size:12.5px;color:var(--forest)}
+  .s7 .btn .ic{width:18px;height:18px;color:var(--teal);flex-shrink:0}
+  .s7 .signoff{margin-top:18px;padding-top:14px;border-top:1px solid rgba(13,46,40,.12)}
+  .s7 .tag{font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;color:var(--teal);line-height:1.3}
+  .s7 .sub{margin-top:6px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--forest);opacity:.6;font-weight:500}
+
+  .dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+  .dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+  .dot.active{background:var(--green);width:22px}
+  .controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+  .controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:42px;height:42px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+  .controls button:hover{background:rgba(94,201,167,.12);border-color:rgba(94,201,167,.3)}
+  .controls button:disabled{opacity:.3;cursor:not-allowed}
+  .counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 8px}
+
+  .caption-panel{width:min(440px,92vw);margin-top:32px;padding:22px 22px 24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:13px;line-height:1.7}
+  .caption-panel .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+  .caption-panel .char-count{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--amber);margin-top:10px;opacity:.7}
+  .caption-panel p{margin-bottom:10px}
+  .caption-panel p:last-child{margin-bottom:0}
+  .caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:14px;display:block;line-height:1.7}
+  /* ── EXPORT MODE ── */
+  html.export-html{width:440px!important;height:550px!important;min-height:0!important;overflow:hidden!important;margin:0!important;padding:0!important;background:#0D2E28}
+  body.export-mode{width:440px!important;height:550px!important;min-height:0!important;overflow:hidden!important;padding:0!important;margin:0!important;background:#0D2E28;display:block!important}
+  body.export-mode .topbar,body.export-mode .caption-panel,body.export-mode .dots,body.export-mode .controls{display:none!important}
+  body.export-mode .stage{position:relative!important;width:440px!important;height:550px!important;aspect-ratio:auto!important}
+  body.export-mode .viewport{position:absolute!important;inset:0!important;border-radius:0!important;box-shadow:none!important;overflow:hidden!important}
+  body.export-mode .track{position:absolute!important;top:0!important;left:0!important;height:100%!important;display:flex!important}
+  body.export-mode .slide{height:550px!important;min-height:550px!important;flex-shrink:0!important}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Peak Performance · P2 ]</span>
+</div>
+
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- ── SLIDE 1 — HOOK ── -->
+      <section class="slide bg-dark s1" data-screen-label="01 Hook">
+        <!-- Ultradian cycle SVG: two arcs showing 90-min rhythm -->
+        <svg class="static-bg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <!-- Cycle arc 1 — peak -->
+          <path d="M40 380 Q100 120 200 130 Q300 120 360 380" fill="none" stroke="rgba(94,201,167,.55)" stroke-width="1.5"/>
+          <!-- Cycle arc 2 — second wave fading -->
+          <path d="M40 390 Q100 200 200 210 Q300 200 360 390" fill="none" stroke="rgba(94,201,167,.25)" stroke-width="1" stroke-dasharray="4,4"/>
+          <!-- 90-min marker -->
+          <line x1="200" y1="125" x2="200" y2="400" stroke="rgba(201,169,110,.2)" stroke-width="1" stroke-dasharray="3,6"/>
+          <text x="205" y="160" font-family="JetBrains Mono" font-size="8" fill="rgba(201,169,110,.45)" letter-spacing="1">90 mnt</text>
+          <!-- Labels -->
+          <text x="60" y="105" font-family="DM Sans" font-size="9" fill="rgba(94,201,167,.55)">Fokus Tinggi</text>
+          <text x="265" y="105" font-family="DM Sans" font-size="9" fill="rgba(94,201,167,.35)">Siklus Baru</text>
+          <!-- Crash zone -->
+          <path d="M200 130 Q230 300 360 380" fill="rgba(201,169,110,.04)" stroke="none"/>
+          <text x="265" y="330" font-family="DM Sans" font-size="8" fill="rgba(201,169,110,.4)">↓ kualitas</text>
+        </svg>
+
+        <div class="header">
+          <span class="pillar-tag">Peak Performance · P2</span>
+          <span>01 / 07</span>
+        </div>
+        <div class="body">
+          <h1>Otak kamu bukan mesin. Dia punya <em>ritme.</em></h1>
+          <p class="lead">Dan sistem kerja modern sudah memaksamu melawannya setiap hari — tanpa kamu sadari.</p>
+        </div>
+        <div class="swipe">
+          <span>Geser</span><span class="arrow">→</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 2 — MYTH BUST ── -->
+      <section class="slide bg-light s2-diag" data-screen-label="02 Mitos">
+        <div class="header">
+          <span class="pillar-tag">Mitosnya</span>
+          <span>02 / 07</span>
+        </div>
+        <div class="eyebrow">Myth Buster · Formula A</div>
+        <h2>Kerja <em>8 jam penuh</em> tidak menghasilkan 8 jam produktivitas.</h2>
+        <p class="desc">Otak manusia tidak dirancang untuk fokus linier sepanjang hari. Sejak 1960-an, riset sudah menunjukkan ini — tapi sistem kerja modern mengabaikannya dan menyebut yang beristirahat sebagai "kurang produktif."</p>
+        <div class="pill-row">
+          <span class="pill pill-red">Mitos: kerja = jam</span>
+          <span class="pill pill-teal">Fakta: kerja = siklus</span>
+          <span class="pill pill-amber">Kualitas &gt; Kuantitas waktu</span>
+        </div>
+        <p class="note">Nathaniel Kleitman (1960, penemu tidur REM) menemukan bahwa ritme ultradian 90 menit berlanjut bahkan saat seseorang terjaga dan bekerja. Diabaikan selama 60 tahun oleh dunia korporat.</p>
+        <div class="footer">
+          <span>NEURO DAILY</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 3 — MECHANISM ── -->
+      <section class="slide bg-dark s3" data-screen-label="03 Mekanisme">
+        <div class="header">
+          <span class="pillar-tag">Yang terjadi di otakmu</span>
+          <span>03 / 07</span>
+        </div>
+        <h2>Ultradian rhythm: otak punya siklus alami <em>90 menit.</em></h2>
+        <div class="term">
+          <div class="name">Ultradian Rhythm</div>
+          <div class="def">Siklus biologis sub-sirkadian yang berulang setiap 90–120 menit, mengatur gelombang fokus, kewaspadaan, dan kapasitas kognitif — bahkan saat kamu sedang terjaga dan bekerja. Bukan pilihan, ini biologi.</div>
+        </div>
+        <div class="priority-list">
+          <div class="prio-item prio-high">
+            <span class="prio-num">0–90</span>
+            <span class="prio-text">Fase fokus tinggi — prefrontal cortex optimal, output berkualitas</span>
+          </div>
+          <div class="prio-item prio-med">
+            <span class="prio-num">~90m</span>
+            <span class="prio-text">Sinyal transisi — otak kirim sinyal istirahat (gelisah, sulit konsentrasi)</span>
+          </div>
+          <div class="prio-item prio-low">
+            <span class="prio-num">+90m</span>
+            <span class="prio-text">Fase paksa — kortisol naik, kualitas keputusan turun, error meningkat</span>
+          </div>
+        </div>
+        <p class="source">Kleitman (1960) · Peretz Lavie (1982): Basic Rest-Activity Cycle · Cal Newport (2016): Deep Work — Rules for Focused Success</p>
+      </section>
+
+      <!-- ── SLIDE 4 — PERBANDINGAN VISUAL ── -->
+      <section class="slide bg-light s4-comp" data-screen-label="04 Perbandingan">
+        <div class="header">
+          <span class="pillar-tag">Perbandingannya</span>
+          <span>04 / 07</span>
+        </div>
+        <h2>Deep work 90 menit <em>vs</em> 8 jam multitasking.</h2>
+
+        <div class="comp-row">
+          <div class="comp-item highlight">
+            <div class="comp-label">Deep Work · 1 × 90 Menit</div>
+            <div class="comp-bar-track"><div class="comp-fill fill-high"></div></div>
+            <p class="comp-desc">Prefrontal cortex penuh aktif. <strong>Output berkualitas tinggi.</strong> Tidak ada task-switching cost. Satu pekerjaan selesai tuntas.</p>
+          </div>
+          <div class="comp-item">
+            <div class="comp-label muted">Multitasking · 8 Jam</div>
+            <div class="comp-bar-track"><div class="comp-fill fill-low"></div></div>
+            <p class="comp-desc">Rata-rata 15 kali task-switch per hari × 23 menit recovery = <strong>~5 jam kapasitas hilang.</strong> Sibuk, tapi output dangkal.</p>
+          </div>
+        </div>
+
+        <div class="conclusion">
+          Bukan soal <strong>berapa lama</strong> kamu kerja — tapi <strong>bagaimana</strong> kamu memanfaatkan siklus alami otak.
+        </div>
+
+        <div class="footer">
+          <span>04 — PERBANDINGAN</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 5 — CONSEQUENCE ── -->
+      <section class="slide bg-teal s5" data-screen-label="05 Dampak">
+        <div class="header">
+          <span class="pillar-tag" style="color:#fff">Realitanya</span>
+          <span>05 / 07</span>
+        </div>
+        <p class="copy" style="margin-top:24px">Otak manusia hanya mampu fokus berkualitas tinggi selama <strong>4–5 jam per hari.</strong> Sisanya adalah ilusi produktivitas — gerakan tanpa output yang benar-benar bermakna.</p>
+
+        <div class="stat-big">
+          <span class="n"><em>4–5</em></span>
+          <span class="u">jam fokus nyata maksimum per hari</span>
+        </div>
+
+        <div class="math">
+          8 jam kerja standar<br>
+          − ~5 jam task-switching & recovery<br>
+          − istirahat biologis yang diabaikan<br>
+          <span style="color:var(--amber)">────────────────────────</span><br>
+          Fokus nyata tersisa: <span style="color:#fff;font-weight:500">2–3 jam</span><br>
+          <span style="opacity:.6;font-size:10px">*Anders Ericsson (1993): deliberate practice peak performers ≤4 jam/hari</span>
+        </div>
+
+        <div class="footer">
+          <span>05 — DAMPAK</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 6 — STRATEGI ── -->
+      <section class="slide bg-dark s6" data-screen-label="06 Strategi">
+        <div class="header">
+          <span class="pillar-tag">Cara menggunakannya</span>
+          <span>06 / 07</span>
+        </div>
+        <h2>Bekerja <em>dengan ritme otak</em> — bukan melawannya.</h2>
+        <p class="ps">Ini bukan tentang kerja lebih sedikit. Ini tentang menyelaraskan pekerjaan terpentingmu dengan siklus fokus alami otakmu.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <div class="step-title">Blok 90 menit — satu task, nol interupsi</div>
+              <div class="step-desc">HP silent, notifikasi mati, satu tab browser saja. Biarkan ultradian rhythm bekerja penuh tanpa gangguan. Bukan multitasking, bukan "sambil cek email."</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <div class="step-title">Istirahat 15–20 menit setelah siklus</div>
+              <div class="step-desc">Bukan scroll media sosial — itu bukan istirahat untuk otak. Jalan sebentar, mata istirahat dari layar, atau diam. Default mode network butuh ruang untuk aktif.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <div class="step-title">Jadwalkan deep work di jam peak kamu</div>
+              <div class="step-desc">Untuk sebagian besar orang: 2–3 jam pertama setelah bangun, sebelum cortisol siang drop. Jangan isi slot terbaikmu dengan rapat atau email.</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer">
+          <span>06 — STRATEGI</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 7 — CTA ── -->
+      <section class="slide bg-light s7" data-screen-label="07 CTA">
+        <div class="header">
+          <span class="pillar-tag">Tantangan untuk kamu</span>
+          <span>07 / 07</span>
+        </div>
+
+        <div>
+          <p class="lead-q">Besok pagi — coba <em>90 menit pertama</em> tanpa HP dan tanpa multitasking.</p>
+          <p class="ask">Lapor hasilnya di komentar. Satu siklus saja dulu. Kebanyakan orang yang mencoba tidak bisa kembali ke cara lama.</p>
+        </div>
+
+        <div class="actions">
+          <div class="btn">
+            <span>Simpan — reminder untuk deep work besok</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+          </div>
+          <div class="btn">
+            <span>Kirim ke rekan yang selalu bangga multitasking</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </div>
+
+        <div class="signoff">
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="1.5">
+              <path d="M4 14c0-5 3-8 8-8 4 0 6 2 6 5 0 2-1.5 3.5-4 3.5-2 0-3 1-3 2.5 0 1.5 1 2.5 2.5 2.5"/>
+              <circle cx="15" cy="9" r="1" fill="#1A6B5A"/>
+            </svg>
+            <span class="tag">Neuro Daily</span>
+          </div>
+          <div class="sub">Kerja lebih cerdas, bukan lebih keras. Ini sains-nya.</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<!-- CAPTION PANEL -->
+<div class="caption-panel">
+  <div class="label">Caption · Formula A — Myth Buster · ≤ 500 karakter</div>
+  <p><strong style="color:var(--parchment)">Otak kamu bukan mesin. Dia punya ritme.</strong></p>
+  <p>Satu sesi deep work 90 menit menghasilkan output yang lebih berkualitas dari 8 jam multitasking — ini bukan opini, ini ultradian rhythm.</p>
+  <p>Otak manusia bekerja dalam siklus fokus 90 menit. Lewat itu, kualitas keputusan turun, error naik — meski kamu masih "terasa" bekerja.</p>
+  <p>Besok pagi, coba 90 menit pertama tanpa HP. Lapor hasilnya.</p>
+  <span class="hash">#NeuroDaily #NeurosainsKerja #PeakPerformance #DeepWork #FokusKerja #Produktivitas</span>
+  <div class="char-count" id="charCount"></div>
+</div>
+
+<div class="controls">
+  <button id="prev" aria-label="Sebelumnya">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next" aria-label="Berikutnya">›</button>
+</div>
+
+<script>
+  const track=document.getElementById('track');
+  const dotsEl=document.getElementById('dots');
+  const counter=document.getElementById('counter');
+  const prevBtn=document.getElementById('prev');
+  const nextBtn=document.getElementById('next');
+  const total=track.children.length;
+  let i=0;
+  for(let k=0;k<total;k++){
+    const b=document.createElement('button');
+    b.className='dot'+(k===0?' active':'');
+    b.addEventListener('click',()=>go(k));
+    dotsEl.appendChild(b);
+  }
+  const dots=[...dotsEl.children];
+  function go(n){
+    i=Math.max(0,Math.min(total-1,n));
+    track.style.transform=`translateX(-${i*100}%)`;
+    dots.forEach((d,k)=>d.classList.toggle('active',k===i));
+    counter.textContent=`${i+1} / ${total}`;
+    prevBtn.disabled=i===0;
+    nextBtn.disabled=i===total-1;
+  }
+  prevBtn.addEventListener('click',()=>go(i-1));
+  nextBtn.addEventListener('click',()=>go(i+1));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight')go(i+1);
+    if(e.key==='ArrowLeft')go(i-1);
+  });
+  let sx=0,dx=0,dragging=false;
+  const vp=document.querySelector('.viewport');
+  vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;dragging=true;dx=0});
+  vp.addEventListener('touchmove',e=>{if(!dragging)return;dx=e.touches[0].clientX-sx});
+  vp.addEventListener('touchend',()=>{
+    if(!dragging)return;
+    if(Math.abs(dx)>40)go(i+(dx<0?1:-1));
+    dragging=false;
+  });
+
+  const captionText=`Otak kamu bukan mesin. Dia punya ritme.
+
+Satu sesi deep work 90 menit menghasilkan output yang lebih berkualitas dari 8 jam multitasking — ini bukan opini, ini ultradian rhythm.
+
+Otak manusia bekerja dalam siklus fokus 90 menit. Lewat itu, kualitas keputusan turun, error naik — meski kamu masih "terasa" bekerja.
+
+Besok pagi, coba 90 menit pertama tanpa HP. Lapor hasilnya.
+
+#NeuroDaily #NeurosainsKerja #PeakPerformance #DeepWork #FokusKerja #Produktivitas`;
+
+  const cc=document.getElementById('charCount');
+  const len=captionText.length;
+  cc.textContent=`${len} / 500 karakter ${len<=500?'✓':'⚠ Melebihi batas Threads'}`;
+  if(len>500)cc.style.color='#e05252';
+
+  const params=new URLSearchParams(location.search);
+  const slideParam=params.get('slide');
+  if(slideParam){
+    document.body.classList.add('export-mode');
+    go(parseInt(slideParam)-1);
+  } else {
+    go(0);
+  }
+</script>
+</body>
+</html>

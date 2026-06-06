@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brain Protocol Workbook — Neuro Daily</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest:    #0D2E28;
+    --teal:      #1A6B5A;
+    --green:     #5EC9A7;
+    --parchment: #F5F3EE;
+    --amber:     #C9A96E;
+    --red:       #E07070;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #111E1C;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    color: var(--parchment);
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(13,46,40,.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(94,201,167,.12);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px; height: 56px;
+  }
+  .nav-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px; color: var(--parchment); letter-spacing: .01em;
+  }
+  .nav-brand span { color: var(--green); }
+  .nav-tabs {
+    display: flex; gap: 4px;
+  }
+  .nav-tab {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+    color: rgba(245,243,238,.45); padding: 6px 14px; border-radius: 20px;
+    cursor: pointer; border: none; background: transparent;
+    transition: all .2s;
+  }
+  .nav-tab:hover { color: var(--parchment); background: rgba(94,201,167,.08); }
+  .nav-tab.active { color: var(--forest); background: var(--green); }
+  .nav-progress {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--amber); letter-spacing: .08em;
+  }
+
+  /* ── LAYOUT ── */
+  .wrap { max-width: 780px; margin: 0 auto; padding: 80px 24px 80px; }
+
+  /* ── SECTIONS ── */
+  .section { display: none; }
+  .section.active { display: block; animation: fadeIn .3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── COVER ── */
+  .cover {
+    min-height: calc(100vh - 56px);
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 60px 0;
+  }
+  .cover-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--green); margin-bottom: 20px;
+  }
+  .cover-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 5vw, 56px);
+    line-height: 1.1; color: var(--parchment);
+    margin-bottom: 8px;
+  }
+  .cover-title em { color: var(--green); font-style: italic; }
+  .cover-sub {
+    font-size: 17px; font-weight: 300; color: rgba(245,243,238,.55);
+    line-height: 1.6; margin-bottom: 40px; max-width: 520px;
+  }
+  .cover-divider {
+    width: 48px; height: 2px; background: var(--teal);
+    margin-bottom: 40px;
+  }
+  .cover-how {
+    background: rgba(94,201,167,.06);
+    border: 1px solid rgba(94,201,167,.15);
+    border-radius: 12px; padding: 28px 32px; max-width: 560px;
+  }
+  .cover-how-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--green); margin-bottom: 16px;
+  }
+  .cover-how ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .cover-how li {
+    display: flex; gap: 12px; align-items: flex-start;
+    font-size: 14px; line-height: 1.6; color: rgba(245,243,238,.75);
+  }
+  .cover-how li::before {
+    content: '→'; color: var(--green); font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; flex-shrink: 0; margin-top: 1px;
+  }
+  .cover-babs {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    margin-top: 40px;
+  }
+  .cover-bab-card {
+    background: rgba(245,243,238,.04); border: 1px solid rgba(245,243,238,.08);
+    border-radius: 10px; padding: 20px; cursor: pointer;
+    transition: all .2s;
+  }
+  .cover-bab-card:hover {
+    background: rgba(94,201,167,.08); border-color: rgba(94,201,167,.2);
+    transform: translateY(-2px);
+  }
+  .cbc-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .12em; color: var(--amber);
+    margin-bottom: 8px;
+  }
+  .cbc-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px; line-height: 1.3; color: var(--parchment);
+    margin-bottom: 6px;
+  }
+  .cbc-sub { font-size: 12px; color: rgba(245,243,238,.60); line-height: 1.5; }
+
+  /* ── PROTOCOL PAGES ── */
+  .proto-header { margin-bottom: 40px; }
+  .proto-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 12px;
+  }
+  .proto-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    line-height: 1.15; color: var(--parchment); margin-bottom: 8px;
+  }
+  .proto-title em { color: var(--green); font-style: italic; }
+  .proto-concepts {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px;
+  }
+  .concept-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--green); background: rgba(94,201,167,.1);
+    border: 1px solid rgba(94,201,167,.2);
+    padding: 4px 10px; border-radius: 20px;
+  }
+
+  /* Science brief */
+  .science-block {
+    background: rgba(94,201,167,.06);
+    border-left: 3px solid var(--teal);
+    border-radius: 0 10px 10px 0;
+    padding: 20px 24px; margin-bottom: 36px;
+  }
+  .science-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--green); margin-bottom: 10px;
+  }
+  .science-text {
+    font-size: 14px; line-height: 1.75; color: rgba(245,243,238,.8);
+  }
+  .science-text strong { color: var(--parchment); font-weight: 500; }
+
+  /* Section headers */
+  .block-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .block-title::after {
+    content: ''; flex: 1; height: 1px;
+    background: rgba(201,169,110,.2);
+  }
+
+  /* ── CHECKLIST ── */
+  .checklist { display: flex; flex-direction: column; gap: 0; margin-bottom: 40px; }
+  .check-group-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+    color: rgba(245,243,238,.58); padding: 10px 0 6px;
+    border-bottom: 1px solid rgba(245,243,238,.06); margin-bottom: 4px;
+  }
+  .check-item {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 12px 16px; border-radius: 8px;
+    cursor: pointer; transition: background .15s;
+    margin: 2px 0;
+  }
+  .check-item:hover { background: rgba(245,243,238,.04); }
+  .check-item.checked { opacity: .55; }
+  .check-item.checked .check-label { text-decoration: line-through; }
+  .check-box {
+    width: 20px; height: 20px; border-radius: 5px; flex-shrink: 0;
+    border: 1.5px solid rgba(94,201,167,.4);
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s; margin-top: 1px;
+    pointer-events: none;
+  }
+  .check-item.checked .check-box {
+    background: var(--teal); border-color: var(--teal);
+  }
+  .check-tick { display: none; }
+  .check-item.checked .check-tick { display: block; }
+  .check-content { flex: 1; }
+  .check-label {
+    font-size: 14px; font-weight: 400; color: var(--parchment);
+    line-height: 1.5; margin-bottom: 3px;
+  }
+  .check-desc {
+    font-size: 12px; color: rgba(245,243,238,.62); line-height: 1.6;
+  }
+
+  /* ── TRACKER TABLE ── */
+  .tracker-wrap { margin-bottom: 40px; overflow-x: auto; }
+  .tracker {
+    width: 100%; border-collapse: collapse;
+    font-size: 13px;
+  }
+  .tracker th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--green); text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(94,201,167,.2);
+    background: rgba(94,201,167,.05);
+  }
+  .tracker td {
+    padding: 0;
+    border-bottom: 1px solid rgba(245,243,238,.06);
+    vertical-align: middle;
+  }
+  .tracker tr:last-child td { border-bottom: none; }
+  .tracker td input[type="text"],
+  .tracker td input[type="number"],
+  .tracker td select {
+    width: 100%; height: 40px;
+    background: transparent; border: none; outline: none;
+    color: var(--parchment); font-family: 'DM Sans', sans-serif;
+    font-weight: 300; font-size: 13px; padding: 0 14px;
+    transition: background .15s;
+  }
+  .tracker td input:focus,
+  .tracker td select:focus { background: rgba(94,201,167,.06); }
+  .tracker td select {
+    -webkit-appearance: none; appearance: none; cursor: pointer;
+  }
+  .tracker td select option { background: var(--forest); }
+  .add-row-btn {
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--green); background: rgba(94,201,167,.08);
+    border: 1px solid rgba(94,201,167,.2); border-radius: 6px;
+    padding: 8px 16px; cursor: pointer; transition: all .15s;
+  }
+  .add-row-btn:hover { background: rgba(94,201,167,.15); }
+
+  /* ── REFLECTION ── */
+  .reflection-block { margin-bottom: 40px; }
+  .reflection-prompt {
+    font-size: 14px; color: rgba(245,243,238,.6);
+    line-height: 1.7; margin-bottom: 10px;
+    padding-left: 14px;
+    border-left: 2px solid rgba(245,243,238,.15);
+  }
+  .reflection-textarea {
+    width: 100%; min-height: 120px;
+    background: rgba(245,243,238,.04);
+    border: 1px solid rgba(245,243,238,.1);
+    border-radius: 10px; padding: 16px 18px;
+    color: var(--parchment); font-family: 'DM Sans', sans-serif;
+    font-weight: 300; font-size: 14px; line-height: 1.7;
+    resize: vertical; outline: none; transition: border-color .2s;
+  }
+  .reflection-textarea::placeholder { color: rgba(245,243,238,.25); }
+  .reflection-textarea:focus { border-color: rgba(94,201,167,.3); }
+
+  /* ── WORKSHEET ── */
+  .worksheet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 40px; }
+  .worksheet-cell {
+    background: rgba(245,243,238,.04);
+    border: 1px solid rgba(245,243,238,.08);
+    border-radius: 10px; padding: 20px;
+  }
+  .wc-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 10px;
+  }
+  .wc-input {
+    width: 100%; background: transparent; border: none;
+    border-bottom: 1px solid rgba(245,243,238,.15); outline: none;
+    color: var(--parchment); font-family: 'DM Sans', sans-serif;
+    font-weight: 300; font-size: 14px; padding: 6px 0;
+    transition: border-color .2s;
+  }
+  .wc-input:focus { border-color: rgba(94,201,167,.4); }
+  .wc-textarea {
+    width: 100%; min-height: 90px; background: transparent;
+    border: none; border-bottom: 1px solid rgba(245,243,238,.15);
+    outline: none; resize: none;
+    color: var(--parchment); font-family: 'DM Sans', sans-serif;
+    font-weight: 300; font-size: 14px; line-height: 1.65; padding: 6px 0;
+    transition: border-color .2s;
+  }
+  .wc-textarea:focus { border-color: rgba(94,201,167,.4); }
+  .wc-textarea::placeholder,
+  .wc-input::placeholder { color: rgba(245,243,238,.2); }
+  .worksheet-full {
+    background: rgba(245,243,238,.04);
+    border: 1px solid rgba(245,243,238,.08);
+    border-radius: 10px; padding: 20px; margin-bottom: 12px;
+  }
+
+  /* ── ACTION BOX ── */
+  .action-box {
+    background: rgba(201,169,110,.08);
+    border: 1px solid rgba(201,169,110,.2);
+    border-radius: 10px; padding: 22px 26px;
+    margin-top: 40px;
+  }
+  .action-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 10px;
+  }
+  .action-text {
+    font-size: 14px; line-height: 1.75; color: rgba(245,243,238,.8);
+  }
+
+  /* ── NAV FOOTER ── */
+  .section-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 60px; padding-top: 24px;
+    border-top: 1px solid rgba(245,243,238,.08);
+  }
+  .snav-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--green); background: rgba(94,201,167,.08);
+    border: 1px solid rgba(94,201,167,.2); border-radius: 6px;
+    padding: 10px 20px; cursor: pointer; transition: all .15s;
+  }
+  .snav-btn:hover { background: rgba(94,201,167,.18); }
+  .snav-btn:disabled { opacity: .25; pointer-events: none; }
+  .snav-center {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: .12em; color: rgba(245,243,238,.3);
+  }
+
+  /* ── PROGRESS BAR ── */
+  .proto-progress {
+    height: 3px; background: rgba(245,243,238,.08);
+    border-radius: 2px; margin-bottom: 36px; overflow: hidden;
+  }
+  .proto-progress-fill {
+    height: 100%; background: var(--teal); border-radius: 2px;
+    transition: width .4s ease;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    .nav, .section-nav, .add-row-btn, .snav-btn { display: none !important; }
+    body { background: white; color: var(--forest); }
+    .section { display: block !important; }
+    .wrap { padding: 0; }
+  }
+
+  /* ── MOBILE BOTTOM NAV ── */
+  .mobile-nav {
+    display: none;
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+    background: rgba(13,46,40,.97);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(94,201,167,.15);
+    padding: 12px 20px;
+    align-items: center; justify-content: space-between;
+    box-sizing: border-box;
+    gap: 12px;
+  }
+  .mnav-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--green); background: rgba(94,201,167,.1);
+    border: 1px solid rgba(94,201,167,.25); border-radius: 8px;
+    padding: 10px 16px; cursor: pointer; transition: all .15s;
+    flex-shrink: 0;
+  }
+  .mnav-btn:disabled { opacity: .2; pointer-events: none; }
+  .mnav-btn:active { background: rgba(94,201,167,.25); }
+  .mnav-center {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: .08em;
+    color: rgba(245,243,238,.55); text-align: center; flex: 1;
+  }
+  .mnav-center strong { color: var(--parchment); display: block; font-size: 12px; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 600px) {
+    .nav-tabs { display: none; }
+    .cover-babs { grid-template-columns: 1fr 1fr; }
+    .worksheet-grid { grid-template-columns: 1fr; }
+    .wrap { padding: 72px 16px 100px; }
+    .cover-how { padding: 20px 18px; }
+    .cover-sub { font-size: 15px; }
+    .nav { padding: 0 16px; }
+    .section-nav { display: none; }
+    .mobile-nav { display: flex; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAVIGATION ── -->
+<nav class="nav">
+  <div class="nav-brand">Neuro Daily <span>·</span> Brain Protocol Workbook</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="goTo(0)">Intro</button>
+    <button class="nav-tab" onclick="goTo(1)">01</button>
+    <button class="nav-tab" onclick="goTo(2)">02</button>
+    <button class="nav-tab" onclick="goTo(3)">03</button>
+    <button class="nav-tab" onclick="goTo(4)">04</button>
+    <button class="nav-tab" onclick="goTo(5)">05</button>
+    <button class="nav-tab" onclick="goTo(6)">06</button>
+  </div>
+  <div class="nav-progress" id="navProgress">0 / 0 selesai</div>
+</nav>
+
+<!-- ── MOBILE BOTTOM NAV ── -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="mnav-btn" id="mnavPrev" onclick="mnavGo(-1)" disabled>← Prev</button>
+  <div class="mnav-center">
+    <strong id="mnavTitle">Intro</strong>
+    <span id="mnavSub">Brain Protocol Workbook</span>
+  </div>
+  <button class="mnav-btn" id="mnavNext" onclick="mnavGo(1)">Next →</button>
+</div>
+
+<div class="wrap">
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SECTION 0 — COVER                           -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section active" id="sec-0">
+  <div class="cover">
+    <div class="cover-eyebrow">Neuro Daily · Brain Protocol Workbook</div>
+    <h1 class="cover-title">6 Protokol<br><em>Berbasis Sains</em><br>untuk Otak Kerjamu</h1>
+    <p class="cover-sub">Dari amygdala hijack saat presentasi sampai peak performance protocol — setiap BAB punya sistem yang bisa langsung kamu praktikkan.</p>
+    <div class="cover-divider"></div>
+    <div class="cover-how">
+      <div class="cover-how-title">Cara pakai workbook ini</div>
+      <ul>
+        <li>Kerjakan satu BAB per minggu — jangan semua sekaligus. Otak butuh waktu untuk internalisasi.</li>
+        <li>Checklist dan catatan kamu tersimpan otomatis di browser ini. Tidak perlu buat akun.</li>
+        <li>Tiap BAB punya protokol + tracker + refleksi. Ketiganya saling melengkapi.</li>
+        <li>Setelah selesai satu BAB, kamu bisa print halaman itu sebagai referensi.</li>
+      </ul>
+    </div>
+    <div class="cover-babs">
+      <div class="cover-bab-card" onclick="goTo(1)">
+        <div class="cbc-num">BAB 01</div>
+        <div class="cbc-title">Presentation Confidence Protocol</div>
+        <div class="cbc-sub">Amygdala Hijack · Exposure Training</div>
+      </div>
+      <div class="cover-bab-card" onclick="goTo(2)">
+        <div class="cbc-num">BAB 02</div>
+        <div class="cbc-title">Deep Focus Protocol</div>
+        <div class="cbc-sub">Attention Residue · Ultradian Block</div>
+      </div>
+      <div class="cover-bab-card" onclick="goTo(3)">
+        <div class="cbc-num">BAB 03</div>
+        <div class="cbc-title">Anti-Prokrastinasi Protocol</div>
+        <div class="cbc-sub">Limbic Friction · Dopamine Loop</div>
+      </div>
+      <div class="cover-bab-card" onclick="goTo(4)">
+        <div class="cbc-num">BAB 04</div>
+        <div class="cbc-title">Recovery Protocol</div>
+        <div class="cbc-sub">Mode Survival · Allostatic Overload</div>
+      </div>
+      <div class="cover-bab-card" onclick="goTo(5)">
+        <div class="cbc-num">BAB 05</div>
+        <div class="cbc-title">Career Decision Protocol</div>
+        <div class="cbc-sub">Loss Aversion · Anchoring Bias</div>
+      </div>
+      <div class="cover-bab-card" onclick="goTo(6)">
+        <div class="cbc-num">BAB 06</div>
+        <div class="cbc-title">Peak Performance Blueprint</div>
+        <div class="cbc-sub">Circadian Rhythm · Chronotype</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SECTION 1 — BAB 01                          -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section" id="sec-1">
+  <div class="proto-progress"><div class="proto-progress-fill" id="prog-1" style="width:0%"></div></div>
+  <div class="proto-header">
+    <div class="proto-num">BAB 01 · Presentation Confidence Protocol</div>
+    <h2 class="proto-title">Amygdala hijack bisa <em>dilatih ulang</em> — bukan dihilangkan, tapi dikelola.</h2>
+    <div class="proto-concepts">
+      <span class="concept-tag">Amygdala Hijack</span>
+      <span class="concept-tag">Prefrontal Cortex</span>
+      <span class="concept-tag">Exposure Therapy</span>
+      <span class="concept-tag">Physiological Sigh</span>
+    </div>
+  </div>
+
+  <div class="science-block">
+    <div class="science-label">Sains di baliknya</div>
+    <p class="science-text">Saat kamu blank di depan audiens, itu bukan gugup biasa — itu <strong>amygdala hijack</strong>. Otakmu membaca tatapan orang banyak sebagai <em>social evaluative threat</em> dan memblokir prefrontal cortex — bagian yang mengelola logika, memori, dan bicara terstruktur. Latihan sendirian tidak cukup karena memori terbentuk dalam kondisi "aman" yang berbeda secara neurologis dari kondisi di depan audiens nyata. Solusinya bukan latihan lebih keras — tapi latihan dengan cara yang benar: <strong>exposure nyata yang bertahap.</strong> (Goleman, 1995; LeDoux, NYU; Balban et al., Cell Reports Medicine, 2023)</p>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div class="block-title">Pre-Presentation Protocol</div>
+  <div class="checklist" id="cl-1">
+
+    <div class="check-group-label">H-7 (Satu Minggu Sebelum)</div>
+    <div class="check-item" onclick="toggleCheck(this,'1-1')">
+      <div class="check-box"><svg class="check-tick" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1" stroke="#F5F3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-label">Jadwalkan satu sesi latihan di depan orang nyata</div>
+        <div class="check-desc">Minimal 2–3 orang. Bukan sendirian di depan cermin — ini yang secara neurologis membuat perbedaan. Informal pun cukup.</div>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this,'1-2')">
+      <div class="check-box"><svg class="check-tick" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1" stroke="#F5F3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-label">Mulai latihan physiological sigh setiap hari</div>
+        <div class="check-desc">Tarik napas panjang lewat hidung → tarikan pendek tambahan → hembus perlahan lewat mulut. 3× berturut-turut. Lakukan di luar konteks presentasi dulu — saat macet, tegang di rapat kecil.</div>
+      </div>
+    </div>
+
+    <div class="check-group-label">H-3 (Tiga Hari Sebelum)</div>
+    <div class="check-item" onclick="toggleCheck(this,'1-3')">
+      <div class="check-box"><svg class="check-tick" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1" stroke="#F5F3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-label">Lakukan sesi latihan di depan orang yang sudah dijadwalkan</div>
+        <div class="check-desc">Tidak harus sempurna. Tujuannya: beri data kepada amygdala bahwa situasi ini bisa dihadapi. Setiap exposure membangun kalibrasi ulang secara permanen.</div>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this,'1-4')">
+      <div class="check-box"><svg class="check-tick" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1" stroke="#F5F3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-label">Siapkan reappraisal statement kamu</div>
+        <div class="check-desc">Tulis kalimat: "Aku <em>bersemangat</em> untuk presentasi ini." — bukan "Aku tenang." Riset Brooks (2014) membuktikan reframing ini mengubah jalur neural yang aktif tanpa mengubah kondisi fisiologis.</div>
+      </div>
+    </div>
+
+    <div class="check-group-label">H-1 (Malam Sebelum)</div>
+    <div class="check-item" onclick="toggleCheck(this,'1-5')">
+      <div class="check-box"><svg class="check-tick" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1" stroke="#F5F3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-label">Review poin utama — bukan hafalkan kata per kata</div>
+        <div class="check-desc">Hafalan kata per kata justru lebih rentan amygdala hijack karena satu interupsi kecil merusak urutan. Pahami struktur logisnya — otak bisa rebuild kalimat dari pemahaman.</div>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this,'1-6')">
+      <div class="check-box"><svg class="check-tick" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1" stroke="#F5F3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-label">Tidur cukup — ini bukan opsional</div>
+        <div class="check-desc">Sleep deprivation memperbesar reaktivitas amygdala hingga 60% (Walker, 2017). Begadang latihan semalam penuh adalah trade-off yang secara neurologis merugikan.</div>
+      </div>
+    </div>
+
+    <div class="check-group-label">Hari-H (30 Menit Sebelum)</div>
+    <div class="check-item" onclick="toggleCheck(this,'1-7')">
+      <div class="check-box"><svg class="check-tick" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1" stroke="#F5F3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-label">Physiological sigh — 3× berturut-turut</div>
+        <div class="check-desc">Hembusan panjang lewat mulut mengaktifkan sistem saraf parasimpatik lebih kuat dari tarikan napas. Efek: denyut jantung turun lebih cepat dari teknik pernapasan lainnya.</div>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this,'1-8')">
+      <div class="check-box"><svg class="check-tick" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1" stroke="#F5F3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-label">Ucapkan reappraisal statement kamu</div>
+        <div class="check-desc">Dalam hati atau keras — "Aku bersemangat untuk ini." Konsisten dengan yang kamu siapkan di H-3.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRACKER -->
+  <div class="block-title">Exposure Training Log</div>
+  <div class="tracker-wrap">
+    <table class="tracker" id="tracker-1">
+      <thead>
+        <tr>
+          <th style="width:100px">Tanggal</th>
+          <th>Setting / Audiens</th>
+          <th style="width:80px">Jml orang</th>
+          <th style="width:110px">Anxiety (1–10)</th>
+          <th>Catatan</th>
+        </tr>
+      </thead>
+      <tbody id="tbody-1">
+        <tr>
+          <td><input type="text" placeholder="dd/mm" data-key="t1r1c1"></td>
+          <td><input type="text" placeholder="Presentasi ke tim kecil…" data-key="t1r1c2"></td>
+          <td><input type="number" min="1" placeholder="3" data-key="t1r1c3"></td>
+          <td><input type="number" min="1" max="10" placeholder="7" data-key="t1r1c4"></td>
+          <td><input type="text" placeholder="Apa yang dirasakan?" data-key="t1r1c5"></td>
+        </tr>
+        <tr>
+          <td><input type="text" placeholder="dd/mm" data-key="t1r2c1"></td>
+          <td><input type="text" placeholder="" data-key="t1r2c2"></td>
+          <td><input type="number" min="1" placeholder="" data-key="t1r2c3"></td>
+          <td><input type="number" min="1" max="10" placeholder="" data-key="t1r2c4"></td>
+          <td><input type="text" placeholder="" data-key="t1r2c5"></td>
+        </tr>
+        <tr>
+          <td><input type="text" placeholder="dd/mm" data-key="t1r3c1"></td>
+          <td><input type="text" placeholder="" data-key="t1r3c2"></td>
+          <td><input type="number" min="1" placeholder="" data-key="t1r3c3"></td>
+          <td><input type="number" min="1" max="10" placeholder="" data-key="t1r3c4"></td>
+          <td><input type="text" placeholder="" data-key="t1r3c5"></td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="add-row-btn" onclick="addRow('tbody-1','t1',5)">+ Tambah sesi</button>
+  </div>
+
+  <!-- REFLECTION -->
+  <div class="block-title">Post-Presentation Reflection</div>
+  <div class="reflection-block">
+    <p class="reflection-prompt">Di momen mana amygdala hijack paling terasa? (blank, suara gemetar, pikiran kosong)</p>
+    <textarea class="reflection-textarea" data-key="ref-1-1" placeholder="Tulis di sini…" oninput="saveField(this)"></textarea>
+  </div>
+  <div class="reflection-block">
+    <p class="reflection-prompt">Apa yang berbeda antara latihan dan situasi sebenarnya? Seberapa berbeda rasanya?</p>
+    <textarea class="reflection-textarea" data-key="ref-1-2" placeholder="Tulis di sini…" oninput="saveField(this)"></textarea>
+  </div>
+  <div class="reflection-block">
+    <p class="reflection-prompt">Satu hal konkret yang akan dicoba berbeda di presentasi berikutnya:</p>
+    <textarea class="reflection-textarea" data-key="ref-1-3" placeholder="Tulis di sini…" oninput="saveField(this)" style="min-height:80px"></textarea>
+  </div>
+
+  <div class="action-box">
+    <div class="action-label">Langkah pertama hari ini</div>
+    <div class="action-text">Latih physiological sigh sekarang — sebelum ada situasi penting. 3 tarikan napas, 3 hembusan panjang. Rasakan efeknya. Tujuannya: jadikan ini respons otomatis yang bisa diakses tanpa berpikir di momen yang benar-benar membutuhkan.</div>
+  </div>
+
+  <div class="section-nav">
+    <button class="snav-btn" onclick="goTo(0)" disabled>← Kembali</button>
+    <span class="snav-center">BAB 01 / 06</span>
+    <button class="snav-btn" onclick="goTo(2)">BAB 02 →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SECTION 2 — BAB 02                          -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section" id="sec-2">
+  <div class="proto-progress"><div class="proto-progress-fill" id="prog-2" style="width:0%"></div></div>
+  <div class="proto-header">
+    <div class="proto-num">BAB 02 · Deep Focus Protocol</div>
+    <h2 class="proto-title">Fokus penuh bukan soal willpower — tapi soal <em>sistem yang melindunginya.</em></h2>
+    <div class="proto-concepts">
+      <span class="concept-tag">Attention Residue</span>
+      <span class="concept-tag">Ultradian Rhythm</span>
+      <span class="concept-tag">Task-Switching Cost</span>
+      <span class="concept-tag">Notification Batching</span>
+    </div>
+  </div>
+
+  <div class="science-block">
+    <div class="science-label">Sains di baliknya</div>
+    <p class="science-text">Otak manusia tidak bisa multitasking — yang terjadi adalah <strong>task-switching</strong> yang menurunkan efisiensi kognitif hingga 40%. Setiap kali kamu berpindah task, otak meninggalkan <em>attention residue</em> yang butuh rata-rata <strong>23 menit</strong> untuk benar-benar clear. Pekerja kantoran rata-rata diinterupsi setiap 11 menit — artinya fokus penuh hampir tidak pernah terjadi kecuali kamu aktif melindunginya. Solusinya bukan lebih disiplin — tapi merancang lingkungan kerja yang menghilangkan kebutuhan untuk disiplin itu. (Mark et al., UCSB; Leroy, Organizational Behavior, 2009)</p>
+  </div>
+
+  <div class="block-title">Daily Focus Setup — Sebelum Mulai Kerja</div>
+  <div class="checklist" id="cl-2">
+    <div class="check-group-label">Pagi hari (sebelum buka email / notifikasi)</div>
+    <div class="check-item" onclick="toggleCheck(this,'2-1')">
+      <div class="check-box"><svg class="check-tick" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1" stroke="#F5F3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-label">Tentukan satu Most Important Task (MIT) hari ini</div>
+        <div class="check-desc">Satu saja. Tulis di bawah. Kemampuan pengambilan keputusan menurun seiring berjalannya hari — gunakan otak tersegar untuk ini.</div>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this,'2-2')">
+      <div class="check-box"><svg class="check-tick" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1" stroke="#F5F3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-label">Matikan semua notifikasi untuk blok kerja pertama</div>
+        <div class="check-desc">HP silent, badge notifikasi off, email client tutup. Bukan airplane mode — cukup tidak ada yang bisa interupsi secara visual.</div>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this,'2-3')">
+      <div class="check-box"><svg class="check-tick" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1" stroke="#F5F3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-label">Kerjakan MIT selama blok 90 menit pertama</div>
+        <div class="check-desc">Sesuai ultradian rhythm (Kleitman). Jika 90 menit terasa terlalu panjang — mulai 45–50 menit dan bangun dari sana.</div>
+      </div>
+    </div>
+
+    <div class="check-group-label">Setelah setiap blok kerja</div>
+    <div class="check-item" onclick="toggleCheck(this,'2-4')">
+      <div class="check-box"><svg class="check-tick" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1" stroke="#F5F3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-label">Recovery 15–20 menit yang benar-benar offline</div>
+        <div class="check-desc">Jalan, stretch, makan — bukan scroll. Scrolling bukan recovery karena otak tetap memproses informasi visual baru.</div>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this,'2-5')">
+      <div class="check-box"><svg class="check-tick" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1" stroke="#F5F3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-label">Cek notifikasi/email hanya di jendela terjadwal</div>
+        <div class="check-desc">Tetapkan 2–3 waktu: misal jam 09.00, 12.00, 16.00. Di luar itu — tidak dicek. Responsiveness tidak turun, tapi kualitas kerja di antaranya naik signifikan.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MIT field -->
+  <div class="block-title">MIT Harian — Tulis Sebelum Buka Apapun</div>
+  <div style="margin-bottom:40px">
+    <div class="worksheet-full">
+      <div class="wc-label">Most Important Task hari ini</div>
+      <input class="wc-input" type="text" placeholder="Satu task yang jika selesai, hari ini sudah berhasil..." data-key="mit-today" oninput="saveField(this)">
+    </div>
+    <div class="worksheet-grid" style="margin-bottom:0">
+      <div class="worksheet-cell">
+        <div class="wc-label">Blok kerja 1 — jam berapa?</div>
+        <input class="wc-input" type="text" placeholder="08:00 – 09:30" data-key="mit-b1" oninput="saveField(this)">
+      </div>
+      <div class="worksheet-cell">
+        <div class="wc-label">Blok kerja 2 (jika ada)</div>
+        <input class="wc-input" type="text" placeholder="10:00 – 11:30" data-key="mit-b2" oninput="saveField(this)">
+      </div>
+      <div class="worksheet-cell">
+        <div class="wc-label">Jendela komunikasi 1</div>
+        <input class="wc-input" type="text" placeholder="09:00 (15 menit)" data-key="mit-c1" oninput="saveField(this)">
+      </div>
+      <div class="worksheet-cell">
+        <div class="wc-label">Jendela komunikasi 2 & 3</div>
+        <input class="wc-input" type="text" placeholder="12:00 / 16:00" data-key="mit-c2" oninput="saveField(this)">
+      </div>
+    </div>
+  </div>
+
+  <!-- REFLECTION -->
+  <div class="block-title">Refleksi Mingguan — Deep Focus</div>
+  <div class="reflection-block">
+    <p class="reflection-prompt">Rata-rata berapa kali kamu benar-benar bisa fokus penuh (tanpa interupsi) selama seminggu ini?</p>
+    <textarea class="reflection-textarea" data-key="ref-2-1" placeholder="Jujur — berapa blok fokus nyata yang terjadi?" oninput="saveField(this)" style="min-height:80px"></textarea>
+  </div>
+  <div class="reflection-block">
+    <p class="reflection-prompt">Apa sumber interupsi terbesar minggu ini? (internal — keinginan sendiri untuk cek notif, atau eksternal — orang/sistem)</p>
+    <textarea class="reflection-textarea" data-key="ref-2-2" placeholder="Tulis di sini…" oninput="saveField(this)" style="min-height:80px"></textarea>
+  </div>
+  <div class="reflection-block">
+    <p class="reflection-prompt">Satu perubahan sistem yang akan dicoba minggu depan:</p>
+    <textarea class="reflection-textarea" data-key="ref-2-3" placeholder="Tulis di sini…" oninput="saveField(this)" style="min-height:80px"></textarea>
+  </div>
+
+  <div class="action-box">
+    <div class="action-label">Langkah pertama hari ini</div>
+    <div class="action-text">Besok pagi, sebelum membuka email atau aplikasi apapun — tulis satu MIT di kolom di atas. Kerjakan selama 45 menit dengan notifikasi dimatikan. Hanya 45 menit. Lakukan ini 5 hari berturut-turut dan perhatikan perbedaan kualitas output.</div>
+  </div>
+
+  <div class="section-nav">
+    <button class="snav-btn" onclick="goTo(1)">← BAB 01</button>
+    <span class="snav-center">BAB 02 / 06</span>
+    <button class="snav-btn" onclick="goTo(3)">BAB 03 →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SECTION 3 — BAB 03                          -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section" id="sec-3">
+  <div class="proto-progress"><div class="proto-progress-fill" id="prog-3" style="width:0%"></div></div>
+  <div class="proto-header">
+    <div class="proto-num">BAB 03 · Anti-Prokrastinasi Protocol</div>
+    <h2 class="proto-title">Manfaatkan sistem dopamine — <em>jangan lawan.</em></h2>
+    <div class="proto-concepts">
+      <span class="concept-tag">Limbic Friction</span>
+      <span class="concept-tag">Dopamine Loop</span>
+      <span class="concept-tag">Implementation Intention</span>
+      <span class="concept-tag">Minimum Viable Action</span>
+    </div>
+  </div>
+
+  <div class="science-block">
+    <div class="science-label">Sains di baliknya</div>
+    <p class="science-text">Prokrastinasi bukan kemalasan — ini <strong>konflik neurologis</strong> antara prefrontal cortex (berpikir jangka panjang) dan limbic system (mencari reward instan). Setiap kali kamu membuka notifikasi, ada microhit dopamine yang lebih cepat dan pasti dari menyelesaikan laporan. Otak belajar bahwa deep work "tidak worth it" secara neurologis. Ditambah <em>limbic friction</em> — resistensi yang muncul sebelum task kompleks bahkan dimulai. Solusinya bukan willpower lebih besar — tapi mengubah sistem sehingga memulai tidak membutuhkan willpower. (Gollwitzer, 1999; Baumeister et al., 1998; Schultz reward prediction error)</p>
+  </div>
+
+  <!-- Implementation Intention Builder -->
+  <div class="block-title">Implementation Intention Builder</div>
+  <div style="margin-bottom: 40px;">
+    <p style="font-size:13px;color:rgba(245,243,238,.5);margin-bottom:20px;line-height:1.7">Format "Jika–Maka" mengurangi beban keputusan saat momen itu tiba. Spesifisitas waktu dan tempat adalah kuncinya. (Gollwitzer, American Psychologist, 1999)</p>
+    <div class="worksheet-full">
+      <div class="wc-label">Task yang paling sering ditunda</div>
+      <input class="wc-input" type="text" placeholder="Contoh: Mulai nulis laporan bulanan…" data-key="proc-task" oninput="saveField(this)">
+    </div>
+    <div class="worksheet-grid" style="margin-bottom:12px">
+      <div class="worksheet-cell">
+        <div class="wc-label">Jika sudah jam…</div>
+        <input class="wc-input" type="text" placeholder="09:00" data-key="proc-jam" oninput="saveField(this)">
+      </div>
+      <div class="worksheet-cell">
+        <div class="wc-label">Dan aku sudah berada di…</div>
+        <input class="wc-input" type="text" placeholder="Meja kerja / kafe" data-key="proc-tempat" oninput="saveField(this)">
+      </div>
+    </div>
+    <div class="worksheet-full">
+      <div class="wc-label">Maka aku akan… (Minimum Viable Action — sekecil mungkin)</div>
+      <input class="wc-input" type="text" placeholder="Buka dokumen dan tulis SATU kalimat pertama selama 10 menit" data-key="proc-action" oninput="saveField(this)">
+    </div>
+    <div class="worksheet-full" style="margin-bottom:0">
+      <div class="wc-label">Reward yang akan diasosiasikan (Reward Stacking)</div>
+      <input class="wc-input" type="text" placeholder="Kopi favorit yang hanya boleh diminum saat mulai task ini…" data-key="proc-reward" oninput="saveField(this)">
+    </div>
+  </div>
+
+  <!-- TRACKER -->
+  <div class="block-title">Task Execution Log</div>
+  <div class="tracker-wrap">
+    <table class="tracker" id="tracker-3">
+      <thead>
+        <tr>
+          <th style="width:90px">Tanggal</th>
+          <th>Task</th>
+          <th style="width:130px">Mulai jam</th>
+          <th style="width:120px">Durasi aktual</th>
+          <th>Hambatan / catatan</th>
+        </tr>
+      </thead>
+      <tbody id="tbody-3">
+        <tr>
+          <td><input type="text" placeholder="dd/mm" data-key="t3r1c1"></td>
+          <td><input type="text" placeholder="Nama task…" data-key="t3r1c2"></td>
+          <td><input type="text" placeholder="09:05" data-key="t3r1c3"></td>
+          <td><input type="text" placeholder="25 menit" data-key="t3r1c4"></td>
+          <td><input type="text" placeholder="Apa yang hampir menghentikan?" data-key="t3r1c5"></td>
+        </tr>
+        <tr>
+          <td><input type="text" placeholder="dd/mm" data-key="t3r2c1"></td>
+          <td><input type="text" placeholder="" data-key="t3r2c2"></td>
+          <td><input type="text" placeholder="" data-key="t3r2c3"></td>
+          <td><input type="text" placeholder="" data-key="t3r2c4"></td>
+          <td><input type="text" placeholder="" data-key="t3r2c5"></td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="add-row-btn" onclick="addRow('tbody-3','t3',5)">+ Tambah sesi</button>
+  </div>
+
+  <!-- REFLECTION -->
+  <div class="block-title">Refleksi Mingguan</div>
+  <div class="reflection-block">
+    <p class="reflection-prompt">Task mana yang paling sering ditunda minggu ini — dan apa yang akhirnya membuatmu mulai (atau tidak mulai)?</p>
+    <textarea class="reflection-textarea" data-key="ref-3-1" placeholder="Tulis di sini…" oninput="saveField(this)"></textarea>
+  </div>
+  <div class="reflection-block">
+    <p class="reflection-prompt">Implementation intention yang paling berhasil minggu ini — apa yang spesifik dari setup itu yang bekerja?</p>
+    <textarea class="reflection-textarea" data-key="ref-3-2" placeholder="Tulis di sini…" oninput="saveField(this)" style="min-height:80px"></textarea>
+  </div>
+
+  <div class="action-box">
+    <div class="action-label">Langkah pertama hari ini</div>
+    <div class="action-text">Ambil satu task yang sudah ditunda. Isi Implementation Intention Builder di atas sekarang — dengan waktu dan tempat yang spesifik. Hanya memulai. Bukan "selesaikan" — cukup tindakan terkecil yang tidak butuh keputusan.</div>
+  </div>
+
+  <div class="section-nav">
+    <button class="snav-btn" onclick="goTo(2)">← BAB 02</button>
+    <span class="snav-center">BAB 03 / 06</span>
+    <button class="snav-btn" onclick="goTo(4)">BAB 04 →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SECTION 4 — BAB 04                          -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section" id="sec-4">
+  <div class="proto-progress"><div class="proto-progress-fill" id="prog-4" style="width:0%"></div></div>
+  <div class="proto-header">
+    <div class="proto-num">BAB 04 · Recovery Protocol</div>
+    <h2 class="proto-title">Kembali ke mode thriving — <em>bukan dengan lebih banyak effort.</em></h2>
+    <div class="proto-concepts">
+      <span class="concept-tag">Mode Thriving vs Surviving</span>
+      <span class="concept-tag">Hyper-vigilance</span>
+      <span class="concept-tag">Allostatic Overload</span>
+      <span class="concept-tag">Micro-Recovery</span>
+    </div>
+  </div>
+
+  <div class="science-block">
+    <div class="science-label">Sains di baliknya</div>
+    <p class="science-text">Otak beroperasi dalam dua mode fundamental: <strong>Thriving</strong> (prefrontal cortex dominan — berpikir kreatif, keputusan kompleks) dan <strong>Surviving</strong> (amygdala dominan — perhatian menyempit, kreativitas menurun). Tekanan kerja kronis mendorong otak ke mode survival tanpa disadari. Hyper-vigilance terasa seperti "produktif" tapi menguras kapasitas kognitif. Ketika beban adaptasi melampaui kapasitas recovery, terjadi <em>allostatic overload</em> — tahap awal burnout yang berkembang diam-diam selama berbulan-bulan. Solusinya bukan lebih banyak istirahat sembarangan — tapi recovery yang benar-benar restoratif. (McEwen &amp; Stellar, 1993; Zijlstra &amp; Sonnentag)</p>
+  </div>
+
+  <!-- Weekly Mode Check -->
+  <div class="block-title">Weekly Mode Check — 5 Tanda</div>
+  <p style="font-size:13px;color:rgba(245,243,238,.5);margin-bottom:20px;line-height:1.7">Lakukan review ini sekali seminggu. Jujur. Deteksi awal jauh lebih mudah ditangani.</p>
+  <div class="checklist" id="cl-4">
+    <div class="check-item" onclick="toggleCheck(this,'4-1')">
+      <div class="check-box"><svg class="check-tick" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1" stroke="#F5F3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-label">Keputusan sederhana terasa lebih berat dari biasanya</div>
+        <div class="check-desc">Tanda prefrontal cortex sedang depleted — resources kognitif untuk executive function sudah berkurang.</div>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this,'4-2')">
+      <div class="check-box"><svg class="check-tick" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1" stroke="#F5F3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-label">Mudah terpancing atau reaktif di situasi kecil</div>
+        <div class="check-desc">Reaktivitas emosional meningkat saat amygdala dominan dan PFC tidak punya resources untuk modulasi.</div>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this,'4-3')">
+      <div class="check-box"><svg class="check-tick" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1" stroke="#F5F3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-label">Kreativitas dan kemampuan problem-solving terasa kering</div>
+        <div class="check-desc">Kreativitas butuh default mode network — jaringan yang hanya aktif optimal saat otak tidak dalam mode survival.</div>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this,'4-4')">
+      <div class="check-box"><svg class="check-tick" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1" stroke="#F5F3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-label">Merasa "selalu on" — susah benar-benar melepaskan pekerjaan</div>
+        <div class="check-desc">Tanda hyper-vigilance. Sistem deteksi ancaman bekerja overdrive bahkan saat tidak ada ancaman nyata.</div>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this,'4-5')">
+      <div class="check-box"><svg class="check-tick" width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1" stroke="#F5F3EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="check-content">
+        <div class="check-label">Istirahat terasa tidak restoratif — bangun tetap capek</div>
+        <div class="check-desc">Tanda allostatic overload mulai terjadi — kapasitas recovery harian tidak cukup untuk beban yang terakumulasi.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recovery Planner -->
+  <div class="block-title">Recovery Planner — Jadwalkan Seperti Meeting</div>
+  <div class="worksheet-grid" style="margin-bottom: 40px;">
+    <div class="worksheet-cell">
+      <div class="wc-label">Micro-recovery harian (20 menit)</div>
+      <textarea class="wc-textarea" placeholder="Jam berapa & aktivitas apa? Jalan, stretch, duduk di luar — bukan scroll." data-key="rec-micro" oninput="saveField(this)"></textarea>
+    </div>
+    <div class="worksheet-cell">
+      <div class="wc-label">Protective boundary — 30 menit bebas kerja</div>
+      <textarea class="wc-textarea" placeholder="Jam berapa? Apa yang tidak boleh masuk? Ini non-negotiable." data-key="rec-boundary" oninput="saveField(this)"></textarea>
+    </div>
+    <div class="worksheet-cell">
+      <div class="wc-label">Aktivitas restoratif yang terbukti efektif untukku</div>
+      <textarea class="wc-textarea" placeholder="Bukan yang 'seharusnya' efektif — tapi yang benar-benar membuatmu merasa dipulihkan." data-key="rec-restoratif" oninput="saveField(this)"></textarea>
+    </div>
+    <div class="worksheet-cell">
+      <div class="wc-label">Trigger yang paling sering mendorong ke mode surviving</div>
+      <textarea class="wc-textarea" placeholder="Jenis meeting, orang tertentu, situasi tertentu?" data-key="rec-trigger" oninput="saveField(this)"></textarea>
+    </div>
+  </div>
+
+  <!-- REFLECTION -->
+  <div class="block-title">Refleksi Mingguan — Recovery</div>
+  <div class="reflection-block">
+    <p class="reflection-prompt">Dari 5 tanda di atas, berapa yang berlaku minggu ini? Dan sudah berapa lama kondisi ini berlangsung?</p>
+    <textarea class="reflection-textarea" data-key="ref-4-1" placeholder="Jujur — ini informasi, bukan diagnosis." oninput="saveField(this)" style="min-height:80px"></textarea>
+  </div>
+  <div class="reflection-block">
+    <p class="reflection-prompt">Recovery apa yang sudah kamu coba — dan mana yang benar-benar terasa restoratif vs yang hanya terasa seperti "harusnya istirahat"?</p>
+    <textarea class="reflection-textarea" data-key="ref-4-2" placeholder="Tulis di sini…" oninput="saveField(this)"></textarea>
+  </div>
+
+  <div class="action-box">
+    <div class="action-label">Langkah pertama hari ini</div>
+    <div class="action-text">Tinjau 5 tanda di atas. Jika 3 atau lebih berlaku — ini informasi penting. Jadwalkan 30 menit hari ini yang benar-benar bebas dari semua hal yang berhubungan pekerjaan. Masukkan ke kalender sekarang, sebelum menutup halaman ini.</div>
+  </div>
+
+  <div class="section-nav">
+    <button class="snav-btn" onclick="goTo(3)">← BAB 03</button>
+    <span class="snav-center">BAB 04 / 06</span>
+    <button class="snav-btn" onclick="goTo(5)">BAB 05 →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SECTION 5 — BAB 05                          -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section" id="sec-5">
+  <div class="proto-progress"><div class="proto-progress-fill" id="prog-5" style="width:0%"></div></div>
+  <div class="proto-header">
+    <div class="proto-num">BAB 05 · Career Decision Protocol</div>
+    <h2 class="proto-title">Rancang keputusan yang <em>memperhitungkan bias,</em> bukan mengabaikannya.</h2>
+    <div class="proto-concepts">
+      <span class="concept-tag">Loss Aversion</span>
+      <span class="concept-tag">Anchoring Bias</span>
+      <span class="concept-tag">Status Quo Bias</span>
+      <span class="concept-tag">Pre-mortem</span>
+    </div>
+  </div>
+
+  <div class="science-block">
+    <div class="science-label">Sains di baliknya</div>
+    <p class="science-text">Otak memiliki shortcut mental yang menyelamatkan di savana tapi merusak di karir modern. <strong>Loss aversion</strong> (Kahneman &amp; Tversky, Nobel 1979) membuat kerugian terasa 2× lebih kuat dari keuntungan setara — otak memperbesar risiko bergerak dan mengecilkan biaya diam. <em>Anchoring bias</em> membuat angka pertama yang disebut dalam negosiasi mendominasi seluruh proses. <em>Status quo bias</em> membuat "tetap diam" selalu terasa lebih aman secara neurologis, bahkan ketika data menunjukkan sebaliknya. Solusinya bukan "lebih rasional" — Kahneman sendiri mengakui masih menjadi korban bias ini. Solusinya: rancang proses keputusan yang memperhitungkan bias sebelum membuatnya.</p>
+  </div>
+
+  <!-- Pre-mortem -->
+  <div class="block-title">Pre-mortem — Melawan Loss Aversion</div>
+  <p style="font-size:13px;color:rgba(245,243,238,.5);margin-bottom:20px;line-height:1.7">Bayangkan keputusan yang sudah kamu buat ternyata gagal — dan jelaskan kenapa. Ini membalik cara kerja loss aversion: kamu juga membayangkan yang hilang jika <em>tidak</em> bergerak. (Gary Klein / Kahneman)</p>
+  <div style="margin-bottom:40px">
+    <div class="worksheet-full">
+      <div class="wc-label">Keputusan karir yang sedang dipertimbangkan</div>
+      <input class="wc-input" type="text" placeholder="Resign, negosiasi gaji, ambil project baru, pindah divisi…" data-key="career-decision" oninput="saveField(this)">
+    </div>
+    <div class="worksheet-grid" style="margin-bottom:12px">
+      <div class="worksheet-cell">
+        <div class="wc-label">Jika aku bergerak dan gagal — kenapa?</div>
+        <textarea class="wc-textarea" placeholder="Skenario kegagalan terburuk yang realistis…" data-key="career-pm1" oninput="saveField(this)"></textarea>
+      </div>
+      <div class="worksheet-cell">
+        <div class="wc-label">Jika aku tidak bergerak — apa yang hilang dalam 1 tahun?</div>
+        <textarea class="wc-textarea" placeholder="Biaya dari diam yang sering diabaikan otak…" data-key="career-pm2" oninput="saveField(this)"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10/10/10 -->
+  <div class="block-title">10/10/10 Framework — Melawan Status Quo Bias</div>
+  <p style="font-size:13px;color:rgba(245,243,238,.5);margin-bottom:20px;line-height:1.7">Status quo bias paling kuat di perspektif jangka pendek. Framework ini memaksa otak memproses perspektif yang lebih panjang. (Suzy Welch)</p>
+  <div class="worksheet-grid" style="margin-bottom:40px">
+    <div class="worksheet-cell">
+      <div class="wc-label">Perasaanku dalam 10 menit jika mengambil keputusan ini</div>
+      <textarea class="wc-textarea" placeholder="Langsung setelah memutuskan…" data-key="career-10m" oninput="saveField(this)"></textarea>
+    </div>
+    <div class="worksheet-cell">
+      <div class="wc-label">Perasaanku dalam 10 bulan</div>
+      <textarea class="wc-textarea" placeholder="Setelah adaptasi dan konsekuensi mulai terlihat…" data-key="career-10mo" oninput="saveField(this)"></textarea>
+    </div>
+    <div class="worksheet-cell" style="grid-column: 1/-1">
+      <div class="wc-label">Perasaanku dalam 10 tahun</div>
+      <textarea class="wc-textarea" placeholder="Dari perspektif diri kamu di masa depan — apakah ini keputusan yang akan kamu sesali jika tidak diambil?" data-key="career-10y" oninput="saveField(this)" style="min-height:80px"></textarea>
+    </div>
+  </div>
+
+  <!-- Salary Negotiation Prep -->
+  <div class="block-title">Salary Negotiation Prep — Anchor Diri Sendiri</div>
+  <p style="font-size:13px;color:rgba(245,243,238,.5);margin-bottom:20px;line-height:1.7">Siapa yang menyebut angka pertama dalam negosiasi memegang kekuatan terbesar. Tentukan tiga angka ini sebelum masuk ruangan.</p>
+  <div class="worksheet-grid" style="margin-bottom:40px">
+    <div class="worksheet-cell">
+      <div class="wc-label">Angka minimum (walk-away number)</div>
+      <input class="wc-input" type="text" placeholder="Di bawah ini aku tidak akan menerima" data-key="neg-min" oninput="saveField(this)">
+    </div>
+    <div class="worksheet-cell">
+      <div class="wc-label">Angka ideal (target realistis)</div>
+      <input class="wc-input" type="text" placeholder="Berdasarkan riset pasar untuk posisi ini" data-key="neg-ideal" oninput="saveField(this)">
+    </div>
+    <div class="worksheet-cell">
+      <div class="wc-label">Angka pembuka (selalu lebih tinggi dari ideal)</div>
+      <input class="wc-input" type="text" placeholder="Ini yang disebut pertama — beri ruang untuk negosiasi" data-key="neg-open" oninput="saveField(this)">
+    </div>
+    <div class="worksheet-cell">
+      <div class="wc-label">Respon jika mereka menyebut terlalu rendah</div>
+      <textarea class="wc-textarea" placeholder='"Berdasarkan riset pasar, range untuk posisi ini adalah X–Y."' data-key="neg-response" oninput="saveField(this)"></textarea>
+    </div>
+  </div>
+
+  <!-- REFLECTION -->
+  <div class="block-title">Refleksi Keputusan</div>
+  <div class="reflection-block">
+    <p class="reflection-prompt">Keputusan karir mana yang paling sering ditunda — dan sekarang setelah menjalankan 10/10/10, apa yang berubah dari cara kamu melihatnya?</p>
+    <textarea class="reflection-textarea" data-key="ref-5-1" placeholder="Tulis di sini…" oninput="saveField(this)"></textarea>
+  </div>
+
+  <div class="action-box">
+    <div class="action-label">Langkah pertama hari ini</div>
+    <div class="action-text">Pilih satu keputusan karir yang tertunda. Isi 10/10/10 framework di atas sekarang — bukan untuk memutuskan, tapi untuk memberi data yang lebih lengkap kepada otakmu. 10 menit saja.</div>
+  </div>
+
+  <div class="section-nav">
+    <button class="snav-btn" onclick="goTo(4)">← BAB 04</button>
+    <span class="snav-center">BAB 05 / 06</span>
+    <button class="snav-btn" onclick="goTo(6)">BAB 06 →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SECTION 6 — BAB 06                          -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section" id="sec-6">
+  <div class="proto-progress"><div class="proto-progress-fill" id="prog-6" style="width:0%"></div></div>
+  <div class="proto-header">
+    <div class="proto-num">BAB 06 · Peak Performance Blueprint</div>
+    <h2 class="proto-title">Lindungi jam terbaikmu — <em>sumber daya paling langka yang kamu miliki.</em></h2>
+    <div class="proto-concepts">
+      <span class="concept-tag">Circadian Rhythm</span>
+      <span class="concept-tag">Cortisol Awakening Response</span>
+      <span class="concept-tag">Ultradian Cycle</span>
+      <span class="concept-tag">Chronotype</span>
+    </div>
+  </div>
+
+  <div class="science-block">
+    <div class="science-label">Sains di baliknya</div>
+    <p class="science-text">Otak tidak berada dalam kondisi yang sama sepanjang hari. <strong>Circadian rhythm</strong> menciptakan dua peak fokus: ~2–4 jam setelah bangun (saat kortisol tertinggi) dan peak sekunder di sore hari. Di antara keduanya ada <em>through</em> — penurunan alami siang hari. <strong>Cortisol Awakening Response (CAR)</strong>: lonjakan kortisol dalam 30–45 menit setelah bangun adalah sinyal biologis untuk fungsi optimal — bukan respons stres. Langsung buka HP mengganggu proses ini. <strong>Chronotype</strong> berbeda-beda secara biologis — ~40% morning, ~30% evening. Bukan soal disiplin. Solusinya: temukan pola personalmu, lalu match task terpenting ke kondisi terbaik otak, bukan ke slot yang nyaman secara sosial. (Pruessner et al., 1997; Roenneberg et al., 2004)</p>
+  </div>
+
+  <!-- Chronotype Self-Assessment -->
+  <div class="block-title">Chronotype Self-Assessment — 7 Hari</div>
+  <p style="font-size:13px;color:rgba(245,243,238,.5);margin-bottom:20px;line-height:1.7">Observasi selama 7 hari sebelum mengubah jadwal apapun. Data personal ini lebih berharga dari jadwal manapun.</p>
+  <div class="tracker-wrap">
+    <table class="tracker" id="tracker-6">
+      <thead>
+        <tr>
+          <th style="width:80px">Hari</th>
+          <th style="width:110px">Bangun jam</th>
+          <th>Peak fokus pertama (jam berapa?)</th>
+          <th>Energy drop (jam berapa?)</th>
+          <th>Peak kedua / sore?</th>
+        </tr>
+      </thead>
+      <tbody id="tbody-6">
+        <tr><td><input type="text" placeholder="Senin" data-key="t6r1c1"></td><td><input type="text" placeholder="06:30" data-key="t6r1c2"></td><td><input type="text" placeholder="08:00 – 10:00" data-key="t6r1c3"></td><td><input type="text" placeholder="13:00" data-key="t6r1c4"></td><td><input type="text" placeholder="Ya / Tidak / jam?" data-key="t6r1c5"></td></tr>
+        <tr><td><input type="text" placeholder="Selasa" data-key="t6r2c1"></td><td><input type="text" placeholder="" data-key="t6r2c2"></td><td><input type="text" placeholder="" data-key="t6r2c3"></td><td><input type="text" placeholder="" data-key="t6r2c4"></td><td><input type="text" placeholder="" data-key="t6r2c5"></td></tr>
+        <tr><td><input type="text" placeholder="Rabu" data-key="t6r3c1"></td><td><input type="text" placeholder="" data-key="t6r3c2"></td><td><input type="text" placeholder="" data-key="t6r3c3"></td><td><input type="text" placeholder="" data-key="t6r3c4"></td><td><input type="text" placeholder="" data-key="t6r3c5"></td></tr>
+        <tr><td><input type="text" placeholder="Kamis" data-key="t6r4c1"></td><td><input type="text" placeholder="" data-key="t6r4c2"></td><td><input type="text" placeholder="" data-key="t6r4c3"></td><td><input type="text" placeholder="" data-key="t6r4c4"></td><td><input type="text" placeholder="" data-key="t6r4c5"></td></tr>
+        <tr><td><input type="text" placeholder="Jumat" data-key="t6r5c1"></td><td><input type="text" placeholder="" data-key="t6r5c2"></td><td><input type="text" placeholder="" data-key="t6r5c3"></td><td><input type="text" placeholder="" data-key="t6r5c4"></td><td><input type="text" placeholder="" data-key="t6r5c5"></td></tr>
+        <tr><td><input type="text" placeholder="Sabtu" data-key="t6r6c1"></td><td><input type="text" placeholder="" data-key="t6r6c2"></td><td><input type="text" placeholder="" data-key="t6r6c3"></td><td><input type="text" placeholder="" data-key="t6r6c4"></td><td><input type="text" placeholder="" data-key="t6r6c5"></td></tr>
+        <tr><td><input type="text" placeholder="Minggu" data-key="t6r7c1"></td><td><input type="text" placeholder="" data-key="t6r7c2"></td><td><input type="text" placeholder="" data-key="t6r7c3"></td><td><input type="text" placeholder="" data-key="t6r7c4"></td><td><input type="text" placeholder="" data-key="t6r7c5"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Ideal Day Blueprint -->
+  <div class="block-title" style="margin-top:40px">Ideal Day Blueprint — Setelah Observasi</div>
+  <p style="font-size:13px;color:rgba(245,243,238,.5);margin-bottom:20px;line-height:1.7">Isi ini setelah kamu punya data observasi 7 hari. Match task ke state yang tepat, bukan ke slot yang tersedia.</p>
+  <div class="worksheet-grid" style="margin-bottom:40px">
+    <div class="worksheet-cell">
+      <div class="wc-label">Golden Window (30–60 mnt setelah bangun)</div>
+      <textarea class="wc-textarea" placeholder="Apa yang dilakukan? Hindari layar. Cahaya alami, aktivitas ringan — CAR berlangsung di sini." data-key="pp-golden" oninput="saveField(this)"></textarea>
+    </div>
+    <div class="worksheet-cell">
+      <div class="wc-label">Peak #1 — Deep Work (task terpenting)</div>
+      <textarea class="wc-textarea" placeholder="Jam berapa peak pertamamu? Task kognitif terberat masuk di sini." data-key="pp-peak1" oninput="saveField(this)"></textarea>
+    </div>
+    <div class="worksheet-cell">
+      <div class="wc-label">Through — Administrative Tasks</div>
+      <textarea class="wc-textarea" placeholder="Jam berapa energy dropmu? Jadwalkan email, rapat rutin, admin di sini." data-key="pp-through" oninput="saveField(this)"></textarea>
+    </div>
+    <div class="worksheet-cell">
+      <div class="wc-label">Peak #2 — Komunikasi / Kolaborasi</div>
+      <textarea class="wc-textarea" placeholder="Peak sekunder sore hari — bagus untuk brainstorming, diskusi, meeting yang butuh kreativitas." data-key="pp-peak2" oninput="saveField(this)"></textarea>
+    </div>
+    <div class="worksheet-cell" style="grid-column:1/-1">
+      <div class="wc-label">Satu meeting atau task yang akan dipindahkan ke slot yang lebih tepat minggu depan</div>
+      <input class="wc-input" type="text" placeholder="Contoh: Daily standup yang sekarang di pagi hari dipindah ke siang…" data-key="pp-move" oninput="saveField(this)">
+    </div>
+  </div>
+
+  <!-- REFLECTION -->
+  <div class="block-title">Refleksi Setelah 7 Hari Observasi</div>
+  <div class="reflection-block">
+    <p class="reflection-prompt">Pola apa yang muncul dari 7 hari data? Chronotype kamu morning, evening, atau di antara keduanya?</p>
+    <textarea class="reflection-textarea" data-key="ref-6-1" placeholder="Tulis di sini…" oninput="saveField(this)" style="min-height:80px"></textarea>
+  </div>
+  <div class="reflection-block">
+    <p class="reflection-prompt">Apa yang selama ini kamu jadwalkan di peak — tapi sebenarnya bisa dilakukan di through? Dan sebaliknya?</p>
+    <textarea class="reflection-textarea" data-key="ref-6-2" placeholder="Tulis di sini…" oninput="saveField(this)"></textarea>
+  </div>
+
+  <div class="action-box">
+    <div class="action-label">Langkah pertama hari ini</div>
+    <div class="action-text">Selama 7 hari ke depan, isi Chronotype Tracker di atas setiap hari. Tidak perlu mengubah jadwal dulu — hanya observasi. Data personal ini lebih berharga dari panduan manapun.</div>
+  </div>
+
+  <div class="section-nav">
+    <button class="snav-btn" onclick="goTo(5)">← BAB 05</button>
+    <span class="snav-center">BAB 06 / 06</span>
+    <button class="snav-btn" onclick="goTo(0)">↩ Ke Cover</button>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+// ── STATE ──────────────────────────────────────
+const SECTIONS = 7;
+let current = 0;
+
+const BAB_TITLES = ['Intro','BAB 01','BAB 02','BAB 03','BAB 04','BAB 05','BAB 06'];
+const BAB_SUBS   = ['Brain Protocol Workbook','Presentation Confidence','Deep Focus','Anti-Prokrastinasi','Recovery','Career Decision','Peak Performance'];
+
+function goTo(idx) {
+  document.querySelectorAll('.section').forEach((s,i) => {
+    s.classList.toggle('active', i === idx);
+  });
+  document.querySelectorAll('.nav-tab').forEach((t,i) => {
+    t.classList.toggle('active', i === idx);
+  });
+  current = idx;
+  window.scrollTo({top:0, behavior:'smooth'});
+  updateProgress();
+  updateMobileNav();
+}
+
+function mnavGo(dir) {
+  const next = Math.max(0, Math.min(SECTIONS - 1, current + dir));
+  goTo(next);
+}
+
+function updateMobileNav() {
+  const prev = document.getElementById('mnavPrev');
+  const next = document.getElementById('mnavNext');
+  const title = document.getElementById('mnavTitle');
+  const sub = document.getElementById('mnavSub');
+  if (!prev) return;
+  prev.disabled = current === 0;
+  next.disabled = current === SECTIONS - 1;
+  title.textContent = BAB_TITLES[current] || '';
+  sub.textContent   = BAB_SUBS[current]   || '';
+}
+
+// ── CHECKLIST ──────────────────────────────────
+function toggleCheck(el, key) {
+  el.classList.toggle('checked');
+  const state = el.classList.contains('checked');
+  localStorage.setItem('chk-'+key, state ? '1' : '0');
+  updateProgress();
+}
+
+// ── FIELDS ─────────────────────────────────────
+function saveField(el) {
+  if (el.dataset.key) localStorage.setItem('fld-'+el.dataset.key, el.value);
+}
+
+// ── ADD ROW ────────────────────────────────────
+let rowCounts = {};
+function addRow(tbodyId, prefix, cols) {
+  const tbody = document.getElementById(tbodyId);
+  if (!rowCounts[tbodyId]) rowCounts[tbodyId] = tbody.rows.length + 1;
+  const r = ++rowCounts[tbodyId];
+  const tr = document.createElement('tr');
+  const placeholders = ['dd/mm','','','',''];
+  for (let c = 1; c <= cols; c++) {
+    const td = document.createElement('td');
+    const key = `${prefix}r${r}c${c}`;
+    td.innerHTML = `<input type="text" placeholder="${placeholders[c-1]||''}" data-key="${key}">`;
+    tr.appendChild(td);
+  }
+  tbody.appendChild(tr);
+  bindInputs(tr);
+}
+
+function bindInputs(parent) {
+  parent.querySelectorAll('input,textarea,select').forEach(el => {
+    el.addEventListener('input', () => saveField(el));
+    if (el.dataset.key) {
+      const saved = localStorage.getItem('fld-'+el.dataset.key);
+      if (saved !== null) el.value = saved;
+    }
+  });
+}
+
+// ── PROGRESS ───────────────────────────────────
+function updateProgress() {
+  let total = 0, done = 0;
+  document.querySelectorAll('.check-item').forEach(el => {
+    total++;
+    if (el.classList.contains('checked')) done++;
+  });
+  document.getElementById('navProgress').textContent = `${done} / ${total} selesai`;
+
+  // per-section progress bars
+  for (let i = 1; i <= 6; i++) {
+    const bar = document.getElementById('prog-'+i);
+    if (!bar) continue;
+    const sec = document.getElementById('sec-'+i);
+    if (!sec) continue;
+    const items = sec.querySelectorAll('.check-item');
+    if (!items.length) { bar.style.width = '0%'; continue; }
+    const checked = sec.querySelectorAll('.check-item.checked').length;
+    bar.style.width = Math.round((checked / items.length) * 100) + '%';
+  }
+}
+
+// ── RESTORE STATE ──────────────────────────────
+function restoreState() {
+  // checkboxes
+  document.querySelectorAll('.check-item').forEach(el => {
+    const onclick = el.getAttribute('onclick');
+    const match = onclick && onclick.match(/'([^']+)'\)/);
+    if (!match) return;
+    const key = match[1];
+    if (localStorage.getItem('chk-'+key) === '1') el.classList.add('checked');
+  });
+
+  // fields
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const saved = localStorage.getItem('fld-'+el.dataset.key);
+    if (saved !== null) el.value = saved;
+  });
+
+  updateProgress();
+}
+
+// ── INIT ───────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  restoreState();
+  updateMobileNav();
+  document.querySelectorAll('input[data-key], textarea[data-key]').forEach(el => {
+    el.addEventListener('input', () => saveField(el));
+  });
+});
+</script>
+</body>
+</html>

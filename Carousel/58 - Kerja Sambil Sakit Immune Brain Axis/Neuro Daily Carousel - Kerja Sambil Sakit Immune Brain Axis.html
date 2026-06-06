@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Neuro Daily — Kerja Sambil Sakit & Immune-Brain Axis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;--red:#D96A6A;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0a0a0a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 100px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#7a807d;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(540px,94vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;position:relative;overflow:hidden}
+.cvs{width:1080px;height:1350px;transform-origin:top left;position:absolute;top:0;left:0;font-family:'DM Sans',sans-serif}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.cvs .head,.cvs .foot{position:absolute;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 64px;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase}
+.cvs .head{top:0;height:78px;border-bottom:1px solid rgba(245,243,238,.12)}
+.cvs .foot{bottom:0;height:64px;border-top:1px solid rgba(245,243,238,.12)}
+.bg-light .head,.bg-light .foot{border-color:rgba(13,46,40,.12)}
+.bg-teal .head,.bg-teal .foot{border-color:rgba(245,243,238,.18)}
+.cvs .head span,.cvs .foot span{opacity:.55}
+.cvs .head .dotmark::before{content:"◆ ";color:var(--green);opacity:1}
+.bg-light .head .dotmark::before{color:var(--teal)}
+.bg-teal .head .dotmark::before{color:var(--amber)}
+.hippo-mark{display:flex;align-items:center;gap:10px;opacity:1!important}
+.hippo-mark svg{width:30px;height:30px;flex-shrink:0}
+.body{position:absolute;top:78px;bottom:64px;left:0;right:0;padding:52px 72px;display:flex;flex-direction:column}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.bg-dark .eyebrow{color:var(--green)}
+.bg-light .eyebrow{color:var(--teal)}
+.bg-teal .eyebrow{color:var(--amber)}
+.rule{width:48px;height:3px;border-radius:2px;margin-top:18px}
+.bg-dark .rule{background:var(--green)}
+.bg-light .rule{background:var(--teal)}
+.bg-teal .rule{background:var(--amber)}
+
+/* S1 */
+.s1 .ghost{position:absolute;font-family:'DM Serif Display',serif;font-size:700px;line-height:.88;color:rgba(94,201,167,.04);pointer-events:none;user-select:none;right:-40px;top:40px;letter-spacing:-.05em}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:88px;line-height:1.02;letter-spacing:-.02em;margin-top:48px;max-width:840px;position:relative;z-index:2}
+.s1 h1 em{font-style:italic;color:var(--red)}
+.s1 .lead{margin-top:32px;font-size:24px;line-height:1.65;opacity:.72;max-width:680px;font-weight:300;position:relative;z-index:2}
+.s1 .cost-vis{position:absolute;bottom:84px;left:72px;right:72px;z-index:2;display:flex;flex-direction:column;gap:14px}
+.cost-bar-row{display:flex;align-items:center;gap:18px}
+.cost-bar-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.1em;text-transform:uppercase;width:200px;flex-shrink:0}
+.cost-bar-label.normal{color:var(--green)}
+.cost-bar-label.sick{color:var(--red)}
+.cost-bar-track{flex:1;height:20px;background:rgba(245,243,238,.1);border-radius:99px;overflow:hidden}
+.cost-bar-fill{height:100%;border-radius:99px}
+.cost-bar-fill.normal{background:var(--green);width:100%}
+.cost-bar-fill.sick{background:var(--red);width:40%}
+.cost-bar-pct{font-family:'DM Serif Display',serif;font-size:28px;line-height:1;margin-left:10px;flex-shrink:0}
+.cost-bar-pct.normal{color:var(--green)}
+.cost-bar-pct.sick{color:var(--red)}
+
+/* S2 */
+.s2 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.06;letter-spacing:-.02em;margin-top:32px;color:var(--forest);max-width:860px}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .stat-row{margin-top:36px;display:flex;gap:20px}
+.stat-card{flex:1;padding:28px 24px;border-radius:16px;display:flex;flex-direction:column;gap:10px}
+.stat-card.a{background:rgba(217,106,106,.06);border:1.5px solid rgba(217,106,106,.22)}
+.stat-card.b{background:rgba(201,169,110,.06);border:1.5px solid rgba(201,169,110,.2)}
+.stat-num{font-family:'DM Serif Display',serif;font-size:68px;line-height:1;letter-spacing:-.03em}
+.stat-card.a .stat-num{color:var(--red)}
+.stat-card.b .stat-num{color:var(--amber)}
+.stat-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;opacity:.6;color:var(--forest)}
+.stat-desc{font-size:22px;line-height:1.55;opacity:.65;font-weight:300;color:var(--forest)}
+.s2 .insight-cards{margin-top:24px;display:flex;flex-direction:column;gap:12px}
+.insight-card{display:flex;align-items:flex-start;gap:16px;padding:20px 24px;border-radius:12px;background:rgba(13,46,40,.04);border:1px solid rgba(13,46,40,.1)}
+.insight-card .ic-icon{font-family:'DM Serif Display',serif;font-style:italic;font-size:36px;line-height:1;color:var(--teal);flex-shrink:0;margin-top:2px}
+.insight-card .ic-title{font-size:24px;font-weight:500;color:var(--forest);margin-bottom:4px}
+.insight-card .ic-text{font-size:22px;line-height:1.55;color:var(--forest);opacity:.65;font-weight:300}
+.s2 .source{margin-top:auto;font-size:20px;letter-spacing:.04em;color:var(--forest);opacity:.42;font-family:'JetBrains Mono',monospace;line-height:1.7;border-top:1px solid rgba(13,46,40,.1);padding-top:16px}
+
+/* S3 */
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:66px;line-height:1.06;letter-spacing:-.02em;margin-top:40px;max-width:860px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .mech-cards{margin-top:44px;display:flex;flex-direction:column;gap:18px}
+.mech-card{padding:26px 30px;border-radius:14px;display:flex;align-items:flex-start;gap:22px}
+.mech-card.a{background:rgba(94,201,167,.07);border:1.5px solid rgba(94,201,167,.2)}
+.mech-card.b{background:rgba(201,169,110,.07);border:1.5px solid rgba(201,169,110,.22)}
+.mech-card.c{background:rgba(217,106,106,.06);border:1.5px solid rgba(217,106,106,.18)}
+.mech-card .mc-icon{width:52px;height:52px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-style:italic;font-size:28px}
+.mech-card.a .mc-icon{background:rgba(94,201,167,.18);color:var(--green)}
+.mech-card.b .mc-icon{background:rgba(201,169,110,.18);color:var(--amber)}
+.mech-card.c .mc-icon{background:rgba(217,106,106,.15);color:var(--red)}
+.mech-card .mc-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px}
+.mech-card.a .mc-label{color:var(--green)}
+.mech-card.b .mc-label{color:var(--amber)}
+.mech-card.c .mc-label{color:var(--red)}
+.mech-card .mc-text{font-size:24px;line-height:1.55;font-weight:300;opacity:.88}
+.s3 .bottom-note{margin-top:auto;padding:20px 28px;border-radius:12px;background:rgba(245,243,238,.05);border:1px solid rgba(245,243,238,.12);font-size:24px;line-height:1.6;opacity:.65;font-weight:300;display:flex;align-items:center;gap:14px}
+.s3 .note-prefix{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--amber);flex-shrink:0}
+
+/* S4 */
+.s4 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-.02em;margin-top:40px;max-width:860px}
+.s4 h2 em{font-style:italic;color:var(--amber)}
+.s4 .def-card{margin-top:28px;background:rgba(245,243,238,.1);border:1.5px solid rgba(245,243,238,.2);border-radius:14px;padding:24px 30px}
+.s4 .def-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+.s4 .def-text{font-size:22px;line-height:1.65;opacity:.88;font-weight:300}
+.s4 .impact-grid{margin-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.impact-item{padding:22px 22px;border-radius:12px;background:rgba(245,243,238,.06);border:1px solid rgba(245,243,238,.12)}
+.impact-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:8px}
+.impact-val{font-family:'DM Serif Display',serif;font-size:44px;line-height:1;color:var(--parchment);margin-bottom:6px}
+.impact-desc{font-size:22px;line-height:1.5;opacity:.7;font-weight:300}
+.s4 .bottom-note{margin-top:auto;padding:18px 24px;border-radius:12px;background:rgba(245,243,238,.07);border:1px solid rgba(245,243,238,.14);font-size:24px;line-height:1.6;opacity:.65;font-weight:300;display:flex;gap:12px;align-items:center}
+.s4 .bottom-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--amber);flex-shrink:0}
+
+/* S5 */
+.s5 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.06;letter-spacing:-.02em;margin-top:36px;color:var(--forest);max-width:860px}
+.s5 h2 em{font-style:italic;color:var(--teal)}
+.s5 .scenarios{margin-top:40px;display:flex;flex-direction:column;gap:16px}
+.scenario{padding:26px 28px;border-radius:14px;display:flex;align-items:flex-start;gap:20px}
+.scenario.bad{background:rgba(217,106,106,.05);border:1.5px solid rgba(217,106,106,.18)}
+.scenario.good{background:rgba(26,107,90,.06);border:1.5px solid rgba(26,107,90,.22)}
+.scenario .s-tag{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;padding:5px 14px;border-radius:99px;flex-shrink:0;margin-top:3px}
+.scenario.bad .s-tag{background:var(--red);color:#fff}
+.scenario.good .s-tag{background:var(--teal);color:#fff}
+.scenario .s-title{font-size:24px;font-weight:500;color:var(--forest);margin-bottom:6px}
+.scenario .s-desc{font-size:22px;line-height:1.6;color:var(--forest);opacity:.65;font-weight:300}
+.s5 .research-note{margin-top:22px;padding:18px 24px;background:rgba(26,107,90,.05);border:1px solid rgba(26,107,90,.15);border-radius:12px;font-size:22px;line-height:1.6;color:var(--forest);font-weight:300}
+.s5 .research-note strong{font-weight:500;color:var(--teal)}
+
+/* S6 */
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:66px;line-height:1.06;letter-spacing:-.02em;margin-top:40px;max-width:860px}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .protocol{margin-top:44px;display:flex;flex-direction:column;gap:0}
+.s6 .p-block{width:100%;padding:26px 32px;border-radius:14px;display:flex;align-items:flex-start;gap:22px}
+.s6 .p-block.a{background:rgba(94,201,167,.1);border:2px solid rgba(94,201,167,.28)}
+.s6 .p-block.b{background:rgba(201,169,110,.1);border:2px solid rgba(201,169,110,.25)}
+.s6 .p-block.c{background:rgba(94,201,167,.16);border:2px solid rgba(94,201,167,.5)}
+.s6 .p-divider{margin:10px 0;border:none;border-top:1px solid rgba(245,243,238,.1)}
+.s6 .p-num{font-family:'DM Serif Display',serif;font-size:48px;line-height:1;flex-shrink:0;margin-top:-4px}
+.s6 .p-block.a .p-num{color:var(--green)}
+.s6 .p-block.b .p-num{color:var(--amber)}
+.s6 .p-block.c .p-num{color:var(--green)}
+.s6 .p-title{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.s6 .p-block.a .p-title{color:var(--green)}
+.s6 .p-block.b .p-title{color:var(--amber)}
+.s6 .p-block.c .p-title{color:var(--green)}
+.s6 .p-desc{font-size:24px;line-height:1.55;opacity:.85;font-weight:300}
+.s6 .p-note{margin-top:22px;font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.04em;color:rgba(245,243,238,.48);line-height:1.9;border-top:1px solid rgba(245,243,238,.1);padding-top:20px}
+.s6 .p-note .punch{color:var(--green);font-weight:500;letter-spacing:.02em}
+
+/* S7 */
+.s7 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:68px;line-height:1.04;letter-spacing:-.02em;margin-top:36px;color:var(--forest);max-width:860px}
+.s7 h2 em{font-style:italic;color:var(--teal)}
+.s7 .sub{margin-top:22px;font-size:24px;line-height:1.65;color:var(--forest);opacity:.65;max-width:800px;font-weight:300}
+.s7 .discussion{margin-top:36px;display:flex;flex-direction:column;gap:14px}
+.s7 .disc-item{display:flex;align-items:center;gap:18px;padding:20px 24px;border:1.5px solid rgba(13,46,40,.12);border-radius:14px;font-size:22px;color:var(--forest);background:rgba(255,255,255,.46);line-height:1.4}
+.s7 .disc-item .ic{width:40px;height:40px;border-radius:10px;background:rgba(26,107,90,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.s7 .disc-item .ic svg{width:22px;height:22px;color:var(--teal)}
+.s7 .shift-note{margin-top:24px;padding:20px 24px;border-radius:12px;border:1px dashed rgba(26,107,90,.35);font-size:24px;line-height:1.6;color:var(--forest);opacity:.62;font-weight:300;display:flex;align-items:center;gap:14px}
+.s7 .shift-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:24px;color:var(--teal);flex-shrink:0}
+
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:24px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:46px;height:46px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.1em;align-self:center;padding:0 10px}
+.caption-panel{width:min(540px,94vw);margin-top:32px;padding:26px 26px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:20px;line-height:1.7}
+.caption-panel .cap-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+.caption-panel p{margin-bottom:12px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel strong{color:var(--parchment);font-weight:500}
+.caption-panel .hash{color:#7a8480;font-size:18px;margin-top:16px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Vol. 58 · Kesehatan & Produktivitas · Immune-Brain ]</span>
+</div>
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- S1 DARK -->
+      <section class="slide">
+        <div class="cvs bg-dark s1">
+          <div class="head"><span class="dotmark">Neuro Daily · Vol. 58 · Kesehatan & Produktivitas</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Immune-Brain Axis · Presenteeism</div>
+            <div class="rule"></div>
+            <div class="ghost">🤒</div>
+            <h1>Kamu sakit.<br>Tapi tetap<br>ngantor.<br><em>Ini yang terjadi.</em></h1>
+            <p class="lead">Masuk kerja sambil sakit bukan bukti dedikasi — otak kamu sedang beroperasi pada kapasitas yang jauh lebih rendah dari yang kamu sadari.</p>
+            <div class="cost-vis">
+              <div class="cost-bar-row">
+                <div class="cost-bar-label normal">Sehat</div>
+                <div class="cost-bar-track"><div class="cost-bar-fill normal"></div></div>
+                <div class="cost-bar-pct normal">100%</div>
+              </div>
+              <div class="cost-bar-row">
+                <div class="cost-bar-label sick">Sakit</div>
+                <div class="cost-bar-track"><div class="cost-bar-fill sick"></div></div>
+                <div class="cost-bar-pct sick">~40%</div>
+              </div>
+            </div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>01 / 07</span></div>
+        </div>
+      </section>
+
+      <!-- S2 LIGHT -->
+      <section class="slide">
+        <div class="cvs bg-light s2">
+          <div class="head"><span class="dotmark">Presenteeism · Cost of Working Sick</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Biaya yang tidak terlihat</div>
+            <div class="rule"></div>
+            <h2><em>Presenteeism</em> lebih mahal dari absenteisme.</h2>
+            <div class="stat-row">
+              <div class="stat-card a">
+                <div class="stat-num">3×</div>
+                <div class="stat-label">Lebih Mahal</div>
+                <div class="stat-desc">Kerja sambil sakit merugikan lebih besar dari cuti sakit — karena produktivitas hilang tapi kamu tetap "hadir"</div>
+              </div>
+              <div class="stat-card b">
+                <div class="stat-num">57%</div>
+                <div class="stat-label">Loss Output</div>
+                <div class="stat-desc">Rata-rata penurunan output kognitif saat bekerja dengan gejala sakit ringan-sedang</div>
+              </div>
+            </div>
+            <div class="insight-cards">
+              <div class="insight-card">
+                <div class="ic-icon">→</div>
+                <div>
+                  <div class="ic-title">Immune activation = brain fog</div>
+                  <div class="ic-text">Cytokines yang dilepas sistem imun langsung memengaruhi neurotransmitter — konsentrasi, memori, dan pembuatan keputusan turun drastis</div>
+                </div>
+              </div>
+              <div class="insight-card">
+                <div class="ic-icon">→</div>
+                <div>
+                  <div class="ic-title">Otak "sickness mode"</div>
+                  <div class="ic-text">Evolusi memprogram otak untuk masuk mode hemat energi saat sakit — prioritas pemulihan, bukan produktivitas</div>
+                </div>
+              </div>
+            </div>
+            <div class="source">Stanford Presenteeism Scale · Hemp 2004 · Harvard Business Review</div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>02 / 07</span></div>
+        </div>
+      </section>
+
+      <!-- S3 DARK -->
+      <section class="slide">
+        <div class="cvs bg-dark s3">
+          <div class="head"><span class="dotmark">Immune-Brain Axis · Neuroscience</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Kenapa otak tidak bisa fokus saat sakit</div>
+            <div class="rule"></div>
+            <h2>Sistem imun dan otak <em>berbicara langsung</em> satu sama lain.</h2>
+            <div class="mech-cards">
+              <div class="mech-card a">
+                <div class="mc-icon">⟳</div>
+                <div>
+                  <div class="mc-label">Cytokine Signal</div>
+                  <div class="mc-text">Sel imun melepas cytokines yang menembus blood-brain barrier dan mengubah kadar serotonin, dopamine, serta norepinephrine — tiga neurotransmitter kunci untuk fokus</div>
+                </div>
+              </div>
+              <div class="mech-card b">
+                <div class="mc-icon">↓</div>
+                <div>
+                  <div class="mc-label">PFC Offline</div>
+                  <div class="mc-text">Prefrontal cortex (pengambil keputusan) sangat sensitif terhadap inflamasi — aktivitasnya turun bahkan saat gejala masih terasa ringan</div>
+                </div>
+              </div>
+              <div class="mech-card c">
+                <div class="mc-icon">⚡</div>
+                <div>
+                  <div class="mc-label">Energy Redistribution</div>
+                  <div class="mc-text">Tubuh mengalihkan energi ke sistem imun — glukosa dan ATP yang biasa dipakai otak diprioritaskan untuk melawan infeksi</div>
+                </div>
+              </div>
+            </div>
+            <div class="bottom-note">
+              <span class="note-prefix">Hasil:</span>
+              Brain fog, susah konsentrasi, mudah salah — bukan kelemahan, tapi biologi.
+            </div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>03 / 07</span></div>
+        </div>
+      </section>
+
+      <!-- S4 TEAL -->
+      <section class="slide">
+        <div class="cvs bg-teal s4">
+          <div class="head"><span class="dotmark">Cognitive Impact · Four Domains</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Apa yang turun saat kamu sakit</div>
+            <div class="rule"></div>
+            <h2>Empat fungsi kognitif yang <em>paling terdampak.</em></h2>
+            <div class="def-card">
+              <div class="def-label">Immune-Brain Axis</div>
+              <div class="def-text">Jalur komunikasi dua arah antara sistem imun dan otak. Ketika imun aktif melawan infeksi, sinyal kimiawi langsung mengubah fungsi neural — bukan hanya membuat kamu merasa lelah, tapi benar-benar mengubah kemampuan kognitif.</div>
+            </div>
+            <div class="impact-grid">
+              <div class="impact-item">
+                <div class="impact-label">Working Memory</div>
+                <div class="impact-val">−40%</div>
+                <div class="impact-desc">Kapasitas menyimpan dan memanipulasi informasi real-time</div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-label">Decision Speed</div>
+                <div class="impact-val">−35%</div>
+                <div class="impact-desc">Kecepatan membuat keputusan dan memilih opsi terbaik</div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-label">Attention</div>
+                <div class="impact-val">−45%</div>
+                <div class="impact-desc">Kemampuan mempertahankan fokus pada satu tugas</div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-label">Creativity</div>
+                <div class="impact-val">−50%</div>
+                <div class="impact-desc">Output insight dan pemikiran divergen yang tidak terduga</div>
+              </div>
+            </div>
+            <div class="bottom-note">
+              <span class="bottom-arrow">→</span>
+              Kerja 8 jam sambil sakit efektifnya seperti kerja 3-4 jam saja — dengan risiko kesalahan 2× lebih tinggi.
+            </div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(201,169,110,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#C9A96E">N</text></svg>NEURODAILY.ID</span><span>04 / 07</span></div>
+        </div>
+      </section>
+
+      <!-- S5 LIGHT -->
+      <section class="slide">
+        <div class="cvs bg-light s5">
+          <div class="head"><span class="dotmark">Rest vs Push · Decision Framework</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Kerja vs istirahat — mana yang lebih smart?</div>
+            <div class="rule"></div>
+            <h2>Istirahat <em>mempercepat</em> pemulihan — bukan memperlambat karir.</h2>
+            <div class="scenarios">
+              <div class="scenario bad">
+                <div class="s-tag">Tetap Kerja</div>
+                <div>
+                  <div class="s-title">Sakit 3 hari, kerja terus</div>
+                  <div class="s-desc">Output 40% selama 3 hari = 1,2 hari kerja efektif. Pemulihan lebih lambat karena energi terbagi. Risiko komplikasi dan penularan meningkat. Total: 4-5 hari terdampak</div>
+                </div>
+              </div>
+              <div class="scenario good">
+                <div class="s-tag">Istirahat Total</div>
+                <div>
+                  <div class="s-title">Sakit 3 hari, full rest</div>
+                  <div class="s-desc">Sistem imun fokus, pemulihan optimal dalam 2-3 hari. Kembali kerja 100% kapasitas lebih cepat. Total terdampak: 2-3 hari. Output bersih jauh lebih tinggi</div>
+                </div>
+              </div>
+            </div>
+            <div class="research-note">Studi Kahneman et al.: <strong>kita sangat buruk mengestimasi kemampuan kognitif kita sendiri</strong> — terutama saat kognisi sedang terganggu.</div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>05 / 07</span></div>
+        </div>
+      </section>
+
+      <!-- S6 DARK -->
+      <section class="slide">
+        <div class="cvs bg-dark s6">
+          <div class="head"><span class="dotmark">Recovery Protocol · Brain & Immune</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Kalau harus tetap kerja saat sakit</div>
+            <div class="rule"></div>
+            <h2>Tiga cara <em>minimize damage</em> pada otak sakit.</h2>
+            <div class="protocol">
+              <div class="p-block a">
+                <div class="p-num">1</div>
+                <div>
+                  <div class="p-title">Task Triage</div>
+                  <div class="p-desc">Hanya kerjakan satu tugas paling kritis per sesi. Otak sakit tidak bisa multitask — paksa dan hasilnya jauh lebih buruk dari satu tugas diselesaikan baik</div>
+                </div>
+              </div>
+              <hr class="p-divider"/>
+              <div class="p-block b">
+                <div class="p-num">2</div>
+                <div>
+                  <div class="p-title">Defer Decision</div>
+                  <div class="p-desc">Tunda semua keputusan penting yang tidak urgent hari ini. Keputusan yang dibuat saat sakit lebih bias, lebih impulsif, dan lebih sering disesali</div>
+                </div>
+              </div>
+              <hr class="p-divider"/>
+              <div class="p-block c">
+                <div class="p-num">3</div>
+                <div>
+                  <div class="p-title">Recovery First</div>
+                  <div class="p-desc">Tidur, makan, hidrasi — ini bukan kemewahan, ini bahan bakar sistem imun yang sedang berperang. Satu hari full rest = dua hari produktif setelahnya</div>
+                </div>
+              </div>
+            </div>
+            <div class="p-note">
+              Mindset terbaik: <span class="punch">berinvestasi dalam pemulihan</span> adalah berinvestasi dalam output minggu depan.
+            </div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>06 / 07</span></div>
+        </div>
+      </section>
+
+      <!-- S7 LIGHT -->
+      <section class="slide">
+        <div class="cvs bg-light s7">
+          <div class="head"><span class="dotmark">Recovery · Rest is Productive</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Refleksi & diskusi</div>
+            <div class="rule"></div>
+            <h2>Istirahat bukan <em>menyerah</em> — itu strategi terbaik otak.</h2>
+            <p class="sub">Budaya "kerja meski sakit" adalah mitos produktivitas yang dipatahkan sains. Otak yang pulih penuh jauh lebih valuable dari otak yang memaksakan diri.</p>
+            <div class="discussion">
+              <div class="disc-item">
+                <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
+                Kapan terakhir kamu memaksakan diri masuk kerja meski tidak sehat?
+              </div>
+              <div class="disc-item">
+                <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+                Apakah tempat kerjamu memungkinkan kamu untuk benar-benar istirahat saat sakit?
+              </div>
+              <div class="disc-item">
+                <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                Tugas mana yang bisa kamu tunda tanpa konsekuensi besar ketika sedang sakit?
+              </div>
+            </div>
+            <div class="shift-note">
+              <span class="shift-arrow">→</span>
+              Satu hari full rest saat sakit bukan kehilangan produktivitas — itu investasi untuk seminggu performa penuh.
+            </div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>07 / 07</span></div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<div class="dots">
+  <button class="dot active" onclick="goTo(0)"></button>
+  <button class="dot" onclick="goTo(1)"></button>
+  <button class="dot" onclick="goTo(2)"></button>
+  <button class="dot" onclick="goTo(3)"></button>
+  <button class="dot" onclick="goTo(4)"></button>
+  <button class="dot" onclick="goTo(5)"></button>
+  <button class="dot" onclick="goTo(6)"></button>
+</div>
+<div class="controls">
+  <button id="prev" onclick="prev()" disabled>←</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next" onclick="next()">→</button>
+</div>
+
+<div class="caption-panel">
+  <div class="cap-label">Caption · Instagram / TikTok</div>
+  <p>Kamu sakit. Tapi tetap ngantor. 🤒</p>
+  <p>Ternyata secara sains, ini salah kalkulasi. Kerja sambil sakit tidak membuat kamu lebih produktif — output-mu hanya sekitar <strong>40% dari kapasitas normal</strong>, tapi waktumu habis penuh.</p>
+  <p>Ini bukan soal attitude — ini biologi. Sistem imun melepas cytokines yang langsung memengaruhi fokus, memori, dan pengambilan keputusan. <strong>Otak sedang dalam "sickness mode"</strong> — prioritas pemulihan, bukan produktivitas.</p>
+  <p>Satu hari full rest lebih menguntungkan dari tiga hari setengah-setengah. Matematikanya ada di slide berikutnya.</p>
+  <span class="hash">#NeuroscienceIndonesia #KerjaSambilSakit #ImmuneBrainAxis #Presenteeism #NeurodailyID #Produktivitas #BrainFog #KesehatanKerja #WorkplaceWellness</span>
+</div>
+
+<script>
+const track = document.getElementById('track');
+const dots = document.querySelectorAll('.dot');
+const counter = document.getElementById('counter');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+const TOTAL = 7;
+let cur = 0;
+
+function scale() {
+  const vw = document.querySelector('.viewport').offsetWidth;
+  document.querySelectorAll('.cvs').forEach(c => { c.style.transform = `scale(${vw/1080})`; });
+}
+scale();
+window.addEventListener('resize', scale);
+
+function goTo(i) {
+  cur = i;
+  track.style.transform = `translateX(-${cur * 100}%)`;
+  dots.forEach((d, j) => d.classList.toggle('active', j === cur));
+  counter.textContent = `${cur + 1} / ${TOTAL}`;
+  prevBtn.disabled = cur === 0;
+  nextBtn.disabled = cur === TOTAL - 1;
+}
+function prev() { if (cur > 0) goTo(cur - 1); }
+function next() { if (cur < TOTAL - 1) goTo(cur + 1); }
+document.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') prev(); if (e.key === 'ArrowRight') next(); });
+</script>
+</body>
+</html>

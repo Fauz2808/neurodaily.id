@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Free Sample — Amygdala Hijack · Lynk.id Marketing 1024×1024</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  #img {
+    width: 1024px;
+    height: 1024px;
+    background: #F5F3EE;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  /* Parchment texture feel */
+  #img::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 90% 10%, rgba(26,107,90,0.05) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 60% at 5% 90%, rgba(13,46,40,0.04) 0%, transparent 55%);
+  }
+
+  /* Faint grid */
+  .grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(13,46,40,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(13,46,40,0.03) 1px, transparent 1px);
+    background-size: 52px 52px;
+    pointer-events: none;
+  }
+
+  /* Top accent bar */
+  .top-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #0D2E28 0%, #1A6B5A 40%, #5EC9A7 70%, #C9A96E 100%);
+  }
+
+  /* Bottom accent */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 72px;
+    background: #0D2E28;
+    display: flex;
+    align-items: center;
+    padding: 0 64px;
+    justify-content: space-between;
+  }
+
+  .bottom-brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(245,243,238,0.4);
+  }
+
+  .bottom-handle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: #5EC9A7;
+  }
+
+  /* Main inner */
+  .inner {
+    position: relative;
+    z-index: 2;
+    height: calc(100% - 72px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 60px 64px 40px;
+  }
+
+  /* ── TOP ROW ── */
+  .top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 52px;
+  }
+
+  .brand-tag {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-dot {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: #0D2E28;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .brand-dot svg { width: 20px; height: 20px; }
+
+  .brand-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px;
+    color: #0D2E28;
+    letter-spacing: 0.06em;
+  }
+
+  .free-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #1A6B5A;
+    border: 1.5px solid rgba(26,107,90,0.30);
+    padding: 7px 16px;
+    border-radius: 20px;
+    background: rgba(26,107,90,0.06);
+  }
+
+  /* ── QUESTION block ── */
+  .question-block {
+    margin-bottom: 36px;
+  }
+
+  .question-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+    color: #5EC9A7;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .question-label::before {
+    content: '';
+    display: inline-block;
+    width: 28px; height: 2px;
+    background: #5EC9A7;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .question {
+    font-family: 'DM Serif Display', serif;
+    font-size: 68px;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    color: #0D2E28;
+  }
+
+  .question em {
+    font-style: italic;
+    color: #1A6B5A;
+  }
+
+  /* ── ANSWER block ── */
+  .answer-block {
+    background: #0D2E28;
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .answer-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: rgba(94,201,167,0.12);
+    border: 1px solid rgba(94,201,167,0.20);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .answer-icon svg { width: 22px; height: 22px; }
+
+  .answer-body {}
+
+  .answer-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #5EC9A7;
+    margin-bottom: 8px;
+  }
+
+  .answer-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    font-weight: 300;
+    color: rgba(245,243,238,0.80);
+    line-height: 1.6;
+  }
+
+  .answer-text strong {
+    color: #C9A96E;
+    font-weight: 500;
+  }
+
+  /* ── WHAT YOU GET ── */
+  .gets {
+    display: flex;
+    gap: 12px;
+    height: fit-content;
+  }
+
+  .get-item {
+    flex: 1;
+    background: rgba(13,46,40,0.05);
+    border: 1.5px solid rgba(13,46,40,0.10);
+    border-radius: 14px;
+    padding: 18px 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .get-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 40px;
+    line-height: 1;
+    color: #C9A96E;
+  }
+
+  .get-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #0D2E28;
+    line-height: 1.3;
+  }
+
+  .get-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(13,46,40,0.55);
+    line-height: 1.4;
+  }
+</style>
+</head>
+<body>
+
+<div id="img">
+  <div class="grid"></div>
+  <div class="top-bar"></div>
+
+  <div class="inner">
+    <div class="top-row">
+      <div class="brand-tag">
+        <div class="brand-dot">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3C9.5 3 7.5 4.5 7 6.5C5.5 7 4 8.5 4 10.5C4 12 4.8 13.3 6 14C6 16.2 7.8 18 10 18H14C16.2 18 18 16.2 18 14C19.2 13.3 20 12 20 10.5C20 8.5 18.5 7 17 6.5C16.5 4.5 14.5 3 12 3Z" stroke="#5EC9A7" stroke-width="1.5" fill="none"/>
+          </svg>
+        </div>
+        <span class="brand-name">Neuro Daily</span>
+      </div>
+      <span class="free-pill">Free Brain Kit</span>
+    </div>
+
+    <div class="question-block">
+      <div class="question-label">Pernahkah kamu mengalami ini?</div>
+      <h1 class="question">Otak kamu<br>tiba-tiba <em>blank</em><br>di momen kritis.</h1>
+    </div>
+
+    <div class="answer-block">
+      <div class="answer-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 3C9.5 3 7.5 4.5 7 6.5C5.5 7 4 8.5 4 10.5C4 12 4.8 13.3 6 14C6 16.2 7.8 18 10 18H14C16.2 18 18 16.2 18 14C19.2 13.3 20 12 20 10.5C20 8.5 18.5 7 17 6.5C16.5 4.5 14.5 3 12 3Z" stroke="#5EC9A7" stroke-width="1.5" fill="none"/>
+        </svg>
+      </div>
+      <div class="answer-body">
+        <div class="answer-label">Penjelasan Neurosains</div>
+        <p class="answer-text">Ini bukan soal <strong>mental lemah</strong> atau tidak siap. Ini <strong>Amygdala Hijack</strong> — respons biologis yang memotong akses korteks prefrontalmu sebelum kamu sempat berpikir.</p>
+      </div>
+    </div>
+
+    <div class="gets">
+      <div class="get-item">
+        <div class="get-num">5'</div>
+        <div class="get-title">Penjelasan<br>Mekanisme Otak</div>
+        <div class="get-sub">Apa yang terjadi saat amygdala mengambil alih</div>
+      </div>
+      <div class="get-item">
+        <div class="get-num">6"</div>
+        <div class="get-title">Window<br>Biologis</div>
+        <div class="get-sub">Celah waktu yang bisa kamu gunakan sebelum bereaksi</div>
+      </div>
+      <div class="get-item">
+        <div class="get-num">×3</div>
+        <div class="get-title">Teknik<br>Reset Otak</div>
+        <div class="get-sub">Langsung bisa dipraktikkan — berbasis riset</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <span class="bottom-brand">Neuro Daily · Brain Science for Your Career</span>
+    <span class="bottom-handle">@neurodaily.id</span>
+  </div>
+</div>
+
+</body>
+</html>

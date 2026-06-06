@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Neuro Daily — Kenapa Gen Z Lebih Rentan Burnout: Ini Data Biologisnya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;--red:#D96A6A}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#1a1a1a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#9aa39f;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(440px,92vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;display:flex;flex-direction:column;padding:36px 32px 28px;position:relative;overflow:hidden}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.slide .header{display:flex;justify-content:space-between;align-items:center;font-family:'DM Sans',sans-serif;font-weight:500;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.85}
+.bg-light .header{opacity:.7}
+.pillar-tag{display:inline-flex;align-items:center;gap:6px}
+.pillar-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--green)}
+.bg-light .pillar-tag::before{background:var(--teal)}
+.slide .footer{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;opacity:.55;text-transform:uppercase}
+.static-bg{position:absolute;inset:0;pointer-events:none;opacity:.045}
+
+/* S1 — HOOK */
+.s1 .body{margin-top:auto;margin-bottom:auto}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:36px;line-height:1.1;letter-spacing:-.01em;color:var(--parchment)}
+.s1 h1 em{color:var(--amber);font-style:italic}
+.s1 .lead{margin-top:18px;font-size:13px;line-height:1.7;opacity:.7;max-width:310px}
+.s1 .swipe{position:absolute;bottom:24px;right:32px;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.s1 .arrow{display:inline-block;animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+
+/* S2 — MYTH BUSTER */
+.s2 .eyebrow{margin-top:22px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);opacity:.8}
+.s2 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:25px;line-height:1.18;letter-spacing:-.01em;margin-top:10px;color:var(--forest)}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .compare{margin-top:15px;display:flex;flex-direction:column;gap:8px}
+.compare-row{padding:11px 14px;border-radius:9px;font-size:11.5px;line-height:1.55}
+.compare-myth{background:rgba(217,106,106,.08);border:1px solid rgba(217,106,106,.18);color:var(--forest)}
+.compare-fact{background:rgba(26,107,90,.08);border:1px solid rgba(26,107,90,.2);color:var(--forest)}
+.compare-row .label{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:4px;opacity:.7}
+.compare-myth .label{color:var(--red)}
+.compare-fact .label{color:var(--teal)}
+.s2 .note{margin-top:11px;font-size:11px;line-height:1.6;color:var(--forest);opacity:.6;border-top:1px solid rgba(13,46,40,.1);padding-top:10px}
+
+/* S3 — MECHANISM */
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:22px;line-height:1.28;letter-spacing:-.01em;margin-top:13px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .term{margin-top:10px;padding:11px 14px;border-radius:10px;background:rgba(94,201,167,.08);border-left:2px solid var(--green)}
+.s3 .term.term-b{background:rgba(201,169,110,.08);border-left-color:var(--amber)}
+.s3 .term .name{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+.s3 .term.term-b .name{color:var(--amber)}
+.s3 .term .def{margin-top:5px;font-size:11.5px;line-height:1.55;color:var(--parchment);opacity:.88}
+.s3 .combo{margin-top:10px;padding:9px 13px;border-radius:8px;background:rgba(245,243,238,.05);border:1px solid rgba(245,243,238,.08);font-size:10.5px;line-height:1.6;color:var(--parchment);opacity:.72}
+.s3 .combo strong{opacity:1;color:var(--parchment);font-weight:500}
+.s3 .source{margin-top:8px;font-size:9.5px;color:var(--parchment);opacity:.4;line-height:1.55}
+
+/* S4 — IMPACT */
+.s4 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:21px;line-height:1.28;margin-top:10px;color:var(--forest)}
+.s4 h2 em{font-style:italic;color:var(--teal)}
+.s4 .intro{margin-top:6px;font-size:11.5px;line-height:1.6;color:var(--forest);opacity:.65}
+.s4 .block-list{margin-top:10px;display:flex;flex-direction:column;gap:5px}
+.block-item{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;background:rgba(255,255,255,.55);border:1px solid rgba(13,46,40,.1);border-radius:9px}
+.block-num{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--red);font-weight:500;flex-shrink:0;margin-top:2px;width:16px}
+.block-body .block-title{font-size:11px;font-weight:500;color:var(--forest);margin-bottom:2px;line-height:1.3}
+.block-body .block-sub{font-size:10px;color:var(--forest);opacity:.62;line-height:1.45}
+
+/* S5 — STAT */
+.s5{padding-top:28px}
+.s5 .stat-big{margin-top:auto;display:flex;align-items:baseline;gap:12px}
+.s5 .stat-big .n{font-family:'DM Serif Display',serif;font-size:80px;line-height:.85;color:var(--parchment);letter-spacing:-.03em}
+.s5 .stat-big .n em{color:var(--amber);font-style:italic}
+.s5 .stat-big .u{font-family:'DM Sans';font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--green);max-width:160px;line-height:1.5}
+.s5 .copy{margin-top:16px;font-size:13px;line-height:1.65;opacity:.85;max-width:340px}
+.s5 .copy strong{font-weight:500;color:var(--green)}
+.s5 .insight{margin-top:14px;padding:12px 16px;border:1px dashed rgba(94,201,167,.3);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);letter-spacing:.04em;line-height:1.9}
+
+/* S6 — STRATEGY */
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:24px;line-height:1.2;margin-top:18px;letter-spacing:-.01em}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .ps{margin-top:10px;font-size:12px;line-height:1.65;opacity:.78;max-width:340px}
+.s6 .steps{margin-top:12px;display:flex;flex-direction:column;gap:0}
+.s6 .step{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(245,243,238,.07)}
+.s6 .step:last-child{border-bottom:none}
+.s6 .step-num{width:20px;height:20px;border-radius:50%;background:rgba(94,201,167,.15);color:var(--green);font-family:'JetBrains Mono',monospace;font-size:8.5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.s6 .step-title{font-size:11.5px;font-weight:500;color:var(--parchment);line-height:1.3;margin-bottom:2px}
+.s6 .step-desc{font-size:10.5px;color:var(--parchment);opacity:.62;line-height:1.5}
+
+/* S7 — CTA */
+.s7{justify-content:space-between}
+.s7 .lead-q{font-family:'DM Serif Display',serif;font-size:25px;line-height:1.24;letter-spacing:-.01em;margin-top:22px;color:var(--forest)}
+.s7 .lead-q em{font-style:italic;color:var(--teal)}
+.s7 .ask{margin-top:13px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.7;max-width:310px}
+.s7 .actions{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.s7 .btn{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border:1px solid rgba(13,46,40,.15);border-radius:10px;font-size:12.5px;color:var(--forest)}
+.s7 .btn .ic{width:18px;height:18px;color:var(--teal);flex-shrink:0}
+.s7 .signoff{margin-top:18px;padding-top:14px;border-top:1px solid rgba(13,46,40,.12)}
+.s7 .tag{font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;color:var(--teal);line-height:1.3}
+.s7 .sub{margin-top:6px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--forest);opacity:.6;font-weight:500}
+
+/* Nav */
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:22px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:42px;height:42px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.controls button:hover{background:rgba(94,201,167,.12);border-color:rgba(94,201,167,.3)}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 8px}
+.caption-panel{width:min(440px,92vw);margin-top:32px;padding:22px 22px 24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:13px;line-height:1.7}
+.caption-panel .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+.caption-panel .char-count{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--amber);margin-top:10px;opacity:.7}
+.caption-panel p{margin-bottom:10px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:14px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Work Intelligence · P5 ]</span>
+</div>
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- SLIDE 1 — HOOK -->
+      <section class="slide bg-dark s1">
+        <svg class="static-bg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <!-- PFC development timeline -->
+          <!-- X-axis: age 0 → 30 -->
+          <line x1="35" y1="300" x2="380" y2="300" stroke="rgba(245,243,238,.14)" stroke-width=".8"/>
+          <!-- Age labels -->
+          <text x="35" y="314" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="rgba(245,243,238,.2)">0</text>
+          <text x="105" y="314" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="rgba(245,243,238,.2)">5</text>
+          <text x="175" y="314" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="rgba(245,243,238,.2)">10</text>
+          <text x="245" y="314" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="rgba(245,243,238,.2)">15</text>
+          <text x="315" y="314" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="rgba(245,243,238,.2)">20</text>
+          <text x="377" y="314" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="rgba(245,243,238,.2)">25</text>
+          <!-- PFC maturity curve -->
+          <path d="M35 297 C80 292 120 278 170 255 C210 236 255 215 300 200 C335 189 360 180 380 177"
+            fill="none" stroke="rgba(94,201,167,.32)" stroke-width="1.5"/>
+          <text x="340" y="173" font-family="JetBrains Mono" font-size="6.5" fill="rgba(94,201,167,.42)" letter-spacing=".2">MATANG</text>
+          <!-- Critical development window shading (age 15-25, x=245 to 380) -->
+          <rect x="245" y="165" width="135" height="135" fill="rgba(217,106,106,.045)" rx="2"/>
+          <line x1="245" y1="165" x2="245" y2="300" stroke="rgba(217,106,106,.18)" stroke-width=".8" stroke-dasharray="3,3"/>
+          <text x="248" y="162" font-family="JetBrains Mono" font-size="6" fill="rgba(217,106,106,.38)" letter-spacing=".2">WINDOW KRITIS PFC</text>
+          <!-- Pandemic impact spike (age ~19, x ≈ 298) -->
+          <line x1="298" y1="300" x2="298" y2="215" stroke="rgba(217,106,106,.45)" stroke-width="1"/>
+          <polygon points="298,212 295,220 301,220" fill="rgba(217,106,106,.55)"/>
+          <text x="301" y="208" font-family="JetBrains Mono" font-size="6.5" fill="rgba(217,106,106,.5)" letter-spacing=".2">PANDEMI</text>
+          <!-- Social media bar (age 13-25) -->
+          <rect x="260" y="285" width="118" height="7" rx="2" fill="rgba(201,169,110,.12)" stroke="rgba(201,169,110,.22)" stroke-width=".5"/>
+          <text x="262" y="282" font-family="JetBrains Mono" font-size="6" fill="rgba(201,169,110,.38)" letter-spacing=".2">SOCIAL MEDIA EXPOSURE</text>
+          <!-- Workforce entry -->
+          <circle cx="270" cy="300" r="3" fill="rgba(94,201,167,.3)" stroke="rgba(94,201,167,.5)" stroke-width=".8"/>
+          <text x="263" y="326" font-family="JetBrains Mono" font-size="6.5" fill="rgba(94,201,167,.32)" letter-spacing=".2">masuk kerja</text>
+          <!-- Brain waves at bottom -->
+          <path d="M30 395 C65 372 90 418 125 395 C160 372 185 418 220 395 C255 372 280 418 315 395 C350 372 375 418 400 395"
+            fill="none" stroke="rgba(245,243,238,.07)" stroke-width=".8"/>
+        </svg>
+        <div class="header">
+          <span class="pillar-tag">Work Intelligence · P5</span>
+          <span>01 / 07</span>
+        </div>
+        <div class="body">
+          <h1>Kamu masuk kerja di tengah pandemi. Dan sekarang seseorang bilang Gen Z <em>terlalu gampang burnout.</em></h1>
+          <p class="lead">Neurosaintis tidak setuju dengan label itu. Mereka punya data biologis yang menjelaskan kenapa — dan itu bukan soal karakter.</p>
+        </div>
+        <div class="swipe"><span>Geser</span><span class="arrow">→</span></div>
+      </section>
+
+      <!-- SLIDE 2 — MYTH BUSTER -->
+      <section class="slide bg-light s2">
+        <div class="header">
+          <span class="pillar-tag">Mitos vs Fakta</span>
+          <span>02 / 07</span>
+        </div>
+        <div class="eyebrow">Myth Buster · Formula A</div>
+        <h2>Burnout Gen Z bukan soal <em>kurang resiliensi</em> atau tidak mau kerja keras.</h2>
+        <div class="compare">
+          <div class="compare-row compare-myth">
+            <div class="label">Asumsi generasi sebelumnya</div>
+            Gen Z terlalu sensitif, manja, dan kurang tahan tekanan. Generasi sebelumnya menghadapi hal yang sama dan bisa survive — ini soal mental yang lemah.
+          </div>
+          <div class="compare-row compare-fact">
+            <div class="label">Fakta neurosains</div>
+            Gen Z tumbuh dewasa dengan kondisi stres yang berbeda secara biologis dari generasi sebelumnya. Ini meninggalkan jejak nyata pada cara sistem stres otak mereka terbentuk dan bekerja — dan itu bisa diukur, bukan dikira-kira.
+          </div>
+        </div>
+        <p class="note">Otak bersifat adaptif — ia terbentuk sesuai kondisi lingkungannya. Gen Z yang perkembangan otaknya bertepatan dengan pandemi global, krisis ekonomi, dan paparan sosial media intens memiliki sistem stres yang terbentuk dalam kondisi yang tidak pernah dihadapi generasi sebelumnya.</p>
+        <div class="footer"><span>NEURO DAILY</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 3 — MECHANISM -->
+      <section class="slide bg-dark s3">
+        <div class="header">
+          <span class="pillar-tag">Dua mekanisme biologis</span>
+          <span>03 / 07</span>
+        </div>
+        <h2>Ini bukan soal kepribadian. <em>Ini soal kapan dan bagaimana</em> otak terbentuk.</h2>
+        <div class="term">
+          <div class="name">PFC Development Window</div>
+          <div class="def">Prefrontal cortex — pusat regulasi emosi, impulse control, dan stress response — baru sepenuhnya matang di usia ~25. Stres kronis selama periode ini mengubah cara sistem terbentuk secara permanen. (Casey et al., 2008 · Nature Neuroscience)</div>
+        </div>
+        <div class="term term-b">
+          <div class="name">HPA Axis Sensitization</div>
+          <div class="def">Paparan stres kronis selama perkembangan meningkatkan kepekaan sumbu HPA — sistem pengatur kortisol. Hasilnya: threshold stres yang berbeda, bukan karena lemah, tapi karena sistem terbentuk dalam kondisi krisis. (McEwen, 2008 · Lupien et al., 2009)</div>
+        </div>
+        <div class="combo"><strong>Intinya:</strong> Gen Z yang tumbuh di tengah pandemi + sosial media + ketidakpastian ekonomi tepat saat PFC sedang dalam pembentukan akhir — sistem stres mereka terbentuk dalam konteks yang berbeda, bukan lebih lemah.</div>
+        <p class="source">Steinberg (2008) · Annual Review of Clinical Psychology · Dahl & Gunnar (2009) · Developmental Neuroscience</p>
+      </section>
+
+      <!-- SLIDE 4 — 4 FAKTOR BIOLOGIS -->
+      <section class="slide bg-light s4">
+        <div class="header">
+          <span class="pillar-tag">4 faktor yang membentuk ini</span>
+          <span>04 / 07</span>
+        </div>
+        <h2>Kondisi unik yang <em>Gen Z hadapi selama development</em> yang tidak ada analoginya.</h2>
+        <p class="intro">Empat konteks yang bertumpuk tepat selama window paling kritis pembentukan sistem stres otak.</p>
+        <div class="block-list">
+          <div class="block-item">
+            <span class="block-num">01</span>
+            <div class="block-body">
+              <div class="block-title">PFC belum matang saat harus navigasi high-pressure work</div>
+              <div class="block-sub">Mayoritas Gen Z masuk kerja di usia 22–24, sebelum PFC sepenuhnya matang. Sistem regulasi stres masih finishing development saat sudah dituntut performa penuh.</div>
+            </div>
+          </div>
+          <div class="block-item">
+            <span class="block-num">02</span>
+            <div class="block-body">
+              <div class="block-title">Sosial media = stres sosial kronis saat remaja</div>
+              <div class="block-sub">Otak remaja lebih sensitif terhadap social rejection secara biologis. Paparan konstan ke social comparison selama usia paling kritis = bentuk stres sosial kronis yang tidak pernah ada sebelumnya.</div>
+            </div>
+          </div>
+          <div class="block-item">
+            <span class="block-num">03</span>
+            <div class="block-body">
+              <div class="block-title">Pandemi tepat di window kritis pembentukan PFC</div>
+              <div class="block-sub">Bagi Gen Z usia 15–22 saat 2020, pandemi terjadi tepat saat PFC dalam pembentukan akhir — bukan setelah sistem itu matang dan siap menghadapi krisis.</div>
+            </div>
+          </div>
+          <div class="block-item">
+            <span class="block-num">04</span>
+            <div class="block-body">
+              <div class="block-title">Otak yang terbentuk dalam krisis punya baseline berbeda</div>
+              <div class="block-sub">Sistem otak adaptif — terbentuk sesuai lingkungannya. Baseline lebih sensitif bukan kegagalan adaptasi, tapi adaptasi yang berhasil terhadap kondisi yang memang berbeda.</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>04 — KONTEKS BIOLOGIS</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 5 — STAT -->
+      <section class="slide bg-teal s5">
+        <div class="header">
+          <span class="pillar-tag" style="color:#fff">Angkanya</span>
+          <span>05 / 07</span>
+        </div>
+        <p class="copy" style="margin-top:20px">Sebagian besar Gen Z sudah bekerja dan menanggung tekanan karir <strong>sebelum sistem regulasi stres mereka selesai terbentuk.</strong></p>
+        <div class="stat-big">
+          <span class="n">25<em>thn</em></span>
+        </div>
+        <div class="copy" style="margin-top:12px;font-size:12px">usia rata-rata prefrontal cortex baru sepenuhnya matang. Ini bukan opini — ini temuan konsisten dari puluhan studi neuroimaging yang menggunakan MRI otak dari berbagai populasi.</div>
+        <div class="insight">
+          PFC matang ~usia 25 →<br>
+          Gen Z masuk kerja di 22–24 →<br>
+          Pandemi tepat di window kritis →<br>
+          <span style="color:var(--amber)">────────────────────────────────</span><br>
+          Burnout lebih cepat →<br>
+          bukan kurang tangguh →<br>
+          tapi sistem yang belum selesai terbentuk<br>
+          <span style="opacity:.55;font-size:9.5px">*Casey et al. (2008) · Nature Neuroscience · Sowell et al. (1999)</span>
+        </div>
+        <div class="footer"><span>05 — DATA</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 6 — STRATEGY -->
+      <section class="slide bg-dark s6">
+        <div class="header">
+          <span class="pillar-tag">Yang bisa dilakukan</span>
+          <span>06 / 07</span>
+        </div>
+        <h2>Tidak bisa mengubah kondisi development — <em>tapi bisa mengelolanya</em> dengan sadar.</h2>
+        <p class="ps">Memahami neurosains ini bukan untuk jadi alasan, tapi untuk jadi lebih akurat dalam mengelola energi dan harapan terhadap diri sendiri dan orang lain.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <div class="step-title">Kenali baseline stres sistemmu — dan desain recovery-nya</div>
+              <div class="step-desc">HPA yang lebih sensitif butuh recovery yang lebih intentional — bukan lebih banyak, tapi lebih konsisten. Rest bukan reward; untuk sistem ini, itu maintenance yang tidak bisa ditunda.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <div class="step-title">Perkuat PFC secara aktif melalui neuroplasticity</div>
+              <div class="step-desc">Sleep konsisten, aerobic exercise, dan mindfulness practice secara literal memperkuat prefrontal cortex bahkan di usia 20-an. PFC masih sangat plastis — ini window untuk aktif membangunnya.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <div class="step-title">Untuk manajer: kalibrasi ekspektasi dengan data, bukan nostalgia</div>
+              <div class="step-desc">"Generasi saya juga bisa..." mengabaikan bahwa kondisi developmental berbeda secara fundamental. Burnout Gen Z bukan kurang dedikasi — ini sinyal bahwa sistem dioperasikan melewati kapasitas yang ia miliki saat ini.</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>06 — RESPONS BERBASIS SAINS</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 7 — CTA -->
+      <section class="slide bg-light s7">
+        <div class="header">
+          <span class="pillar-tag">Sekarang giliranmu</span>
+          <span>07 / 07</span>
+        </div>
+        <div>
+          <p class="lead-q">Gen Z atau Milenial — pernah burnout <em>di pekerjaan pertama</em> kamu?</p>
+          <p class="ask">Jawab jujur di komentar: GenZ-pernah / GenZ-belum / Milenial-pernah / Milenial-belum. Kalau pernah — usia berapa pertama kali?</p>
+        </div>
+        <div class="actions">
+          <div class="btn">
+            <span>Simpan — bagikan ke manajer yang perlu baca ini</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+          </div>
+          <div class="btn">
+            <span>Kirim ke rekan Gen Z yang pernah dibilang "terlalu sensitif"</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </div>
+        <div class="signoff">
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="1.5"><path d="M4 14c0-5 3-8 8-8 4 0 6 2 6 5 0 2-1.5 3.5-4 3.5-2 0-3 1-3 2.5 0 1.5 1 2.5 2.5 2.5"/><circle cx="15" cy="9" r="1" fill="#1A6B5A"/></svg>
+            <span class="tag">Neuro Daily</span>
+          </div>
+          <div class="sub">Kerja lebih cerdas, bukan lebih keras. Ini sains-nya.</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="caption-panel">
+  <div class="label">Caption · Formula A — Myth Buster · ≤ 500 karakter</div>
+  <p><strong style="color:var(--parchment)">Gen Z disebut terlalu sensitif dan gampang burnout.</strong></p>
+  <p>Tapi neurosaintis punya jawabannya: prefrontal cortex baru sepenuhnya matang di usia 25. Banyak Gen Z masuk workforce sebelum sistem ini selesai — di tengah pandemi dan tekanan sosial media.</p>
+  <p>Ini bukan karakter lemah. Ini biologi yang terbentuk dalam konteks berbeda.</p>
+  <p>Gen Z atau Milenial — pernah burnout? Jawab: GenZ-pernah / Milenial-pernah / belum pernah.</p>
+  <span class="hash">#NeuroDaily #NeurosainsKerja #GenZ #Burnout #Karir #GenerasiMuda #WorkIntelligence</span>
+  <div class="char-count" id="charCount"></div>
+</div>
+
+<div class="controls">
+  <button id="prev">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next">›</button>
+</div>
+
+<script>
+const track=document.getElementById('track'),dotsEl=document.getElementById('dots'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next');
+const total=track.children.length;let i=0;
+for(let k=0;k<total;k++){const b=document.createElement('button');b.className='dot'+(k===0?' active':'');b.addEventListener('click',()=>go(k));dotsEl.appendChild(b)}
+const dots=[...dotsEl.children];
+function go(n){i=Math.max(0,Math.min(total-1,n));track.style.transform=`translateX(-${i*100}%)`;dots.forEach((d,k)=>d.classList.toggle('active',k===i));counter.textContent=`${i+1} / ${total}`;prevBtn.disabled=i===0;nextBtn.disabled=i===total-1}
+prevBtn.addEventListener('click',()=>go(i-1));nextBtn.addEventListener('click',()=>go(i+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(i+1);if(e.key==='ArrowLeft')go(i-1)});
+let sx=0,dx=0,drag=false;const vp=document.querySelector('.viewport');
+vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;drag=true;dx=0});
+vp.addEventListener('touchmove',e=>{if(!drag)return;dx=e.touches[0].clientX-sx});
+vp.addEventListener('touchend',()=>{if(!drag)return;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));drag=false});
+const captionText=`Gen Z disebut terlalu sensitif dan gampang burnout.
+
+Tapi neurosaintis punya jawabannya: prefrontal cortex baru sepenuhnya matang di usia 25. Banyak Gen Z masuk workforce sebelum sistem ini selesai — di tengah pandemi dan tekanan sosial media.
+
+Ini bukan karakter lemah. Ini biologi yang terbentuk dalam konteks berbeda.
+
+Gen Z atau Milenial — pernah burnout? Jawab: GenZ-pernah / Milenial-pernah / belum pernah.
+
+#NeuroDaily #NeurosainsKerja #GenZ #Burnout #Karir #GenerasiMuda #WorkIntelligence`;
+const cc=document.getElementById('charCount'),len=captionText.length;
+cc.textContent=`${len} / 500 karakter ${len<=500?'✓':'⚠ Melebihi batas Threads'}`;
+if(len>500)cc.style.color='#e05252';
+go(0);
+</script>
+</body>
+</html>

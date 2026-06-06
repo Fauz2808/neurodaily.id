@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Neuro Daily — Dopamine & Prokrastinasi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#0D2E28;
+    --teal:#1A6B5A;
+    --green:#5EC9A7;
+    --parchment:#F5F3EE;
+    --amber:#C9A96E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#1a1a1a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+  body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px}
+
+  .topbar{
+    width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;
+    color:#9aa39f;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;
+    margin-bottom:24px;
+  }
+  .topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+
+  .stage{position:relative;width:min(440px,92vw);aspect-ratio:4/5}
+  .viewport{
+    position:relative;width:100%;height:100%;
+    border-radius:18px;overflow:hidden;
+    box-shadow:0 30px 80px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04);
+  }
+  .track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+  .slide{
+    flex:0 0 100%;height:100%;
+    display:flex;flex-direction:column;
+    padding:36px 32px 28px;
+    position:relative;overflow:hidden;
+  }
+
+  .bg-dark{background:var(--forest);color:var(--parchment)}
+  .bg-light{background:var(--parchment);color:var(--forest)}
+  .bg-teal{background:var(--teal);color:var(--parchment)}
+
+  .slide .header{
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'DM Sans',sans-serif;font-weight:500;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.85;
+  }
+  .bg-light .header{opacity:.7}
+  .pillar-tag{display:inline-flex;align-items:center;gap:6px}
+  .pillar-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--green)}
+  .bg-light .pillar-tag::before{background:var(--teal)}
+
+  .slide .footer{
+    margin-top:auto;
+    display:flex;justify-content:space-between;align-items:flex-end;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;opacity:.55;text-transform:uppercase;
+  }
+
+  /* ── SLIDE 1 — HOOK ─────────────────────────────── */
+  .s1 .body{margin-top:auto;margin-bottom:auto}
+  .s1 h1{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:50px;line-height:1.05;letter-spacing:-.01em;color:var(--parchment);
+  }
+  .s1 h1 em{color:var(--amber);font-style:italic}
+  .s1 .lead{margin-top:18px;font-size:13px;line-height:1.7;opacity:.7;max-width:300px}
+  .s1 .swipe{
+    position:absolute;bottom:24px;right:32px;
+    display:flex;align-items:center;gap:8px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6;
+  }
+  .s1 .swipe .arrow{display:inline-block;animation:nudge 1.6s ease-in-out infinite}
+  @keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+
+  /* Dopamine molecule hint bg */
+  .mol-bg{position:absolute;inset:0;pointer-events:none;opacity:.055}
+
+  /* ── SLIDE 2 — THE CULPRIT ───────────────────────── */
+  .s2-culprit{justify-content:space-between}
+  .s2-culprit .badge{
+    display:inline-flex;align-items:center;gap:8px;margin-top:28px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--teal);
+  }
+  .s2-culprit .badge::before{content:"";width:8px;height:8px;border-radius:99px;background:var(--amber);flex-shrink:0}
+  .s2-culprit h2{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:34px;line-height:1.1;letter-spacing:-.01em;margin-top:14px;color:var(--forest);
+  }
+  .s2-culprit h2 em{font-style:italic;color:var(--teal)}
+  .s2-culprit .body2{margin-top:20px;font-size:13.5px;line-height:1.65;color:var(--forest);opacity:.82;max-width:340px}
+  .s2-culprit .highlight{
+    margin-top:20px;padding:16px 18px;border-radius:10px;
+    background:rgba(26,107,90,.07);border-left:2px solid var(--teal);
+    font-size:13px;line-height:1.6;color:var(--forest);opacity:.9;
+  }
+  .s2-culprit .highlight strong{font-weight:500;color:var(--teal)}
+
+  /* ── SLIDE 3 — MECHANISM ────────────────────────── */
+  .s3 h2{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:29px;line-height:1.2;letter-spacing:-.01em;margin-top:26px;
+  }
+  .s3 .term{
+    margin-top:22px;padding:18px 20px;border-radius:10px;
+    background:rgba(94,201,167,.08);border-left:2px solid var(--green);
+  }
+  .s3 .term .name{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+  .s3 .term .def{margin-top:8px;font-size:13px;line-height:1.65;color:var(--parchment);opacity:.92}
+  .s3 .pathway{
+    margin-top:18px;display:flex;align-items:center;gap:0;
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+  }
+  .s3 .step{
+    flex:1;text-align:center;padding:10px 6px;border-radius:8px;
+    font-size:9px;line-height:1.4;color:var(--parchment);opacity:.7;
+  }
+  .s3 .step.lit{background:rgba(94,201,167,.12);opacity:1;color:var(--green)}
+  .s3 .arrow{color:var(--green);opacity:.4;padding:0 2px;font-size:12px}
+  .s3 .source{margin-top:16px;font-size:11px;color:var(--parchment);opacity:.5;line-height:1.55}
+
+  /* ── SLIDE 4 — THE TRAP ─────────────────────────── */
+  .s4-trap h2{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:24px;line-height:1.25;margin-top:20px;color:var(--forest);
+  }
+  .s4-trap h2 em{font-style:italic;color:var(--teal)}
+  .s4-trap .compare{display:flex;gap:12px;margin-top:22px;flex:1}
+  .s4-trap .col{
+    flex:1;padding:16px 14px;border-radius:10px;
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .col-avoid{background:rgba(201,169,110,.1);border:1px solid rgba(201,169,110,.25)}
+  .col-pick{background:rgba(26,107,90,.08);border:1px solid rgba(26,107,90,.2)}
+  .s4-trap .col-label{
+    font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;
+    font-weight:500;margin-bottom:4px;
+  }
+  .col-avoid .col-label{color:var(--amber)}
+  .col-pick .col-label{color:var(--teal)}
+  .s4-trap .col-item{
+    font-size:11px;line-height:1.5;color:var(--forest);opacity:.75;
+    display:flex;align-items:flex-start;gap:6px;
+  }
+  .s4-trap .col-item::before{content:"·";opacity:.5;flex-shrink:0}
+  .s4-trap .signal{
+    margin-top:auto;padding:8px 12px;border-radius:8px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+    text-align:center;
+  }
+  .col-avoid .signal{background:rgba(201,169,110,.15);color:#9a7940}
+  .col-pick .signal{background:rgba(26,107,90,.15);color:var(--teal)}
+
+  /* ── SLIDE 5 — CONSEQUENCE ──────────────────────── */
+  .s5{padding-top:28px}
+  .s5 .stat-big{margin-top:auto;display:flex;align-items:baseline;gap:14px}
+  .s5 .stat-big .n{
+    font-family:'DM Serif Display',serif;font-size:110px;line-height:.85;
+    color:var(--parchment);letter-spacing:-.03em;
+  }
+  .s5 .stat-big .n em{color:var(--amber);font-style:italic}
+  .s5 .stat-big .u{font-family:'DM Sans';font-weight:500;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);max-width:130px;line-height:1.4}
+  .s5 .copy{margin-top:18px;font-size:13.5px;line-height:1.65;opacity:.85;max-width:340px}
+  .s5 .copy strong{font-weight:500;color:var(--green)}
+  .s5 .math{
+    margin-top:20px;padding:14px 18px;border:1px dashed rgba(94,201,167,.3);border-radius:10px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);letter-spacing:.04em;line-height:1.8;
+  }
+
+  /* ── SLIDE 6 — REFRAME ──────────────────────────── */
+  .s6 h2{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:36px;line-height:1.12;margin-top:28px;letter-spacing:-.01em;
+  }
+  .s6 h2 em{font-style:italic;color:var(--green)}
+  .s6 .ps{margin-top:20px;font-size:13.5px;line-height:1.65;opacity:.88;max-width:340px}
+  .s6 .ps+.ps{margin-top:14px;opacity:.72}
+
+  /* ── SLIDE 7 — CTA ──────────────────────────────── */
+  .s7{justify-content:space-between}
+  .s7 .lead-q{
+    font-family:'DM Serif Display',serif;font-size:28px;line-height:1.2;letter-spacing:-.01em;
+    margin-top:32px;color:var(--forest);
+  }
+  .s7 .lead-q em{font-style:italic;color:var(--teal)}
+  .s7 .ask{margin-top:16px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.7;max-width:300px}
+  .s7 .actions{margin-top:22px;display:flex;flex-direction:column;gap:10px}
+  .s7 .btn{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 18px;border:1px solid rgba(13,46,40,.15);border-radius:10px;
+    font-size:12.5px;color:var(--forest);
+  }
+  .s7 .btn .ic{width:18px;height:18px;color:var(--teal);flex-shrink:0}
+  .s7 .signoff{margin-top:20px;padding-top:16px;border-top:1px solid rgba(13,46,40,.12)}
+  .s7 .tag{font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;color:var(--teal);line-height:1.3}
+  .s7 .sub{margin-top:6px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--forest);opacity:.6;font-weight:500}
+
+  /* dots & nav */
+  .dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+  .dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+  .dot.active{background:var(--green);width:22px}
+  .controls{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+    display:flex;gap:8px;z-index:5;
+  }
+  .controls button{
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);
+    width:42px;height:42px;border-radius:99px;cursor:pointer;font-size:18px;
+    display:flex;align-items:center;justify-content:center;transition:background .2s;
+  }
+  .controls button:hover{background:rgba(94,201,167,.12);border-color:rgba(94,201,167,.3)}
+  .controls button:disabled{opacity:.3;cursor:not-allowed}
+  .counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 8px}
+
+  .caption-panel{
+    width:min(440px,92vw);margin-top:32px;padding:22px 22px 24px;
+    background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;
+    color:#cfd3d1;font-size:13px;line-height:1.7;
+  }
+  .caption-panel .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+  .caption-panel .char-count{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--amber);margin-top:10px;opacity:.7}
+  .caption-panel p{margin-bottom:10px}
+  .caption-panel p:last-child{margin-bottom:0}
+  .caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:14px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Peak Performance Protocol ]</span>
+</div>
+
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- ── SLIDE 1 — HOOK ─────────────────────────── -->
+      <section class="slide bg-dark s1" data-screen-label="01 Hook">
+        <!-- Subtle molecule/node bg -->
+        <svg class="mol-bg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <circle cx="200" cy="180" r="18" fill="none" stroke="rgba(94,201,167,1)" stroke-width="1.5"/>
+          <circle cx="200" cy="180" r="5" fill="rgba(94,201,167,1)"/>
+          <line x1="200" y1="162" x2="200" y2="130" stroke="rgba(94,201,167,1)" stroke-width="1.5"/>
+          <circle cx="200" cy="122" r="10" fill="none" stroke="rgba(94,201,167,1)" stroke-width="1.5"/>
+          <line x1="218" y1="168" x2="248" y2="148" stroke="rgba(94,201,167,1)" stroke-width="1.5"/>
+          <circle cx="258" cy="142" r="10" fill="none" stroke="rgba(94,201,167,1)" stroke-width="1.5"/>
+          <line x1="182" y1="168" x2="152" y2="148" stroke="rgba(94,201,167,1)" stroke-width="1.5"/>
+          <circle cx="142" cy="142" r="10" fill="none" stroke="rgba(94,201,167,1)" stroke-width="1.5"/>
+          <line x1="200" y1="198" x2="200" y2="240" stroke="rgba(94,201,167,1)" stroke-width="1.5"/>
+          <circle cx="200" cy="250" r="10" fill="none" stroke="rgba(201,169,110,1)" stroke-width="1.5"/>
+          <line x1="218" y1="192" x2="260" y2="220" stroke="rgba(201,169,110,1)" stroke-width="1"/>
+          <circle cx="270" cy="228" r="8" fill="none" stroke="rgba(201,169,110,1)" stroke-width="1"/>
+          <line x1="182" y1="192" x2="140" y2="220" stroke="rgba(201,169,110,1)" stroke-width="1"/>
+          <circle cx="130" cy="228" r="8" fill="none" stroke="rgba(201,169,110,1)" stroke-width="1"/>
+          <!-- Extra scattered nodes -->
+          <circle cx="80" cy="80" r="4" fill="rgba(94,201,167,.4)"/>
+          <circle cx="320" cy="420" r="3" fill="rgba(201,169,110,.4)"/>
+          <circle cx="50" cy="380" r="3" fill="rgba(94,201,167,.3)"/>
+          <circle cx="360" cy="120" r="3" fill="rgba(245,243,238,.2)"/>
+        </svg>
+
+        <div class="header">
+          <span class="pillar-tag">Peak Performance</span>
+          <span>01 / 07</span>
+        </div>
+        <div class="body">
+          <h1>Kamu prokrastinasi bukan karena <em>malas.</em></h1>
+          <p class="lead">Otakmu sedang melakukan tugasnya dengan sempurna — hanya saja tugasnya bukan menyelesaikan laporanmu.</p>
+        </div>
+        <div class="swipe">
+          <span>Geser</span><span class="arrow">→</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 2 — THE CULPRIT ──────────────────── -->
+      <section class="slide bg-light s2-culprit" data-screen-label="02 Culprit">
+        <div class="header">
+          <span class="pillar-tag">Pelakunya</span>
+          <span>02 / 07</span>
+        </div>
+        <div class="badge">Dopamine System</div>
+        <h2 class="s2-culprit-head" style="font-family:'DM Serif Display',serif;font-weight:400;font-size:34px;line-height:1.1;letter-spacing:-.01em;margin-top:14px;color:var(--forest)">
+          Otak selalu mengejar <em style="font-style:italic;color:var(--teal)">reward tercepat</em> — bukan task terpenting.
+        </h2>
+        <p class="body2" style="margin-top:20px;font-size:13.5px;line-height:1.65;color:var(--forest);opacity:.82;max-width:340px">
+          Sistem dopamine di otakmu dirancang untuk evolusi, bukan untuk deadline kerja. Dia mengevaluasi setiap task berdasarkan satu pertanyaan: <strong style="font-weight:500">seberapa cepat aku dapat reward?</strong>
+        </p>
+        <div class="highlight" style="margin-top:20px;padding:16px 18px;border-radius:10px;background:rgba(26,107,90,.07);border-left:2px solid var(--teal);font-size:13px;line-height:1.6;color:var(--forest)">
+          Laporan penting dengan deadline 2 minggu? <strong style="font-weight:500;color:var(--teal)">Reward-nya jauh dan tidak pasti.</strong> Scroll IG 5 menit? Reward-nya sekarang, langsung, dan terjamin.
+        </div>
+        <div class="footer">
+          <span>NEURO DAILY</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 3 — MECHANISM ────────────────────── -->
+      <section class="slide bg-dark s3" data-screen-label="03 Mechanism">
+        <div class="header">
+          <span class="pillar-tag">Yang terjadi di otakmu</span>
+          <span>03 / 07</span>
+        </div>
+        <h2>Otak bukan menghindari kerja keras — dia menghindari <em style="font-style:italic;color:var(--amber)">ketidakpastian reward.</em></h2>
+        <div class="term">
+          <div class="name">Dopamine Reward Prediction Error</div>
+          <div class="def">Neuron dopamine di otakmu aktif merespons sinyal reward — dan reaksinya paling kuat pada reward yang segera dan dapat diprediksi. Task ambigu dengan hasil jangka panjang menghasilkan sinyal dopamine yang jauh lebih lemah.</div>
+        </div>
+        <div class="pathway">
+          <div class="step">Task Ambigu</div>
+          <div class="arrow">→</div>
+          <div class="step">Sinyal Rendah</div>
+          <div class="arrow">→</div>
+          <div class="step lit">Avoidance</div>
+          <div class="arrow">→</div>
+          <div class="step lit">Relief → Dopamine</div>
+        </div>
+        <p class="source">Riset Wolfram Schultz tentang dopamine prediction error (Nature Reviews Neuroscience) menunjukkan sistem ini berjalan di luar kesadaran sadar.</p>
+        <div class="footer" style="margin-top:auto">
+          <span>03 — MECHANISM</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 4 — THE TRAP ──────────────────────── -->
+      <section class="slide bg-light s4-trap" data-screen-label="04 Trap">
+        <div class="header">
+          <span class="pillar-tag">Jebakan yang tidak terasa</span>
+          <span>04 / 07</span>
+        </div>
+        <h2>Kenapa kamu beresin meja <em>daripada nulis proposal</em> yang sudah tertunda?</h2>
+
+        <div class="compare">
+          <!-- Column: Task yang dihindari -->
+          <div class="col col-avoid">
+            <div class="col-label">Task Penting</div>
+            <div class="col-item">Deadline masih 2 minggu</div>
+            <div class="col-item">Hasil baru terasa nanti</div>
+            <div class="col-item">Risiko dikritik atau gagal</div>
+            <div class="col-item">Tidak jelas harus mulai dari mana</div>
+            <div class="signal">Dopamine signal: RENDAH</div>
+          </div>
+          <!-- Column: Task yang dipilih -->
+          <div class="col col-pick">
+            <div class="col-label">Task "Aman"</div>
+            <div class="col-item">Bisa selesai sekarang juga</div>
+            <div class="col-item">Kepuasan langsung terasa</div>
+            <div class="col-item">Risiko gagal minim</div>
+            <div class="col-item">Langkah pertama sudah jelas</div>
+            <div class="signal">Dopamine signal: TINGGI</div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <span>04 — THE TRAP</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 5 — CONSEQUENCE ──────────────────── -->
+      <section class="slide bg-teal s5" data-screen-label="05 Consequence">
+        <div class="header">
+          <span class="pillar-tag" style="color:#fff">Hitung kerugiannya</span>
+          <span>05 / 07</span>
+        </div>
+        <p class="copy" style="margin-top:24px">Kalau kamu rata-rata menghindari task penting selama 30 menit per hari — angka yang sangat konservatif…</p>
+
+        <div class="stat-big">
+          <span class="n"><em>5</em></span>
+          <span class="u">hari kerja penuh hilang setiap tahun</span>
+        </div>
+
+        <div class="math">
+          30 menit/hari × 5 hari/minggu = 2.5 jam<br>
+          × 50 minggu kerja = 125 jam/tahun<br>
+          ÷ 8 jam kerja = <span style="color:var(--amber)">15+ hari kerja menguap.</span><br>
+          <span style="opacity:.6;font-size:10px">*angka konservatif. Riset Pychyl (Carleton Univ.) mencatat rata-rata 2+ jam/hari.</span>
+        </div>
+
+        <div class="footer">
+          <span>05 — IMPACT</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 6 — REFRAME ───────────────────────── -->
+      <section class="slide bg-dark s6" data-screen-label="06 Reframe">
+        <div class="header">
+          <span class="pillar-tag">Reframe</span>
+          <span>06 / 07</span>
+        </div>
+        <h2>Prokrastinasi bukan masalah <em>karakter.</em> Ini masalah desain.</h2>
+        <p class="ps">Sistem reward di otakmu tidak berevolusi untuk menyelesaikan laporan kuartalan atau mempersiapkan presentasi. Dia berevolusi untuk menghindari bahaya dan mengejar reward yang dapat diprediksi.</p>
+        <p class="ps">Solusinya bukan lebih banyak disiplin — tapi mengubah cara task itu terasa untuk otakmu. Buat langkah pertama sekecil dan sejelas mungkin. Beri reward sendiri di tengah proses.</p>
+        <div class="footer">
+          <span>06 — REFRAME</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 7 — CTA ───────────────────────────── -->
+      <section class="slide bg-light s7" data-screen-label="07 CTA">
+        <div class="header">
+          <span class="pillar-tag">Sekarang giliranmu</span>
+          <span>07 / 07</span>
+        </div>
+
+        <div>
+          <p class="lead-q">Task apa yang paling sering kamu tunda — dan biasanya <em>kamu pilih ngapain</em> sebagai gantinya?</p>
+          <p class="ask">Tulis jujur di komentar. Kamu tidak sendiri — dan jawaban kamu mungkin membuat orang lain merasa lebih baik juga.</p>
+        </div>
+
+        <div class="actions">
+          <div class="btn">
+            <span>Simpan — bacalah lagi saat mau prokrastinasi</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+          </div>
+          <div class="btn">
+            <span>Kirim ke teman yang masternya prokrastinasi</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </div>
+
+        <div class="signoff">
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="1.5">
+              <path d="M4 14c0-5 3-8 8-8 4 0 6 2 6 5 0 2-1.5 3.5-4 3.5-2 0-3 1-3 2.5 0 1.5 1 2.5 2.5 2.5"/>
+              <circle cx="15" cy="9" r="1" fill="#1A6B5A"/>
+            </svg>
+            <span class="tag">Neuro Daily</span>
+          </div>
+          <div class="sub">Kerja lebih cerdas, bukan lebih keras. Ini sains-nya.</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<!-- CAPTION PANEL -->
+<div class="caption-panel">
+  <div class="label">Caption · Formula B — Explain Your Life · ≤ 500 karakter</div>
+  <p><strong style="color:var(--parchment)">Kamu prokrastinasi bukan karena malas.</strong></p>
+  <p>Dopamine system di otakmu secara aktif memilih task yang memberikan reward segera — bukan task yang penting tapi hasilnya baru terasa nanti.</p>
+  <p>Setiap kali kamu pilih scroll IG daripada nulis laporan, otakmu tidak sedang malas. Dia sedang mengikuti jalur neurologis paling efisien.</p>
+  <p>Bukan soal karakter. Soal arsitektur otak.</p>
+  <p>Tugas apa yang paling sering kamu tunda hari ini?</p>
+  <span class="hash">#NeuroDaily #NeurosainsKerja #Prokrastinasi #PeakPerformance #DopamineSystem</span>
+  <div class="char-count" id="charCount"></div>
+</div>
+
+<div class="controls">
+  <button id="prev" aria-label="Sebelumnya">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next" aria-label="Berikutnya">›</button>
+</div>
+
+<script>
+  const track = document.getElementById('track');
+  const dotsEl = document.getElementById('dots');
+  const counter = document.getElementById('counter');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  const total = track.children.length;
+  let i = 0;
+
+  for(let k=0;k<total;k++){
+    const b=document.createElement('button');
+    b.className='dot'+(k===0?' active':'');
+    b.addEventListener('click',()=>go(k));
+    dotsEl.appendChild(b);
+  }
+  const dots=[...dotsEl.children];
+
+  function go(n){
+    i=Math.max(0,Math.min(total-1,n));
+    track.style.transform=`translateX(-${i*100}%)`;
+    dots.forEach((d,k)=>d.classList.toggle('active',k===i));
+    counter.textContent=`${i+1} / ${total}`;
+    prevBtn.disabled=i===0;
+    nextBtn.disabled=i===total-1;
+  }
+  prevBtn.addEventListener('click',()=>go(i-1));
+  nextBtn.addEventListener('click',()=>go(i+1));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight')go(i+1);
+    if(e.key==='ArrowLeft')go(i-1);
+  });
+  let sx=0,dx=0,dragging=false;
+  const vp=document.querySelector('.viewport');
+  vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;dragging=true;dx=0});
+  vp.addEventListener('touchmove',e=>{if(!dragging)return;dx=e.touches[0].clientX-sx});
+  vp.addEventListener('touchend',()=>{
+    if(!dragging)return;
+    if(Math.abs(dx)>40)go(i+(dx<0?1:-1));
+    dragging=false;
+  });
+
+  const captionText=`Kamu prokrastinasi bukan karena malas.
+
+Dopamine system di otakmu secara aktif memilih task yang memberikan reward segera — bukan task yang penting tapi hasilnya baru terasa nanti.
+
+Setiap kali kamu pilih scroll IG daripada nulis laporan, otakmu tidak sedang malas. Dia sedang mengikuti jalur neurologis paling efisien.
+
+Bukan soal karakter. Soal arsitektur otak.
+
+Tugas apa yang paling sering kamu tunda hari ini?
+
+#NeuroDaily #NeurosainsKerja #Prokrastinasi #PeakPerformance #DopamineSystem`;
+
+  const cc=document.getElementById('charCount');
+  const len=captionText.length;
+  cc.textContent=`${len} / 500 karakter ${len<=500?'✓':'⚠ Melebihi batas Threads'}`;
+  if(len>500)cc.style.color='#e05252';
+
+  go(0);
+</script>
+</body>
+</html>

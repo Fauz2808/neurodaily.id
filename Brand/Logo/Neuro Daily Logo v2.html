@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Neuro Daily — Logo v2 (with brain mark)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<style>
+  :root{
+    --forest:#0D2E28;
+    --teal:#1A6B5A;
+    --green:#5EC9A7;
+    --parchment:#F5F3EE;
+    --amber:#C9A96E;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;height:100%;font-family:'DM Sans',sans-serif;font-weight:300;background:#1a1a1a;color:var(--parchment)}
+  #root{width:100%;height:100vh}
+
+  .surface{
+    width:100%;height:100%;
+    display:flex;flex-direction:column;
+    font-family:'DM Sans',sans-serif;
+    position:relative;overflow:hidden;
+  }
+  .s-light{background:var(--parchment);color:var(--forest)}
+  .s-dark{background:var(--forest);color:var(--parchment)}
+  .s-teal{background:var(--teal);color:var(--parchment)}
+  .s-amber{background:var(--amber);color:var(--forest)}
+
+  .surface .meta{
+    position:absolute;top:14px;left:18px;right:18px;
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;opacity:.5;
+  }
+  .surface .footer{
+    position:absolute;bottom:14px;left:18px;right:18px;
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.45;
+  }
+  .stage-center{flex:1;display:flex;align-items:center;justify-content:center;padding:36px}
+
+  .wordmark{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    letter-spacing:-.005em;line-height:1;
+  }
+  .wordmark em{font-style:italic}
+  .subline{
+    font-family:'DM Sans',sans-serif;font-weight:500;
+    letter-spacing:.18em;text-transform:uppercase;font-size:10px;opacity:.78;
+  }
+
+  .grid-bg{
+    background-image:
+      linear-gradient(rgba(13,46,40,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(13,46,40,.06) 1px, transparent 1px);
+    background-size:24px 24px;
+  }
+
+  .note-card{padding:32px;color:var(--forest)}
+  .note-card h3{font-family:'DM Serif Display',serif;font-weight:400;font-size:28px;line-height:1.15;margin:0 0 14px;letter-spacing:-.01em;}
+  .note-card p{font-size:13px;line-height:1.65;margin:0 0 10px;opacity:.78;max-width:520px}
+  .note-card .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:14px;}
+  .note-card ul{margin:0;padding-left:18px;font-size:13px;line-height:1.7;opacity:.78}
+
+  .swatch-row{display:flex;gap:8px;align-items:center;margin-top:12px}
+  .swatch{width:22px;height:22px;border-radius:4px;border:1px solid rgba(0,0,0,.06)}
+
+  .fav{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+  .fav.dark{background:var(--forest)}
+  .fav.light{background:var(--parchment);border:1px solid rgba(13,46,40,.1)}
+  .fav.teal{background:var(--teal)}
+  .fav.amber{background:var(--amber)}
+
+  /* CSS color filters for PNG brain mark */
+  .mark-img{display:block;width:100%;height:100%;object-fit:contain}
+  /* Source PNG is roughly cyan/teal-blue. Recolor via filter pipelines: */
+  .recolor-forest{filter:brightness(0) saturate(100%) invert(13%) sepia(28%) saturate(900%) hue-rotate(115deg) brightness(95%) contrast(95%)}
+  .recolor-teal{filter:brightness(0) saturate(100%) invert(33%) sepia(58%) saturate(420%) hue-rotate(115deg) brightness(85%) contrast(90%)}
+  .recolor-green{filter:brightness(0) saturate(100%) invert(75%) sepia(35%) saturate(400%) hue-rotate(110deg) brightness(95%) contrast(85%)}
+  .recolor-parchment{filter:brightness(0) saturate(100%) invert(96%) sepia(7%) saturate(180%) hue-rotate(20deg) brightness(99%) contrast(94%)}
+  .recolor-amber{filter:brightness(0) saturate(100%) invert(72%) sepia(22%) saturate(540%) hue-rotate(2deg) brightness(92%) contrast(85%)}
+  .recolor-black{filter:brightness(0)}
+  .recolor-white{filter:brightness(0) invert(1)}
+
+  .markwrap{display:inline-block;line-height:0}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel">
+const { DesignCanvas, DCSection, DCArtboard } = window;
+
+/* ---- Reusable PNG mark component ---- */
+function BrainMark({ size=120, tone="forest" }){
+  return (
+    <span className="markwrap" style={{width:size,height:size}}>
+      <img src={`assets/logo-${tone==="white"?"white":"black"}.png`}
+           alt="Neuro Daily mark"
+           className={`mark-img recolor-${tone}`}
+           style={{width:size,height:size}}/>
+    </span>
+  );
+}
+
+/* ---- Lockups ---- */
+function Horizontal({ tone="forest", textColor, accent, italic=true, markSize=120, wordSize=44 }){
+  return (
+    <div style={{display:"flex",alignItems:"center",gap:20}}>
+      <BrainMark size={markSize} tone={tone}/>
+      <div>
+        <div className="wordmark" style={{fontSize:wordSize,color:textColor}}>
+          {italic ? <>Neuro <em style={{color:accent||textColor}}>Daily</em></> : "Neuro Daily"}
+        </div>
+        <div className="subline" style={{color:textColor,marginTop:6,opacity:.78}}>
+          Brain Science · For Your Career
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Stacked({ tone="forest", textColor, accent, markSize=130, wordSize=42 }){
+  return (
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:14}}>
+      <BrainMark size={markSize} tone={tone}/>
+      <div className="wordmark" style={{fontSize:wordSize,color:textColor,textAlign:"center"}}>
+        Neuro <em style={{color:accent||textColor}}>Daily</em>
+      </div>
+      <div className="subline" style={{color:textColor}}>Brain Science · For Your Career</div>
+    </div>
+  );
+}
+
+/* ---- App ---- */
+function App(){
+  return (
+    <DesignCanvas title="Neuro Daily — Logo v2" subtitle="Iterasi dengan mark hippocampus + synapse cluster · April 2026">
+
+      {/* Brief */}
+      <DCSection id="brief" title="Brief & Sistem">
+        <DCArtboard id="brief-card" label="Visual DNA" width={760} height={500}>
+          <div className="surface s-light grid-bg">
+            <div className="note-card" style={{padding:"40px 44px"}}>
+              <div className="label">Mark Anatomy</div>
+              <h3>Dua hemisfer · siluet otak · synapse cluster.</h3>
+              <p>Lingkaran terbelah dua merepresentasikan hemisfer kiri-kanan. Pola putih di dalamnya adalah gyrus/sulcus — siluet otak. Kluster molekul di tengah adalah synapse network — pusat dari pengetahuan yang melekat (hippocampus).</p>
+              <p>Mark ini cukup distinctive untuk berdiri sendiri sebagai favicon, dan cukup detailed untuk menjadi statement piece di feed Instagram.</p>
+              <div className="swatch-row">
+                <span className="swatch" style={{background:"#0D2E28"}}/>
+                <span className="swatch" style={{background:"#1A6B5A"}}/>
+                <span className="swatch" style={{background:"#5EC9A7"}}/>
+                <span className="swatch" style={{background:"#F5F3EE"}}/>
+                <span className="swatch" style={{background:"#C9A96E"}}/>
+              </div>
+              <p style={{marginTop:18,fontSize:11,fontFamily:"'JetBrains Mono',monospace",letterSpacing:".08em",opacity:.6}}>
+                FOREST · TEAL · GREEN · PARCHMENT · AMBER
+              </p>
+            </div>
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      {/* Primary lockup — recommended */}
+      <DCSection id="primary" title="Primary Lockup — Direction A (Recommended)">
+        <DCArtboard id="p-light" label="Light · primary" width={620} height={340}>
+          <div className="surface s-light">
+            <div className="meta"><span>A · 01</span><span>LIGHT · PRIMARY</span></div>
+            <div className="stage-center">
+              <Horizontal tone="forest" textColor="#0D2E28" accent="#1A6B5A" markSize={120} wordSize={46}/>
+            </div>
+            <div className="footer"><span>NEURO DAILY</span><span>Forest mark · italic Daily</span></div>
+          </div>
+        </DCArtboard>
+        <DCArtboard id="p-dark" label="Dark · inverse" width={620} height={340}>
+          <div className="surface s-dark">
+            <div className="meta" style={{opacity:.5}}><span>A · 02</span><span>DARK · INVERSE</span></div>
+            <div className="stage-center">
+              <Horizontal tone="green" textColor="#F5F3EE" accent="#5EC9A7" markSize={120} wordSize={46}/>
+            </div>
+            <div className="footer"><span>NEURO DAILY</span><span>Synapse green mark</span></div>
+          </div>
+        </DCArtboard>
+        <DCArtboard id="p-stacked-light" label="Stacked · light" width={420} height={460}>
+          <div className="surface s-light">
+            <div className="meta"><span>A · 03</span><span>STACKED · LIGHT</span></div>
+            <div className="stage-center">
+              <Stacked tone="forest" textColor="#0D2E28" accent="#1A6B5A" markSize={140} wordSize={42}/>
+            </div>
+            <div className="footer"><span>STACKED</span><span>Vertical · IG profile</span></div>
+          </div>
+        </DCArtboard>
+        <DCArtboard id="p-stacked-dark" label="Stacked · dark" width={420} height={460}>
+          <div className="surface s-dark">
+            <div className="meta" style={{opacity:.5}}><span>A · 04</span><span>STACKED · DARK</span></div>
+            <div className="stage-center">
+              <Stacked tone="green" textColor="#F5F3EE" accent="#5EC9A7" markSize={140} wordSize={42}/>
+            </div>
+            <div className="footer"><span>STACKED</span><span>For dark feeds</span></div>
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      {/* Color variations */}
+      <DCSection id="color" title="Color Variations">
+        <DCArtboard id="c-teal-bg" label="On Teal · brand bg" width={520} height={340}>
+          <div className="surface s-teal">
+            <div className="meta" style={{opacity:.5}}><span>B · 01</span><span>ON TEAL</span></div>
+            <div className="stage-center">
+              <Horizontal tone="parchment" textColor="#F5F3EE" accent="#C9A96E" markSize={110} wordSize={42}/>
+            </div>
+            <div className="footer"><span>BRAND TEAL</span><span>Amber italic accent</span></div>
+          </div>
+        </DCArtboard>
+        <DCArtboard id="c-amber-bg" label="On Amber" width={520} height={340}>
+          <div className="surface s-amber">
+            <div className="meta" style={{opacity:.5}}><span>B · 02</span><span>ON AMBER</span></div>
+            <div className="stage-center">
+              <Horizontal tone="forest" textColor="#0D2E28" accent="#1A6B5A" markSize={110} wordSize={42}/>
+            </div>
+            <div className="footer"><span>WARM CALLOUT</span><span>For special editions</span></div>
+          </div>
+        </DCArtboard>
+        <DCArtboard id="c-mono-light" label="Monochrome · light" width={420} height={340}>
+          <div className="surface s-light">
+            <div className="meta"><span>B · 03</span><span>MONO · LIGHT</span></div>
+            <div className="stage-center">
+              <Horizontal tone="black" textColor="#0D2E28" accent="#0D2E28" italic={false} markSize={100} wordSize={38}/>
+            </div>
+            <div className="footer"><span>MONOCHROME</span><span>Print · 1-color</span></div>
+          </div>
+        </DCArtboard>
+        <DCArtboard id="c-mono-dark" label="Monochrome · dark" width={420} height={340}>
+          <div className="surface" style={{background:"#000",color:"#fff"}}>
+            <div className="meta" style={{opacity:.5}}><span>B · 04</span><span>MONO · DARK</span></div>
+            <div className="stage-center">
+              <Horizontal tone="white" textColor="#fff" accent="#fff" italic={false} markSize={100} wordSize={38}/>
+            </div>
+            <div className="footer"><span>MONOCHROME</span><span>Reverse · 1-color</span></div>
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      {/* Mark only */}
+      <DCSection id="mark" title="Mark Only — Avatars & Favicons">
+        <DCArtboard id="m-ig" label="Instagram avatar" width={420} height={420}>
+          <div className="surface s-light">
+            <div className="meta"><span>C · 01</span><span>IG AVATAR · 320PX</span></div>
+            <div className="stage-center">
+              <div style={{
+                width:260,height:260,borderRadius:"50%",
+                background:"var(--forest)",
+                display:"flex",alignItems:"center",justifyContent:"center",
+                boxShadow:"0 14px 44px -10px rgba(13,46,40,.4)"
+              }}>
+                <BrainMark size={170} tone="green"/>
+              </div>
+            </div>
+            <div className="footer"><span>RECOMMENDED</span><span>Green on forest</span></div>
+          </div>
+        </DCArtboard>
+        <DCArtboard id="m-tealavatar" label="IG avatar · teal" width={420} height={420}>
+          <div className="surface s-light">
+            <div className="meta"><span>C · 02</span><span>IG AVATAR · ALT</span></div>
+            <div className="stage-center">
+              <div style={{
+                width:260,height:260,borderRadius:"50%",
+                background:"var(--teal)",
+                display:"flex",alignItems:"center",justifyContent:"center"
+              }}>
+                <BrainMark size={170} tone="parchment"/>
+              </div>
+            </div>
+            <div className="footer"><span>ALT</span><span>Parchment on teal</span></div>
+          </div>
+        </DCArtboard>
+        <DCArtboard id="m-fav" label="Favicon sizes" width={620} height={300}>
+          <div className="surface s-light">
+            <div className="meta"><span>C · 03</span><span>FAVICON · 16/32/48/64PX</span></div>
+            <div className="stage-center" style={{gap:24,flexWrap:"wrap"}}>
+              {[16,24,32,48,64].map(s=>(
+                <div key={s} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8}}>
+                  <div style={{width:Math.max(s,32)+8,height:Math.max(s,32)+8,display:"flex",alignItems:"center",justifyContent:"center",background:"var(--forest)",borderRadius:6}}>
+                    <BrainMark size={s} tone="green"/>
+                  </div>
+                  <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:9,opacity:.5,letterSpacing:".1em"}}>{s}PX</div>
+                </div>
+              ))}
+            </div>
+            <div className="footer"><span>SCALES TO 16PX</span><span>Mark stays legible</span></div>
+          </div>
+        </DCArtboard>
+        <DCArtboard id="m-fav-light" label="App icon swatches" width={420} height={300}>
+          <div className="surface s-light">
+            <div className="meta"><span>C · 04</span><span>APP ICON · 4 BG</span></div>
+            <div className="stage-center" style={{gap:14}}>
+              <div className="fav dark"><BrainMark size={32} tone="green"/></div>
+              <div className="fav teal"><BrainMark size={32} tone="parchment"/></div>
+              <div className="fav amber"><BrainMark size={32} tone="forest"/></div>
+              <div className="fav light"><BrainMark size={32} tone="forest"/></div>
+            </div>
+            <div className="footer"><span>SYSTEM</span><span>4 brand backgrounds</span></div>
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      {/* Applications */}
+      <DCSection id="apps" title="Applications">
+        <DCArtboard id="app-ig-post" label="IG post header" width={520} height={520}>
+          <div className="surface s-dark">
+            <div className="meta" style={{opacity:.5}}><span>D · 01</span><span>IG POST · 1080×1080</span></div>
+            <div style={{flex:1,display:"flex",flexDirection:"column",padding:"50px 40px"}}>
+              <div style={{display:"flex",alignItems:"center",gap:12}}>
+                <BrainMark size={44} tone="green"/>
+                <div>
+                  <div className="wordmark" style={{fontSize:22,color:"#F5F3EE"}}>Neuro <em style={{color:"#5EC9A7"}}>Daily</em></div>
+                  <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:9,letterSpacing:".18em",color:"#5EC9A7",textTransform:"uppercase",marginTop:4}}>· Brain at Work</div>
+                </div>
+              </div>
+              <div style={{marginTop:"auto"}}>
+                <div style={{fontFamily:"'DM Serif Display',serif",fontSize:42,lineHeight:1.05,color:"#F5F3EE",letterSpacing:"-.01em"}}>
+                  Setiap notifikasi mencuri <em style={{color:"#C9A96E"}}>23 menit</em> fokusmu.
+                </div>
+                <div style={{marginTop:18,fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:".18em",color:"#5EC9A7",textTransform:"uppercase"}}>
+                  ↳ Geser untuk lihat sains-nya
+                </div>
+              </div>
+            </div>
+            <div className="footer" style={{opacity:.5}}><span>FEED HEADER</span><span>Mark + tagline</span></div>
+          </div>
+        </DCArtboard>
+
+        <DCArtboard id="app-newsletter" label="Newsletter masthead" width={620} height={300}>
+          <div className="surface s-light">
+            <div className="meta"><span>D · 02</span><span>NEWSLETTER · MASTHEAD</span></div>
+            <div style={{flex:1,display:"flex",flexDirection:"column",padding:"40px"}}>
+              <div style={{display:"flex",alignItems:"center",gap:14,paddingBottom:20,borderBottom:"1px solid rgba(13,46,40,.15)"}}>
+                <BrainMark size={50} tone="forest"/>
+                <div>
+                  <div className="wordmark" style={{fontSize:26,color:"#0D2E28"}}>Neuro <em style={{color:"#1A6B5A"}}>Daily</em></div>
+                  <div className="subline" style={{color:"#0D2E28",marginTop:4}}>Brain Science · For Your Career</div>
+                </div>
+                <div style={{marginLeft:"auto",fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:".14em",color:"#1A6B5A",textTransform:"uppercase"}}>
+                  Issue 042 · 28 Apr 2026
+                </div>
+              </div>
+              <div style={{marginTop:18,fontFamily:"'DM Serif Display',serif",fontSize:24,fontStyle:"italic",color:"#1A6B5A",lineHeight:1.3}}>
+                "Kerja lebih cerdas, bukan lebih keras. Ini sains-nya."
+              </div>
+            </div>
+            <div className="footer"><span>EDITORIAL</span><span>For long-form</span></div>
+          </div>
+        </DCArtboard>
+
+        <DCArtboard id="app-business-card" label="Business card" width={520} height={300}>
+          <div className="surface s-dark">
+            <div className="meta" style={{opacity:.5}}><span>D · 03</span><span>BUSINESS CARD · 85×55MM</span></div>
+            <div className="stage-center">
+              <div style={{
+                width:340,height:200,background:"var(--parchment)",
+                borderRadius:6,padding:22,display:"flex",flexDirection:"column",
+                boxShadow:"0 16px 50px -10px rgba(0,0,0,.5)",color:"#0D2E28"
+              }}>
+                <div style={{display:"flex",alignItems:"center",gap:10}}>
+                  <BrainMark size={36} tone="forest"/>
+                  <div className="wordmark" style={{fontSize:20}}>Neuro <em style={{color:"#1A6B5A"}}>Daily</em></div>
+                </div>
+                <div style={{marginTop:"auto"}}>
+                  <div style={{fontFamily:"'DM Sans'",fontWeight:500,fontSize:13}}>hello@neurodaily.id</div>
+                  <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,letterSpacing:".14em",color:"#1A6B5A",textTransform:"uppercase",marginTop:6}}>
+                    @neuro.daily · neurodaily.id
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="footer" style={{opacity:.5}}><span>STATIONERY</span><span>Parchment card</span></div>
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      {/* Notes */}
+      <DCSection id="notes" title="Catatan Iterasi">
+        <DCArtboard id="why" label="Kenapa direksi ini" width={620} height={420}>
+          <div className="surface s-light grid-bg">
+            <div className="note-card" style={{padding:"40px 44px"}}>
+              <div className="label">Iterasi v2 · Brain Mark</div>
+              <h3>Mark sudah punya kepribadian sendiri.</h3>
+              <p>Bentuk lingkaran terbelah dua memberi kontainer yang kuat — terbaca jelas di feed dengan banyak noise visual.</p>
+              <p>Synapse cluster di tengah secara harfiah memvisualisasikan claim brand: "ini yang terjadi di otakmu" — informasi sebagai jaringan, bukan daftar.</p>
+              <ul>
+                <li>Mark dipakai dalam 5 warna brand: Forest, Teal, Green, Parchment, Amber</li>
+                <li>Wordmark default: italic pada "Daily" untuk emphasis editorial</li>
+                <li>Untuk monochrome (print/fax): pakai semua-italic atau semua-roman, accent dimatikan</li>
+                <li>Avatar IG: green on forest (paling kontras &amp; on-brand)</li>
+              </ul>
+            </div>
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

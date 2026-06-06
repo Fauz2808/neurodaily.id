@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Claude Code
+.claude/
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Node
+node_modules/
+
+# Thumbnails
+Thumbs.db
+ehthumbs.db

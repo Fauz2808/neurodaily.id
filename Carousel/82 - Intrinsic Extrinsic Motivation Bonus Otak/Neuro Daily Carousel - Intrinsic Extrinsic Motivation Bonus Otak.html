@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Neuro Daily — Intrinsic vs Extrinsic Motivation: Kenapa Bonus Bisa Merusak</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;--red:#D96A6A;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0a0a0a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 100px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#7a807d;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(540px,94vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;position:relative;overflow:hidden}
+.cvs{width:1080px;height:1350px;transform-origin:top left;position:absolute;top:0;left:0;font-family:'DM Sans',sans-serif}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.cvs .head,.cvs .foot{position:absolute;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 64px;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase}
+.cvs .head{top:0;height:78px;border-bottom:1px solid rgba(245,243,238,.12)}
+.cvs .foot{bottom:0;height:64px;border-top:1px solid rgba(245,243,238,.12)}
+.bg-light .head,.bg-light .foot{border-color:rgba(13,46,40,.12)}
+.bg-teal .head,.bg-teal .foot{border-color:rgba(245,243,238,.18)}
+.cvs .head span,.cvs .foot span{opacity:.55}
+.cvs .head .dotmark::before{content:"◆ ";color:var(--green);opacity:1}
+.bg-light .head .dotmark::before{color:var(--teal)}
+.bg-teal .head .dotmark::before{color:var(--amber)}
+.hippo-mark{display:flex;align-items:center;gap:10px;opacity:1!important}
+.hippo-mark svg{width:30px;height:30px;flex-shrink:0}
+.body{position:absolute;top:78px;bottom:64px;left:0;right:0;padding:52px 72px;display:flex;flex-direction:column}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.bg-dark .eyebrow{color:var(--green)}
+.bg-light .eyebrow{color:var(--teal)}
+.bg-teal .eyebrow{color:var(--amber)}
+.rule{width:48px;height:3px;border-radius:2px;margin-top:18px}
+.bg-dark .rule{background:var(--green)}
+.bg-light .rule{background:var(--teal)}
+.bg-teal .rule{background:var(--amber)}
+.s1 .ghost{position:absolute;font-family:'DM Serif Display',serif;font-size:680px;line-height:.88;color:rgba(94,201,167,.04);pointer-events:none;user-select:none;right:-30px;top:30px}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:88px;line-height:1.02;letter-spacing:-.02em;margin-top:44px;max-width:840px;position:relative;z-index:2}
+.s1 h1 em{font-style:italic;color:var(--red)}
+.s1 .lead{margin-top:30px;font-size:24px;line-height:1.65;opacity:.72;max-width:680px;font-weight:300;position:relative;z-index:2}
+.s1 .mot-compare{position:absolute;bottom:78px;left:72px;right:72px;z-index:2;display:flex;gap:14px}
+.mc-box{flex:1;padding:20px 22px;border-radius:12px;text-align:center}
+.mc-box.intrinsic{background:rgba(94,201,167,.1);border:1.5px solid rgba(94,201,167,.25)}
+.mc-box.extrinsic{background:rgba(217,106,106,.08);border:1.5px solid rgba(217,106,106,.2)}
+.mc-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+.mc-box.intrinsic .mc-label{color:var(--green)}
+.mc-box.extrinsic .mc-label{color:var(--red)}
+.mc-source{font-size:22px;font-weight:300;line-height:1.35;margin-bottom:6px;opacity:.85}
+.mc-result{font-size:20px;opacity:.6;font-weight:300;font-style:italic}
+.s2 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.06;letter-spacing:-.02em;margin-top:32px;color:var(--forest);max-width:860px}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .stat-row{margin-top:36px;display:flex;gap:20px}
+.stat-card{flex:1;padding:28px 24px;border-radius:16px;display:flex;flex-direction:column;gap:10px}
+.stat-card.a{background:rgba(217,106,106,.06);border:1.5px solid rgba(217,106,106,.22)}
+.stat-card.b{background:rgba(94,201,167,.06);border:1.5px solid rgba(94,201,167,.2)}
+.stat-num{font-family:'DM Serif Display',serif;font-size:68px;line-height:1;letter-spacing:-.03em}
+.stat-card.a .stat-num{color:var(--red)}
+.stat-card.b .stat-num{color:var(--teal)}
+.stat-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;opacity:.6;color:var(--forest)}
+.stat-desc{font-size:22px;line-height:1.55;opacity:.65;font-weight:300;color:var(--forest)}
+.s2 .insight-cards{margin-top:24px;display:flex;flex-direction:column;gap:12px}
+.insight-card{display:flex;align-items:flex-start;gap:16px;padding:20px 24px;border-radius:12px;background:rgba(13,46,40,.04);border:1px solid rgba(13,46,40,.1)}
+.insight-card .ic-icon{font-family:'DM Serif Display',serif;font-style:italic;font-size:36px;line-height:1;color:var(--teal);flex-shrink:0;margin-top:2px}
+.insight-card .ic-title{font-size:24px;font-weight:500;color:var(--forest);margin-bottom:4px}
+.insight-card .ic-text{font-size:22px;line-height:1.55;color:var(--forest);opacity:.65;font-weight:300}
+.s2 .source{margin-top:auto;font-size:20px;letter-spacing:.04em;color:var(--forest);opacity:.42;font-family:'JetBrains Mono',monospace;line-height:1.7;border-top:1px solid rgba(13,46,40,.1);padding-top:16px}
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:66px;line-height:1.06;letter-spacing:-.02em;margin-top:40px;max-width:860px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .mech-cards{margin-top:44px;display:flex;flex-direction:column;gap:18px}
+.mech-card{padding:26px 30px;border-radius:14px;display:flex;align-items:flex-start;gap:22px}
+.mech-card.a{background:rgba(94,201,167,.07);border:1.5px solid rgba(94,201,167,.2)}
+.mech-card.b{background:rgba(201,169,110,.07);border:1.5px solid rgba(201,169,110,.22)}
+.mech-card.c{background:rgba(217,106,106,.06);border:1.5px solid rgba(217,106,106,.18)}
+.mech-card .mc-icon-lrg{width:52px;height:52px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-style:italic;font-size:26px}
+.mech-card.a .mc-icon-lrg{background:rgba(94,201,167,.18);color:var(--green)}
+.mech-card.b .mc-icon-lrg{background:rgba(201,169,110,.18);color:var(--amber)}
+.mech-card.c .mc-icon-lrg{background:rgba(217,106,106,.15);color:var(--red)}
+.mech-card .mc-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px}
+.mech-card.a .mc-label{color:var(--green)}
+.mech-card.b .mc-label{color:var(--amber)}
+.mech-card.c .mc-label{color:var(--red)}
+.mech-card .mc-text{font-size:24px;line-height:1.55;font-weight:300;opacity:.88}
+.s3 .bottom-note{margin-top:auto;padding:20px 28px;border-radius:12px;background:rgba(245,243,238,.05);border:1px solid rgba(245,243,238,.12);font-size:24px;line-height:1.6;opacity:.65;font-weight:300;display:flex;align-items:center;gap:14px}
+.s3 .note-prefix{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--amber);flex-shrink:0}
+.s4 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-.02em;margin-top:36px;max-width:860px}
+.s4 h2 em{font-style:italic;color:var(--amber)}
+.s4 .def-card{margin-top:28px;background:rgba(245,243,238,.1);border:1.5px solid rgba(245,243,238,.2);border-radius:14px;padding:24px 30px}
+.s4 .def-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+.s4 .def-text{font-size:22px;line-height:1.65;opacity:.88;font-weight:300}
+.s4 .type-comp{margin-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tc-item{padding:22px 22px;border-radius:12px}
+.tc-item.intr{background:rgba(94,201,167,.08);border:1.5px solid rgba(94,201,167,.2)}
+.tc-item.extr{background:rgba(217,106,106,.06);border:1.5px solid rgba(217,106,106,.18)}
+.tc-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.tc-item.intr .tc-label{color:var(--green)}
+.tc-item.extr .tc-label{color:var(--red)}
+.tc-text{font-size:22px;line-height:1.5;opacity:.8;font-weight:300}
+.s4 .bottom-note{margin-top:auto;padding:18px 24px;border-radius:12px;background:rgba(245,243,238,.07);border:1px solid rgba(245,243,238,.14);font-size:24px;line-height:1.6;opacity:.65;font-weight:300;display:flex;gap:12px;align-items:center}
+.s4 .bottom-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--amber);flex-shrink:0}
+.s5 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.06;letter-spacing:-.02em;margin-top:36px;color:var(--forest);max-width:860px}
+.s5 h2 em{font-style:italic;color:var(--teal)}
+.s5 .scenarios{margin-top:36px;display:flex;flex-direction:column;gap:18px}
+.scenario{padding:26px 28px;border-radius:14px;display:flex;align-items:flex-start;gap:20px}
+.scenario.bad{background:rgba(217,106,106,.05);border:1.5px solid rgba(217,106,106,.18)}
+.scenario.good{background:rgba(26,107,90,.06);border:1.5px solid rgba(26,107,90,.22)}
+.scenario .s-tag{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;padding:5px 14px;border-radius:99px;flex-shrink:0;margin-top:3px}
+.scenario.bad .s-tag{background:var(--red);color:#fff}
+.scenario.good .s-tag{background:var(--teal);color:#fff}
+.scenario .s-title{font-size:24px;font-weight:500;color:var(--forest);margin-bottom:6px}
+.scenario .s-desc{font-size:22px;line-height:1.6;color:var(--forest);opacity:.65;font-weight:300}
+.s5 .research-note{margin-top:22px;padding:18px 24px;background:rgba(26,107,90,.05);border:1px solid rgba(26,107,90,.15);border-radius:12px;font-size:22px;line-height:1.6;color:var(--forest);font-weight:300}
+.s5 .research-note strong{font-weight:500;color:var(--teal)}
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:66px;line-height:1.06;letter-spacing:-.02em;margin-top:40px;max-width:860px}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .protocol{margin-top:44px;display:flex;flex-direction:column;gap:0}
+.s6 .p-block{width:100%;padding:26px 32px;border-radius:14px;display:flex;align-items:flex-start;gap:22px}
+.s6 .p-block.a{background:rgba(94,201,167,.1);border:2px solid rgba(94,201,167,.28)}
+.s6 .p-block.b{background:rgba(201,169,110,.1);border:2px solid rgba(201,169,110,.25)}
+.s6 .p-block.c{background:rgba(94,201,167,.16);border:2px solid rgba(94,201,167,.5)}
+.s6 .p-divider{margin:10px 0;border:none;border-top:1px solid rgba(245,243,238,.1)}
+.s6 .p-num{font-family:'DM Serif Display',serif;font-size:48px;line-height:1;flex-shrink:0;margin-top:-4px}
+.s6 .p-block.a .p-num{color:var(--green)}
+.s6 .p-block.b .p-num{color:var(--amber)}
+.s6 .p-block.c .p-num{color:var(--green)}
+.s6 .p-title{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.s6 .p-block.a .p-title{color:var(--green)}
+.s6 .p-block.b .p-title{color:var(--amber)}
+.s6 .p-block.c .p-title{color:var(--green)}
+.s6 .p-desc{font-size:24px;line-height:1.55;opacity:.85;font-weight:300}
+.s6 .p-note{margin-top:22px;font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.04em;color:rgba(245,243,238,.48);line-height:1.9;border-top:1px solid rgba(245,243,238,.1);padding-top:20px}
+.s6 .p-note .punch{color:var(--green);font-weight:500}
+.s7 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:68px;line-height:1.04;letter-spacing:-.02em;margin-top:36px;color:var(--forest);max-width:860px}
+.s7 h2 em{font-style:italic;color:var(--teal)}
+.s7 .sub{margin-top:22px;font-size:24px;line-height:1.65;color:var(--forest);opacity:.65;max-width:800px;font-weight:300}
+.s7 .discussion{margin-top:36px;display:flex;flex-direction:column;gap:14px}
+.s7 .disc-item{display:flex;align-items:center;gap:18px;padding:20px 24px;border:1.5px solid rgba(13,46,40,.12);border-radius:14px;font-size:22px;color:var(--forest);background:rgba(255,255,255,.46);line-height:1.4}
+.s7 .disc-item .ic{width:40px;height:40px;border-radius:10px;background:rgba(26,107,90,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.s7 .disc-item .ic svg{width:22px;height:22px;color:var(--teal)}
+.s7 .shift-note{margin-top:24px;padding:20px 24px;border-radius:12px;border:1px dashed rgba(26,107,90,.35);font-size:24px;line-height:1.6;color:var(--forest);opacity:.62;font-weight:300;display:flex;align-items:center;gap:14px}
+.s7 .shift-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:24px;color:var(--teal);flex-shrink:0}
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:24px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:46px;height:46px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.1em;align-self:center;padding:0 10px}
+.caption-panel{width:min(540px,94vw);margin-top:32px;padding:26px 26px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:20px;line-height:1.7}
+.caption-panel .cap-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+.caption-panel p{margin-bottom:12px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel strong{color:var(--parchment);font-weight:500}
+.caption-panel .hash{color:#7a8480;font-size:18px;margin-top:16px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="topbar"><span>Neuro Daily · Carousel Preview</span><span class="pill">[ Vol. 82 · Motivasi · Intrinsic vs Extrinsic ]</span></div>
+<div class="stage"><div class="viewport"><div class="track" id="track">
+
+<!-- S1 DARK -->
+<section class="slide"><div class="cvs bg-dark s1">
+  <div class="head"><span class="dotmark">Neuro Daily · Vol. 82 · Motivasi & Dopamine</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Overjustification Effect · Self-Determination Theory</div>
+    <div class="rule"></div>
+    <div class="ghost">$</div>
+    <h1>Kamu suka gambar.<br>Lalu dibayar untuk gambar.<br>Dan berhenti<br><em>suka gambar.</em></h1>
+    <p class="lead">Ini bukan anekdot — ini fenomena psikologis bernama Overjustification Effect. Reward eksternal bisa secara aktif membunuh motivasi yang sebelumnya intrinsik.</p>
+    <div class="mot-compare">
+      <div class="mc-box intrinsic">
+        <div class="mc-label">Intrinsik</div>
+        <div class="mc-source">Melakukan karena benar-benar ingin, menikmati, atau bermakna</div>
+        <div class="mc-result">Tahan lama, kreativitas tinggi</div>
+      </div>
+      <div class="mc-box extrinsic">
+        <div class="mc-label">Ekstrinsik</div>
+        <div class="mc-source">Melakukan karena reward, hukuman, atau ekspektasi luar</div>
+        <div class="mc-result">Menurun saat reward hilang</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>01 / 07</span></div>
+</div></section>
+
+<!-- S2 LIGHT -->
+<section class="slide"><div class="cvs bg-light s2">
+  <div class="head"><span class="dotmark">Overjustification Effect · Research</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Studi yang mengubah cara dunia memandang insentif kerja</div>
+    <div class="rule"></div>
+    <h2">Memberikan reward untuk aktivitas yang <em>sudah dicintai</em> bisa menghancurkan motivasi untuk melakukannya.</h2>
+    <div class="stat-row">
+      <div class="stat-card a">
+        <div class="stat-num">−40%</div>
+        <div class="stat-label">Motivasi Turun</div>
+        <div class="stat-desc">Anak-anak yang senang menggambar menggambar 40% lebih sedikit setelah diberi hadiah untuk menggambar — dibanding yang tidak diberi hadiah sama sekali</div>
+      </div>
+      <div class="stat-card b">
+        <div class="stat-num">3×</div>
+        <div class="stat-label">Lebih Kreatif</div>
+        <div class="stat-desc">Output kreatif dari motivasi intrinsik rata-rata 3× lebih tinggi kualitasnya dibanding output yang didorong terutama oleh reward eksternal</div>
+      </div>
+    </div>
+    <div class="insight-cards">
+      <div class="insight-card">
+        <div class="ic-icon">→</div>
+        <div>
+          <div class="ic-title">Studi Lepper, Greene & Nisbett (1973)</div>
+          <div class="ic-text">Anak-anak yang sudah suka menggambar dibagi dua: satu grup diberi sertifikat "Good Player" setelah menggambar, satu tidak. Beberapa minggu kemudian, grup yang diberi reward menggambar jauh lebih sedikit</div>
+        </div>
+      </div>
+      <div class="insight-card">
+        <div class="ic-icon">→</div>
+        <div>
+          <div class="ic-title">Implikasi untuk tempat kerja</div>
+          <div class="ic-text">Bonus dan insentif yang tidak dirancang dengan hati-hati bisa secara aktif menggeser motivasi karyawan dari intrinsik ke ekstrinsik — dan ketika reward tidak ada atau tidak cukup, performa anjlok</div>
+        </div>
+      </div>
+    </div>
+    <div class="source">Lepper, Greene & Nisbett (1973) · Deci & Ryan (1985) · Dan Pink "Drive" (2009)</div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>02 / 07</span></div>
+</div></section>
+
+<!-- S3 DARK -->
+<section class="slide"><div class="cvs bg-dark s3">
+  <div class="head"><span class="dotmark">Dopamine · Reward System · Mechanism</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Kenapa reward eksternal merusak motivasi intrinsik</div>
+    <div class="rule"></div>
+    <h2">Tiga cara reward eksternal <em>mengubah cara otak memproses aktivitas.</em></h2>
+    <div class="mech-cards">
+      <div class="mech-card a">
+        <div class="mc-icon-lrg">⟳</div>
+        <div>
+          <div class="mc-label">Locus of Control Shift</div>
+          <div class="mc-text">Otak yang sebelumnya mengatribusikan aktivitas ke "saya melakukan ini karena saya mau" mulai mengubah narasi ke "saya melakukan ini karena dibayar." Sumber motivasi bergeser dari dalam ke luar</div>
+        </div>
+      </div>
+      <div class="mech-card b">
+        <div class="mc-icon-lrg">↓</div>
+        <div>
+          <div class="mc-label">Dopamine Recalibration</div>
+          <div class="mc-text">Aktivitas yang sebelumnya menghasilkan dopamine intrinsik (dari enjoyment) mulai dikalibrasi ulang oleh otak sebagai "instrumen untuk mendapat reward" — dan enjoyment intrinsik melemah</div>
+        </div>
+      </div>
+      <div class="mech-card c">
+        <div class="mc-icon-lrg">⚡</div>
+        <div>
+          <div class="mc-label">Contingency Expectation</div>
+          <div class="mc-text">Setelah otak belajar "aktivitas ini = reward," absennya reward menjadi sinyal negatif yang mengurangi keinginan melakukan aktivitas. Bahkan sebelum reward diberikan, otak sudah mengaitkan aktivitas dengan ekspektasi reward</div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-note">
+      <span class="note-prefix">Kunci:</span>
+      Bukan reward yang bermasalah — tapi reward yang diberikan untuk aktivitas yang sudah dinikmati tanpa syarat.
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>03 / 07</span></div>
+</div></section>
+
+<!-- S4 TEAL -->
+<section class="slide"><div class="cvs bg-teal s4">
+  <div class="head"><span class="dotmark">SDT · Three Core Needs</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Apa yang benar-benar mendorong motivasi jangka panjang</div>
+    <div class="rule"></div>
+    <h2">Motivasi terkuat <em>tidak bisa dibeli</em> — tapi bisa diciptakan.</h2>
+    <div class="def-card">
+      <div class="def-label">Self-Determination Theory</div>
+      <div class="def-text">Teori Deci & Ryan yang menyatakan manusia punya tiga kebutuhan psikologis dasar untuk motivasi optimal: Autonomy (kendali atas tindakan), Competence (merasa capable), dan Relatedness (koneksi dengan orang lain).</div>
+    </div>
+    <div class="type-comp">
+      <div class="tc-item intr">
+        <div class="tc-label">Autonomy</div>
+        <div class="tc-text">Merasa memiliki pilihan dan kontrol atas bagaimana bekerja — bukan sekadar mengikuti perintah</div>
+      </div>
+      <div class="tc-item intr">
+        <div class="tc-label">Competence</div>
+        <div class="tc-text">Merasa capable dan terus berkembang — challenge yang sesuai dengan kemampuan saat ini</div>
+      </div>
+      <div class="tc-item intr">
+        <div class="tc-label">Relatedness</div>
+        <div class="tc-text">Merasa terhubung dan bermakna bagi orang lain — kontribusi yang diakui dan dirasakan dampaknya</div>
+      </div>
+      <div class="tc-item extr">
+        <div class="tc-label">Contingent Reward</div>
+        <div class="tc-text">Bonus, penilaian, dan hukuman yang hanya memotivasi jangka pendek dan merusak yang intrinsik</div>
+      </div>
+    </div>
+    <div class="bottom-note">
+      <span class="bottom-arrow">→</span>
+      Uang penting — tapi hanya untuk menghilangkan de-motivasi, bukan untuk menciptakan motivasi sejati.
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(201,169,110,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#C9A96E">N</text></svg>NEURODAILY.ID</span><span>04 / 07</span></div>
+</div></section>
+
+<!-- S5 LIGHT -->
+<section class="slide"><div class="cvs bg-light s5">
+  <div class="head"><span class="dotmark">Reward Design · Right vs Wrong Use</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Kapan reward membantu dan kapan merusak</div>
+    <div class="rule"></div>
+    <h2">Bukan semua reward buruk — tapi <em>cara dan konteksnya</em> yang menentukan.</h2>
+    <div class="scenarios">
+      <div class="scenario bad">
+        <div class="s-tag">Merusak</div>
+        <div>
+          <div class="s-title">Bonus untuk pekerjaan yang sudah dinikmati</div>
+          <div class="s-desc">Ketika reward diberikan untuk aktivitas yang sudah memiliki motivasi intrinsik tinggi — gambar, menulis, coding yang dicintai — otak mengubah atribusi dari "saya suka ini" menjadi "saya lakukan untuk reward"</div>
+        </div>
+      </div>
+      <div class="scenario good">
+        <div class="s-tag">Efektif</div>
+        <div>
+          <div class="s-title">Reward unexpected + informatif</div>
+          <div class="s-desc">Reward yang tidak diantisipasi (kejutan) dan mengandung informasi tentang kompetensi ("kamu sangat baik dalam ini") mempertahankan motivasi intrinsik — karena tidak menciptakan contingency expectation</div>
+        </div>
+      </div>
+    </div>
+    <div class="research-note">Dan Pink dalam Drive: <strong>"Pay people enough to take the issue of money off the table"</strong> — lalu fokus pada autonomy, mastery, dan purpose untuk motivasi jangka panjang.</div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>05 / 07</span></div>
+</div></section>
+
+<!-- S6 DARK -->
+<section class="slide"><div class="cvs bg-dark s6">
+  <div class="head"><span class="dotmark">Motivation Design Protocol</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Cara membangun motivasi yang bertahan</div>
+    <div class="rule"></div>
+    <h2">Tiga cara <em>membangun atau menjaga</em> motivasi intrinsik di tempat kerja.</h2>
+    <div class="protocol">
+      <div class="p-block a">
+        <div class="p-num">1</div>
+        <div>
+          <div class="p-title">Connect to Purpose</div>
+          <div class="p-desc">Setiap tugas yang terasa seperti "kewajiban", coba hubungkan ke pertanyaan: "Bagaimana ini berkontribusi ke sesuatu yang lebih besar?" Otak yang melihat makna di balik tugas menghasilkan dopamine intrinsik yang jauh lebih kuat</div>
+        </div>
+      </div>
+      <hr class="p-divider"/>
+      <div class="p-block b">
+        <div class="p-num">2</div>
+        <div>
+          <div class="p-title">Protect Autonomy</div>
+          <div class="p-desc">Negosiasikan kontrol atas bagaimana kamu bekerja — tidak harus seluruhnya, tapi cukup untuk merasa punya agency. Pekerjaan yang sama terasa berbeda saat kamu memilih cara melakukannya vs ketika dipaksa cara tertentu</div>
+        </div>
+      </div>
+      <hr class="p-divider"/>
+      <div class="p-block c">
+        <div class="p-num">3</div>
+        <div>
+          <div class="p-title">Track Your Own Mastery</div>
+          <div class="p-desc">Buat sistem untuk melihat progress kompetensimu sendiri — bukan hanya menunggu feedback atasan. Otak yang merasakan growth secara organik menghasilkan motivasi intrinsik yang tidak tergantung pada reward luar</div>
+        </div>
+      </div>
+    </div>
+    <div class="p-note">Motivasi terkuat datang dari dalam — tapi <span class="punch">lingkungan yang tepat memungkinkannya tumbuh.</span></div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>06 / 07</span></div>
+</div></section>
+
+<!-- S7 LIGHT -->
+<section class="slide"><div class="cvs bg-light s7">
+  <div class="head"><span class="dotmark">Intrinsic Motivation · Sustainable Drive</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Refleksi & diskusi</div>
+    <div class="rule"></div>
+    <h2">Karyawan yang <em>benar-benar engaged</em> tidak bekerja untuk reward — mereka bekerja karena pekerjaannya sendiri yang meaningful.</h2>
+    <p class="sub">Bonus, promosi, dan insentif penting. Tapi mereka tidak bisa menciptakan motivasi yang kamu butuhkan untuk pekerjaan terbaik — hanya menghilangkan de-motivasi. Motivasi sejati harus datang dari dalam.</p>
+    <div class="discussion">
+      <div class="disc-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
+        Ada tugas atau pekerjaan yang dulu kamu suka tapi sekarang terasa seperti kewajiban — apa yang berubah?
+      </div>
+      <div class="disc-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        Pekerjaan apa yang akan kamu lakukan bahkan jika tidak dibayar — dan apakah itu bagian dari kerja harianmu?
+      </div>
+      <div class="disc-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+        Sebagai leader: bagaimana cara kamu memberi apresiasi yang tidak merusak motivasi intrinsik tim?
+      </div>
+    </div>
+    <div class="shift-note">
+      <span class="shift-arrow">→</span>
+      Temukan satu elemen pekerjaan yang masih genuinely menarik bagimu — dan jadikan itu titik masuk untuk membangun kembali motivasi intrinsik.
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>07 / 07</span></div>
+</div></section>
+
+</div></div></div>
+<div class="dots"><button class="dot active" onclick="goTo(0)"></button><button class="dot" onclick="goTo(1)"></button><button class="dot" onclick="goTo(2)"></button><button class="dot" onclick="goTo(3)"></button><button class="dot" onclick="goTo(4)"></button><button class="dot" onclick="goTo(5)"></button><button class="dot" onclick="goTo(6)"></button></div>
+<div class="controls"><button id="prev" onclick="prev()" disabled>←</button><span class="counter" id="counter">1 / 7</span><button id="next" onclick="next()">→</button></div>
+<div class="caption-panel">
+  <div class="cap-label">Caption · Instagram / TikTok</div>
+  <p>Kamu suka menggambar. Lalu dibayar untuk menggambar. Dan berhenti suka menggambar. 💸</p>
+  <p>Ini bukan anekdot — ini <strong>Overjustification Effect</strong> yang terbukti secara ilmiah. Lepper (1973): anak-anak yang sudah suka menggambar menggambar 40% lebih sedikit setelah diberi reward untuk melakukannya.</p>
+  <p>Kenapa? Reward eksternal mengubah cara otak mengidentifikasi alasan melakukan sesuatu: dari "saya suka ini" menjadi "saya lakukan untuk reward ini." Dan ketika reward hilang — atau tidak cukup besar — motivasinya ikut pergi.</p>
+  <p>Implikasi: bonus yang tidak dirancang dengan hati-hati bisa secara aktif merusak semangat kerja tim yang sebelumnya sudah tinggi secara intrinsik.</p>
+  <span class="hash">#NeuroscienceIndonesia #IntrinsicMotivation #OverjustificationEffect #NeurodailyID #Motivasi #Leadership #Dopamine #DanPink #SDT</span>
+</div>
+<script>
+const track=document.getElementById('track'),dots=document.querySelectorAll('.dot'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next'),TOTAL=7;let cur=0;
+function scale(){const vw=document.querySelector('.viewport').offsetWidth;document.querySelectorAll('.cvs').forEach(c=>{c.style.transform=`scale(${vw/1080})`});}
+scale();window.addEventListener('resize',scale);
+function goTo(i){cur=i;track.style.transform=`translateX(-${cur*100}%)`;dots.forEach((d,j)=>d.classList.toggle('active',j===cur));counter.textContent=`${cur+1} / ${TOTAL}`;prevBtn.disabled=cur===0;nextBtn.disabled=cur===TOTAL-1;}
+function prev(){if(cur>0)goTo(cur-1);}function next(){if(cur<TOTAL-1)goTo(cur+1);}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')prev();if(e.key==='ArrowRight')next();});
+</script>
+</body>
+</html>

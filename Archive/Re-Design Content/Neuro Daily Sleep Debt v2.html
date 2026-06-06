@@ -1,0 +1,1030 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Neuro Daily — Sleep Debt · Editorial Redesign</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --forest:#0D2E28;
+  --teal:#1A6B5A;
+  --green:#5EC9A7;
+  --parchment:#F5F3EE;
+  --amber:#C9A96E;
+  --red:#D96A6A;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0a0a0a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 100px}
+
+.topbar{
+  width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;
+  color:#7a807d;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  margin-bottom:24px;
+}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+
+.stage{position:relative;width:min(540px,94vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+
+.slide{flex:0 0 100%;height:100%;position:relative;overflow:hidden}
+.cvs{
+  width:1080px;height:1350px;
+  transform-origin:top left;
+  position:absolute;top:0;left:0;
+  font-family:'DM Sans',sans-serif;
+}
+
+/* ===== SHARED ===== */
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+
+.cvs .head, .cvs .foot{
+  position:absolute;left:0;right:0;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 64px;
+  font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase;
+}
+.cvs .head{top:0;height:78px;border-bottom:1px solid rgba(245,243,238,.12)}
+.cvs .foot{bottom:0;height:64px;border-top:1px solid rgba(245,243,238,.12)}
+.bg-light .head, .bg-light .foot{border-color:rgba(13,46,40,.12)}
+.bg-teal .head, .bg-teal .foot{border-color:rgba(245,243,238,.18)}
+.cvs .head span, .cvs .foot span{opacity:.55}
+.cvs .head .dotmark::before{content:"●  ";color:var(--green);opacity:1}
+.bg-light .head .dotmark::before{color:var(--teal)}
+
+.hippo-mark{display:flex;align-items:center;gap:10px;opacity:1!important}
+.hippo-mark svg{width:30px;height:30px;flex-shrink:0}
+
+.body{position:absolute;top:78px;bottom:64px;left:0;right:0;padding:56px 64px;display:flex;flex-direction:column}
+
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.eyebrow .sym{font-size:20px;line-height:1}
+.bg-dark .eyebrow{color:var(--green)}
+.bg-light .eyebrow{color:var(--teal)}
+.bg-teal .eyebrow{color:var(--amber)}
+.rule{width:48px;height:3px;background:var(--green);border-radius:2px;margin-top:18px}
+.bg-light .rule{background:var(--teal)}
+.bg-teal .rule{background:var(--amber)}
+
+/* ===== SLIDE 1 — HOOK (Sleep cycle clock + EEG waves) ===== */
+.s1 h1{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:80px;line-height:1.0;letter-spacing:-.02em;
+  margin-top:30px;max-width:600px;
+}
+.s1 h1 em{font-style:italic;color:var(--amber)}
+.s1 .lead{margin-top:32px;font-size:24px;line-height:1.55;opacity:.7;max-width:560px;font-weight:300}
+
+/* visual: clock with 6h vs 8h arc */
+.sleep-clock{
+  position:absolute;right:64px;top:140px;
+  width:380px;height:380px;
+}
+.sleep-clock svg{width:100%;height:100%}
+
+/* EEG waves below clock */
+.eeg-stack{
+  position:absolute;right:64px;top:520px;width:380px;
+}
+.eeg-row{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.eeg-row .lbl{
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  width:110px;flex-shrink:0;text-align:right;
+}
+.eeg-row.delta .lbl{color:var(--green);opacity:.85}
+.eeg-row.theta .lbl{color:var(--amber);opacity:.85}
+.eeg-row.alpha .lbl{color:var(--parchment);opacity:.45}
+.eeg-row svg{flex:1;height:34px}
+
+.swipe-hint{
+  position:absolute;bottom:96px;right:64px;
+  display:flex;align-items:center;gap:10px;
+  font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.16em;text-transform:uppercase;opacity:.5;
+}
+.swipe-hint .arr{display:inline-block;animation:nudge 1.8s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
+
+/* ===== SLIDE 2 — MYTH BUSTER (compare cards + bed/brain visual) ===== */
+.s2 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:64px;line-height:1.04;letter-spacing:-.02em;
+  margin-top:30px;color:var(--forest);max-width:780px;
+}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+
+.s2 .compare{margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.compare-card{
+  padding:32px 32px 36px;border-radius:18px;
+  position:relative;
+}
+.compare-card.myth{
+  background:rgba(217,106,106,.08);border:1.5px solid rgba(217,106,106,.28);
+}
+.compare-card.fact{
+  background:rgba(26,107,90,.08);border:1.5px solid rgba(26,107,90,.32);
+}
+.compare-card .stamp{
+  position:absolute;top:-14px;left:24px;
+  padding:6px 14px;border-radius:99px;
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;
+}
+.compare-card.myth .stamp{background:var(--red);color:#fff}
+.compare-card.fact .stamp{background:var(--teal);color:#fff}
+.compare-card .ico-wrap{
+  width:64px;height:64px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:20px;
+}
+.compare-card.myth .ico-wrap{background:rgba(217,106,106,.16)}
+.compare-card.fact .ico-wrap{background:rgba(26,107,90,.16)}
+.compare-card .ico-wrap svg{width:34px;height:34px}
+.compare-card .body-txt{
+  font-size:20px;line-height:1.55;color:var(--forest);
+  font-weight:300;
+}
+.compare-card.myth .body-txt{opacity:.85}
+.compare-card.fact .body-txt{opacity:.95}
+.compare-card.fact .body-txt strong{font-weight:500;color:var(--teal)}
+
+.s2 .note{
+  margin-top:auto;font-size:18px;line-height:1.55;color:var(--forest);opacity:.6;
+  border-top:1px solid rgba(13,46,40,.15);padding-top:24px;
+}
+.s2 .note .src-lbl{
+  display:inline-block;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--teal);opacity:.85;margin-right:10px;
+}
+
+/* ===== SLIDE 3 — MECHANISM (Brain + glymphatic flow + 3 mechanisms) ===== */
+.s3 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:58px;line-height:1.05;letter-spacing:-.02em;
+  margin-top:24px;max-width:580px;
+}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+
+.s3 .brain-vis{
+  position:absolute;right:64px;top:140px;
+  width:340px;height:280px;
+}
+
+.s3 .term-card{
+  margin-top:34px;
+  background:rgba(94,201,167,.08);border:1.5px solid rgba(94,201,167,.32);
+  border-radius:14px;padding:28px 32px;
+  max-width:920px;
+}
+.s3 .term-name{
+  font-family:'JetBrains Mono',monospace;font-size:16px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--green);
+}
+.s3 .term-def{
+  margin-top:12px;font-size:22px;line-height:1.55;color:var(--parchment);opacity:.92;font-weight:300;
+}
+
+.s3 .mech-list{margin-top:24px;display:flex;flex-direction:column;gap:12px}
+.mech-item{
+  display:flex;align-items:flex-start;gap:20px;
+  padding:18px 22px;border-radius:12px;
+  border:1px solid rgba(245,243,238,.1);
+}
+.mech-item .ic-circle{
+  width:52px;height:52px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.mech-item .ic-circle svg{width:28px;height:28px}
+.mech-item.a{background:rgba(94,201,167,.06)}
+.mech-item.a .ic-circle{background:rgba(94,201,167,.18);color:var(--green)}
+.mech-item.b{background:rgba(201,169,110,.06)}
+.mech-item.b .ic-circle{background:rgba(201,169,110,.2);color:var(--amber)}
+.mech-item.c{background:rgba(217,106,106,.06)}
+.mech-item.c .ic-circle{background:rgba(217,106,106,.18);color:var(--red)}
+.mech-item .txt{font-size:18px;line-height:1.5;font-weight:300;color:var(--parchment);opacity:.88}
+.mech-item .txt strong{font-weight:500;opacity:1}
+.mech-item.a .txt strong{color:var(--green)}
+.mech-item.b .txt strong{color:var(--amber)}
+.mech-item.c .txt strong{color:var(--red)}
+
+.s3 .src{
+  margin-top:auto;font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.05em;
+  color:var(--parchment);opacity:.42;line-height:1.65;padding-top:24px;
+  border-top:1px solid rgba(245,243,238,.1);
+}
+
+/* ===== SLIDE 4 — IMPACT (Prefrontal brain + 4 list) ===== */
+.s4 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:60px;line-height:1.05;letter-spacing:-.02em;
+  margin-top:24px;color:var(--forest);max-width:600px;
+}
+.s4 h2 em{font-style:italic;color:var(--teal)}
+
+.s4 .pfc-vis{
+  position:absolute;right:64px;top:140px;
+  width:280px;height:240px;
+}
+
+.s4 .intro{
+  margin-top:22px;font-size:22px;line-height:1.55;color:var(--forest);opacity:.7;max-width:680px;font-weight:300;
+}
+
+.s4 .impacts{margin-top:32px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.impact-card{
+  background:rgba(255,255,255,.55);
+  border:1.5px solid rgba(13,46,40,.12);
+  border-radius:14px;padding:22px 24px;
+  display:flex;flex-direction:column;gap:10px;
+}
+.impact-card .num-row{display:flex;align-items:center;gap:14px}
+.impact-card .num{
+  font-family:'DM Serif Display',serif;font-size:42px;line-height:1;
+  color:var(--red);letter-spacing:-.02em;
+  width:46px;
+}
+.impact-card .num em{font-style:italic;color:var(--amber)}
+.impact-card .ic{width:28px;height:28px;color:var(--red);opacity:.75;margin-left:auto}
+.impact-card .ttl{font-size:18px;font-weight:500;line-height:1.3;color:var(--forest)}
+.impact-card .sub{font-size:15px;line-height:1.5;color:var(--forest);opacity:.65;font-weight:300}
+
+/* ===== SLIDE 5 — STAT (Battery depletion + ghost number) ===== */
+.s5 .body{justify-content:flex-start}
+
+.s5 .ghost-6{
+  position:absolute;
+  font-family:'DM Serif Display',serif;
+  font-size:1500px;line-height:.78;
+  color:rgba(201,169,110,.14);letter-spacing:-.06em;
+  pointer-events:none;user-select:none;
+  right:-220px;top:-60px;
+}
+
+.s5 .copy{
+  margin-top:30px;font-size:28px;line-height:1.5;max-width:740px;font-weight:300;
+  position:relative;z-index:2;
+}
+.s5 .copy strong{font-weight:500;color:var(--amber)}
+
+/* battery visual */
+.battery-vis{
+  margin-top:36px;position:relative;z-index:2;
+  display:flex;align-items:center;gap:28px;
+  padding:32px 36px;
+  background:rgba(13,46,40,.18);border:1.5px solid rgba(245,243,238,.18);border-radius:18px;
+}
+.battery-vis .bat-frame{
+  position:relative;
+  width:300px;height:96px;
+  border:3px solid var(--parchment);border-radius:14px;
+  padding:6px;
+}
+.battery-vis .bat-frame::after{
+  content:"";position:absolute;right:-12px;top:28px;
+  width:8px;height:34px;background:var(--parchment);border-radius:0 4px 4px 0;
+}
+.battery-vis .bat-fill{
+  height:100%;width:25%;
+  background:linear-gradient(90deg,var(--red),var(--amber));border-radius:6px;
+  position:relative;
+}
+.battery-vis .bat-fill::after{
+  content:"25%";position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:500;color:var(--forest);
+}
+.battery-vis .bat-text{flex:1}
+.battery-vis .bat-text .b1{font-family:'DM Serif Display',serif;font-size:44px;line-height:1;color:var(--parchment)}
+.battery-vis .bat-text .b1 em{color:var(--amber);font-style:italic}
+.battery-vis .bat-text .b2{margin-top:8px;font-size:16px;line-height:1.45;color:var(--green);font-family:'JetBrains Mono',monospace;letter-spacing:.04em}
+
+.s5 .insight{
+  margin-top:28px;padding:24px 28px;
+  border:1px dashed rgba(94,201,167,.4);border-radius:12px;
+  font-family:'JetBrains Mono',monospace;font-size:18px;color:var(--green);letter-spacing:.02em;line-height:1.85;
+  position:relative;z-index:2;
+}
+.s5 .insight .div{color:var(--amber);opacity:.5;font-size:13px;letter-spacing:.4em}
+.s5 .insight .punch{color:var(--amber);font-weight:500}
+.s5 .insight .src{display:block;margin-top:14px;font-size:12px;opacity:.5;letter-spacing:.06em;color:var(--parchment)}
+
+/* ===== SLIDE 6 — STRATEGY (Bedroom scene + 3 steps) ===== */
+.s6 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:62px;line-height:1.04;letter-spacing:-.02em;
+  margin-top:24px;max-width:560px;
+}
+.s6 h2 em{font-style:italic;color:var(--green)}
+
+.s6 .bedroom-vis{
+  position:absolute;right:64px;top:140px;
+  width:300px;height:240px;
+}
+
+.s6 .ps{margin-top:24px;font-size:22px;line-height:1.55;opacity:.78;max-width:660px;font-weight:300}
+
+.s6 .steps{margin-top:32px;display:flex;flex-direction:column;gap:14px}
+.step-row{
+  display:grid;grid-template-columns:auto auto 1fr;gap:24px;align-items:flex-start;
+  padding:22px 0;border-top:1px solid rgba(245,243,238,.1);
+}
+.step-row:first-child{border-top:1px solid rgba(245,243,238,.18)}
+.step-row .step-num{
+  font-family:'DM Serif Display',serif;font-size:48px;line-height:1;
+  color:var(--green);width:60px;letter-spacing:-.02em;
+}
+.step-row .step-ico{
+  width:56px;height:56px;border-radius:14px;
+  background:rgba(94,201,167,.14);
+  display:flex;align-items:center;justify-content:center;
+  margin-top:-4px;
+}
+.step-row .step-ico svg{width:30px;height:30px;color:var(--green)}
+.step-row .step-body{padding-top:2px}
+.step-row .step-title{
+  font-size:22px;font-weight:500;line-height:1.3;color:var(--parchment);
+}
+.step-row .step-desc{
+  margin-top:8px;font-size:17px;line-height:1.55;color:var(--parchment);opacity:.65;font-weight:300;
+}
+
+/* ===== SLIDE 7 — CTA ===== */
+.s7 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:62px;line-height:1.04;letter-spacing:-.02em;
+  margin-top:30px;color:var(--forest);max-width:760px;
+}
+.s7 h2 em{font-style:italic;color:var(--teal)}
+.s7 .ask{margin-top:28px;font-size:24px;line-height:1.55;color:var(--forest);opacity:.7;max-width:760px;font-weight:300}
+.s7 .actions{margin-top:40px;display:flex;flex-direction:column;gap:14px}
+.s7 .btn{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:24px 30px;border:1.5px solid rgba(13,46,40,.15);border-radius:14px;
+  font-size:20px;color:var(--forest);background:rgba(255,255,255,.4);
+}
+.s7 .btn .ic{width:30px;height:30px;color:var(--teal);flex-shrink:0}
+
+.s7 .signoff{
+  margin-top:auto;padding-top:30px;border-top:1px solid rgba(13,46,40,.15);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.s7 .brand{display:flex;align-items:center;gap:18px}
+.s7 .brand-mark{width:54px;height:54px}
+.s7 .brand-name{font-family:'DM Serif Display',serif;font-style:italic;font-size:36px;color:var(--teal);line-height:1.1}
+.s7 .brand-sub{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--forest);opacity:.55;margin-top:4px}
+.s7 .cta-pill{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--forest);color:var(--parchment);
+  padding:18px 30px;border-radius:99px;
+  font-size:17px;font-weight:500;letter-spacing:.04em;
+}
+.s7 .cta-pill .arr{font-size:22px;line-height:1}
+
+/* sleep z's decoration on s7 */
+.s7 .zzz{
+  position:absolute;top:120px;right:90px;
+  font-family:'DM Serif Display',serif;font-style:italic;
+  color:var(--teal);opacity:.18;
+}
+.s7 .zzz .z1{font-size:90px;position:absolute;top:0;left:0}
+.s7 .zzz .z2{font-size:70px;position:absolute;top:60px;left:60px}
+.s7 .zzz .z3{font-size:50px;position:absolute;top:108px;left:110px}
+
+/* ===== outer chrome ===== */
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:24px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:46px;height:46px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.controls button:hover{background:rgba(94,201,167,.14);border-color:rgba(94,201,167,.32)}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 10px}
+.caption-panel{
+  width:min(540px,94vw);margin-top:32px;padding:26px 26px 28px;
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;
+  color:#cfd3d1;font-size:13px;line-height:1.7;
+}
+.caption-panel .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+.caption-panel p{margin-bottom:12px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel strong{color:var(--parchment);font-weight:500}
+.caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:16px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Neuro Daily · Editorial Redesign · Sleep Debt</span>
+  <span class="pill">[ Vol. 30 · Work Intelligence · P5 ]</span>
+</div>
+
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- ════════ SLIDE 1 — HOOK ════════ -->
+      <section class="slide" data-screen-label="01 Hook">
+        <div class="cvs bg-dark s1">
+          <div class="head">
+            <span class="dotmark">Neuro Daily · Vol. 30 · Sleep &amp; Career</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">✱</span><span>The Sleep Debt</span></div>
+
+            <h1>Tidur 6 jam, dua minggu berturut. <em>Otakmu setara tidak tidur 24 jam.</em></h1>
+
+            <p class="lead">Ini bukan lebay. Sleep debt terakumulasi diam-diam — dan bagian paling berbahaya: kamu tidak bisa merasakannya.</p>
+
+            <!-- CLOCK VISUAL: 6h vs 8h ideal arc -->
+            <div class="sleep-clock">
+              <svg viewBox="0 0 380 380" fill="none">
+                <!-- outer ring -->
+                <circle cx="190" cy="190" r="170" stroke="rgba(245,243,238,.1)" stroke-width="1"/>
+                <circle cx="190" cy="190" r="140" stroke="rgba(245,243,238,.06)" stroke-width=".8"/>
+                <!-- 8h ideal arc (full upper half = 8h, dashed green) -->
+                <path d="M190 50 A140 140 0 0 1 305 254" fill="none" stroke="rgba(94,201,167,.35)" stroke-width="3" stroke-dasharray="6,5" stroke-linecap="round"/>
+                <!-- 6h actual arc (red, solid, shorter) -->
+                <path d="M190 50 A140 140 0 0 1 290 138" fill="none" stroke="rgba(217,106,106,.85)" stroke-width="6" stroke-linecap="round"/>
+                <!-- tick marks at hours -->
+                <g stroke="rgba(245,243,238,.3)" stroke-width="1.5">
+                  <line x1="190" y1="50" x2="190" y2="64"/>
+                  <line x1="330" y1="190" x2="316" y2="190"/>
+                  <line x1="190" y1="330" x2="190" y2="316"/>
+                  <line x1="50" y1="190" x2="64" y2="190"/>
+                </g>
+                <!-- moon icon at center -->
+                <g transform="translate(190,170)">
+                  <path d="M-22 -10 A26 26 0 1 0 12 22 A20 20 0 0 1 -22 -10 Z" fill="rgba(245,243,238,.7)"/>
+                </g>
+                <!-- center labels -->
+                <text x="190" y="220" text-anchor="middle" font-family="DM Serif Display" font-size="44" fill="#D96A6A">6h</text>
+                <text x="190" y="248" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="rgba(217,106,106,.7)" letter-spacing=".2em">VS 8H IDEAL</text>
+                <!-- arc end markers -->
+                <circle cx="190" cy="50" r="6" fill="#D96A6A"/>
+                <circle cx="290" cy="138" r="6" fill="#D96A6A"/>
+                <circle cx="305" cy="254" r="5" fill="rgba(94,201,167,.6)"/>
+                <!-- labels for arcs -->
+                <text x="312" y="80" font-family="JetBrains Mono" font-size="10" fill="rgba(217,106,106,.85)" letter-spacing=".18em">— 6H AKTUAL</text>
+                <text x="316" y="290" font-family="JetBrains Mono" font-size="10" fill="rgba(94,201,167,.7)" letter-spacing=".18em">— 8H IDEAL</text>
+              </svg>
+            </div>
+
+            <!-- EEG WAVES STACK -->
+            <div class="eeg-stack">
+              <div class="eeg-row delta">
+                <span class="lbl">Delta</span>
+                <svg viewBox="0 0 240 34" preserveAspectRatio="none">
+                  <path d="M0 17 Q30 -8 60 17 T120 17 T180 17 T240 17" fill="none" stroke="#5EC9A7" stroke-width="2"/>
+                </svg>
+              </div>
+              <div class="eeg-row theta">
+                <span class="lbl">Theta · REM</span>
+                <svg viewBox="0 0 240 34" preserveAspectRatio="none">
+                  <path d="M0 17 Q15 2 30 17 T60 17 T90 17 T120 17 T150 17 T180 17 T210 17 T240 17" fill="none" stroke="#C9A96E" stroke-width="1.5" opacity=".75"/>
+                </svg>
+              </div>
+              <div class="eeg-row alpha">
+                <span class="lbl">Alpha</span>
+                <svg viewBox="0 0 240 34" preserveAspectRatio="none">
+                  <path d="M0 17 Q8 8 16 17 T32 17 T48 17 T64 17 T80 17 T96 17 T112 17 T128 17 T144 17 T160 17 T176 17 T192 17 T208 17 T224 17 T240 17" fill="none" stroke="#F5F3EE" stroke-width="1" opacity=".5"/>
+                </svg>
+              </div>
+            </div>
+
+            <div class="swipe-hint"><span>Geser</span><span class="arr">→</span></div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>01 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#5EC9A7" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#5EC9A7"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════ SLIDE 2 — MYTH BUSTER ════════ -->
+      <section class="slide" data-screen-label="02 Myth">
+        <div class="cvs bg-light s2">
+          <div class="head">
+            <span class="dotmark">Poin · 01 · Mitos vs Fakta</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">✱</span><span>Myth Buster · Formula A</span></div>
+            <div class="rule"></div>
+
+            <h2>Tidur 6 jam bukan sekadar <em>kurang istirahat.</em></h2>
+
+            <div class="compare">
+              <div class="compare-card myth">
+                <span class="stamp">Mitos</span>
+                <div class="ico-wrap">
+                  <!-- bed icon -->
+                  <svg viewBox="0 0 32 32" fill="none" stroke="#D96A6A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 22V11h12a4 4 0 0 1 4 4v3h10v4"/>
+                    <line x1="3" y1="22" x2="3" y2="26"/>
+                    <line x1="29" y1="22" x2="29" y2="26"/>
+                    <circle cx="9" cy="15" r="2.5"/>
+                  </svg>
+                </div>
+                <div class="body-txt">Tidur 6–7 jam sudah cukup. Yang penting bisa bangun dan tidak mengantuk saat kerja — itu tanda tubuh sudah recover.</div>
+              </div>
+
+              <div class="compare-card fact">
+                <span class="stamp">Fakta</span>
+                <div class="ico-wrap">
+                  <!-- brain icon -->
+                  <svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 6c-3 0-5 2-5 4-2 0-4 2-4 4 0 2 1 3 2 4-1 1-2 2-2 4 0 3 3 5 5 5 1 2 2 3 4 3"/>
+                    <path d="M16 6c3 0 5 2 5 4 2 0 4 2 4 4 0 2-1 3-2 4 1 1 2 2 2 4 0 3-3 5-5 5-1 2-2 3-4 3"/>
+                    <line x1="16" y1="6" x2="16" y2="30"/>
+                  </svg>
+                </div>
+                <div class="body-txt">Setelah 14 hari tidur 6 jam, penurunan kognisi <strong>setara tidak tidur 24 jam</strong>. Dan kamu tidak merasakannya — kapasitas menilai diri sendiri ikut menurun.</div>
+              </div>
+            </div>
+
+            <p class="note">
+              <span class="src-lbl">— Sumber Riset</span>
+              Van Dongen et al. (2003) · Journal of Sleep — diukur objektif via psychomotor vigilance task, bukan survei perasaan.
+            </p>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>02 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════ SLIDE 3 — MECHANISM ════════ -->
+      <section class="slide" data-screen-label="03 Mechanism">
+        <div class="cvs bg-dark s3">
+          <div class="head">
+            <span class="dotmark">Poin · 02 · Maintenance Otak</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">●</span><span>Yang terjadi saat tidur</span></div>
+
+            <h2>Tidur bukan istirahat pasif. <em>Ini sesi maintenance</em> otak.</h2>
+
+            <!-- Brain + glymphatic flow visualization -->
+            <div class="brain-vis">
+              <svg viewBox="0 0 340 280" fill="none">
+                <!-- brain outline -->
+                <path d="M90 80 C70 80 60 100 65 120 C50 130 50 155 65 168 C55 185 70 205 95 200 C100 215 125 220 140 210 C155 220 180 215 185 200 C210 205 225 185 215 168 C230 155 230 130 215 120 C220 100 210 80 190 80 C180 65 100 65 90 80 Z" stroke="#5EC9A7" stroke-width="2" opacity=".55" fill="rgba(94,201,167,.04)"/>
+                <!-- center fissure -->
+                <line x1="140" y1="65" x2="140" y2="215" stroke="#5EC9A7" stroke-width="1" opacity=".35" stroke-dasharray="3,3"/>
+                <!-- glymphatic flow particles -->
+                <g>
+                  <circle cx="100" cy="105" r="3" fill="#5EC9A7" opacity=".9"/>
+                  <circle cx="120" cy="135" r="2.5" fill="#5EC9A7" opacity=".7"/>
+                  <circle cx="155" cy="120" r="3" fill="#5EC9A7" opacity=".85"/>
+                  <circle cx="175" cy="155" r="2.5" fill="#5EC9A7" opacity=".7"/>
+                  <circle cx="105" cy="175" r="3" fill="#5EC9A7" opacity=".8"/>
+                  <circle cx="200" cy="180" r="2.5" fill="#5EC9A7" opacity=".7"/>
+                  <circle cx="195" cy="105" r="2.5" fill="#5EC9A7" opacity=".75"/>
+                </g>
+                <!-- flow arrows -->
+                <path d="M85 95 Q100 105 120 95" stroke="#5EC9A7" stroke-width="1.5" opacity=".5" fill="none" stroke-linecap="round"/>
+                <path d="M160 95 Q175 110 200 95" stroke="#5EC9A7" stroke-width="1.5" opacity=".5" fill="none" stroke-linecap="round"/>
+                <path d="M90 195 Q120 205 150 195" stroke="#5EC9A7" stroke-width="1.5" opacity=".5" fill="none" stroke-linecap="round"/>
+                <!-- waste particles being expelled (amber, edge) -->
+                <circle cx="55" cy="125" r="2" fill="#C9A96E" opacity=".7"/>
+                <circle cx="45" cy="145" r="1.5" fill="#C9A96E" opacity=".55"/>
+                <circle cx="225" cy="130" r="2" fill="#C9A96E" opacity=".7"/>
+                <circle cx="235" cy="150" r="1.5" fill="#C9A96E" opacity=".55"/>
+                <!-- arrows out -->
+                <path d="M70 130 L50 125" stroke="#C9A96E" stroke-width="1.2" opacity=".7" fill="none" stroke-linecap="round" marker-end="url(#aw)"/>
+                <path d="M210 130 L230 125" stroke="#C9A96E" stroke-width="1.2" opacity=".7" fill="none" stroke-linecap="round"/>
+                <!-- labels -->
+                <text x="170" y="252" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="rgba(94,201,167,.85)" letter-spacing=".18em">CSF FLOW · +60%</text>
+                <text x="170" y="270" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(201,169,110,.7)" letter-spacing=".18em">→ TOXIN CLEARANCE</text>
+              </svg>
+            </div>
+
+            <div class="term-card">
+              <div class="term-name">Glymphatic Clearance</div>
+              <div class="term-def">Sistem pembersihan otak yang hanya berjalan saat tidur — membuang beta-amyloid, adenosine, dan metabolit toksik. Volume cairan serebrospinal naik 60% saat tidur.</div>
+            </div>
+
+            <div class="mech-list">
+              <div class="mech-item a">
+                <div class="ic-circle">
+                  <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 6h-6l2-2"/><path d="M22 6l-2 2"/>
+                    <path d="M6 22h6l-2 2"/><path d="M6 22l2-2"/>
+                    <path d="M22 6 A12 12 0 0 1 6 22"/>
+                    <path d="M6 6 A12 12 0 0 1 22 22" opacity=".4"/>
+                  </svg>
+                </div>
+                <div class="txt"><strong>Memory consolidation</strong> — hippocampus memindahkan memori jangka pendek ke korteks. Tanpa ini, pelajaran dan skill tidak terbentuk jadi long-term memory.</div>
+              </div>
+              <div class="mech-item b">
+                <div class="ic-circle">
+                  <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 3v8M14 17v8M3 14h8M17 14h8"/>
+                    <circle cx="14" cy="14" r="4"/>
+                  </svg>
+                </div>
+                <div class="txt"><strong>Prefrontal restoration</strong> — satu-satunya cara memulihkan kapasitas decision-making dan impulse control. Tidak bisa diganti kafein.</div>
+              </div>
+              <div class="mech-item c">
+                <div class="ic-circle">
+                  <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 9h16l-1.5 14a2 2 0 0 1-2 1.8h-9a2 2 0 0 1-2-1.8L6 9z"/>
+                    <path d="M10 9V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3"/>
+                    <line x1="12" y1="13" x2="12" y2="20"/>
+                    <line x1="16" y1="13" x2="16" y2="20"/>
+                  </svg>
+                </div>
+                <div class="txt"><strong>Neural waste removal</strong> — dipotong di tengah siklus, toksin tertinggal. Akumulasi terkait penurunan kognitif jangka panjang.</div>
+              </div>
+            </div>
+
+            <div class="src">
+              Xie et al. (2013) Science · Sleep drives metabolite clearance from the brain<br>
+              Stickgold (2005) Nature Reviews Neuroscience · Sleep-dependent memory consolidation
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>03 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#5EC9A7" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#5EC9A7"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════ SLIDE 4 — IMPACT ════════ -->
+      <section class="slide" data-screen-label="04 Impact">
+        <div class="cvs bg-light s4">
+          <div class="head">
+            <span class="dotmark">Poin · 03 · Dampak ke Karir</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">●</span><span>4 Cara Sleep Debt Merusak Karir</span></div>
+            <div class="rule"></div>
+
+            <h2>Kurang tidur menyerang <em>tepat di sini —</em> prefrontal cortex.</h2>
+
+            <!-- Side-view brain with PFC highlighted -->
+            <div class="pfc-vis">
+              <svg viewBox="0 0 280 240" fill="none">
+                <!-- brain side profile -->
+                <path d="M50 130 C40 105 55 75 90 65 C110 50 145 50 170 60 C200 55 230 70 240 95 C250 110 250 135 245 155 C240 175 220 195 195 200 C170 210 130 210 105 200 C80 195 55 170 50 145 Z" stroke="#1A6B5A" stroke-width="2" fill="rgba(26,107,90,.04)"/>
+                <!-- folds suggesting cerebrum -->
+                <path d="M75 100 Q90 95 100 105" stroke="#1A6B5A" stroke-width="1.2" fill="none" opacity=".5"/>
+                <path d="M110 90 Q125 85 140 92" stroke="#1A6B5A" stroke-width="1.2" fill="none" opacity=".5"/>
+                <path d="M155 95 Q175 90 195 100" stroke="#1A6B5A" stroke-width="1.2" fill="none" opacity=".5"/>
+                <path d="M70 145 Q90 140 105 150" stroke="#1A6B5A" stroke-width="1.2" fill="none" opacity=".5"/>
+                <path d="M120 155 Q150 150 180 160" stroke="#1A6B5A" stroke-width="1.2" fill="none" opacity=".5"/>
+                <!-- PFC highlight (red) -->
+                <path d="M180 90 C195 75 220 75 235 90 C245 105 245 125 235 140 C220 150 200 145 185 135 C175 125 175 100 180 90 Z" fill="rgba(217,106,106,.22)" stroke="#D96A6A" stroke-width="2.2" stroke-dasharray="5,3"/>
+                <!-- callout line -->
+                <line x1="240" y1="100" x2="265" y2="80" stroke="#D96A6A" stroke-width="1.4"/>
+                <circle cx="265" cy="80" r="3" fill="#D96A6A"/>
+                <text x="270" y="60" font-family="JetBrains Mono" font-size="11" fill="#D96A6A" letter-spacing=".15em" text-anchor="end">PREFRONTAL</text>
+                <text x="270" y="74" font-family="JetBrains Mono" font-size="11" fill="#D96A6A" letter-spacing=".15em" text-anchor="end">CORTEX</text>
+                <!-- z's above brain -->
+                <text x="60" y="50" font-family="DM Serif Display" font-size="22" fill="rgba(26,107,90,.4)" font-style="italic">z</text>
+                <text x="80" y="38" font-family="DM Serif Display" font-size="18" fill="rgba(26,107,90,.3)" font-style="italic">z</text>
+                <text x="96" y="28" font-family="DM Serif Display" font-size="14" fill="rgba(26,107,90,.25)" font-style="italic">z</text>
+              </svg>
+            </div>
+
+            <p class="intro">Pusat logika, keputusan, dan kontrol emosi — area paling sensitif terhadap sleep deprivation.</p>
+
+            <div class="impacts">
+              <div class="impact-card">
+                <div class="num-row">
+                  <div class="num">01</div>
+                  <svg class="ic" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 4L4 14h6v10l10-10h-6V4z"/></svg>
+                </div>
+                <div class="ttl">Keputusan lebih impulsif</div>
+                <div class="sub">Prefrontal underaktif — impulse control melemah, risk assessment menurun. Keputusan buruk saat lelah bukan kebetulan.</div>
+              </div>
+              <div class="impact-card">
+                <div class="num-row">
+                  <div class="num">02</div>
+                  <svg class="ic" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3a11 11 0 0 0 0 22 11 11 0 0 0 0-22z"/><path d="M9 11l2 2-2 2M19 11l-2 2 2 2M9 19q5-3 10 0"/></svg>
+                </div>
+                <div class="ttl">Reaktif emosional di meeting</div>
+                <div class="sub">Amygdala hiperaktif ~60%. Respons ke feedback dan konflik tidak proporsional — defensif tanpa intensi.</div>
+              </div>
+              <div class="impact-card">
+                <div class="num-row">
+                  <div class="num">03</div>
+                  <svg class="ic" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3v4M14 21v4M3 14h4M21 14h4M6 6l3 3M19 19l3 3M6 22l3-3M19 9l3-3"/><circle cx="14" cy="14" r="5"/></svg>
+                </div>
+                <div class="ttl">Kreativitas melemah</div>
+                <div class="sub">REM consolidation menghasilkan koneksi antar-ide yang tidak mungkin terbentuk saat terjaga. Insight butuh tidur.</div>
+              </div>
+              <div class="impact-card">
+                <div class="num-row">
+                  <div class="num"><em>04</em></div>
+                  <svg class="ic" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 22h18M8 22V11l6-4 6 4v11M11 22v-6h6v6"/></svg>
+                </div>
+                <div class="ttl">Setara mabuk ringan</div>
+                <div class="sub">17 jam terjaga = performa kognitif setara 0,05% BAC — batas legal berkendara. Kamu kerja di standar tidak legal untuk menyetir.</div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>04 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════ SLIDE 5 — STAT ════════ -->
+      <section class="slide" data-screen-label="05 Stat">
+        <div class="cvs bg-teal s5">
+          <div class="head">
+            <span class="dotmark">Poin · 04 · Hitung Defisitnya</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">★</span><span>Sleep Debt ≠ Bank Account</span></div>
+
+            <div class="ghost-6">6</div>
+
+            <p class="copy">Kamu tidak bisa 'bayar balik' seminggu sleep debt dengan tidur panjang akhir pekan. <strong>Sleep debt tidak bekerja seperti rekening bank.</strong></p>
+
+            <!-- battery depletion visualization -->
+            <div class="battery-vis">
+              <div class="bat-frame">
+                <div class="bat-fill"></div>
+              </div>
+              <div class="bat-text">
+                <div class="b1">6h <em>×</em> 14<em>hari</em></div>
+                <div class="b2">→ kognisi setara 24h tanpa tidur</div>
+              </div>
+            </div>
+
+            <div class="insight">
+              Tidur 6 jam × 14 hari →<br>
+              Kognisi turun setara 24 jam tanpa tidur →<br>
+              Tapi subjek tidak merasa mengantuk →<br>
+              <span class="div">────────────────────</span><br>
+              Otak kehilangan kemampuan<br>
+              <span class="punch">menilai kondisinya sendiri.</span>
+              <span class="src">— Van Dongen et al. (2003) · Journal Sleep · Univ. Pennsylvania</span>
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>05 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#C9A96E" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#C9A96E"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════ SLIDE 6 — STRATEGY ════════ -->
+      <section class="slide" data-screen-label="06 Strategy">
+        <div class="cvs bg-dark s6">
+          <div class="head">
+            <span class="dotmark">Poin · 05 · Strategi</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">●</span><span>Tidur sebagai Input Performa</span></div>
+
+            <h2>Tidur bukan reward. <em>Ini input performa</em> paling underrated.</h2>
+
+            <!-- Bedroom scene: moon + clock + bed -->
+            <div class="bedroom-vis">
+              <svg viewBox="0 0 300 240" fill="none">
+                <!-- moon -->
+                <circle cx="60" cy="60" r="28" fill="rgba(245,243,238,.12)" stroke="#5EC9A7" stroke-width="1.5" opacity=".7"/>
+                <path d="M53 50 A22 22 0 1 0 75 78 A18 18 0 0 1 53 50 Z" fill="#5EC9A7" opacity=".55"/>
+                <!-- stars -->
+                <text x="120" y="40" font-family="DM Serif Display" font-size="16" fill="#5EC9A7" opacity=".5">✱</text>
+                <text x="160" y="70" font-family="DM Serif Display" font-size="12" fill="#5EC9A7" opacity=".4">✱</text>
+                <text x="200" y="40" font-family="DM Serif Display" font-size="14" fill="#C9A96E" opacity=".5">✱</text>
+                <!-- clock -->
+                <circle cx="240" cy="80" r="32" fill="rgba(94,201,167,.06)" stroke="#5EC9A7" stroke-width="2"/>
+                <line x1="240" y1="80" x2="240" y2="60" stroke="#5EC9A7" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="240" y1="80" x2="254" y2="86" stroke="#5EC9A7" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="240" cy="80" r="2.5" fill="#5EC9A7"/>
+                <line x1="240" y1="44" x2="240" y2="48" stroke="#5EC9A7" stroke-width="1.5"/>
+                <line x1="276" y1="80" x2="272" y2="80" stroke="#5EC9A7" stroke-width="1.5"/>
+                <line x1="240" y1="116" x2="240" y2="112" stroke="#5EC9A7" stroke-width="1.5"/>
+                <line x1="204" y1="80" x2="208" y2="80" stroke="#5EC9A7" stroke-width="1.5"/>
+                <text x="240" y="135" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(94,201,167,.7)" letter-spacing=".18em">22:00</text>
+                <!-- bed -->
+                <rect x="40" y="170" width="220" height="40" rx="6" fill="rgba(94,201,167,.08)" stroke="#5EC9A7" stroke-width="1.8"/>
+                <rect x="50" y="155" width="60" height="20" rx="4" fill="rgba(94,201,167,.12)" stroke="#5EC9A7" stroke-width="1.5"/>
+                <rect x="115" y="155" width="60" height="20" rx="4" fill="rgba(94,201,167,.12)" stroke="#5EC9A7" stroke-width="1.5"/>
+                <line x1="40" y1="210" x2="40" y2="230" stroke="#5EC9A7" stroke-width="2"/>
+                <line x1="260" y1="210" x2="260" y2="230" stroke="#5EC9A7" stroke-width="2"/>
+                <!-- floating Z's above bed -->
+                <text x="180" y="160" font-family="DM Serif Display" font-size="28" fill="#C9A96E" font-style="italic" opacity=".7">z</text>
+                <text x="200" y="142" font-family="DM Serif Display" font-size="22" fill="#C9A96E" font-style="italic" opacity=".55">z</text>
+                <text x="216" y="128" font-family="DM Serif Display" font-size="16" fill="#C9A96E" font-style="italic" opacity=".4">z</text>
+              </svg>
+            </div>
+
+            <p class="ps">Otak tidak bisa dikelabui dengan kafein. Yang bisa dilakukan: optimalkan kondisi yang mendukung kualitas tidur secara konsisten.</p>
+
+            <div class="steps">
+              <div class="step-row">
+                <div class="step-num">01</div>
+                <div class="step-ico">
+                  <!-- repeat / cycle icon -->
+                  <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 14a9 9 0 0 1 16-5"/>
+                    <polyline points="22,4 22,10 16,10"/>
+                    <path d="M23 14a9 9 0 0 1-16 5"/>
+                    <polyline points="6,24 6,18 12,18"/>
+                  </svg>
+                </div>
+                <div class="step-body">
+                  <div class="step-title">Konsistensi &gt; total jam</div>
+                  <div class="step-desc">Bangun &amp; tidur jam yang sama setiap hari — termasuk akhir pekan. Ritme sirkadian dibangun dari konsistensi, bukan total jam sporadis.</div>
+                </div>
+              </div>
+              <div class="step-row">
+                <div class="step-num">02</div>
+                <div class="step-ico">
+                  <!-- screen off / phone -->
+                  <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="8" y="3" width="12" height="22" rx="2"/>
+                    <line x1="14" y1="20" x2="14" y2="20.1"/>
+                    <line x1="3" y1="3" x2="25" y2="25" stroke="#D96A6A" stroke-width="2.2"/>
+                  </svg>
+                </div>
+                <div class="step-body">
+                  <div class="step-title">Pre-sleep protocol 30 menit</div>
+                  <div class="step-desc">Blue light menunda melatonin sampai 90 menit. Matikan layar &amp; redupkan lampu 30 menit sebelum tidur — sinyal gelap untuk sleep onset.</div>
+                </div>
+              </div>
+              <div class="step-row">
+                <div class="step-num">03</div>
+                <div class="step-ico">
+                  <!-- sun + small z (nap) -->
+                  <svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="14" r="5"/>
+                    <line x1="11" y1="3" x2="11" y2="6"/>
+                    <line x1="11" y1="22" x2="11" y2="25"/>
+                    <line x1="3" y1="14" x2="6" y2="14"/>
+                    <line x1="16" y1="14" x2="19" y2="14"/>
+                    <line x1="5" y1="8" x2="7" y2="10"/>
+                    <line x1="5" y1="20" x2="7" y2="18"/>
+                    <text x="20" y="13" font-family="DM Serif Display" font-size="10" fill="currentColor" font-style="italic">z</text>
+                    <text x="22" y="9" font-family="DM Serif Display" font-size="7" fill="currentColor" font-style="italic">z</text>
+                  </svg>
+                </div>
+                <div class="step-body">
+                  <div class="step-title">Power nap 20 menit</div>
+                  <div class="step-desc">Studi NASA: nap 26 menit menaikkan performa pilot 34% dan kewaspadaan 100%. Bukan kelemahan — tool produktivitas.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>06 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#5EC9A7" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#5EC9A7"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════ SLIDE 7 — CTA ════════ -->
+      <section class="slide" data-screen-label="07 CTA">
+        <div class="cvs bg-light s7">
+          <div class="head">
+            <span class="dotmark">The Call</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">✱</span><span>Sekarang giliranmu</span></div>
+            <div class="rule"></div>
+
+            <div class="zzz">
+              <span class="z1">z</span>
+              <span class="z2">z</span>
+              <span class="z3">z</span>
+            </div>
+
+            <h2>Kamu tidur berapa jam semalam? Dan <em>sudah berapa lama seperti ini?</em></h2>
+
+            <p class="ask">Jawab dengan angka di komentar. Dan ceritakan: kamu bisa bedakan performa kerja di hari tidur cukup vs kurang?</p>
+
+            <div class="actions">
+              <div class="btn">
+                <span>Simpan — baca sebelum skip tidur untuk deadline</span>
+                <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+              </div>
+              <div class="btn">
+                <span>Kirim ke rekan kerja yang bangga tidur sedikit</span>
+                <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+              </div>
+            </div>
+
+            <div class="signoff">
+              <div class="brand">
+                <svg class="brand-mark" viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6">
+                  <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                  <circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/>
+                </svg>
+                <div>
+                  <div class="brand-name">Neuro Daily</div>
+                  <div class="brand-sub">Brain Science · For Your Career</div>
+                </div>
+              </div>
+              <div class="cta-pill">Follow @neurodaily.id <span class="arr">→</span></div>
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>07 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="caption-panel">
+  <div class="label">Caption · Formula C — Number Hook</div>
+  <p><strong>Kamu tidur 6 jam tadi malam? Dan kemarin?</strong></p>
+  <p>Riset University of Pennsylvania menemukan bahwa sleep debt terakumulasi — setelah 14 hari tidur 6 jam/malam, penurunan kognisi setara tidak tidur 24 jam penuh.</p>
+  <p>Dan kamu tidak merasakannya. Karena itulah yang paling berbahaya: otak kehilangan kemampuan menilai kondisinya sendiri.</p>
+  <p>Kamu tidur berapa jam semalam? Jawab dengan angka.</p>
+  <span class="hash">#NeuroDaily #NeurosainsKerja #SleepDebt #Tidur #Produktivitas #WorkIntelligence #Performa</span>
+</div>
+
+<div class="controls">
+  <button id="prev">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next">›</button>
+</div>
+
+<script>
+const track=document.getElementById('track'),dotsEl=document.getElementById('dots'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next');
+const total=track.children.length;let i=0;
+function scaleCanvases(){
+  document.querySelectorAll('.slide').forEach(s=>{
+    const c=s.querySelector('.cvs');
+    if(!c)return;
+    c.style.transform=`scale(${s.clientWidth/1080})`;
+  });
+}
+window.addEventListener('resize',scaleCanvases);scaleCanvases();
+for(let k=0;k<total;k++){const b=document.createElement('button');b.className='dot'+(k===0?' active':'');b.addEventListener('click',()=>go(k));dotsEl.appendChild(b)}
+const dots=[...dotsEl.children];
+function go(n){i=Math.max(0,Math.min(total-1,n));track.style.transform=`translateX(-${i*100}%)`;dots.forEach((d,k)=>d.classList.toggle('active',k===i));counter.textContent=`${i+1} / ${total}`;prevBtn.disabled=i===0;nextBtn.disabled=i===total-1}
+prevBtn.addEventListener('click',()=>go(i-1));nextBtn.addEventListener('click',()=>go(i+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(i+1);if(e.key==='ArrowLeft')go(i-1)});
+let sx=0,dx=0,drag=false;const vp=document.querySelector('.viewport');
+vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;drag=true;dx=0});
+vp.addEventListener('touchmove',e=>{if(!drag)return;dx=e.touches[0].clientX-sx});
+vp.addEventListener('touchend',()=>{if(!drag)return;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));drag=false});
+go(0);
+</script>
+</body>
+</html>

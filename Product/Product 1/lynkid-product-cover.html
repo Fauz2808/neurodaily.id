@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brain Kit for Work — Lynk.id Product Cover</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+    padding: 48px 24px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .label {
+    color: #888;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* ─── COVER IMAGE — 800×800 ─── */
+  #cover {
+    width: 800px;
+    height: 800px;
+    background: #0D2E28;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  /* Background neural texture */
+  #cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(94,201,167,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 10% 80%, rgba(26,107,90,0.12) 0%, transparent 55%);
+  }
+
+  /* Neural network SVG background */
+  .neural-bg {
+    position: absolute;
+    top: 0; right: 0;
+    width: 100%; height: 100%;
+    opacity: 0.12;
+  }
+
+  .cover-inner {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 56px 60px;
+  }
+
+  /* Top row */
+  .cover-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: auto;
+  }
+
+  .brand-tag {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #5EC9A7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .brand-dot svg {
+    width: 16px; height: 16px;
+  }
+
+  .brand-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 14px;
+    color: #5EC9A7;
+    letter-spacing: 0.06em;
+  }
+
+  .product-badge {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #C9A96E;
+    border: 1px solid rgba(201,169,110,0.4);
+    padding: 5px 12px;
+    border-radius: 20px;
+  }
+
+  /* Center content */
+  .cover-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px 0;
+  }
+
+  .cover-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #5EC9A7;
+    margin-bottom: 20px;
+  }
+
+  .cover-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 72px;
+    line-height: 1.05;
+    color: #F5F3EE;
+    margin-bottom: 8px;
+  }
+
+  .cover-title em {
+    color: #5EC9A7;
+    font-style: italic;
+  }
+
+  .cover-subtitle {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    line-height: 1.5;
+    color: rgba(245,243,238,0.55);
+    margin-top: 18px;
+    margin-bottom: 36px;
+    max-width: 460px;
+  }
+
+  /* Divider */
+  .cover-divider {
+    width: 48px;
+    height: 2px;
+    background: #1A6B5A;
+    margin-bottom: 32px;
+  }
+
+  /* Chapter pills */
+  .chapter-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-width: 520px;
+  }
+
+  .chapter-pill {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    color: rgba(245,243,238,0.65);
+    background: rgba(94,201,167,0.08);
+    border: 1px solid rgba(94,201,167,0.15);
+    padding: 5px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* Bottom row */
+  .cover-bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-top: 32px;
+    border-top: 1px solid rgba(245,243,238,0.08);
+  }
+
+  .cover-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .cover-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: rgba(245,243,238,0.45);
+    font-weight: 300;
+  }
+
+  .cover-meta-item span {
+    color: #C9A96E;
+    font-weight: 500;
+  }
+
+  .cover-stat {
+    text-align: right;
+  }
+
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 52px;
+    line-height: 1;
+    color: #C9A96E;
+  }
+
+  .stat-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(245,243,238,0.4);
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+  }
+
+  /* corner accent */
+  .corner-accent {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle at bottom right, rgba(94,201,167,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ─── FORM COPY PANEL ─── */
+  .form-panel {
+    width: 800px;
+    background: #111;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .panel-header {
+    background: #0D2E28;
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .panel-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: #5EC9A7;
+  }
+
+  .panel-header p {
+    font-size: 12px;
+    color: rgba(245,243,238,0.4);
+    font-weight: 300;
+  }
+
+  .form-section {
+    padding: 24px 28px;
+    border-bottom: 1px solid #1e1e1e;
+  }
+
+  .form-section:last-child { border-bottom: none; }
+
+  .field-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #5EC9A7;
+    margin-bottom: 8px;
+  }
+
+  .field-value {
+    font-size: 14px;
+    color: #F5F3EE;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  .field-value strong {
+    font-weight: 500;
+    color: #C9A96E;
+  }
+
+  .field-value ul {
+    margin: 10px 0 0 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .field-value li {
+    color: rgba(245,243,238,0.7);
+  }
+
+  .price-display {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    color: #C9A96E;
+    margin-top: 4px;
+  }
+
+  .price-note {
+    font-size: 12px;
+    color: rgba(245,243,238,0.4);
+    margin-top: 4px;
+    font-weight: 300;
+  }
+
+  .email-body {
+    background: #0a0a0a;
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 20px;
+    font-size: 13px;
+    color: rgba(245,243,238,0.75);
+    line-height: 1.8;
+    font-weight: 300;
+  }
+
+  .toggle-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .toggle-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: rgba(245,243,238,0.7);
+  }
+
+  .toggle-on {
+    width: 36px; height: 20px;
+    background: #1A6B5A;
+    border-radius: 10px;
+    position: relative;
+  }
+  .toggle-on::after {
+    content: '';
+    position: absolute;
+    right: 3px; top: 3px;
+    width: 14px; height: 14px;
+    background: white;
+    border-radius: 50%;
+  }
+  .toggle-off {
+    width: 36px; height: 20px;
+    background: #333;
+    border-radius: 10px;
+    position: relative;
+  }
+  .toggle-off::after {
+    content: '';
+    position: absolute;
+    left: 3px; top: 3px;
+    width: 14px; height: 14px;
+    background: #666;
+    border-radius: 50%;
+  }
+
+  .description-html {
+    background: #0a0a0a;
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 20px;
+    font-size: 13px;
+    color: rgba(245,243,238,0.75);
+    line-height: 1.8;
+    font-weight: 300;
+    font-family: monospace;
+    white-space: pre-wrap;
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── SECTION 1: COVER IMAGE ─── -->
+<div>
+  <p class="label" style="color:#888; text-align:center; margin-bottom:16px;">Cover Image Produk — 800×800px (copy ke lynk.id: Image)</p>
+
+  <div id="cover">
+    <!-- Neural network background -->
+    <svg class="neural-bg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#5EC9A7" stroke-width="0.8" fill="none" opacity="0.7">
+        <!-- nodes -->
+        <circle cx="650" cy="120" r="4" fill="#5EC9A7"/>
+        <circle cx="720" cy="200" r="3" fill="#5EC9A7"/>
+        <circle cx="600" cy="250" r="5" fill="#5EC9A7"/>
+        <circle cx="750" cy="310" r="2.5" fill="#5EC9A7"/>
+        <circle cx="680" cy="380" r="4" fill="#5EC9A7"/>
+        <circle cx="760" cy="430" r="3" fill="#5EC9A7"/>
+        <circle cx="620" cy="480" r="3.5" fill="#5EC9A7"/>
+        <circle cx="700" cy="550" r="2.5" fill="#5EC9A7"/>
+        <circle cx="640" cy="620" r="4" fill="#5EC9A7"/>
+        <circle cx="760" cy="650" r="3" fill="#5EC9A7"/>
+        <circle cx="580" cy="700" r="2.5" fill="#5EC9A7"/>
+        <!-- connections -->
+        <line x1="650" y1="120" x2="720" y2="200"/>
+        <line x1="650" y1="120" x2="600" y2="250"/>
+        <line x1="720" y1="200" x2="600" y2="250"/>
+        <line x1="720" y1="200" x2="750" y2="310"/>
+        <line x1="600" y1="250" x2="680" y2="380"/>
+        <line x1="750" y1="310" x2="680" y2="380"/>
+        <line x1="750" y1="310" x2="760" y2="430"/>
+        <line x1="680" y1="380" x2="760" y2="430"/>
+        <line x1="680" y1="380" x2="620" y2="480"/>
+        <line x1="760" y1="430" x2="620" y2="480"/>
+        <line x1="620" y1="480" x2="700" y2="550"/>
+        <line x1="700" y1="550" x2="640" y2="620"/>
+        <line x1="700" y1="550" x2="760" y2="650"/>
+        <line x1="640" y1="620" x2="760" y2="650"/>
+        <line x1="640" y1="620" x2="580" y2="700"/>
+      </g>
+    </svg>
+
+    <div class="corner-accent"></div>
+
+    <div class="cover-inner">
+      <!-- Top -->
+      <div class="cover-top">
+        <div class="brand-tag">
+          <div class="brand-dot">
+            <!-- Brain icon simplified -->
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 3C9.5 3 7.5 4.5 7 6.5C5.5 7 4 8.5 4 10.5C4 12 4.8 13.3 6 14C6 16.2 7.8 18 10 18H14C16.2 18 18 16.2 18 14C19.2 13.3 20 12 20 10.5C20 8.5 18.5 7 17 6.5C16.5 4.5 14.5 3 12 3Z" stroke="#0D2E28" stroke-width="1.5" fill="none"/>
+            </svg>
+          </div>
+          <span class="brand-name">Neuro Daily</span>
+        </div>
+        <span class="product-badge">E-Guide · Neurosains</span>
+      </div>
+
+      <!-- Center -->
+      <div class="cover-center">
+        <p class="cover-eyebrow">Brain Science For Your Career</p>
+        <h1 class="cover-title">Brain Kit<br>for <em>Work</em></h1>
+        <p class="cover-subtitle">7 cara otak kamu sabotase performa kerjamu — dan cara mengatasinya dengan sains.</p>
+        <div class="cover-divider"></div>
+        <div class="chapter-list">
+          <span class="chapter-pill">Presentasi Blank</span>
+          <span class="chapter-pill">Multitasking Ilusi</span>
+          <span class="chapter-pill">Meeting Lelah</span>
+          <span class="chapter-pill">Prokrastinasi Dopamin</span>
+          <span class="chapter-pill">Amygdala Hijack</span>
+          <span class="chapter-pill">Decision Fatigue</span>
+          <span class="chapter-pill">Deep Work</span>
+        </div>
+      </div>
+
+      <!-- Bottom -->
+      <div class="cover-bottom">
+        <div class="cover-meta">
+          <div class="cover-meta-item"><span>7</span> Bab · Setiap bab selesai dalam 15 menit</div>
+          <div class="cover-meta-item"><span>38–42</span> Halaman PDF · Langsung bisa dipraktikkan</div>
+          <div class="cover-meta-item"><span>Berbasis</span> Riset — bukan tips motivasi kosong</div>
+        </div>
+        <div class="cover-stat">
+          <div class="stat-num">7</div>
+          <div class="stat-label">Mekanisme Otak<br>yang Dijelaskan</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ─── SECTION 2: FORM COPY ─── -->
+<div>
+  <p class="label" style="color:#888; text-align:center; margin-bottom:16px;">Semua Isian Form Lynk.id — Siap Copy-Paste</p>
+
+  <div class="form-panel">
+    <div class="panel-header">
+      <div>
+        <h2>Add Digital Product — Brain Kit for Work</h2>
+        <p>Semua field sudah diisi. Scroll, copy, dan paste ke form lynk.id.</p>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <div class="form-section">
+      <p class="field-label">Title</p>
+      <p class="field-value">Brain Kit for Work — Panduan Neurosains untuk Performa Kerja</p>
+    </div>
+
+    <!-- Description -->
+    <div class="form-section">
+      <p class="field-label">Description — versi plain text (paste ke editor lynk.id)</p>
+      <div class="email-body">Kamu sudah investasi banyak untuk karir. Kursus, buku, sertifikasi.
+
+Tapi ada satu hal yang hampir tidak pernah diajarkan di mana pun: cara kerja hardware yang menjalankan semuanya — otakmu.
+
+<strong>Brain Kit for Work</strong> menjelaskan 7 mekanisme otak yang diam-diam mempengaruhi performa kerjamu setiap hari — dan strategi berbasis riset untuk bekerja <em>dengan</em> otak, bukan melawannya.
+
+---
+
+✦ Kenapa kamu blank saat presentasi padahal sudah latihan matang (Amygdala Hijack)
+✦ Kenapa multitasking itu ilusi — dan kamu kehilangan 40% performa karenanya
+✦ Kenapa otak kamu lebih lelah setelah meeting daripada setelah kerja keras sendirian
+✦ Prokrastinasi bukan kemalasan — ini yang sebenarnya terjadi di dopamine system kamu
+✦ Decision fatigue: kenapa keputusan karir terbaik jarang dibuat di sore hari
+✦ Deep work: cara otak masuk ke mode performa puncak (dan kenapa notifikasi menghancurkannya)
+✦ Cara mengelola energi kognitif — bukan hanya waktu — supaya performa kamu konsisten
+
+---
+
+📄 38–42 halaman PDF
+⏱ Setiap bab bisa selesai dalam 15 menit
+🔬 Setiap klaim ada referensi riset di baliknya
+⚡ Langsung bisa dipraktikkan hari yang sama
+
+Ini bukan buku motivasi. Ini penjelasan tentang apa yang sebenarnya terjadi di otakmu.</div>
+    </div>
+
+    <!-- Price -->
+    <div class="form-section">
+      <p class="field-label">Price & Currency</p>
+      <div class="price-display">79.000</div>
+      <p class="price-note">IDR · Jika ingin launch price, set Sale Price ke 49.000 (batas waktu 7 hari pertama)</p>
+      <p class="price-note" style="margin-top:8px; color:#C9A96E;">Allow Customer to pay what they want → <strong>OFF</strong></p>
+    </div>
+
+    <!-- Platform / File -->
+    <div class="form-section">
+      <p class="field-label">Platform — Upload File</p>
+      <p class="field-value">
+        File siap di: <strong>Product/Product 1/Exports/Brain Kit for Work — Neuro Daily.pdf</strong><br>
+        <span style="color:rgba(245,243,238,0.45); font-size:12px;">Pilih tab "Upload" di form lynk.id dan upload file ini langsung.</span>
+      </p>
+    </div>
+
+    <!-- Toggles -->
+    <div class="form-section">
+      <p class="field-label">Settings yang Perlu Diaktifkan</p>
+      <div class="toggle-row">
+        <div class="toggle-item"><div class="toggle-on"></div> Enable WhatsApp Notification</div>
+        <div class="toggle-item"><div class="toggle-on"></div> Custom Message on Customer Email</div>
+        <div class="toggle-item"><div class="toggle-off"></div> Set Release Time (tidak perlu)</div>
+        <div class="toggle-item"><div class="toggle-off"></div> Limit qty per checkout (tidak perlu)</div>
+      </div>
+    </div>
+
+    <!-- Question for Customer -->
+    <div class="form-section">
+      <p class="field-label">Question for Customer</p>
+      <div class="toggle-row">
+        <div class="toggle-item"><div class="toggle-on"></div> Name — Required</div>
+        <div class="toggle-item"><div class="toggle-off"></div> Phone — Optional (boleh dimatikan)</div>
+      </div>
+    </div>
+
+    <!-- Custom Email Message -->
+    <div class="form-section">
+      <p class="field-label">Custom Message on Customer Email</p>
+      <div class="email-body">Hai [Name],
+
+Brain Kit for Work sudah ada di tangan kamu. 🧠
+
+Ini panduan yang dirancang untuk dibaca modular — kamu tidak harus mulai dari Bab 1. Cari bab yang paling relevan dengan situasi kerjamu sekarang, dan mulai dari sana.
+
+Beberapa hal yang perlu kamu tahu:
+• Setiap bab bisa selesai dalam 15 menit
+• Setiap strategi langsung bisa dipraktikkan hari yang sama
+• Jika ada pertanyaan atau ingin diskusi lebih lanjut, follow @neurodaily.id di TikTok dan Instagram
+
+Semoga bermanfaat.
+
+— Neuro Daily
+Neurosains untuk karir & performa kerja</div>
+    </div>
+
+    <!-- Block Layout -->
+    <div class="form-section">
+      <p class="field-label">Block Layout</p>
+      <p class="field-value">Pilih <strong>Default</strong> atau <strong>Large Image</strong> jika upgrade Pro — yang penting cover terlihat besar.</p>
+    </div>
+
+    <!-- Add-on suggestion -->
+    <div class="form-section">
+      <p class="field-label">Add On — Opsional (nanti setelah Product 2 siap)</p>
+      <p class="field-value" style="color:rgba(245,243,238,0.5);">
+        Setelah Brain Protocol Workbook (Product 2) selesai, tambahkan sebagai Add On dengan harga bundle.<br>
+        Contoh: "Brain Kit for Work + Workbook Bundle — Rp 129.000"
+      </p>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

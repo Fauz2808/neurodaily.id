@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Neuro Daily — Kenapa Kamu Takut Resign</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;--red:#D96A6A}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#1a1a1a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#9aa39f;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(440px,92vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;display:flex;flex-direction:column;padding:36px 32px 28px;position:relative;overflow:hidden}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.slide .header{display:flex;justify-content:space-between;align-items:center;font-family:'DM Sans',sans-serif;font-weight:500;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.85}
+.bg-light .header{opacity:.7}
+.pillar-tag{display:inline-flex;align-items:center;gap:6px}
+.pillar-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--green)}
+.bg-light .pillar-tag::before{background:var(--teal)}
+.slide .footer{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;opacity:.55;text-transform:uppercase}
+.static-bg{position:absolute;inset:0;pointer-events:none;opacity:.045}
+
+/* S1 — HOOK */
+.s1 .body{margin-top:auto;margin-bottom:auto}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:40px;line-height:1.07;letter-spacing:-.01em;color:var(--parchment)}
+.s1 h1 em{color:var(--amber);font-style:italic}
+.s1 .lead{margin-top:18px;font-size:13px;line-height:1.7;opacity:.7;max-width:300px}
+.s1 .swipe{position:absolute;bottom:24px;right:32px;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.s1 .arrow{display:inline-block;animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+
+/* S2 — MYTH BUSTER */
+.s2 .eyebrow{margin-top:22px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);opacity:.8}
+.s2 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:27px;line-height:1.16;letter-spacing:-.01em;margin-top:10px;color:var(--forest)}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .compare{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.compare-row{padding:11px 14px;border-radius:9px;font-size:11.5px;line-height:1.55}
+.compare-myth{background:rgba(217,106,106,.08);border:1px solid rgba(217,106,106,.18);color:var(--forest)}
+.compare-fact{background:rgba(26,107,90,.08);border:1px solid rgba(26,107,90,.2);color:var(--forest)}
+.compare-row .label{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:4px;opacity:.7}
+.compare-myth .label{color:var(--red)}
+.compare-fact .label{color:var(--teal)}
+.s2 .note{margin-top:12px;font-size:11px;line-height:1.6;color:var(--forest);opacity:.6;border-top:1px solid rgba(13,46,40,.1);padding-top:10px}
+
+/* S3 — MECHANISM */
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:25px;line-height:1.22;letter-spacing:-.01em;margin-top:18px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .term{margin-top:14px;padding:13px 15px;border-radius:10px;background:rgba(94,201,167,.08);border-left:2px solid var(--green)}
+.s3 .term .name{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+.s3 .term .def{margin-top:7px;font-size:12.5px;line-height:1.65;color:var(--parchment);opacity:.9}
+.s3 .scale-visual{margin-top:14px;display:flex;gap:10px}
+.s3 .scale-side{flex:1;padding:11px 12px;border-radius:8px;font-size:11px;line-height:1.5}
+.scale-loss{background:rgba(217,106,106,.12);border:1px solid rgba(217,106,106,.22)}
+.scale-gain{background:rgba(94,201,167,.08);border:1px solid rgba(94,201,167,.15)}
+.s3 .scale-side .sc-label{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:5px}
+.scale-loss .sc-label{color:var(--red)}
+.scale-gain .sc-label{color:var(--green)}
+.s3 .scale-side .sc-val{font-family:'DM Serif Display',serif;font-size:26px;line-height:1;letter-spacing:-.02em;margin-bottom:4px}
+.scale-loss .sc-val{color:var(--red)}
+.scale-gain .sc-val{color:var(--green)}
+.s3 .scale-side .sc-text{font-size:10.5px;color:var(--parchment);opacity:.7;line-height:1.45}
+.s3 .source{margin-top:10px;font-size:10px;color:var(--parchment);opacity:.42;line-height:1.55}
+
+/* S4 — HOW IT SHOWS UP */
+.s4 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:22px;line-height:1.28;margin-top:12px;color:var(--forest)}
+.s4 h2 em{font-style:italic;color:var(--teal)}
+.s4 .intro{margin-top:8px;font-size:12px;line-height:1.6;color:var(--forest);opacity:.65}
+.s4 .block-list{margin-top:14px;display:flex;flex-direction:column;gap:7px}
+.block-item{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;background:rgba(255,255,255,.55);border:1px solid rgba(13,46,40,.1);border-radius:9px}
+.block-num{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--red);font-weight:500;flex-shrink:0;margin-top:2px;width:16px}
+.block-body .block-title{font-size:11.5px;font-weight:500;color:var(--forest);margin-bottom:3px;line-height:1.3}
+.block-body .block-sub{font-size:10.5px;color:var(--forest);opacity:.62;line-height:1.45}
+
+/* S5 — STAT */
+.s5{padding-top:28px}
+.s5 .stat-big{margin-top:auto;display:flex;align-items:baseline;gap:12px}
+.s5 .stat-big .n{font-family:'DM Serif Display',serif;font-size:82px;line-height:.85;color:var(--parchment);letter-spacing:-.03em}
+.s5 .stat-big .n em{color:var(--amber);font-style:italic}
+.s5 .stat-big .u{font-family:'DM Sans';font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--green);max-width:140px;line-height:1.5}
+.s5 .copy{margin-top:16px;font-size:13px;line-height:1.65;opacity:.85;max-width:340px}
+.s5 .copy strong{font-weight:500;color:var(--green)}
+.s5 .insight{margin-top:16px;padding:13px 16px;border:1px dashed rgba(94,201,167,.3);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);letter-spacing:.04em;line-height:1.9}
+
+/* S6 — REFRAME */
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:25px;line-height:1.2;margin-top:20px;letter-spacing:-.01em}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .ps{margin-top:12px;font-size:12.5px;line-height:1.65;opacity:.78;max-width:340px}
+.s6 .steps{margin-top:14px;display:flex;flex-direction:column;gap:0}
+.s6 .step{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(245,243,238,.07)}
+.s6 .step:last-child{border-bottom:none}
+.s6 .step-num{width:20px;height:20px;border-radius:50%;background:rgba(94,201,167,.15);color:var(--green);font-family:'JetBrains Mono',monospace;font-size:8.5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.s6 .step-title{font-size:11.5px;font-weight:500;color:var(--parchment);line-height:1.3;margin-bottom:2px}
+.s6 .step-desc{font-size:10.5px;color:var(--parchment);opacity:.62;line-height:1.5}
+
+/* S7 — CTA */
+.s7{justify-content:space-between}
+.s7 .lead-q{font-family:'DM Serif Display',serif;font-size:25px;line-height:1.24;letter-spacing:-.01em;margin-top:22px;color:var(--forest)}
+.s7 .lead-q em{font-style:italic;color:var(--teal)}
+.s7 .ask{margin-top:13px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.7;max-width:310px}
+.s7 .actions{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.s7 .btn{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border:1px solid rgba(13,46,40,.15);border-radius:10px;font-size:12.5px;color:var(--forest)}
+.s7 .btn .ic{width:18px;height:18px;color:var(--teal);flex-shrink:0}
+.s7 .signoff{margin-top:18px;padding-top:14px;border-top:1px solid rgba(13,46,40,.12)}
+.s7 .tag{font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;color:var(--teal);line-height:1.3}
+.s7 .sub{margin-top:6px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--forest);opacity:.6;font-weight:500}
+
+/* Nav */
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:22px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:42px;height:42px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.controls button:hover{background:rgba(94,201,167,.12);border-color:rgba(94,201,167,.3)}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 8px}
+.caption-panel{width:min(440px,92vw);margin-top:32px;padding:22px 22px 24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:13px;line-height:1.7}
+.caption-panel .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+.caption-panel .char-count{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--amber);margin-top:10px;opacity:.7}
+.caption-panel p{margin-bottom:10px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:14px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Career Neuroscience · P3 ]</span>
+</div>
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- SLIDE 1 — HOOK -->
+      <section class="slide bg-dark s1">
+        <svg class="static-bg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <!-- Timbangan / scale — loss side heavier -->
+          <line x1="200" y1="130" x2="200" y2="175" stroke="rgba(245,243,238,.2)" stroke-width="1.2"/>
+          <!-- Pivot -->
+          <circle cx="200" cy="175" r="5" fill="none" stroke="rgba(245,243,238,.25)" stroke-width="1"/>
+          <!-- Tilted beam — loss heavier -->
+          <line x1="80" y1="188" x2="320" y2="162" stroke="rgba(245,243,238,.2)" stroke-width="1.2"/>
+          <!-- Left pan (LOSS) — lower/heavier -->
+          <line x1="80" y1="188" x2="80" y2="220" stroke="rgba(217,106,106,.3)" stroke-width=".8"/>
+          <rect x="48" y="220" width="64" height="42" rx="6" fill="none" stroke="rgba(217,106,106,.3)" stroke-width=".8"/>
+          <text x="80" y="236" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="rgba(217,106,106,.5)" letter-spacing=".5">KEHILANGAN</text>
+          <text x="80" y="250" text-anchor="middle" font-family="DM Serif Display" font-size="14" fill="rgba(217,106,106,.6)">−Rp</text>
+          <!-- Right pan (GAIN) — higher/lighter -->
+          <line x1="320" y1="162" x2="320" y2="194" stroke="rgba(94,201,167,.25)" stroke-width=".8"/>
+          <rect x="288" y="194" width="64" height="42" rx="6" fill="none" stroke="rgba(94,201,167,.22)" stroke-width=".8"/>
+          <text x="320" y="210" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="rgba(94,201,167,.4)" letter-spacing=".5">KEUNTUNGAN</text>
+          <text x="320" y="224" text-anchor="middle" font-family="DM Serif Display" font-size="14" fill="rgba(94,201,167,.5)">+Rp</text>
+          <!-- 2x weight label -->
+          <text x="80" y="275" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(217,106,106,.45)" letter-spacing="1">2× LEBIH BERAT</text>
+          <!-- Status quo label bottom -->
+          <rect x="110" y="340" width="180" height="28" rx="6" fill="none" stroke="rgba(245,243,238,.1)" stroke-width=".8"/>
+          <text x="200" y="358" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(245,243,238,.18)" letter-spacing="1.5">STATUS QUO BIAS</text>
+        </svg>
+        <div class="header">
+          <span class="pillar-tag">Career Neuroscience · P3</span>
+          <span>01 / 07</span>
+        </div>
+        <div class="body">
+          <h1>Kamu tahu harus pindah. Tapi <em>tidak bergerak.</em></h1>
+          <p class="lead">Ini bukan pengecut. Ini bukan kurang ambisi. Ini default setting otakmu yang berusia 200.000 tahun — dan ia menang setiap hari.</p>
+        </div>
+        <div class="swipe"><span>Geser</span><span class="arrow">→</span></div>
+      </section>
+
+      <!-- SLIDE 2 — MYTH BUSTER -->
+      <section class="slide bg-light s2">
+        <div class="header">
+          <span class="pillar-tag">Mitos vs Fakta</span>
+          <span>02 / 07</span>
+        </div>
+        <div class="eyebrow">Myth Buster · Formula A</div>
+        <h2>Bertahan di pekerjaan yang salah bukan soal <em>tidak berani.</em></h2>
+        <div class="compare">
+          <div class="compare-row compare-myth">
+            <div class="label">Mitos yang beredar</div>
+            Kalau tidak resign dari pekerjaan yang menyiksa, itu karena kurang berani, kurang ambisi, atau terlalu nyaman.
+          </div>
+          <div class="compare-row compare-fact">
+            <div class="label">Fakta neurosains</div>
+            Otak secara biologis memproses potensi kehilangan 2× lebih kuat dari keuntungan setara. Bukan kelemahan karakter — otak sedang melakukan tugasnya: melindungi kamu dari ancaman yang dirasakan nyata.
+          </div>
+        </div>
+        <p class="note">Kahneman & Tversky (1979) membuktikan melalui Prospect Theory bahwa kerugian secara psikologis terasa 2× lebih menyakitkan dari keuntungan dengan nilai yang sama. Temuan ini kemudian memenangkan Nobel Ekonomi tahun 2002.</p>
+        <div class="footer"><span>NEURO DAILY</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 3 — MECHANISM -->
+      <section class="slide bg-dark s3">
+        <div class="header">
+          <span class="pillar-tag">Mekanisme otaknya</span>
+          <span>03 / 07</span>
+        </div>
+        <h2>Otak menghitung <em>kehilangan dua kali lebih berat</em> dari keuntungan.</h2>
+        <div class="term">
+          <div class="name">Loss Aversion</div>
+          <div class="def">Kecenderungan neurologis di mana rasa sakit dari kehilangan secara konsisten lebih kuat dari kesenangan dari keuntungan yang setara nilainya. Dimediasi oleh amygdala dan striatum — hardwired, bukan pilihan.</div>
+        </div>
+        <div class="scale-visual">
+          <div class="scale-side scale-loss">
+            <div class="sc-label">Rasa kehilangan</div>
+            <div class="sc-val">−2×</div>
+            <div class="sc-text">Risiko kehilangan gaji tetap, status, atau familiar routine terasa 2× lebih besar</div>
+          </div>
+          <div class="scale-side scale-gain">
+            <div class="sc-label">Rasa keuntungan</div>
+            <div class="sc-val">+1×</div>
+            <div class="sc-text">Potensi gaji lebih tinggi, karir lebih baik terasa lebih kecil dari yang seharusnya</div>
+          </div>
+        </div>
+        <p class="source">Kahneman & Tversky (1979): Prospect Theory · Tversky & Kahneman (1991): Loss Aversion in Riskless Choice · Tom et al. (2007): Neural basis of loss aversion — amygdala & ventral striatum</p>
+      </section>
+
+      <!-- SLIDE 4 — HOW IT BLOCKS -->
+      <section class="slide bg-light s4">
+        <div class="header">
+          <span class="pillar-tag">4 cara loss aversion memblokir</span>
+          <span>04 / 07</span>
+        </div>
+        <h2>Loss aversion <em>muncul berbeda-beda</em> di keputusan karir.</h2>
+        <p class="intro">Bukan hanya soal resign — ia hadir di setiap keputusan karir yang melibatkan perubahan.</p>
+        <div class="block-list">
+          <div class="block-item">
+            <span class="block-num">01</span>
+            <div class="block-body">
+              <div class="block-title">Sunk cost: "Sudah 3 tahun di sini"</div>
+              <div class="block-sub">Waktu dan loyalitas yang sudah diinvestasikan terasa seperti akan "hilang" jika pindah — padahal sunk cost tidak relevan untuk keputusan masa depan</div>
+            </div>
+          </div>
+          <div class="block-item">
+            <span class="block-num">02</span>
+            <div class="block-body">
+              <div class="block-title">Status quo bias: familiar = aman</div>
+              <div class="block-sub">Otak secara default memberi nilai lebih tinggi pada kondisi saat ini — bukan karena lebih baik, tapi karena sudah diketahui dan "terbukti tidak membunuh"</div>
+            </div>
+          </div>
+          <div class="block-item">
+            <span class="block-num">03</span>
+            <div class="block-body">
+              <div class="block-title">Risk asymmetry: gagal terasa lebih besar</div>
+              <div class="block-sub">Bayangan skenario terburuk (jobless, gagal adapt) mendapat bobot neurological jauh lebih besar dari skenario terbaik yang realistis</div>
+            </div>
+          </div>
+          <div class="block-item">
+            <span class="block-num">04</span>
+            <div class="block-body">
+              <div class="block-title">Identity threat: "Siapa aku tanpa jabatan ini?"</div>
+              <div class="block-sub">Amygdala merespons hilangnya identitas profesional seperti ancaman eksistensial — bukan sekadar pergantian pekerjaan</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>04 — POLA</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 5 — STAT -->
+      <section class="slide bg-teal s5">
+        <div class="header">
+          <span class="pillar-tag" style="color:#fff">Angkanya</span>
+          <span>05 / 07</span>
+        </div>
+        <p class="copy" style="margin-top:24px">Otak yang sama yang membuat kamu <strong>bertahan di tempat yang salah</strong> juga bisa digunakan untuk membuat keputusan yang lebih akurat — kalau kamu tahu cara kerjanya.</p>
+        <div class="stat-big">
+          <span class="n">2<em>×</em></span>
+          <span class="u">lebih kuat rasa sakit kehilangan vs kesenangan mendapat hal setara</span>
+        </div>
+        <div class="insight">
+          Potensi gaji +5 juta/bln terasa kecil →<br>
+          Risiko kehilangan gaji sekarang terasa besar →<br>
+          Padahal nilainya sama secara objektif →<br>
+          <span style="color:var(--amber)">────────────────────────────────</span><br>
+          Otak bukan kalkulator — ia <span style="color:#fff;font-weight:500">kalkulator yang bias</span><br>
+          dan bias-nya sistematis, bisa diprediksi<br>
+          <span style="opacity:.55;font-size:9.5px">*Kahneman & Tversky (1979) · Econometrica</span>
+        </div>
+        <div class="footer"><span>05 — DATA</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 6 — REFRAME -->
+      <section class="slide bg-dark s6">
+        <div class="header">
+          <span class="pillar-tag">Cara menggunakannya</span>
+          <span>06 / 07</span>
+        </div>
+        <h2>Gunakan loss aversion <em>melawan dirinya sendiri.</em></h2>
+        <p class="ps">Kalau otak lebih takut kehilangan dari menginginkan keuntungan — reframe pilihan agar tetap-di-sini yang terasa seperti kehilangan.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <div class="step-title">Hitung biaya diam — bukan hanya biaya pindah</div>
+              <div class="step-desc">Berapa yang hilang setiap tahun kamu bertahan: pertumbuhan karir yang tidak terjadi, skill yang tidak berkembang, mental health yang terkuras? Jadikan ini nyata dalam angka konkret. Otak butuh "kehilangan yang terasa nyata" untuk bergerak.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <div class="step-title">Pre-mortem: bayangkan tetap di sini 3 tahun lagi</div>
+              <div class="step-desc">Teknik dari Gary Klein (diadopsi oleh Kahneman): bayangkan sudah 3 tahun berlalu dan kamu masih di sini. Apa yang kamu sesali? Ini memaksa otak mengevaluasi status quo sebagai pilihan aktif, bukan kondisi default.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <div class="step-title">Pisahkan identitas dari jabatan sebelum keputusan</div>
+              <div class="step-desc">Identity threat adalah driver loss aversion terbesar dalam karir. Kerja secara aktif untuk mendefinisikan identitas profesionalmu di luar jabatan saat ini — sebelum, bukan setelah, keputusan dibuat.</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>06 — STRATEGI</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 7 — CTA -->
+      <section class="slide bg-light s7">
+        <div class="header">
+          <span class="pillar-tag">Sekarang giliranmu</span>
+          <span>07 / 07</span>
+        </div>
+        <div>
+          <p class="lead-q">Pernah stuck di pekerjaan yang salah? <em>Apa yang akhirnya membuatmu bergerak?</em></p>
+          <p class="ask">Jawab di komentar. Atau kalau masih di sana sekarang — alasan mana yang paling kuat menahanmu? Sunk cost, status quo, atau identity threat?</p>
+        </div>
+        <div class="actions">
+          <div class="btn">
+            <span>Simpan — baca ulang saat mau ambil keputusan karir</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+          </div>
+          <div class="btn">
+            <span>Tag teman yang sedang di persimpangan karir</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </div>
+        <div class="signoff">
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="1.5"><path d="M4 14c0-5 3-8 8-8 4 0 6 2 6 5 0 2-1.5 3.5-4 3.5-2 0-3 1-3 2.5 0 1.5 1 2.5 2.5 2.5"/><circle cx="15" cy="9" r="1" fill="#1A6B5A"/></svg>
+            <span class="tag">Neuro Daily</span>
+          </div>
+          <div class="sub">Kerja lebih cerdas, bukan lebih keras. Ini sains-nya.</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="caption-panel">
+  <div class="label">Caption · Formula A — Myth Buster · ≤ 500 karakter</div>
+  <p><strong style="color:var(--parchment)">Kamu tahu harus pindah. Tapi tidak bergerak.</strong></p>
+  <p>Bukan pengecut. Otak secara biologis memproses kehilangan 2× lebih kuat dari keuntungan setara — dan bertahan di familiar terasa "aman" meski menyakitkan. Ini Prospect Theory, bukan kelemahan karakter.</p>
+  <p>Pernah stuck di pekerjaan yang salah? Apa yang akhirnya membuatmu bergerak?</p>
+  <span class="hash">#NeuroDaily #NeurosainsKerja #LossAversion #Karir #CareerDecision #Resign #Produktivitas</span>
+  <div class="char-count" id="charCount"></div>
+</div>
+
+<div class="controls">
+  <button id="prev">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next">›</button>
+</div>
+
+<script>
+const track=document.getElementById('track'),dotsEl=document.getElementById('dots'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next');
+const total=track.children.length;let i=0;
+for(let k=0;k<total;k++){const b=document.createElement('button');b.className='dot'+(k===0?' active':'');b.addEventListener('click',()=>go(k));dotsEl.appendChild(b)}
+const dots=[...dotsEl.children];
+function go(n){i=Math.max(0,Math.min(total-1,n));track.style.transform=`translateX(-${i*100}%)`;dots.forEach((d,k)=>d.classList.toggle('active',k===i));counter.textContent=`${i+1} / ${total}`;prevBtn.disabled=i===0;nextBtn.disabled=i===total-1}
+prevBtn.addEventListener('click',()=>go(i-1));nextBtn.addEventListener('click',()=>go(i+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(i+1);if(e.key==='ArrowLeft')go(i-1)});
+let sx=0,dx=0,drag=false;const vp=document.querySelector('.viewport');
+vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;drag=true;dx=0});
+vp.addEventListener('touchmove',e=>{if(!drag)return;dx=e.touches[0].clientX-sx});
+vp.addEventListener('touchend',()=>{if(!drag)return;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));drag=false});
+const captionText=`Kamu tahu harus pindah. Tapi tidak bergerak.
+
+Bukan pengecut. Otak secara biologis memproses kehilangan 2× lebih kuat dari keuntungan setara — dan bertahan di familiar terasa "aman" meski menyakitkan. Ini Prospect Theory, bukan kelemahan karakter.
+
+Pernah stuck di pekerjaan yang salah? Apa yang akhirnya membuatmu bergerak?
+
+#NeuroDaily #NeurosainsKerja #LossAversion #Karir #CareerDecision #Resign #Produktivitas`;
+const cc=document.getElementById('charCount'),len=captionText.length;
+cc.textContent=`${len} / 500 karakter ${len<=500?'✓':'⚠ Melebihi batas Threads'}`;
+if(len>500)cc.style.color='#e05252';
+go(0)
+</script>
+</body>
+</html>

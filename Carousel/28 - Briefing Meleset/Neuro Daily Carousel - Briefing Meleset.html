@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=440"/>
+<title>Neuro Daily – Briefing Meleset</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --forest:   #0D2E28;
+    --teal:     #1A6B5A;
+    --green:    #5EC9A7;
+    --parchment:#F5F3EE;
+    --amber:    #C9A96E;
+    --red:      #D96A6A;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111; display: flex; flex-direction: column; align-items: center; font-family: 'DM Sans', sans-serif; }
+
+  .stage {
+    width: 440px;
+    position: relative;
+  }
+  .topbar {
+    width: 440px;
+    background: var(--forest);
+    border-bottom: 1px solid rgba(94,201,167,.18);
+    padding: 9px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .topbar-brand { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--green); letter-spacing:.12em; }
+  .topbar-tag   { font-family:'JetBrains Mono',monospace; font-size:9px;  color:var(--amber); opacity:.75; letter-spacing:.08em; }
+
+  .viewport {
+    width: 440px;
+    height: 550px;
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 24px 64px rgba(0,0,0,.55);
+    position: relative;
+  }
+  .track {
+    display: flex;
+    width: 700%;
+    height: 100%;
+    transition: transform .42s cubic-bezier(.4,0,.2,1);
+  }
+  .slide {
+    width: 440px;
+    height: 550px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 36px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* backgrounds */
+  .bg-dark  { background: var(--forest); }
+  .bg-light { background: var(--parchment); }
+  .bg-teal  { background: var(--teal); }
+
+  /* subtle noise texture */
+  .bg-dark::before, .bg-teal::before {
+    content:''; position:absolute; inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity:.4; pointer-events:none;
+  }
+
+  /* ── label chip ── */
+  .chip {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .12em;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+  .chip-green { background: rgba(94,201,167,.15); color: var(--green); border:1px solid rgba(94,201,167,.3); }
+  .chip-amber { background: rgba(201,169,110,.15); color: var(--amber); border:1px solid rgba(201,169,110,.3); }
+  .chip-dark  { background: rgba(13,46,40,.15);   color: var(--teal);  border:1px solid rgba(26,107,90,.4); }
+  .chip-red   { background: rgba(217,106,106,.15); color: var(--red);   border:1px solid rgba(217,106,106,.3); }
+
+  /* ── typography ── */
+  .serif { font-family: 'DM Serif Display', serif; }
+
+  .hook-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .18em;
+    color: var(--green);
+    opacity: .7;
+    margin-bottom: 14px;
+  }
+  .hook-headline {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    line-height: 1.22;
+    color: var(--parchment);
+    margin-bottom: 16px;
+  }
+  .hook-sub {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--parchment);
+    opacity: .65;
+    line-height: 1.55;
+  }
+
+  /* ── slide 2 myth ── */
+  .myth-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .16em;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+  .myth-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    line-height: 1.3;
+    color: var(--forest);
+    border-left: 3px solid var(--red);
+    padding-left: 14px;
+    margin-bottom: 22px;
+  }
+  .reality-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .16em;
+    color: var(--teal);
+    margin-bottom: 8px;
+  }
+  .reality-text {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--forest);
+    border-left: 3px solid var(--teal);
+    padding-left: 14px;
+  }
+
+  /* ── slide 3 terms ── */
+  .s3-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--parchment);
+    margin-bottom: 20px;
+    line-height: 1.3;
+  }
+  .term-box {
+    background: rgba(94,201,167,.07);
+    border: 1px solid rgba(94,201,167,.2);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .term-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+    letter-spacing: .1em;
+    margin-bottom: 5px;
+  }
+  .term-source {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    color: var(--amber);
+    opacity: .7;
+    margin-bottom: 6px;
+  }
+  .term-desc {
+    font-size: 12.5px;
+    font-weight: 300;
+    color: var(--parchment);
+    line-height: 1.5;
+    opacity: .85;
+  }
+
+  /* ── slide 4 list ── */
+  .s4-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: var(--forest);
+    margin-bottom: 18px;
+    line-height: 1.3;
+  }
+  .list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 13px;
+  }
+  .list-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--teal);
+    font-weight: 700;
+    min-width: 20px;
+    padding-top: 1px;
+  }
+  .list-text {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--forest);
+    line-height: 1.5;
+  }
+  .list-text strong { font-weight: 400; color: var(--teal); }
+
+  /* ── slide 5 stat ── */
+  .stat-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .16em;
+    color: var(--green);
+    opacity: .7;
+    margin-bottom: 12px;
+  }
+  .stat-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 96px;
+    line-height: .95;
+    color: var(--parchment);
+    margin-bottom: 8px;
+  }
+  .stat-number .n-unit {
+    font-size: 40px;
+    opacity: .75;
+  }
+  .stat-label {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--parchment);
+    opacity: .75;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+  .stat-source {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--green);
+    opacity: .55;
+    letter-spacing: .06em;
+  }
+
+  /* ── slide 6 strategy ── */
+  .s6-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 19px;
+    color: var(--parchment);
+    margin-bottom: 20px;
+    line-height: 1.3;
+  }
+  .strat-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 15px;
+  }
+  .strat-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+  .strat-text {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--parchment);
+    line-height: 1.55;
+    opacity: .85;
+  }
+  .strat-text strong { font-weight: 400; color: var(--green); opacity: 1; }
+
+  /* ── slide 7 CTA ── */
+  .cta-headline {
+    font-family: 'DM Serif Display', serif;
+    font-size: 21px;
+    color: var(--forest);
+    line-height: 1.3;
+    margin-bottom: 16px;
+  }
+  .cta-q {
+    font-size: 13.5px;
+    font-weight: 300;
+    color: var(--forest);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    opacity: .85;
+  }
+  .cta-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .cta-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(26,107,90,.35);
+    color: var(--teal);
+    letter-spacing: .06em;
+  }
+  .signoff {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(13,46,40,.15);
+  }
+  .signoff-logo {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--teal);
+    display: flex; align-items:center; justify-content:center;
+  }
+  .signoff-logo svg { width:16px; height:16px; }
+  .signoff-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--teal);
+    letter-spacing: .1em;
+  }
+  .signoff-handle {
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--forest);
+    opacity: .5;
+  }
+
+  /* controls */
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 440px;
+    padding: 12px 20px;
+    background: var(--forest);
+  }
+  .btn {
+    font-family:'JetBrains Mono',monospace; font-size:10px;
+    color:var(--green); background:none; border:1px solid rgba(94,201,167,.3);
+    border-radius:6px; padding:6px 14px; cursor:pointer;
+  }
+  .btn:hover { background:rgba(94,201,167,.08); }
+  .btn:disabled { opacity:.25; cursor:default; }
+  .slide-counter { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--parchment); opacity:.45; }
+
+  .dots {
+    display:flex; gap:6px; padding:8px 0 4px;
+    width:440px; justify-content:center;
+  }
+  .dot {
+    width:6px; height:6px; border-radius:50%;
+    background:rgba(94,201,167,.25); cursor:pointer; transition:background .2s;
+  }
+  .dot.active { background:var(--green); }
+
+  /* caption panel */
+  .caption-panel {
+    width:440px; background:#1a1a1a;
+    border-top:1px solid rgba(255,255,255,.06);
+    padding:14px 20px 18px;
+  }
+  .caption-title { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--amber); letter-spacing:.1em; margin-bottom:8px; }
+  .caption-text  { font-size:12px; font-weight:300; color:rgba(245,243,238,.7); line-height:1.6; white-space:pre-wrap; }
+
+  /* corner accent */
+  .corner-accent {
+    position:absolute;
+    width:120px; height:120px;
+    border-radius:50%;
+    background: radial-gradient(circle, rgba(94,201,167,.12) 0%, transparent 70%);
+    pointer-events:none;
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="topbar">
+    <span class="topbar-brand">NEURO DAILY</span>
+    <span class="topbar-tag">[ Brain at Work · P1 ]</span>
+  </div>
+
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- ─── SLIDE 1 · HOOK ─── -->
+      <div class="slide bg-dark">
+        <div class="corner-accent" style="top:-40px;right:-40px;"></div>
+
+        <svg viewBox="0 0 376 190" style="width:100%;margin-bottom:22px;" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="ah" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#5EC9A7" opacity="0.5"/>
+            </marker>
+          </defs>
+
+          <!-- Label: WORKING MEMORY -->
+          <text x="188" y="22" font-family="JetBrains Mono" font-size="9" fill="#5EC9A7" text-anchor="middle" letter-spacing="3" opacity="0.8">WORKING MEMORY</text>
+
+          <!-- 4 slot containers -->
+          <!-- Slot 1 -->
+          <rect x="14" y="32" width="72" height="68" rx="7" fill="#1A6B5A" opacity="0.7"/>
+          <text x="50" y="62" font-family="DM Sans" font-size="10" fill="#5EC9A7" text-anchor="middle" font-weight="300">Konteks</text>
+          <text x="50" y="78" font-family="DM Sans" font-size="9" fill="#F5F3EE" text-anchor="middle" opacity="0.5">meeting</text>
+
+          <!-- Slot 2 -->
+          <rect x="96" y="32" width="72" height="68" rx="7" fill="#1A6B5A" opacity="0.7"/>
+          <text x="132" y="62" font-family="DM Sans" font-size="10" fill="#5EC9A7" text-anchor="middle" font-weight="300">Tujuan</text>
+          <text x="132" y="78" font-family="DM Sans" font-size="9" fill="#F5F3EE" text-anchor="middle" opacity="0.5">proyek</text>
+
+          <!-- Slot 3 -->
+          <rect x="178" y="32" width="72" height="68" rx="7" fill="#1A6B5A" opacity="0.7"/>
+          <text x="214" y="62" font-family="DM Sans" font-size="10" fill="#5EC9A7" text-anchor="middle" font-weight="300">Deadline</text>
+          <text x="214" y="78" font-family="DM Sans" font-size="9" fill="#F5F3EE" text-anchor="middle" opacity="0.5">minggu ini</text>
+
+          <!-- Slot 4 – OVERFLOWING -->
+          <rect x="260" y="32" width="102" height="68" rx="7" fill="rgba(217,106,106,0.15)"/>
+          <rect x="260" y="32" width="102" height="68" rx="7" fill="none" stroke="#D96A6A" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <text x="311" y="58" font-family="DM Sans" font-size="8.5" fill="#D96A6A" text-anchor="middle">Step-by-step?</text>
+          <text x="311" y="72" font-family="DM Sans" font-size="8.5" fill="#D96A6A" text-anchor="middle" opacity="0.7">Exception rules?</text>
+          <text x="311" y="86" font-family="DM Sans" font-size="8.5" fill="#D96A6A" text-anchor="middle" opacity="0.4">Format output?</text>
+
+          <!-- FULL badge on slot 4 -->
+          <rect x="283" y="20" width="56" height="16" rx="8" fill="#D96A6A"/>
+          <text x="311" y="31.5" font-family="JetBrains Mono" font-size="8" fill="#0D2E28" text-anchor="middle" font-weight="700" letter-spacing="1">PENUH</text>
+
+          <!-- Incoming chunks below -->
+          <text x="188" y="122" font-family="JetBrains Mono" font-size="7.5" fill="#C9A96E" text-anchor="middle" opacity="0.5" letter-spacing="1">instruksi ke-5, ke-6, ke-7...</text>
+
+          <!-- Chunk boxes -->
+          <rect x="60" y="132" width="50" height="14" rx="3" fill="none" stroke="#C9A96E" stroke-width="0.8" opacity="0.5"/>
+          <text x="85" y="142" font-family="DM Sans" font-size="7" fill="#C9A96E" text-anchor="middle" opacity="0.5">chunk 5</text>
+
+          <rect x="120" y="132" width="50" height="14" rx="3" fill="none" stroke="#C9A96E" stroke-width="0.8" opacity="0.35"/>
+          <text x="145" y="142" font-family="DM Sans" font-size="7" fill="#C9A96E" text-anchor="middle" opacity="0.35">chunk 6</text>
+
+          <rect x="180" y="132" width="50" height="14" rx="3" fill="none" stroke="#C9A96E" stroke-width="0.8" opacity="0.2"/>
+          <text x="205" y="142" font-family="DM Sans" font-size="7" fill="#C9A96E" text-anchor="middle" opacity="0.2">chunk 7</text>
+
+          <rect x="240" y="132" width="50" height="14" rx="3" fill="none" stroke="#C9A96E" stroke-width="0.8" opacity="0.08"/>
+          <text x="265" y="142" font-family="DM Sans" font-size="7" fill="#C9A96E" text-anchor="middle" opacity="0.08">chunk 8</text>
+
+          <!-- Drop arrow from slot 4 -->
+          <path d="M311 102 L265 130" stroke="#D96A6A" stroke-width="0.8" stroke-dasharray="3,2" opacity="0.4" marker-end="url(#ah)"/>
+
+          <!-- "hilang saat eksekusi" label -->
+          <text x="188" y="165" font-family="JetBrains Mono" font-size="8" fill="#D96A6A" text-anchor="middle" opacity="0.6" letter-spacing="1">→ HILANG SAAT EKSEKUSI</text>
+        </svg>
+
+        <div class="hook-kicker">BRAIN AT WORK</div>
+        <div class="hook-headline">Briefing selesai, semua bilang ngerti — tapi eksekusinya meleset.</div>
+        <div class="hook-sub">Bukan karena tidak dengerin. Otak kamu sudah penuh sebelum rapat selesai.</div>
+      </div>
+
+      <!-- ─── SLIDE 2 · MITOS vs REALITA ─── -->
+      <div class="slide bg-light">
+        <span class="chip chip-dark">MITOS vs REALITA</span>
+
+        <div class="myth-label">MITOS UMUM</div>
+        <div class="myth-text">"Kalau sudah paham instruksi, harusnya bisa eksekusi dengan benar."</div>
+
+        <div class="reality-label">REALITA NEUROSAINS</div>
+        <div class="reality-text">Ada jarak besar antara <em>memahami</em> dan <em>mengeksekusi</em>. Jarak itu bukan soal konsentrasi atau niat — tapi soal kapasitas memori yang terbatas secara biologis.</div>
+
+        <div style="margin-top:22px; padding:14px 16px; background:rgba(13,46,40,.06); border-radius:10px; border-left:3px solid var(--teal);">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:.1em;margin-bottom:6px;">PERTANYAAN KUNCI</div>
+          <div style="font-size:13px;font-weight:300;color:var(--forest);line-height:1.55;">Berapa banyak informasi yang sebenarnya bisa otak kamu pegang dalam satu waktu?</div>
+        </div>
+      </div>
+
+      <!-- ─── SLIDE 3 · MEKANISME ─── -->
+      <div class="slide bg-dark">
+        <div class="corner-accent" style="bottom:-40px;left:-40px;"></div>
+        <span class="chip chip-green">MEKANISME OTAK</span>
+
+        <div class="s3-title">Dua konsep yang menjelaskan ini:</div>
+
+        <div class="term-box">
+          <div class="term-name">WORKING MEMORY</div>
+          <div class="term-source">Baddeley &amp; Hitch (1974) · Cowan (2001) Behavioral &amp; Brain Sciences</div>
+          <div class="term-desc">Sistem penyimpanan sementara otak yang aktif selama berpikir. Kapasitas maksimum: sekitar <strong style="color:var(--green)">4 chunk</strong> informasi sekaligus — bukan lebih.</div>
+        </div>
+
+        <div class="term-box">
+          <div class="term-name">COGNITIVE LOAD</div>
+          <div class="term-source">Sweller (1988, 1994) · Educational Psychology Review</div>
+          <div class="term-desc">Total beban mental yang dibebankan ke working memory. Saat melebihi kapasitas, performa turun — bukan karena malas, tapi karena sistem sudah overload.</div>
+        </div>
+      </div>
+
+      <!-- ─── SLIDE 4 · KENAPA INI TERJADI ─── -->
+      <div class="slide bg-light">
+        <div class="s4-title">Kenapa briefing panjang sering berakhir meleset:</div>
+
+        <div class="list-item">
+          <div class="list-num">01</div>
+          <div class="list-text">Instruksi verbal memenuhi <strong>phonological loop</strong> — bisa tertimpa suara atau pikiran lain selama meeting</div>
+        </div>
+        <div class="list-item">
+          <div class="list-num">02</div>
+          <div class="list-text">Batas ~4 chunk: satu briefing panjang bisa berisi puluhan chunk — <strong>otak sudah penuh sebelum selesai</strong></div>
+        </div>
+        <div class="list-item">
+          <div class="list-num">03</div>
+          <div class="list-text"><strong>Extraneous cognitive load</strong> dari noise, notifikasi, dan multitasking memakan kapasitas yang tersisa</div>
+        </div>
+        <div class="list-item">
+          <div class="list-num">04</div>
+          <div class="list-text">Transfer ke long-term memory butuh <strong>elaborasi aktif</strong> — sekadar mendengar tidak cukup untuk menyimpan instruksi</div>
+        </div>
+        <div class="list-item">
+          <div class="list-num">05</div>
+          <div class="list-text">Kamu tidak "tidak ngerti" — kamu sudah di <strong>batas kapasitas biologis</strong> otak saat menerima instruksi ke-5 dan seterusnya</div>
+        </div>
+      </div>
+
+      <!-- ─── SLIDE 5 · STAT ─── -->
+      <div class="slide bg-teal">
+        <div class="corner-accent" style="top:-20px;right:-20px;"></div>
+
+        <div class="stat-eyebrow">DATA NEUROSAINS</div>
+        <div class="stat-number">4<span class="n-unit"> chunk</span></div>
+        <div class="stat-label">kapasitas working memory manusia dewasa — batas yang berlaku untuk semua orang, terlepas dari seberapa "pintar" mereka</div>
+        <div class="stat-source">Cowan (2001) · Behavioral and Brain Sciences · Cambridge</div>
+
+        <div style="margin-top:20px; padding:12px 16px; background:rgba(245,243,238,.08); border-radius:8px; border:1px solid rgba(245,243,238,.15);">
+          <div style="font-size:12.5px;font-weight:300;color:var(--parchment);opacity:.8;line-height:1.5;">Miller (1956) menyebut angka "7±2", tapi riset modern Cowan memperketat ini: kapasitas inti hanya ~4 unit tanpa strategi chunking aktif.</div>
+        </div>
+      </div>
+
+      <!-- ─── SLIDE 6 · STRATEGI ─── -->
+      <div class="slide bg-dark">
+        <div class="corner-accent" style="top:-30px;left:-30px;"></div>
+        <span class="chip chip-green">YANG BISA KAMU LAKUKAN</span>
+
+        <div class="s6-title">Cara kerja dengan batas working memory:</div>
+
+        <div class="strat-item">
+          <div class="strat-dot"></div>
+          <div class="strat-text"><strong>Eksternalisasi segera:</strong> minta ringkasan tertulis setelah briefing, atau tulis sendiri — jadikan kertas sebagai perpanjangan working memory</div>
+        </div>
+        <div class="strat-item">
+          <div class="strat-dot"></div>
+          <div class="strat-text"><strong>Ulangi dengan kata sendiri:</strong> elaborative rehearsal memindahkan instruksi dari working memory ke long-term memory secara aktif</div>
+        </div>
+        <div class="strat-item">
+          <div class="strat-dot"></div>
+          <div class="strat-text"><strong>Eksekusi dalam segmen kecil:</strong> chunking instruksi menjadi 3-4 unit sebelum mulai — jangan coba proses semua sekaligus</div>
+        </div>
+        <div class="strat-item">
+          <div class="strat-dot"></div>
+          <div class="strat-text"><strong>Reduce extraneous load:</strong> tutup notifikasi saat menerima briefing penting — setiap distraksi memakan slot yang terbatas</div>
+        </div>
+      </div>
+
+      <!-- ─── SLIDE 7 · CTA ─── -->
+      <div class="slide bg-light">
+        <span class="chip chip-dark">PERTANYAAN BUAT KAMU</span>
+
+        <div class="cta-headline">Pernah nggak: habis meeting kamu yakin ngerti, tapi pas eksekusi ada bagian yang kelupaan atau meleset?</div>
+
+        <div class="cta-q">Jawab di kolom komentar — dan tandai satu teman yang sering "paham di meeting tapi beda di eksekusi".</div>
+
+        <div class="cta-options">
+          <span class="cta-pill">ya — selalu</span>
+          <span class="cta-pill">ya — kadang</span>
+          <span class="cta-pill">jarang</span>
+          <span class="cta-pill">hampir tidak pernah</span>
+        </div>
+
+        <div class="signoff">
+          <div class="signoff-logo">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="10" cy="7" r="3.5" stroke="#F5F3EE" stroke-width="1.4"/>
+              <path d="M3 17c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="#F5F3EE" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="signoff-name">NEURO DAILY</div>
+            <div class="signoff-handle">@neurodaily.id</div>
+          </div>
+          <div style="margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--amber);opacity:.6;">28 / 30</div>
+        </div>
+      </div>
+
+    </div><!-- /track -->
+  </div><!-- /viewport -->
+
+  <div class="controls">
+    <button class="btn" id="prev" onclick="move(-1)">← prev</button>
+    <span class="slide-counter" id="counter">1 / 7</span>
+    <button class="btn" id="next" onclick="move(1)">next →</button>
+  </div>
+
+  <div class="dots" id="dots"></div>
+
+  <div class="caption-panel">
+    <div class="caption-title">CAPTION · INSTAGRAM</div>
+    <div class="caption-text" id="caption-text"></div>
+  </div>
+</div>
+
+<script>
+const CAPTIONS = [
+  `Habis briefing panjang, bilang ngerti — tapi waktu eksekusi ada yang meleset?\n\nBukan karena kamu tidak dengerin. Working memory kamu cuma bisa pegang ~4 chunk informasi sekaligus (Cowan, 2001). Briefing 20 menit = puluhan chunks = otak udah penuh sebelum rapat selesai.\n\nMakanya instruksi yang "dipahami" di meeting bisa menguap pas eksekusi.\n\nPernah ngalamin ini?\n✦ ya — selalu\n✦ ya — kadang\n✦ jarang\n\n#NeuroDailyID #BrainAtWork #KognisiKerja #WorkingMemory #ProductivityScience`,
+  `Habis briefing panjang, bilang ngerti — tapi waktu eksekusi ada yang meleset?\n\nBukan karena kamu tidak dengerin. Working memory kamu cuma bisa pegang ~4 chunk informasi sekaligus (Cowan, 2001). Briefing 20 menit = puluhan chunks = otak udah penuh sebelum rapat selesai.\n\nMakanya instruksi yang "dipahami" di meeting bisa menguap pas eksekusi.\n\nPernah ngalamin ini?\n✦ ya — selalu\n✦ ya — kadang\n✦ jarang\n\n#NeuroDailyID #BrainAtWork #KognisiKerja #WorkingMemory #ProductivityScience`,
+  `Habis briefing panjang, bilang ngerti — tapi waktu eksekusi ada yang meleset?\n\nBukan karena kamu tidak dengerin. Working memory kamu cuma bisa pegang ~4 chunk informasi sekaligus (Cowan, 2001). Briefing 20 menit = puluhan chunks = otak udah penuh sebelum rapat selesai.\n\nMakanya instruksi yang "dipahami" di meeting bisa menguap pas eksekusi.\n\nPernah ngalamin ini?\n✦ ya — selalu\n✦ ya — kadang\n✦ jarang\n\n#NeuroDailyID #BrainAtWork #KognisiKerja #WorkingMemory #ProductivityScience`,
+  `Habis briefing panjang, bilang ngerti — tapi waktu eksekusi ada yang meleset?\n\nBukan karena kamu tidak dengerin. Working memory kamu cuma bisa pegang ~4 chunk informasi sekaligus (Cowan, 2001). Briefing 20 menit = puluhan chunks = otak udah penuh sebelum rapat selesai.\n\nMakanya instruksi yang "dipahami" di meeting bisa menguap pas eksekusi.\n\nPernah ngalamin ini?\n✦ ya — selalu\n✦ ya — kadang\n✦ jarang\n\n#NeuroDailyID #BrainAtWork #KognisiKerja #WorkingMemory #ProductivityScience`,
+  `Habis briefing panjang, bilang ngerti — tapi waktu eksekusi ada yang meleset?\n\nBukan karena kamu tidak dengerin. Working memory kamu cuma bisa pegang ~4 chunk informasi sekaligus (Cowan, 2001). Briefing 20 menit = puluhan chunks = otak udah penuh sebelum rapat selesai.\n\nMakanya instruksi yang "dipahami" di meeting bisa menguap pas eksekusi.\n\nPernah ngalamin ini?\n✦ ya — selalu\n✦ ya — kadang\n✦ jarang\n\n#NeuroDailyID #BrainAtWork #KognisiKerja #WorkingMemory #ProductivityScience`,
+  `Habis briefing panjang, bilang ngerti — tapi waktu eksekusi ada yang meleset?\n\nBukan karena kamu tidak dengerin. Working memory kamu cuma bisa pegang ~4 chunk informasi sekaligus (Cowan, 2001). Briefing 20 menit = puluhan chunks = otak udah penuh sebelum rapat selesai.\n\nMakanya instruksi yang "dipahami" di meeting bisa menguap pas eksekusi.\n\nPernah ngalamin ini?\n✦ ya — selalu\n✦ ya — kadang\n✦ jarang\n\n#NeuroDailyID #BrainAtWork #KognisiKerja #WorkingMemory #ProductivityScience`,
+  `Habis briefing panjang, bilang ngerti — tapi waktu eksekusi ada yang meleset?\n\nBukan karena kamu tidak dengerin. Working memory kamu cuma bisa pegang ~4 chunk informasi sekaligus (Cowan, 2001). Briefing 20 menit = puluhan chunks = otak udah penuh sebelum rapat selesai.\n\nMakanya instruksi yang "dipahami" di meeting bisa menguap pas eksekusi.\n\nPernah ngalamin ini?\n✦ ya — selalu\n✦ ya — kadang\n✦ jarang\n\n#NeuroDailyID #BrainAtWork #KognisiKerja #WorkingMemory #ProductivityScience`,
+];
+
+let cur = 0;
+const TOTAL = 7;
+const track = document.getElementById('track');
+const counter = document.getElementById('counter');
+const captionEl = document.getElementById('caption-text');
+const dotsContainer = document.getElementById('dots');
+
+// Build dots
+for (let i = 0; i < TOTAL; i++) {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => goTo(i);
+  dotsContainer.appendChild(d);
+}
+
+function render() {
+  track.style.transform = `translateX(-${cur * 440}px)`;
+  counter.textContent = `${cur + 1} / ${TOTAL}`;
+  captionEl.textContent = CAPTIONS[cur];
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+  document.getElementById('prev').disabled = cur === 0;
+  document.getElementById('next').disabled = cur === TOTAL - 1;
+}
+
+function move(dir) { goTo(cur + dir); }
+function goTo(i) { cur = Math.max(0, Math.min(TOTAL - 1, i)); render(); }
+
+render();
+</script>
+</body>
+</html>

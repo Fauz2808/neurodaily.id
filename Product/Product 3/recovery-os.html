@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recovery OS — Neuro Daily</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --forest:    #0D2E28;
+  --teal:      #1A6B5A;
+  --green:     #5EC9A7;
+  --parchment: #F5F3EE;
+  --amber:     #C9A96E;
+  --red:       #E07070;
+  --orange:    #D4845A;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #111E1C;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  color: var(--parchment);
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(13,46,40,.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(94,201,167,.12);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; height: 56px;
+}
+.nav-brand {
+  font-family: 'DM Serif Display', serif;
+  font-size: 15px; color: var(--parchment); letter-spacing: .01em;
+}
+.nav-brand span { color: var(--green); }
+.nav-tabs { display: flex; gap: 4px; }
+.nav-tab {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(245,243,238,.45); padding: 6px 14px; border-radius: 20px;
+  cursor: pointer; border: none; background: transparent; transition: all .2s;
+}
+.nav-tab:hover { color: var(--parchment); background: rgba(94,201,167,.08); }
+.nav-tab.active { color: var(--forest); background: var(--green); }
+.nav-progress {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--amber); letter-spacing: .08em;
+}
+
+/* ── LAYOUT ── */
+.wrap { max-width: 780px; margin: 0 auto; padding: 80px 24px 80px; }
+.section { display: none; }
+.section.active { display: block; animation: fadeIn .3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── COVER ── */
+.cover { min-height: calc(100vh - 56px); display: flex; flex-direction: column; justify-content: center; padding: 60px 0; }
+.cover-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--green); margin-bottom: 20px;
+}
+.cover-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(40px, 6vw, 64px);
+  line-height: 1.05; color: var(--parchment); margin-bottom: 8px;
+}
+.cover-title em { color: var(--green); font-style: italic; }
+.cover-sub {
+  font-size: 17px; font-weight: 300; color: rgba(245,243,238,.58);
+  line-height: 1.6; margin-bottom: 40px; max-width: 520px;
+}
+.cover-divider { width: 48px; height: 2px; background: var(--teal); margin-bottom: 40px; }
+.cover-warning {
+  background: rgba(224,112,112,.08);
+  border: 1px solid rgba(224,112,112,.2);
+  border-left: 3px solid var(--red);
+  border-radius: 0 10px 10px 0;
+  padding: 16px 20px; margin-bottom: 40px; max-width: 560px;
+}
+.cover-warning-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 8px;
+}
+.cover-warning p { font-size: 13px; color: rgba(245,243,238,.72); line-height: 1.6; }
+.cover-modules {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 40px;
+}
+.cover-mod-card {
+  background: rgba(245,243,238,.04); border: 1px solid rgba(245,243,238,.08);
+  border-radius: 10px; padding: 20px; cursor: pointer; transition: all .2s;
+}
+.cover-mod-card:hover { background: rgba(94,201,167,.08); border-color: rgba(94,201,167,.2); transform: translateY(-2px); }
+.cmc-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; color: var(--amber); margin-bottom: 8px; }
+.cmc-title { font-family: 'DM Serif Display', serif; font-size: 14px; line-height: 1.3; color: var(--parchment); margin-bottom: 6px; }
+.cmc-sub { font-size: 11px; color: rgba(245,243,238,.45); line-height: 1.5; }
+
+/* ── MODULE HEADER ── */
+.mod-header { margin-bottom: 40px; }
+.mod-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--amber); margin-bottom: 12px;
+}
+.mod-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1.15; color: var(--parchment); margin-bottom: 8px;
+}
+.mod-title em { color: var(--green); font-style: italic; }
+.mod-sub { font-size: 15px; color: rgba(245,243,238,.58); line-height: 1.6; max-width: 560px; }
+
+/* ── PROGRESS BAR ── */
+.mod-progress { height: 3px; background: rgba(245,243,238,.08); border-radius: 2px; margin-bottom: 36px; overflow: hidden; }
+.mod-progress-fill { height: 100%; background: var(--teal); border-radius: 2px; transition: width .4s ease; }
+
+/* ── SCIENCE BLOCK ── */
+.science-block {
+  background: rgba(94,201,167,.06); border-left: 3px solid var(--teal);
+  border-radius: 0 10px 10px 0; padding: 20px 24px; margin-bottom: 36px;
+}
+.science-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--green); margin-bottom: 10px;
+}
+.science-text { font-size: 14px; line-height: 1.75; color: rgba(245,243,238,.8); }
+.science-text strong { color: var(--parchment); font-weight: 500; }
+
+/* ── BLOCK TITLE ── */
+.block-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--amber); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.block-title::after { content: ''; flex: 1; height: 1px; background: rgba(201,169,110,.2); }
+
+/* ── BURNOUT ASSESSMENT ── */
+.burnout-stages { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+.stage-card {
+  border: 1.5px solid rgba(245,243,238,.1);
+  border-radius: 10px; padding: 18px 20px; cursor: pointer; transition: all .2s;
+  display: flex; gap: 16px; align-items: flex-start;
+}
+.stage-card:hover { border-color: rgba(245,243,238,.25); background: rgba(245,243,238,.03); }
+.stage-card.selected { border-color: var(--green); background: rgba(94,201,167,.07); }
+.stage-radio {
+  width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid rgba(245,243,238,.3);
+  flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+}
+.stage-card.selected .stage-radio { border-color: var(--green); background: var(--green); }
+.stage-radio-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--forest); display: none; }
+.stage-card.selected .stage-radio-dot { display: block; }
+.stage-content { flex: 1; }
+.stage-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 4px;
+}
+.stage-0 .stage-label { color: var(--green); }
+.stage-1 .stage-label { color: #8DD4B5; }
+.stage-2 .stage-label { color: var(--amber); }
+.stage-3 .stage-label { color: var(--orange); }
+.stage-4 .stage-label { color: var(--red); }
+.stage-name { font-family: 'DM Serif Display', serif; font-size: 16px; color: var(--parchment); margin-bottom: 4px; }
+.stage-desc { font-size: 13px; color: rgba(245,243,238,.55); line-height: 1.55; }
+.stage-symptoms { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.symptom-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: .08em;
+  color: rgba(245,243,238,.5); background: rgba(245,243,238,.05);
+  border: 1px solid rgba(245,243,238,.1); border-radius: 20px; padding: 3px 10px;
+}
+
+/* ── BURNOUT RESULT ── */
+.burnout-result { display: none; }
+.burnout-result.visible { display: block; animation: fadeIn .4s ease; }
+.result-box {
+  border-radius: 12px; padding: 28px 32px; margin-bottom: 24px;
+}
+.result-box.stage-0 { background: rgba(94,201,167,.08); border: 1px solid rgba(94,201,167,.2); }
+.result-box.stage-1 { background: rgba(141,212,181,.08); border: 1px solid rgba(141,212,181,.2); }
+.result-box.stage-2 { background: rgba(201,169,110,.08); border: 1px solid rgba(201,169,110,.2); }
+.result-box.stage-3 { background: rgba(212,132,90,.08); border: 1px solid rgba(212,132,90,.2); }
+.result-box.stage-4 { background: rgba(224,112,112,.08); border: 1px solid rgba(224,112,112,.2); }
+.result-stage-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 8px;
+}
+.result-title { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--parchment); margin-bottom: 12px; }
+.result-desc { font-size: 14px; color: rgba(245,243,238,.75); line-height: 1.7; margin-bottom: 20px; }
+.result-actions { display: flex; flex-direction: column; gap: 8px; }
+.result-action {
+  display: flex; gap: 12px; align-items: flex-start;
+  font-size: 13px; color: rgba(245,243,238,.7); line-height: 1.55;
+}
+.result-action::before { content: '→'; color: var(--green); font-family: 'JetBrains Mono', monospace; font-size: 12px; flex-shrink: 0; margin-top: 1px; }
+.assess-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--forest); background: var(--green);
+  border: none; border-radius: 8px; padding: 12px 24px;
+  cursor: pointer; transition: all .15s; margin-top: 16px;
+}
+.assess-btn:hover { background: #7DD9B7; }
+.reassess-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--green); background: rgba(94,201,167,.1);
+  border: 1px solid rgba(94,201,167,.25); border-radius: 8px; padding: 10px 20px;
+  cursor: pointer; transition: all .15s; margin-top: 12px; display: block;
+}
+
+/* ── ENERGY AUDIT ── */
+.energy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+.energy-col { border-radius: 10px; padding: 20px; }
+.energy-drain { background: rgba(224,112,112,.06); border: 1px solid rgba(224,112,112,.15); }
+.energy-recharge { background: rgba(94,201,167,.06); border: 1px solid rgba(94,201,167,.15); }
+.energy-col-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+  margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+}
+.energy-drain .energy-col-label { color: var(--red); }
+.energy-recharge .energy-col-label { color: var(--green); }
+.energy-items { display: flex; flex-direction: column; gap: 6px; }
+.energy-item {
+  display: flex; gap: 10px; align-items: center;
+  padding: 8px 10px; border-radius: 6px; cursor: pointer; transition: all .15s;
+  font-size: 13px; color: rgba(245,243,238,.7); line-height: 1.4;
+}
+.energy-item:hover { background: rgba(245,243,238,.04); }
+.energy-item.checked { color: var(--parchment); }
+.energy-check {
+  width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0;
+  border: 1.5px solid rgba(245,243,238,.2); transition: all .2s;
+}
+.energy-drain .energy-item.checked .energy-check { background: var(--red); border-color: var(--red); }
+.energy-recharge .energy-item.checked .energy-check { background: var(--green); border-color: var(--green); }
+.energy-add {
+  display: flex; gap: 8px; margin-top: 12px;
+}
+.energy-add input {
+  flex: 1; background: rgba(245,243,238,.05); border: 1px solid rgba(245,243,238,.1);
+  border-radius: 6px; padding: 8px 12px; color: var(--parchment);
+  font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none;
+  transition: border-color .2s;
+}
+.energy-add input:focus { border-color: rgba(94,201,167,.3); }
+.energy-add input::placeholder { color: rgba(245,243,238,.2); }
+.energy-add-btn {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--green); background: rgba(94,201,167,.1);
+  border: 1px solid rgba(94,201,167,.2); border-radius: 6px;
+  padding: 8px 14px; cursor: pointer; transition: all .15s; white-space: nowrap;
+}
+.energy-add-btn:hover { background: rgba(94,201,167,.2); }
+
+/* Energy balance meter */
+.energy-meter { margin-bottom: 32px; }
+.meter-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+  color: rgba(245,243,238,.5); margin-bottom: 10px;
+  display: flex; justify-content: space-between;
+}
+.meter-bar { height: 8px; background: rgba(245,243,238,.08); border-radius: 4px; overflow: hidden; position: relative; }
+.meter-fill-drain { position: absolute; left: 0; top: 0; bottom: 0; background: var(--red); border-radius: 4px; transition: width .4s ease; }
+.meter-fill-recharge { position: absolute; right: 0; top: 0; bottom: 0; background: var(--green); border-radius: 4px; transition: width .4s ease; }
+.meter-result { margin-top: 12px; font-size: 13px; color: rgba(245,243,238,.6); }
+.meter-result strong { color: var(--parchment); }
+
+/* ── MICRO-RECOVERY PROTOCOLS ── */
+.protocol-grid { display: flex; flex-direction: column; gap: 20px; margin-bottom: 32px; }
+.protocol-card {
+  background: rgba(245,243,238,.03); border: 1px solid rgba(245,243,238,.08);
+  border-radius: 12px; overflow: hidden;
+}
+.protocol-header {
+  padding: 18px 20px; display: flex; gap: 16px; align-items: center;
+  cursor: pointer; transition: background .15s;
+}
+.protocol-header:hover { background: rgba(245,243,238,.03); }
+.protocol-duration {
+  font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  color: var(--forest); background: var(--green); border-radius: 6px;
+  padding: 4px 10px; flex-shrink: 0; font-weight: 500;
+}
+.protocol-duration.amber { background: var(--amber); }
+.protocol-duration.teal { background: var(--teal); color: var(--parchment); }
+.protocol-name { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--parchment); }
+.protocol-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .1em;
+  color: rgba(245,243,238,.45); margin-top: 2px;
+}
+.protocol-body { padding: 0 20px 20px; display: none; }
+.protocol-body.open { display: block; }
+.protocol-steps { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+.protocol-step {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 10px 14px; border-radius: 8px; cursor: pointer; transition: background .15s;
+}
+.protocol-step:hover { background: rgba(245,243,238,.04); }
+.protocol-step.done { opacity: .5; }
+.protocol-step.done .pstep-text { text-decoration: line-through; }
+.pstep-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--green); flex-shrink: 0; margin-top: 1px;
+}
+.pstep-text { font-size: 13px; color: rgba(245,243,238,.8); line-height: 1.55; }
+.pstep-detail { font-size: 12px; color: rgba(245,243,238,.45); margin-top: 3px; line-height: 1.5; }
+
+/* ── WEEKLY PLANNER ── */
+.planner-chronotype { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+.chrono-card {
+  flex: 1; min-width: 140px; border: 1.5px solid rgba(245,243,238,.1);
+  border-radius: 10px; padding: 16px; cursor: pointer; transition: all .2s; text-align: center;
+}
+.chrono-card:hover { border-color: rgba(245,243,238,.25); }
+.chrono-card.selected { border-color: var(--green); background: rgba(94,201,167,.07); }
+.chrono-icon { font-size: 24px; margin-bottom: 8px; }
+.chrono-name { font-family: 'DM Serif Display', serif; font-size: 15px; color: var(--parchment); margin-bottom: 4px; }
+.chrono-time { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--green); letter-spacing: .1em; }
+.chrono-desc { font-size: 12px; color: rgba(245,243,238,.45); margin-top: 4px; line-height: 1.4; }
+
+.planner-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+.planner-table th {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--green); text-align: left; padding: 10px 14px;
+  border-bottom: 1px solid rgba(94,201,167,.2); background: rgba(94,201,167,.05);
+}
+.planner-table td { padding: 0; border-bottom: 1px solid rgba(245,243,238,.06); vertical-align: middle; }
+.planner-table td:first-child {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .08em;
+  color: var(--amber); padding: 12px 14px; white-space: nowrap; width: 90px;
+}
+.planner-table td input, .planner-table td select {
+  width: 100%; height: 40px; background: transparent; border: none; outline: none;
+  color: var(--parchment); font-family: 'DM Sans', sans-serif;
+  font-weight: 300; font-size: 13px; padding: 0 14px; transition: background .15s;
+}
+.planner-table td input:focus, .planner-table td select:focus { background: rgba(94,201,167,.06); }
+.planner-table td select { -webkit-appearance: none; appearance: none; cursor: pointer; }
+.planner-table td select option { background: var(--forest); }
+
+.recovery-blocks {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px;
+}
+.rblock {
+  background: rgba(94,201,167,.06); border: 1px solid rgba(94,201,167,.15);
+  border-radius: 10px; padding: 16px;
+}
+.rblock-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--green); margin-bottom: 8px;
+}
+.rblock-input {
+  width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(245,243,238,.15);
+  outline: none; color: var(--parchment); font-family: 'DM Sans', sans-serif;
+  font-weight: 300; font-size: 13px; padding: 6px 0; transition: border-color .2s;
+}
+.rblock-input:focus { border-color: rgba(94,201,167,.4); }
+.rblock-input::placeholder { color: rgba(245,243,238,.2); }
+
+/* ── SLEEP DEBT CALCULATOR ── */
+.sleep-inputs { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-bottom: 28px; }
+.sleep-day {
+  background: rgba(245,243,238,.04); border: 1px solid rgba(245,243,238,.08);
+  border-radius: 10px; padding: 12px 8px; text-align: center;
+}
+.sleep-day-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .1em;
+  text-transform: uppercase; color: rgba(245,243,238,.4); margin-bottom: 8px;
+}
+.sleep-day input {
+  width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(245,243,238,.2);
+  outline: none; color: var(--parchment); font-family: 'DM Serif Display', serif;
+  font-size: 20px; text-align: center; padding: 4px 0; transition: border-color .2s;
+}
+.sleep-day input:focus { border-color: rgba(94,201,167,.4); }
+.sleep-day input::placeholder { color: rgba(245,243,238,.15); font-size: 16px; }
+.sleep-day-unit {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: rgba(245,243,238,.3); margin-top: 4px;
+}
+
+.sleep-result {
+  border-radius: 12px; padding: 24px 28px; margin-bottom: 24px; transition: all .3s;
+}
+.sleep-result.healthy { background: rgba(94,201,167,.08); border: 1px solid rgba(94,201,167,.2); }
+.sleep-result.mild { background: rgba(201,169,110,.08); border: 1px solid rgba(201,169,110,.2); }
+.sleep-result.severe { background: rgba(224,112,112,.08); border: 1px solid rgba(224,112,112,.2); }
+.sleep-result-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.sleep-result.healthy .sleep-result-label { color: var(--green); }
+.sleep-result.mild .sleep-result-label { color: var(--amber); }
+.sleep-result.severe .sleep-result-label { color: var(--red); }
+.sleep-debt-num {
+  font-family: 'DM Serif Display', serif; font-size: 48px; line-height: 1;
+  color: var(--parchment); margin-bottom: 8px;
+}
+.sleep-debt-unit { font-size: 18px; color: rgba(245,243,238,.5); }
+.sleep-result-desc { font-size: 14px; color: rgba(245,243,238,.7); line-height: 1.65; margin-top: 12px; }
+
+.sleep-target-row {
+  display: flex; align-items: center; gap: 16px; margin-bottom: 20px;
+}
+.sleep-target-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: rgba(245,243,238,.5);
+}
+.sleep-target-input {
+  width: 64px; background: rgba(245,243,238,.06); border: 1px solid rgba(245,243,238,.15);
+  border-radius: 6px; padding: 6px 10px; color: var(--parchment);
+  font-family: 'DM Serif Display', serif; font-size: 18px; text-align: center; outline: none;
+  transition: border-color .2s;
+}
+.sleep-target-input:focus { border-color: rgba(94,201,167,.3); }
+.sleep-target-unit { font-size: 13px; color: rgba(245,243,238,.4); }
+
+.sleep-recovery-plan { margin-top: 20px; }
+.recovery-week {
+  display: flex; flex-direction: column; gap: 8px; margin-top: 12px;
+}
+.recovery-day-row {
+  display: flex; gap: 12px; align-items: center;
+  font-size: 13px; color: rgba(245,243,238,.65);
+}
+.recovery-day-row .rday-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--amber); width: 50px; flex-shrink: 0;
+}
+.recovery-day-row .rday-bar {
+  flex: 1; height: 6px; background: rgba(245,243,238,.08);
+  border-radius: 3px; overflow: hidden;
+}
+.rday-fill { height: 100%; background: var(--green); border-radius: 3px; transition: width .4s ease; }
+.recovery-day-row .rday-val {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--parchment); width: 36px; text-align: right;
+}
+
+/* ── REFLECTION ── */
+.reflection-block { margin-bottom: 20px; }
+.reflection-prompt { font-size: 14px; color: rgba(245,243,238,.72); margin-bottom: 8px; line-height: 1.55; }
+.reflection-textarea {
+  width: 100%; min-height: 100px; background: rgba(245,243,238,.04);
+  border: 1px solid rgba(245,243,238,.1); border-radius: 10px; padding: 14px 16px;
+  color: var(--parchment); font-family: 'DM Sans', sans-serif;
+  font-weight: 300; font-size: 14px; line-height: 1.7; resize: vertical; outline: none;
+  transition: border-color .2s;
+}
+.reflection-textarea::placeholder { color: rgba(245,243,238,.2); }
+.reflection-textarea:focus { border-color: rgba(94,201,167,.3); }
+
+/* ── ACTION BOX ── */
+.action-box {
+  background: rgba(201,169,110,.08); border: 1px solid rgba(201,169,110,.2);
+  border-radius: 10px; padding: 22px 26px; margin-top: 40px;
+}
+.action-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--amber); margin-bottom: 10px;
+}
+.action-text { font-size: 14px; line-height: 1.75; color: rgba(245,243,238,.8); }
+
+/* ── SECTION NAV ── */
+.section-nav {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 60px; padding-top: 24px; border-top: 1px solid rgba(245,243,238,.08);
+}
+.snav-btn {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--green); background: rgba(94,201,167,.08);
+  border: 1px solid rgba(94,201,167,.2); border-radius: 6px; padding: 10px 20px;
+  cursor: pointer; transition: all .15s;
+}
+.snav-btn:hover { background: rgba(94,201,167,.18); }
+.snav-btn:disabled { opacity: .25; pointer-events: none; }
+.snav-center {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  letter-spacing: .12em; color: rgba(245,243,238,.3);
+}
+
+/* ── MOBILE BOTTOM NAV ── */
+.mobile-nav {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(13,46,40,.97); backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(94,201,167,.15); padding: 12px 20px;
+  align-items: center; justify-content: space-between; gap: 12px;
+  box-sizing: border-box;
+}
+.mnav-btn {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--green); background: rgba(94,201,167,.1);
+  border: 1px solid rgba(94,201,167,.25); border-radius: 8px;
+  padding: 10px 16px; cursor: pointer; transition: all .15s; flex-shrink: 0;
+}
+.mnav-btn:disabled { opacity: .2; pointer-events: none; }
+.mnav-btn:active { background: rgba(94,201,167,.25); }
+.mnav-center {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  letter-spacing: .08em; color: rgba(245,243,238,.55); text-align: center; flex: 1;
+}
+.mnav-center strong { color: var(--parchment); display: block; font-size: 12px; }
+
+/* ── PRESCRIPTION BOX ── */
+.prescription-box {
+  display: none;
+  border-radius: 12px; padding: 28px 32px; margin-top: 32px;
+  background: rgba(94,201,167,.06); border: 1px solid rgba(94,201,167,.18);
+  animation: fadeIn .4s ease;
+}
+.prescription-box.visible { display: block; }
+.prescription-header {
+  display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px;
+}
+.prescription-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: rgba(94,201,167,.15); display: flex; align-items: center;
+  justify-content: center; flex-shrink: 0; font-size: 18px;
+}
+.prescription-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px; color: var(--parchment); margin-bottom: 4px;
+}
+.prescription-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--green);
+}
+.prescription-items { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+.presc-item {
+  background: rgba(245,243,238,.04); border: 1px solid rgba(245,243,238,.08);
+  border-radius: 10px; padding: 14px 16px;
+}
+.presc-item-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--amber); margin-bottom: 6px;
+}
+.presc-item-text { font-size: 13px; color: rgba(245,243,238,.8); line-height: 1.6; }
+.presc-item-text strong { color: var(--parchment); font-weight: 500; }
+.presc-missing {
+  background: rgba(224,112,112,.05); border: 1px solid rgba(224,112,112,.12);
+  border-radius: 10px; padding: 14px 16px; margin-bottom: 12px;
+}
+.presc-missing-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 8px;
+}
+.presc-missing-items { display: flex; flex-wrap: wrap; gap: 6px; }
+.presc-missing-tag {
+  font-size: 12px; color: rgba(245,243,238,.65);
+  background: rgba(224,112,112,.08); border: 1px solid rgba(224,112,112,.15);
+  border-radius: 20px; padding: 4px 12px;
+}
+
+/* Sleep recommendation */
+.sleep-presc {
+  display: none; margin-top: 24px;
+  border-radius: 12px; padding: 24px 28px;
+  background: rgba(94,201,167,.05); border: 1px solid rgba(94,201,167,.15);
+  animation: fadeIn .4s ease;
+}
+.sleep-presc.visible { display: block; }
+.sleep-presc-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 18px; color: var(--parchment); margin-bottom: 16px;
+}
+.sleep-presc-items { display: flex; flex-direction: column; gap: 10px; }
+.sleep-presc-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  font-size: 13px; color: rgba(245,243,238,.75); line-height: 1.6;
+}
+.sleep-presc-item .spi-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--green); flex-shrink: 0; margin-top: 1px; width: 20px;
+}
+.sleep-worst-day {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--red); background: rgba(224,112,112,.1);
+  border: 1px solid rgba(224,112,112,.2); border-radius: 6px;
+  padding: 4px 10px; margin-top: 12px;
+}
+
+/* ── INTERACTION HINTS ── */
+.hint-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; letter-spacing: .1em;
+  color: rgba(94,201,167,.7);
+  background: rgba(94,201,167,.08);
+  border: 1px solid rgba(94,201,167,.18);
+  border-radius: 20px; padding: 5px 12px;
+  margin-bottom: 16px; cursor: default;
+  animation: hintPulse 2s ease-in-out 1s 2;
+  transition: opacity .4s ease;
+}
+.hint-chip.dismissed { opacity: 0; pointer-events: none; height: 0; margin: 0; padding: 0; border: none; overflow: hidden; transition: all .4s ease; }
+.hint-chip::before { content: '↓'; font-size: 11px; }
+.hint-chip.tap::before { content: '👆'; font-size: 11px; }
+.hint-chip.check::before { content: '✓'; font-size: 11px; }
+.hint-chip.expand::before { content: '▸'; font-size: 11px; }
+@keyframes hintPulse {
+  0%, 100% { background: rgba(94,201,167,.08); border-color: rgba(94,201,167,.18); }
+  50% { background: rgba(94,201,167,.18); border-color: rgba(94,201,167,.4); }
+}
+
+/* ── PRINT ── */
+@media print {
+  .nav, .section-nav, .mobile-nav { display: none !important; }
+  body { background: white; color: var(--forest); }
+  .section { display: block !important; }
+  .wrap { padding: 0; }
+}
+
+/* ── MOBILE ── */
+@media (max-width: 600px) {
+  .nav-tabs { display: none; }
+  .wrap { padding: 72px 16px 100px; }
+  .nav { padding: 0 16px; }
+  .section-nav { display: none; }
+  .mobile-nav { display: flex; }
+  .cover-modules { grid-template-columns: 1fr 1fr; }
+  .energy-grid { grid-template-columns: 1fr; }
+  .sleep-inputs { grid-template-columns: repeat(4, 1fr); }
+  .recovery-blocks { grid-template-columns: 1fr; }
+  .planner-chronotype { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <div class="nav-brand">Neuro Daily <span>·</span> Recovery OS</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="goTo(0)">Intro</button>
+    <button class="nav-tab" onclick="goTo(1)">01</button>
+    <button class="nav-tab" onclick="goTo(2)">02</button>
+    <button class="nav-tab" onclick="goTo(3)">03</button>
+    <button class="nav-tab" onclick="goTo(4)">04</button>
+    <button class="nav-tab" onclick="goTo(5)">05</button>
+  </div>
+  <div class="nav-progress" id="navProgress">0 / 0 selesai</div>
+</nav>
+
+<!-- ── MOBILE BOTTOM NAV ── -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="mnav-btn" id="mnavPrev" onclick="mnavGo(-1)" disabled>← Prev</button>
+  <div class="mnav-center">
+    <strong id="mnavTitle">Intro</strong>
+    <span id="mnavSub">Recovery OS</span>
+  </div>
+  <button class="mnav-btn" id="mnavNext" onclick="mnavGo(1)">Next →</button>
+</div>
+
+<div class="wrap">
+
+<!-- ══════════════════════════════════════ -->
+<!-- SEC 0 — COVER                         -->
+<!-- ══════════════════════════════════════ -->
+<div class="section active" id="sec-0">
+  <div class="cover">
+    <div class="cover-eyebrow">Neuro Daily · Recovery OS</div>
+    <h1 class="cover-title">Sistem <em>Pemulihan Otak</em><br>untuk Profesional<br>yang Kelelahan</h1>
+    <p class="cover-sub">Burnout bukan kelemahan karakter — itu respons biologis otak terhadap stres kronis. Recovery OS membantu kamu identifikasi, kelola, dan rebuild.</p>
+    <div class="cover-divider"></div>
+    <div class="cover-warning">
+      <div class="cover-warning-label">Penting sebelum mulai</div>
+      <p>Jika kamu mengalami gejala depresi berat, anxiety parah, atau krisis kesehatan mental — prioritaskan konsultasi dengan profesional. Tool ini bukan pengganti terapi.</p>
+    </div>
+    <div class="cover-modules">
+      <div class="cover-mod-card" onclick="goTo(1)">
+        <div class="cmc-num">MODUL 01</div>
+        <div class="cmc-title">Burnout Stage Assessment</div>
+        <div class="cmc-sub">Identifikasi posisi kamu sekarang</div>
+      </div>
+      <div class="cover-mod-card" onclick="goTo(2)">
+        <div class="cmc-num">MODUL 02</div>
+        <div class="cmc-title">Energy Audit</div>
+        <div class="cmc-sub">Mapping drain vs recharge</div>
+      </div>
+      <div class="cover-mod-card" onclick="goTo(3)">
+        <div class="cmc-num">MODUL 03</div>
+        <div class="cmc-title">Micro-Recovery Protocols</div>
+        <div class="cmc-sub">Intervensi 5–15 menit</div>
+      </div>
+      <div class="cover-mod-card" onclick="goTo(4)">
+        <div class="cmc-num">MODUL 04</div>
+        <div class="cmc-title">Weekly Recovery Planner</div>
+        <div class="cmc-sub">Schedule berbasis chronotype</div>
+      </div>
+      <div class="cover-mod-card" onclick="goTo(5)">
+        <div class="cmc-num">MODUL 05</div>
+        <div class="cmc-title">Sleep Debt Calculator</div>
+        <div class="cmc-sub">Hitung dan lunasi hutang tidur</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- SEC 1 — BURNOUT STAGE ASSESSMENT      -->
+<!-- ══════════════════════════════════════ -->
+<div class="section" id="sec-1">
+  <div class="mod-progress"><div class="mod-progress-fill" id="prog-1" style="width:0%"></div></div>
+  <div class="mod-header">
+    <div class="mod-num">MODUL 01 · Burnout Stage Assessment</div>
+    <h2 class="mod-title">Kamu sedang di mana <em>sekarang?</em></h2>
+    <p class="mod-sub">Pilih satu deskripsi yang paling mendekati kondisimu dalam 2 minggu terakhir.</p>
+  </div>
+
+  <div class="science-block">
+    <div class="science-label">Sains di baliknya</div>
+    <p class="science-text">Burnout adalah kondisi kelelahan kronis yang terjadi saat <strong>allostatic load</strong> — akumulasi stres fisiologis — melampaui kapasitas recovery otak. Kortisol yang terus-menerus tinggi menyusutkan hippocampus dan melemahkan prefrontal cortex, menyebabkan penurunan kognitif, emosi yang tidak stabil, dan rasa tidak berdaya. <strong>Identifikasi tahap burnout adalah langkah pertama recovery.</strong> (Maslach & Leiter, 2016; McEwen, 2008)</p>
+  </div>
+
+  <div class="block-title">Pilih kondisimu saat ini</div>
+  <div class="hint-chip tap" id="hint-burnout">Tap salah satu kartu untuk memilih kondisimu</div>
+
+  <div class="burnout-stages" id="burnoutStages">
+    <div class="stage-card stage-0" onclick="selectStage(0)">
+      <div class="stage-radio"><div class="stage-radio-dot"></div></div>
+      <div class="stage-content">
+        <div class="stage-label">Tahap 0 — Baseline</div>
+        <div class="stage-name">Aku baik-baik saja</div>
+        <div class="stage-desc">Energi stabil, bisa recover setelah weekend, masih menikmati sebagian besar pekerjaan.</div>
+        <div class="stage-symptoms">
+          <span class="symptom-tag">Tidur nyenyak</span>
+          <span class="symptom-tag">Bisa relax</span>
+          <span class="symptom-tag">Motivasi normal</span>
+        </div>
+      </div>
+    </div>
+    <div class="stage-card stage-1" onclick="selectStage(1)">
+      <div class="stage-radio"><div class="stage-radio-dot"></div></div>
+      <div class="stage-content">
+        <div class="stage-label">Tahap 1 — Sinyal Awal</div>
+        <div class="stage-name">Lelah tapi masih bisa jalan</div>
+        <div class="stage-desc">Mulai sering kelelahan, beberapa hal terasa lebih berat dari biasanya. Weekend tidak cukup untuk fully recover.</div>
+        <div class="stage-symptoms">
+          <span class="symptom-tag">Sering mengeluh</span>
+          <span class="symptom-tag">Motivasi naik-turun</span>
+          <span class="symptom-tag">Tidur terganggu sesekali</span>
+        </div>
+      </div>
+    </div>
+    <div class="stage-card stage-2" onclick="selectStage(2)">
+      <div class="stage-radio"><div class="stage-radio-dot"></div></div>
+      <div class="stage-content">
+        <div class="stage-label">Tahap 2 — Burnout Ringan</div>
+        <div class="stage-name">Lelah secara konsisten</div>
+        <div class="stage-desc">Kelelahan menjadi baseline baru. Sulit fokus, sering lupa, mudah frustrasi. Pekerjaan terasa seperti beban berat setiap hari.</div>
+        <div class="stage-symptoms">
+          <span class="symptom-tag">Brain fog</span>
+          <span class="symptom-tag">Cynicism meningkat</span>
+          <span class="symptom-tag">Sering sakit kepala</span>
+          <span class="symptom-tag">Prokrastinasi parah</span>
+        </div>
+      </div>
+    </div>
+    <div class="stage-card stage-3" onclick="selectStage(3)">
+      <div class="stage-radio"><div class="stage-radio-dot"></div></div>
+      <div class="stage-content">
+        <div class="stage-label">Tahap 3 — Burnout Sedang</div>
+        <div class="stage-name">Tidak bisa "mematikan" pikiran</div>
+        <div class="stage-desc">Sulit beristirahat meski ada waktu. Tubuh sering sakit, emosi tidak stabil, merasa disconnected dari pekerjaan dan orang-orang di sekitar.</div>
+        <div class="stage-symptoms">
+          <span class="symptom-tag">Insomnia</span>
+          <span class="symptom-tag">Anxiety meningkat</span>
+          <span class="symptom-tag">Mudah marah</span>
+          <span class="symptom-tag">Sering sakit fisik</span>
+          <span class="symptom-tag">Apatis</span>
+        </div>
+      </div>
+    </div>
+    <div class="stage-card stage-4" onclick="selectStage(4)">
+      <div class="stage-radio"><div class="stage-radio-dot"></div></div>
+      <div class="stage-content">
+        <div class="stage-label">Tahap 4 — Burnout Berat</div>
+        <div class="stage-name">Sudah tidak bisa berfungsi normal</div>
+        <div class="stage-desc">Merasa kosong total, tidak peduli apapun, sulit menjalani aktivitas dasar. Mungkin ada pikiran untuk berhenti segalanya.</div>
+        <div class="stage-symptoms">
+          <span class="symptom-tag">Exhaustion total</span>
+          <span class="symptom-tag">Depersonalisasi</span>
+          <span class="symptom-tag">Sulit bangun tidur</span>
+          <span class="symptom-tag">Isolasi sosial</span>
+          <span class="symptom-tag">Merasa hopeless</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="assess-btn" onclick="showResult()">Lihat Hasil Assessment →</button>
+
+  <!-- RESULT -->
+  <div class="burnout-result" id="burnoutResult">
+    <div class="block-title" style="margin-top:40px">Hasil Assessment</div>
+    <div class="result-box" id="resultBox">
+      <div class="result-stage-label" id="resultStageLabel"></div>
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-desc" id="resultDesc"></div>
+      <div class="result-actions" id="resultActions"></div>
+    </div>
+    <button class="reassess-btn" onclick="reassess()">↺ Ulangi Assessment</button>
+  </div>
+
+  <div class="reflection-block" style="margin-top:40px">
+    <div class="block-title">Refleksi</div>
+    <p class="reflection-prompt">Apa yang menurut kamu menjadi penyebab utama kondisi ini?</p>
+    <textarea class="reflection-textarea" data-key="ref-1-1" placeholder="Tulis di sini…" oninput="saveField(this)"></textarea>
+  </div>
+  <div class="reflection-block">
+    <p class="reflection-prompt">Kapan terakhir kali kamu merasa benar-benar pulih setelah bekerja?</p>
+    <textarea class="reflection-textarea" data-key="ref-1-2" placeholder="Tulis di sini…" oninput="saveField(this)"></textarea>
+  </div>
+
+  <div class="section-nav">
+    <button class="snav-btn" onclick="goTo(0)" disabled>← Prev</button>
+    <span class="snav-center">01 / 05</span>
+    <button class="snav-btn" onclick="goTo(2)">Next →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- SEC 2 — ENERGY AUDIT                  -->
+<!-- ══════════════════════════════════════ -->
+<div class="section" id="sec-2">
+  <div class="mod-progress"><div class="mod-progress-fill" id="prog-2" style="width:0%"></div></div>
+  <div class="mod-header">
+    <div class="mod-num">MODUL 02 · Energy Audit</div>
+    <h2 class="mod-title">Apa yang <em>menguras</em> dan<br>mengisi ulang energimu?</h2>
+    <p class="mod-sub">Centang semua aktivitas yang apply. Tambahkan aktivitas spesifik kamu di bawah setiap kolom.</p>
+  </div>
+
+  <div class="science-block">
+    <div class="science-label">Sains di baliknya</div>
+    <p class="science-text">Energi mental dikelola oleh sistem <strong>autonomic nervous system</strong> — keseimbangan antara sympathetic (fight-or-flight) dan parasympathetic (rest-and-digest). Aktivitas yang menguras energi terus-menerus mengaktifkan sympathetic tanpa cukup parasympathetic recovery. Audit ini membantu kamu melihat <strong>net energy balance</strong> — apakah kamu deficit atau surplus setiap hari. (Porges, 2011; Kahneman, 2011)</p>
+  </div>
+
+  <!-- METER -->
+  <div class="energy-meter">
+    <div class="meter-label">
+      <span id="drainCount">0 drain items</span>
+      <span id="rechargeCount">0 recharge items</span>
+    </div>
+    <div class="meter-bar">
+      <div class="meter-fill-drain" id="meterDrain" style="width:0%"></div>
+      <div class="meter-fill-recharge" id="meterRecharge" style="width:0%"></div>
+    </div>
+    <div class="meter-result" id="meterResult">Centang aktivitas di bawah untuk melihat balance energimu.</div>
+  </div>
+
+  <div class="energy-grid">
+    <!-- DRAIN -->
+    <div class="energy-col energy-drain">
+      <div class="energy-col-label">⬇ Energy Drain</div>
+      <div class="hint-chip check" id="hint-drain" style="font-size:9px; padding:4px 10px;">Tap item yang kamu alami</div>
+      <div class="energy-items" id="drainItems">
+        <div class="energy-item" onclick="toggleEnergy(this,'drain')"><div class="energy-check"></div>Meeting back-to-back</div>
+        <div class="energy-item" onclick="toggleEnergy(this,'drain')"><div class="energy-check"></div>Notifikasi tanpa henti</div>
+        <div class="energy-item" onclick="toggleEnergy(this,'drain')"><div class="energy-check"></div>Konflik interpersonal</div>
+        <div class="energy-item" onclick="toggleEnergy(this,'drain')"><div class="energy-check"></div>Pekerjaan tanpa makna</div>
+        <div class="energy-item" onclick="toggleEnergy(this,'drain')"><div class="energy-check"></div>Multitasking terus-menerus</div>
+        <div class="energy-item" onclick="toggleEnergy(this,'drain')"><div class="energy-check"></div>Commuting panjang</div>
+        <div class="energy-item" onclick="toggleEnergy(this,'drain')"><div class="energy-check"></div>Deadline tidak realistis</div>
+        <div class="energy-item" onclick="toggleEnergy(this,'drain')"><div class="energy-check"></div>Scrolling media sosial</div>
+      </div>
+      <div class="energy-add">
+        <input type="text" id="drainInput" placeholder="Tambah aktivitas drain…">
+        <button class="energy-add-btn" onclick="addEnergyItem('drain')">+ Add</button>
+      </div>
+    </div>
+    <!-- RECHARGE -->
+    <div class="energy-col energy-recharge">
+      <div class="energy-col-label">⬆ Energy Recharge</div>
+      <div class="hint-chip check" id="hint-recharge" style="font-size:9px; padding:4px 10px;">Tap item yang rutin kamu lakukan</div>
+      <div class="energy-items" id="rechargeItems">
+        <div class="energy-item" onclick="toggleEnergy(this,'recharge')"><div class="energy-check"></div>Tidur cukup (7–9 jam)</div>
+        <div class="energy-item" onclick="toggleEnergy(this,'recharge')"><div class="energy-check"></div>Olahraga / gerak badan</div>
+        <div class="energy-item" onclick="toggleEnergy(this,'recharge')"><div class="energy-check"></div>Waktu sendirian (solitude)</div>
+        <div class="energy-item" onclick="toggleEnergy(this,'recharge')"><div class="energy-check"></div>Percakapan bermakna</div>
+        <div class="energy-item" onclick="toggleEnergy(this,'recharge')"><div class="energy-check"></div>Deep work tanpa interupsi</div>
+        <div class="energy-item" onclick="toggleEnergy(this,'recharge')"><div class="energy-check"></div>Waktu di alam</div>
+        <div class="energy-item" onclick="toggleEnergy(this,'recharge')"><div class="energy-check"></div>Hobi yang dinikmati</div>
+        <div class="energy-item" onclick="toggleEnergy(this,'recharge')"><div class="energy-check"></div>NSDR / power nap</div>
+      </div>
+      <div class="energy-add">
+        <input type="text" id="rechargeInput" placeholder="Tambah aktivitas recharge…">
+        <button class="energy-add-btn" onclick="addEnergyItem('recharge')">+ Add</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRESCRIPTION BOX -->
+  <div class="prescription-box" id="energyPrescription">
+    <div class="prescription-header">
+      <div class="prescription-icon">🧠</div>
+      <div>
+        <div class="prescription-title">Resep Recovery-mu</div>
+        <div class="prescription-sub">Berdasarkan pola energi yang kamu pilih</div>
+      </div>
+    </div>
+    <div class="prescription-items" id="prescriptionItems"></div>
+    <div class="presc-missing" id="prescMissing" style="display:none">
+      <div class="presc-missing-label">⚠ Recharge yang belum kamu lakukan</div>
+      <div class="presc-missing-items" id="prescMissingItems"></div>
+    </div>
+  </div>
+
+  <div class="block-title" style="margin-top:32px">Refleksi</div>
+  <div class="reflection-block">
+    <p class="reflection-prompt">Dari daftar drain di atas, mana yang bisa kamu kurangi atau eliminasi minggu ini?</p>
+    <textarea class="reflection-textarea" data-key="ref-2-1" placeholder="Tulis di sini…" oninput="saveField(this)"></textarea>
+  </div>
+  <div class="reflection-block">
+    <p class="reflection-prompt">Dari daftar recharge, mana yang sudah lama tidak kamu lakukan?</p>
+    <textarea class="reflection-textarea" data-key="ref-2-2" placeholder="Tulis di sini…" oninput="saveField(this)"></textarea>
+  </div>
+
+  <div class="section-nav">
+    <button class="snav-btn" onclick="goTo(1)">← Prev</button>
+    <span class="snav-center">02 / 05</span>
+    <button class="snav-btn" onclick="goTo(3)">Next →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- SEC 3 — MICRO-RECOVERY PROTOCOLS      -->
+<!-- ══════════════════════════════════════ -->
+<div class="section" id="sec-3">
+  <div class="mod-progress"><div class="mod-progress-fill" id="prog-3" style="width:0%"></div></div>
+  <div class="mod-header">
+    <div class="mod-num">MODUL 03 · Micro-Recovery Protocols</div>
+    <h2 class="mod-title">Recovery dalam <em>5, 10,</em><br>dan 15 menit</h2>
+    <p class="mod-sub">Klik setiap protokol untuk expand. Kerjakan langkah-langkahnya dan tandai selesai.</p>
+  </div>
+
+  <div class="science-block">
+    <div class="science-label">Sains di baliknya</div>
+    <p class="science-text">Otak tidak bisa terus-menerus dalam mode high-performance. <strong>Ultradian rhythm</strong> — siklus 90 menit yang diikuti 20 menit istirahat — adalah pola biologis natural yang sering diabaikan. Micro-recovery bukan pemborosan waktu; ini adalah <strong>investasi neurobiologis</strong> yang meningkatkan output total harian. Bahkan 5 menit recovery yang tepat bisa reset kortisol dan meningkatkan fokus hingga 23%. (Huberman, 2021; Persson et al., 2020)</p>
+  </div>
+
+  <div class="block-title">Protokol Recovery</div>
+  <div class="hint-chip expand" id="hint-protocol">Tap kartu untuk expand — tap setiap langkah untuk tandai selesai</div>
+  <div class="protocol-grid">
+
+    <!-- 5 MIN -->
+    <div class="protocol-card">
+      <div class="protocol-header" onclick="toggleProtocol(this)">
+        <div class="protocol-duration">5 min</div>
+        <div>
+          <div class="protocol-name">Physiological Sigh Reset</div>
+          <div class="protocol-tag">STRES AKUT · SETELAH MEETING · SEBELUM FOKUS</div>
+        </div>
+      </div>
+      <div class="protocol-body">
+        <div class="protocol-steps">
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">01</div>
+            <div><div class="pstep-text">Berdiri atau duduk tegak, matikan semua notifikasi</div><div class="pstep-detail">Postur tegak mempengaruhi aktivasi sistem saraf — jangan rebahan.</div></div>
+          </div>
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">02</div>
+            <div><div class="pstep-text">Tarik napas panjang lewat hidung selama 4 detik</div><div class="pstep-detail">Isi paru-paru secara penuh.</div></div>
+          </div>
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">03</div>
+            <div><div class="pstep-text">Tambahkan tarikan napas pendek (sniff) lewat hidung</div><div class="pstep-detail">Ini yang membuat physiological sigh berbeda — mengaktifkan lebih banyak alveoli.</div></div>
+          </div>
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">04</div>
+            <div><div class="pstep-text">Hembuskan perlahan lewat mulut selama 8 detik</div><div class="pstep-detail">Hembusan panjang mengaktifkan parasympathetic — menurunkan heart rate lebih cepat dari teknik lain.</div></div>
+          </div>
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">05</div>
+            <div><div class="pstep-text">Ulangi 5 kali, lanjutkan napas normal selama 2 menit</div><div class="pstep-detail">Observasi perubahan di tubuh — rasa berat di dada, detak jantung, ketegangan otot.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10 MIN -->
+    <div class="protocol-card">
+      <div class="protocol-header" onclick="toggleProtocol(this)">
+        <div class="protocol-duration amber">10 min</div>
+        <div>
+          <div class="protocol-name">Sensory Detox Walk</div>
+          <div class="protocol-tag">BRAIN FOG · SETELAH SCREEN TIME PANJANG · SIANG HARI</div>
+        </div>
+      </div>
+      <div class="protocol-body">
+        <div class="protocol-steps">
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">01</div>
+            <div><div class="pstep-text">Keluar ruangan, tinggalkan ponsel atau matikan layar</div><div class="pstep-detail">Ini bukan waktu scrolling — ini adalah dopamine reset dari stimulasi berlebih.</div></div>
+          </div>
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">02</div>
+            <div><div class="pstep-text">Jalan tanpa tujuan, tidak ada earphone, tidak ada podcast</div><div class="pstep-detail">Biarkan pikiran mengembara (mind-wandering) — ini mengaktifkan Default Mode Network yang penting untuk konsolidasi memori.</div></div>
+          </div>
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">03</div>
+            <div><div class="pstep-text">Fokus pada satu indera per menit: dengar, lihat, rasakan</div><div class="pstep-detail">Grounding teknik sederhana yang menurunkan aktivasi amygdala.</div></div>
+          </div>
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">04</div>
+            <div><div class="pstep-text">Kembali ke tempat kerja, duduk 1 menit sebelum buka layar</div><div class="pstep-detail">Jangan langsung menyambung — beri transisi untuk prefrontal cortex settle kembali.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 15 MIN — NSDR -->
+    <div class="protocol-card">
+      <div class="protocol-header" onclick="toggleProtocol(this)">
+        <div class="protocol-duration teal">15 min</div>
+        <div>
+          <div class="protocol-name">NSDR (Non-Sleep Deep Rest)</div>
+          <div class="protocol-tag">KELELAHAN DALAM · SETELAH ULTRADIAN CYCLE · SIANG</div>
+        </div>
+      </div>
+      <div class="protocol-body">
+        <div class="protocol-steps">
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">01</div>
+            <div><div class="pstep-text">Cari tempat berbaring atau duduk sangat nyaman</div><div class="pstep-detail">Atur alarm 15 menit — tujuannya bukan tidur, tapi berada di border antara bangun dan tidur.</div></div>
+          </div>
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">02</div>
+            <div><div class="pstep-text">Tutup mata, napas alami, lepaskan kontrol pikiran</div><div class="pstep-detail">Biarkan pikiran datang dan pergi tanpa dipegang. Ini berbeda dari meditasi — tidak ada "benar" atau "salah".</div></div>
+          </div>
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">03</div>
+            <div><div class="pstep-text">Jika pikiran terlalu aktif: scan tubuh dari kaki ke kepala</div><div class="pstep-detail">Fokus pada sensasi fisik — berat, suhu, kontak dengan permukaan. Ini memindahkan perhatian dari cortical ke subcortical.</div></div>
+          </div>
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">04</div>
+            <div><div class="pstep-text">Saat alarm berbunyi, gerakkan jari kaki dan tangan perlahan</div><div class="pstep-detail">Jangan langsung bangun. Transisi perlahan memaksimalkan efek restoratif.</div></div>
+          </div>
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">05</div>
+            <div><div class="pstep-text">Minum air, tunggu 5 menit sebelum kembali bekerja</div><div class="pstep-detail">NSDR 15 menit setara dengan recovery 60-90 menit tidur malam dalam hal neuroplasticity. (Stickgold & Walker, 2017)</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 MIN — Cold Reset -->
+    <div class="protocol-card">
+      <div class="protocol-header" onclick="toggleProtocol(this)">
+        <div class="protocol-duration">5 min</div>
+        <div>
+          <div class="protocol-name">Cold Water Reset</div>
+          <div class="protocol-tag">AFTERNOON SLUMP · SETELAH MAKAN SIANG · LOW DOPAMINE</div>
+        </div>
+      </div>
+      <div class="protocol-body">
+        <div class="protocol-steps">
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">01</div>
+            <div><div class="pstep-text">Basuh wajah dengan air dingin selama 30 detik</div><div class="pstep-detail">Aktivasi diving reflex — menurunkan heart rate, meningkatkan parasympathetic response.</div></div>
+          </div>
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">02</div>
+            <div><div class="pstep-text">Basuh bagian dalam pergelangan tangan dan leher</div><div class="pstep-detail">Area ini punya pembuluh darah dekat kulit — efektif untuk cooling core body temperature.</div></div>
+          </div>
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">03</div>
+            <div><div class="pstep-text">Tegakkan badan, tatap titik fisik 3 meter di depan selama 1 menit</div><div class="pstep-detail">Optic flow dari pandangan stabil ke depan mengaktifkan alertness tanpa anxiety.</div></div>
+          </div>
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">04</div>
+            <div><div class="pstep-text">Minum segelas air putih sebelum kembali ke meja</div><div class="pstep-detail">Dehidrasi 1-2% sudah cukup menurunkan kognitif function secara signifikan.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10 MIN — Journaling -->
+    <div class="protocol-card">
+      <div class="protocol-header" onclick="toggleProtocol(this)">
+        <div class="protocol-duration amber">10 min</div>
+        <div>
+          <div class="protocol-name">Expressive Micro-Journaling</div>
+          <div class="protocol-tag">OVERWHELMED · EMOTIONAL LOAD TINGGI · AKHIR HARI</div>
+        </div>
+      </div>
+      <div class="protocol-body">
+        <div class="protocol-steps">
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">01</div>
+            <div><div class="pstep-text">Ambil kertas atau buka catatan — jangan digital jika bisa</div><div class="pstep-detail">Menulis tangan mengaktifkan lebih banyak area otak vs mengetik — efek terapeutik lebih kuat.</div></div>
+          </div>
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">02</div>
+            <div><div class="pstep-text">Tulis 3 menit: "Apa yang paling berat hari ini?"</div><div class="pstep-detail">Tulis tanpa filter, tidak perlu rapi. Ini adalah brain dump untuk menurunkan cognitive load.</div></div>
+          </div>
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">03</div>
+            <div><div class="pstep-text">Tulis 3 menit: "Apa yang bisa aku kontrol dari situasi itu?"</div><div class="pstep-detail">Reframing ke locus of control internal menurunkan cortisol dan meningkatkan sense of agency.</div></div>
+          </div>
+          <div class="protocol-step" onclick="toggleStep(this)">
+            <div class="pstep-num">04</div>
+            <div><div class="pstep-text">Tutup catatan, berdiri, gerakkan badan 1-2 menit</div><div class="pstep-detail">Physical movement setelah journaling membantu "seal" proses emosional secara neurologis.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="action-box">
+    <div class="action-label">Komitmen Minggu Ini</div>
+    <p class="action-text">Pilih <strong>satu protokol</strong> yang akan kamu coba hari ini. Jadwalkan waktu spesifiknya sekarang — bukan "nanti kalau ada waktu".</p>
+    <textarea class="reflection-textarea" data-key="ref-3-commit" placeholder="Protokol mana dan jam berapa kamu akan mencobanya?" oninput="saveField(this)" style="margin-top:14px; min-height:80px"></textarea>
+  </div>
+
+  <div class="section-nav">
+    <button class="snav-btn" onclick="goTo(2)">← Prev</button>
+    <span class="snav-center">03 / 05</span>
+    <button class="snav-btn" onclick="goTo(4)">Next →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- SEC 4 — WEEKLY RECOVERY PLANNER       -->
+<!-- ══════════════════════════════════════ -->
+<div class="section" id="sec-4">
+  <div class="mod-progress"><div class="mod-progress-fill" id="prog-4" style="width:0%"></div></div>
+  <div class="mod-header">
+    <div class="mod-num">MODUL 04 · Weekly Recovery Planner</div>
+    <h2 class="mod-title">Desain minggu yang <em>sustainable</em></h2>
+    <p class="mod-sub">Recovery bukan kebetulan — harus dijadwalkan. Mulai dari chronotype kamu, lalu desain minggu di sekitarnya.</p>
+  </div>
+
+  <div class="science-block">
+    <div class="science-label">Sains di baliknya</div>
+    <p class="science-text"><strong>Chronotype</strong> adalah preferensi biologis sirkadian individu — kapan otak berada di puncak performa kognitif. Melawan chronotype secara kronis (social jetlag) meningkatkan risiko burnout, melemahkan imun, dan menurunkan kualitas tidur. Menjadwalkan pekerjaan berat sesuai peak performance, dan recovery di luar itu, adalah strategi berbasis sirkadian. (Till Roenneberg, 2012; Walker, 2017)</p>
+  </div>
+
+  <div class="block-title">Identifikasi Chronotype-mu</div>
+  <div class="hint-chip tap" id="hint-chrono">Tap kartu yang paling sesuai denganmu</div>
+  <div class="planner-chronotype">
+    <div class="chrono-card" onclick="selectChrono(this, 'morning')">
+      <div class="chrono-icon">🌅</div>
+      <div class="chrono-name">Morning Lark</div>
+      <div class="chrono-time">PEAK: 06:00 – 12:00</div>
+      <div class="chrono-desc">Paling produktif di pagi hari, mulai lelah setelah siang</div>
+    </div>
+    <div class="chrono-card" onclick="selectChrono(this, 'intermediate')">
+      <div class="chrono-icon">☀️</div>
+      <div class="chrono-name">Intermediate</div>
+      <div class="chrono-time">PEAK: 09:00 – 15:00</div>
+      <div class="chrono-desc">Mayoritas orang — peak di mid-morning hingga siang</div>
+    </div>
+    <div class="chrono-card" onclick="selectChrono(this, 'night')">
+      <div class="chrono-icon">🦉</div>
+      <div class="chrono-name">Night Owl</div>
+      <div class="chrono-time">PEAK: 13:00 – 21:00</div>
+      <div class="chrono-desc">Pikiran paling tajam di sore-malam, berat di pagi hari</div>
+    </div>
+  </div>
+
+  <div class="block-title">Rencana Recovery Mingguan</div>
+  <p style="font-size:13px; color:rgba(245,243,238,.5); margin-bottom:16px; line-height:1.6;">Isi untuk setiap hari: aktivitas deep work (sesuai peak), recovery yang direncanakan, dan batas waktu layar.</p>
+
+  <table class="planner-table">
+    <thead>
+      <tr>
+        <th>Hari</th>
+        <th>Deep Work (jam)</th>
+        <th>Recovery Plan</th>
+        <th>Stop Screen</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Sen</td><td><input type="text" placeholder="09:00–11:00" data-key="plan-mon-1"></td><td><input type="text" placeholder="NSDR siang, jalan sore" data-key="plan-mon-2"></td><td><input type="text" placeholder="21:00" data-key="plan-mon-3"></td></tr>
+      <tr><td>Sel</td><td><input type="text" placeholder="09:00–11:00" data-key="plan-tue-1"></td><td><input type="text" placeholder="" data-key="plan-tue-2"></td><td><input type="text" placeholder="" data-key="plan-tue-3"></td></tr>
+      <tr><td>Rab</td><td><input type="text" placeholder="09:00–11:00" data-key="plan-wed-1"></td><td><input type="text" placeholder="" data-key="plan-wed-2"></td><td><input type="text" placeholder="" data-key="plan-wed-3"></td></tr>
+      <tr><td>Kam</td><td><input type="text" placeholder="09:00–11:00" data-key="plan-thu-1"></td><td><input type="text" placeholder="" data-key="plan-thu-2"></td><td><input type="text" placeholder="" data-key="plan-thu-3"></td></tr>
+      <tr><td>Jum</td><td><input type="text" placeholder="09:00–11:00" data-key="plan-fri-1"></td><td><input type="text" placeholder="" data-key="plan-fri-2"></td><td><input type="text" placeholder="" data-key="plan-fri-3"></td></tr>
+      <tr><td>Sab</td><td><input type="text" placeholder="Optional" data-key="plan-sat-1"></td><td><input type="text" placeholder="Full recovery day" data-key="plan-sat-2"></td><td><input type="text" placeholder="" data-key="plan-sat-3"></td></tr>
+      <tr><td>Min</td><td><input type="text" placeholder="—" data-key="plan-sun-1"></td><td><input type="text" placeholder="Persiapan mental minggu baru" data-key="plan-sun-2"></td><td><input type="text" placeholder="" data-key="plan-sun-3"></td></tr>
+    </tbody>
+  </table>
+
+  <div class="block-title">Recovery Blocks Mingguan</div>
+  <div class="recovery-blocks">
+    <div class="rblock">
+      <div class="rblock-label">Social Recharge</div>
+      <input class="rblock-input" type="text" placeholder="Dengan siapa & kapan?" data-key="rblock-social" oninput="saveField(this)">
+    </div>
+    <div class="rblock">
+      <div class="rblock-label">Solitude Block</div>
+      <input class="rblock-input" type="text" placeholder="Waktu sendiri — kapan?" data-key="rblock-solo" oninput="saveField(this)">
+    </div>
+    <div class="rblock">
+      <div class="rblock-label">Physical Recovery</div>
+      <input class="rblock-input" type="text" placeholder="Olahraga / gerak — kapan?" data-key="rblock-physical" oninput="saveField(this)">
+    </div>
+  </div>
+
+  <div class="reflection-block" style="margin-top:24px">
+    <div class="block-title">Refleksi</div>
+    <p class="reflection-prompt">Satu kebiasaan apa yang paling ingin kamu proteksi dari gangguan minggu ini?</p>
+    <textarea class="reflection-textarea" data-key="ref-4-1" placeholder="Tulis di sini…" oninput="saveField(this)"></textarea>
+  </div>
+
+  <div class="section-nav">
+    <button class="snav-btn" onclick="goTo(3)">← Prev</button>
+    <span class="snav-center">04 / 05</span>
+    <button class="snav-btn" onclick="goTo(5)">Next →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- SEC 5 — SLEEP DEBT CALCULATOR         -->
+<!-- ══════════════════════════════════════ -->
+<div class="section" id="sec-5">
+  <div class="mod-progress"><div class="mod-progress-fill" id="prog-5" style="width:0%"></div></div>
+  <div class="mod-header">
+    <div class="mod-num">MODUL 05 · Sleep Debt Calculator</div>
+    <h2 class="mod-title">Berapa <em>hutang tidur</em><br>yang harus dilunasi?</h2>
+    <p class="mod-sub">Masukkan jam tidur kamu 7 hari terakhir. Kalkulator akan menghitung debt dan rencana pelunasan.</p>
+  </div>
+
+  <div class="science-block">
+    <div class="science-label">Sains di baliknya</div>
+    <p class="science-text"><strong>Sleep debt</strong> adalah defisit kumulatif antara tidur yang dibutuhkan dan yang didapat. Tidak seperti hutang uang, sleep debt tidak bisa dibayar sekaligus — otak memproses pembayaran secara bertahap. Tidur kurang dari 7 jam meningkatkan kortisol, melemahkan imun, dan menurunkan performa kognitif setara <strong>2 gelas alkohol</strong>. Bahkan 1 malam kurang tidur membutuhkan 3-4 malam recovery penuh. (Walker, 2017; Van Dongen et al., 2003)</p>
+  </div>
+
+  <div class="sleep-target-row">
+    <span class="sleep-target-label">Target tidur per malam</span>
+    <input class="sleep-target-input" type="number" id="sleepTarget" value="8" min="6" max="10" oninput="calcSleep()">
+    <span class="sleep-target-unit">jam</span>
+  </div>
+
+  <div class="block-title">Jam tidur 7 hari terakhir</div>
+  <div class="hint-chip" id="hint-sleep">Ketik jam tidur di setiap kolom hari — hasil langsung muncul</div>
+  <div class="sleep-inputs">
+    <div class="sleep-day">
+      <div class="sleep-day-label">Sen</div>
+      <input type="number" id="s1" min="0" max="12" step="0.5" placeholder="7" oninput="calcSleep()">
+      <div class="sleep-day-unit">jam</div>
+    </div>
+    <div class="sleep-day">
+      <div class="sleep-day-label">Sel</div>
+      <input type="number" id="s2" min="0" max="12" step="0.5" placeholder="7" oninput="calcSleep()">
+      <div class="sleep-day-unit">jam</div>
+    </div>
+    <div class="sleep-day">
+      <div class="sleep-day-label">Rab</div>
+      <input type="number" id="s3" min="0" max="12" step="0.5" placeholder="7" oninput="calcSleep()">
+      <div class="sleep-day-unit">jam</div>
+    </div>
+    <div class="sleep-day">
+      <div class="sleep-day-label">Kam</div>
+      <input type="number" id="s4" min="0" max="12" step="0.5" placeholder="7" oninput="calcSleep()">
+      <div class="sleep-day-unit">jam</div>
+    </div>
+    <div class="sleep-day">
+      <div class="sleep-day-label">Jum</div>
+      <input type="number" id="s5" min="0" max="12" step="0.5" placeholder="7" oninput="calcSleep()">
+      <div class="sleep-day-unit">jam</div>
+    </div>
+    <div class="sleep-day">
+      <div class="sleep-day-label">Sab</div>
+      <input type="number" id="s6" min="0" max="12" step="0.5" placeholder="8" oninput="calcSleep()">
+      <div class="sleep-day-unit">jam</div>
+    </div>
+    <div class="sleep-day">
+      <div class="sleep-day-label">Min</div>
+      <input type="number" id="s7" min="0" max="12" step="0.5" placeholder="8" oninput="calcSleep()">
+      <div class="sleep-day-unit">jam</div>
+    </div>
+  </div>
+
+  <div class="sleep-result healthy" id="sleepResult">
+    <div class="sleep-result-label" id="sleepResultLabel">Masukkan data tidurmu di atas</div>
+    <div class="sleep-debt-num" id="sleepDebtNum">—<span class="sleep-debt-unit"> jam</span></div>
+    <div class="sleep-result-desc" id="sleepResultDesc">Isi jam tidur untuk setiap hari agar kalkulator bisa menghitung sleep debt kamu.</div>
+  </div>
+
+  <div class="sleep-recovery-plan" id="sleepPlan" style="display:none">
+    <div class="block-title">Rencana Pelunasan Sleep Debt</div>
+    <p style="font-size:13px; color:rgba(245,243,238,.55); margin-bottom:16px; line-height:1.6;">Tambahkan 30-60 menit ekstra per malam selama beberapa minggu ke depan. Jangan coba bayar sekaligus — otak memproses secara bertahap.</p>
+    <div class="recovery-week" id="recoveryWeek"></div>
+  </div>
+
+  <!-- SLEEP PRESCRIPTION -->
+  <div class="sleep-presc" id="sleepPresc">
+    <div class="sleep-presc-title">Protokol Rekomendasi untukmu</div>
+    <div class="sleep-presc-items" id="sleepPrescItems"></div>
+    <div id="sleepWorstDay"></div>
+  </div>
+
+  <div class="reflection-block" style="margin-top:32px">
+    <div class="block-title">Refleksi</div>
+    <p class="reflection-prompt">Apa yang biasanya membuat kamu tidur lebih larut dari yang seharusnya?</p>
+    <textarea class="reflection-textarea" data-key="ref-5-1" placeholder="Tulis di sini…" oninput="saveField(this)"></textarea>
+  </div>
+  <div class="reflection-block">
+    <p class="reflection-prompt">Satu perubahan konkret apa yang akan kamu buat untuk tidur lebih awal minggu ini?</p>
+    <textarea class="reflection-textarea" data-key="ref-5-2" placeholder="Tulis di sini…" oninput="saveField(this)"></textarea>
+  </div>
+
+  <div class="action-box">
+    <div class="action-label">Langkah Pertama Recovery</div>
+    <p class="action-text">Recovery OS bukan sprint — ini adalah sistem jangka panjang. Pilih <strong>satu modul</strong> yang paling relevan dengan kondisimu sekarang, dan mulai dari situ. Konsistensi kecil lebih efektif dari perubahan besar yang tidak bertahan.</p>
+  </div>
+
+  <div class="section-nav">
+    <button class="snav-btn" onclick="goTo(4)">← Prev</button>
+    <span class="snav-center">05 / 05</span>
+    <button class="snav-btn" disabled>Selesai ✓</button>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+// ── STATE ──────────────────────────────────────────────
+const SECTIONS = 6;
+let current = 0;
+let selectedStage = -1;
+let selectedChrono = null;
+
+const MOD_TITLES = ['Intro','Burnout Assessment','Energy Audit','Micro-Recovery','Weekly Planner','Sleep Debt'];
+const MOD_SUBS   = ['Recovery OS','Identifikasi posisi kamu','Drain vs recharge','Protokol 5–15 menit','Schedule recovery','Hitung hutang tidur'];
+
+// ── NAVIGATION ─────────────────────────────────────────
+function goTo(idx) {
+  document.querySelectorAll('.section').forEach((s,i) => s.classList.toggle('active', i === idx));
+  document.querySelectorAll('.nav-tab').forEach((t,i) => t.classList.toggle('active', i === idx));
+  current = idx;
+  window.scrollTo({top:0, behavior:'smooth'});
+  updateProgress();
+  updateMobileNav();
+}
+
+function mnavGo(dir) {
+  goTo(Math.max(0, Math.min(SECTIONS - 1, current + dir)));
+}
+
+function updateMobileNav() {
+  const prev = document.getElementById('mnavPrev');
+  const next = document.getElementById('mnavNext');
+  const title = document.getElementById('mnavTitle');
+  const sub = document.getElementById('mnavSub');
+  if (!prev) return;
+  prev.disabled = current === 0;
+  next.disabled = current === SECTIONS - 1;
+  title.textContent = MOD_TITLES[current] || '';
+  sub.textContent   = MOD_SUBS[current]   || '';
+}
+
+// ── PROGRESS ───────────────────────────────────────────
+function updateProgress() {
+  const checks = document.querySelectorAll('.protocol-step.done, .energy-item.checked');
+  const total = document.querySelectorAll('.protocol-step, .energy-item').length;
+  const done = checks.length;
+  document.getElementById('navProgress').textContent = `${done} / ${total} selesai`;
+
+  [1,2,3,4,5].forEach(i => {
+    const bar = document.getElementById('prog-'+i);
+    if (!bar) return;
+    const sec = document.getElementById('sec-'+i);
+    if (!sec) return;
+    const items = sec.querySelectorAll('.protocol-step, .energy-item');
+    if (!items.length) { bar.style.width = '0%'; return; }
+    const checked = sec.querySelectorAll('.protocol-step.done, .energy-item.checked').length;
+    bar.style.width = Math.round((checked / items.length) * 100) + '%';
+  });
+}
+
+// ── BURNOUT ASSESSMENT ─────────────────────────────────
+function selectStage(idx) {
+  selectedStage = idx;
+  document.querySelectorAll('.stage-card').forEach((c,i) => c.classList.toggle('selected', i === idx));
+  localStorage.setItem('burnout-stage', idx);
+  dismissHint('hint-burnout');
+}
+
+const STAGE_DATA = [
+  {
+    cls: 'stage-0', label: 'TAHAP 0 — BASELINE', title: 'Kamu dalam kondisi baik',
+    desc: 'Tidak ada tanda-tanda burnout saat ini. Fokus pada pemeliharaan dan pencegahan. Gunakan Recovery OS sebagai sistem preventif — jangan tunggu sampai burnout.',
+    actions: ['Tetap jaga rutinitas recovery yang sudah berjalan', 'Identifikasi early warning signs yang spesifik untukmu', 'Lanjutkan ke Modul 2 untuk audit energi preventif']
+  },
+  {
+    cls: 'stage-1', label: 'TAHAP 1 — SINYAL AWAL', title: 'Waktunya bertindak sebelum makin dalam',
+    desc: 'Tubuh dan pikiranmu sudah memberikan sinyal. Intervensi di tahap ini jauh lebih mudah dari menangani burnout penuh. Kamu datang di waktu yang tepat.',
+    actions: ['Mulai dengan 1 micro-recovery protocol setiap hari (Modul 3)', 'Audit energi minggu ini — eliminasi 1 drain terbesar', 'Pastikan 7-8 jam tidur menjadi non-negotiable']
+  },
+  {
+    cls: 'stage-2', label: 'TAHAP 2 — BURNOUT RINGAN', title: 'Recovery butuh sistem, bukan willpower',
+    desc: 'Di tahap ini, mencoba lebih keras justru kontraproduktif. Otak yang kelelahan tidak bisa dipaksa. Yang dibutuhkan adalah pengurangan beban dan recovery terstruktur.',
+    actions: ['Kurangi 20-30% komitmen non-esensial minggu ini', 'Jadwalkan NSDR setiap hari (Modul 3) — bukan opsional', 'Hitung sleep debt dan mulai lunasi (Modul 5)']
+  },
+  {
+    cls: 'stage-3', label: 'TAHAP 3 — BURNOUT SEDANG', title: 'Butuh langkah lebih serius',
+    desc: 'Pada tahap ini, self-management saja mungkin tidak cukup. Recovery OS bisa membantu, tapi pertimbangkan juga berbicara dengan orang kepercayaan atau profesional.',
+    actions: ['Bicara dengan atasan atau HR tentang beban kerja', 'Ambil cuti atau reduced workload jika memungkinkan', 'Konsultasikan dengan profesional kesehatan mental', 'Gunakan Recovery OS sebagai struktur pendukung']
+  },
+  {
+    cls: 'stage-4', label: 'TAHAP 4 — BURNOUT BERAT', title: 'Prioritas utama: cari bantuan profesional',
+    desc: 'Kondisi ini serius dan di luar kemampuan self-help untuk diselesaikan sendiri. Recovery OS bisa jadi struktur pendukung, tapi langkah pertama adalah menghubungi profesional.',
+    actions: ['Hubungi dokter, psikolog, atau psikiater segera', 'Beritahu orang terdekat tentang kondisimu', 'Minta bantuan untuk mengurangi tanggung jawab kerja', 'Recovery OS bisa digunakan sebagai pelengkap — bukan pengganti — bantuan profesional']
+  }
+];
+
+function showResult() {
+  if (selectedStage < 0) { alert('Pilih kondisimu terlebih dahulu.'); return; }
+  const d = STAGE_DATA[selectedStage];
+  const rb = document.getElementById('resultBox');
+  rb.className = 'result-box ' + d.cls;
+  document.getElementById('resultStageLabel').textContent = d.label;
+  document.getElementById('resultStageLabel').style.color =
+    ['var(--green)','#8DD4B5','var(--amber)','var(--orange)','var(--red)'][selectedStage];
+  document.getElementById('resultTitle').textContent = d.title;
+  document.getElementById('resultDesc').textContent = d.desc;
+  document.getElementById('resultActions').innerHTML = d.actions.map(a => `<div class="result-action">${a}</div>`).join('');
+  document.getElementById('burnoutResult').classList.add('visible');
+  setTimeout(() => document.getElementById('burnoutResult').scrollIntoView({behavior:'smooth', block:'start'}), 100);
+}
+
+function reassess() {
+  selectedStage = -1;
+  document.querySelectorAll('.stage-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('burnoutResult').classList.remove('visible');
+}
+
+// ── ENERGY AUDIT ───────────────────────────────────────
+function toggleEnergy(el, type) {
+  el.classList.toggle('checked');
+  updateEnergyMeter();
+  updateProgress();
+  updateEnergyPrescription();
+  dismissHint(type === 'drain' ? 'hint-drain' : 'hint-recharge');
+}
+
+function updateEnergyMeter() {
+  const drains = document.querySelectorAll('#drainItems .energy-item.checked').length;
+  const recharges = document.querySelectorAll('#rechargeItems .energy-item.checked').length;
+  const total = Math.max(drains + recharges, 1);
+  const drainPct = Math.round((drains / total) * 100);
+  const rechargePct = Math.round((recharges / total) * 100);
+
+  document.getElementById('meterDrain').style.width = drainPct + '%';
+  document.getElementById('meterRecharge').style.width = rechargePct + '%';
+  document.getElementById('drainCount').textContent = drains + ' drain items';
+  document.getElementById('rechargeCount').textContent = recharges + ' recharge items';
+
+  const net = recharges - drains;
+  const resultEl = document.getElementById('meterResult');
+  if (drains + recharges === 0) {
+    resultEl.innerHTML = 'Centang aktivitas di bawah untuk melihat balance energimu.';
+  } else if (net > 2) {
+    resultEl.innerHTML = `<strong>Net balance: +${net}</strong> — Energimu surplus. Pertahankan dan jaga jangan sampai drain bertambah.`;
+  } else if (net >= 0) {
+    resultEl.innerHTML = `<strong>Net balance: ${net >= 0 ? '+' : ''}${net}</strong> — Balance tipis. Sedikit gangguan bisa menggeser ke defisit.`;
+  } else {
+    resultEl.innerHTML = `<strong>Net balance: ${net}</strong> — Energimu defisit. Prioritaskan pengurangan drain dan penambahan recharge.`;
+  }
+}
+
+// ── ENERGY PRESCRIPTION ────────────────────────────────
+const DRAIN_ADVICE = {
+  'Meeting back-to-back': {
+    label: 'Cognitive Overload dari Meeting',
+    text: 'Jadwalkan <strong>buffer 10 menit</strong> di antara setiap meeting. Otak butuh waktu untuk keluar dari satu konteks sebelum masuk ke konteks berikutnya — tanpa ini, working memory kamu penuh sebelum hari selesai.'
+  },
+  'Notifikasi tanpa henti': {
+    label: 'Attention Fragmentation',
+    text: 'Notifikasi memecah perhatian rata-rata setiap <strong>11 menit</strong>, dan butuh 23 menit untuk kembali fokus. Coba <strong>notification block</strong>: matikan semua notifikasi selama 90 menit, cek manual setelahnya.'
+  },
+  'Multitasking terus-menerus': {
+    label: 'Task-Switching Fatigue',
+    text: 'Multitasking bukan skill — itu <strong>context-switching</strong> yang menguras prefrontal cortex. Coba teknik <strong>time-blocking</strong>: satu tugas per blok waktu. Produktivitas bisa naik 40%.'
+  },
+  'Pekerjaan tanpa makna': {
+    label: 'Low Meaning = High Cortisol',
+    text: 'Pekerjaan tanpa sense of purpose mengaktifkan stress response kronis. Identifikasi <strong>satu aspek bermakna</strong> dari pekerjaanmu — koneksi ke orang lain, dampak kecil, atau skill yang berkembang.'
+  },
+  'Scrolling media sosial': {
+    label: 'Dopamine Loop Exhaustion',
+    text: 'Scrolling menciptakan <strong>variable reward loop</strong> yang menguras dopamine system tanpa memberikan recovery nyata. Ganti 10 menit scrolling dengan micro-recovery aktif: jalan, napas, atau diam.'
+  },
+  'Konflik interpersonal': {
+    label: 'Social Threat Response',
+    text: 'Konflik mengaktifkan <strong>amygdala</strong> dan menjaga sistem waspada bahkan setelah konflik selesai. Jika tidak bisa diselesaikan hari ini, tulis (journaling) untuk <strong>externalize</strong> beban kognitifnya.'
+  },
+  'Deadline tidak realistis': {
+    label: 'Chronic Time Pressure',
+    text: 'Deadline yang tidak realistis menciptakan <strong>cortisol kronis</strong> yang menyusutkan hippocampus. Negosiasikan timeline, atau pecah deadline besar menjadi milestones kecil yang lebih manageable.'
+  },
+  'Commuting panjang': {
+    label: 'Pre-Work Energy Drain',
+    text: 'Commuting panjang menghabiskan energi kognitif sebelum kerja dimulai. Manfaatkan waktu commute untuk <strong>low-stimulation input</strong>: podcast santai, musik instrumental, atau diam — bukan berita.'
+  }
+};
+
+const RECHARGE_LABELS = {
+  'Tidur cukup (7–9 jam)': 'tidur cukup',
+  'Olahraga / gerak badan': 'olahraga rutin',
+  'Waktu sendirian (solitude)': 'waktu sendirian',
+  'Percakapan bermakna': 'koneksi sosial bermakna',
+  'Deep work tanpa interupsi': 'sesi deep work',
+  'Waktu di alam': 'waktu di alam',
+  'Hobi yang dinikmati': 'hobi aktif',
+  'NSDR / power nap': 'NSDR / power nap'
+};
+
+function updateEnergyPrescription() {
+  const drainEls = document.querySelectorAll('#drainItems .energy-item.checked');
+  const rechargeEls = document.querySelectorAll('#rechargeItems .energy-item');
+  const rechargeChecked = document.querySelectorAll('#rechargeItems .energy-item.checked');
+
+  const box = document.getElementById('energyPrescription');
+  const itemsEl = document.getElementById('prescriptionItems');
+  const missingEl = document.getElementById('prescMissing');
+  const missingItemsEl = document.getElementById('prescMissingItems');
+
+  if (drainEls.length + rechargeChecked.length < 3) {
+    box.classList.remove('visible');
+    return;
+  }
+
+  box.classList.add('visible');
+  itemsEl.innerHTML = '';
+
+  // Drain-based advice
+  let adviceShown = 0;
+  drainEls.forEach(el => {
+    const text = el.textContent.trim();
+    const advice = DRAIN_ADVICE[text];
+    if (advice && adviceShown < 3) {
+      itemsEl.innerHTML += `
+        <div class="presc-item">
+          <div class="presc-item-label">${advice.label}</div>
+          <div class="presc-item-text">${advice.text}</div>
+        </div>`;
+      adviceShown++;
+    }
+  });
+
+  // If no specific advice, show generic
+  if (adviceShown === 0 && drainEls.length > 0) {
+    itemsEl.innerHTML = `<div class="presc-item">
+      <div class="presc-item-label">Prioritas Utama</div>
+      <div class="presc-item-text">Kamu punya <strong>${drainEls.length} sumber drain</strong>. Pilih satu yang paling bisa dikontrol minggu ini dan fokus di situ. Jangan coba eliminasi semuanya sekaligus.</div>
+    </div>`;
+  }
+
+  // Missing recharges
+  const missingRecharges = [];
+  rechargeEls.forEach(el => {
+    if (!el.classList.contains('checked')) {
+      const text = el.textContent.trim();
+      const label = RECHARGE_LABELS[text] || text;
+      missingRecharges.push(label);
+    }
+  });
+
+  if (missingRecharges.length > 0) {
+    missingEl.style.display = 'block';
+    missingItemsEl.innerHTML = missingRecharges.slice(0, 5).map(r =>
+      `<span class="presc-missing-tag">${r}</span>`
+    ).join('');
+  } else {
+    missingEl.style.display = 'none';
+  }
+}
+
+function addEnergyItem(type) {
+  const input = document.getElementById(type + 'Input');
+  const text = input.value.trim();
+  if (!text) return;
+  const items = document.getElementById(type + 'Items');
+  const el = document.createElement('div');
+  el.className = 'energy-item';
+  el.onclick = function() { toggleEnergy(this, type); };
+  el.innerHTML = `<div class="energy-check"></div>${text}`;
+  items.appendChild(el);
+  input.value = '';
+  updateEnergyMeter();
+}
+
+// Enter key for energy add
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && e.target.id === 'drainInput') addEnergyItem('drain');
+  if (e.key === 'Enter' && e.target.id === 'rechargeInput') addEnergyItem('recharge');
+});
+
+// ── PROTOCOL TOGGLE ────────────────────────────────────
+function toggleProtocol(header) {
+  const body = header.nextElementSibling;
+  body.classList.toggle('open');
+  dismissHint('hint-protocol');
+}
+
+function toggleStep(el) {
+  el.classList.toggle('done');
+  updateProgress();
+}
+
+// ── CHRONOTYPE ─────────────────────────────────────────
+function selectChrono(card, type) {
+  document.querySelectorAll('.chrono-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  selectedChrono = type;
+  localStorage.setItem('chronotype', type);
+  dismissHint('hint-chrono');
+}
+
+// ── SLEEP CALCULATOR ───────────────────────────────────
+function calcSleep() {
+  const target = parseFloat(document.getElementById('sleepTarget').value) || 8;
+  const days = ['s1','s2','s3','s4','s5','s6','s7'].map(id => parseFloat(document.getElementById(id).value) || 0);
+  const filled = days.filter(d => d > 0);
+  if (filled.length === 0) return;
+  dismissHint('hint-sleep');
+
+  const totalDebt = days.reduce((acc, h) => acc + Math.max(0, target - h), 0);
+  const avgSleep = filled.reduce((a,b) => a+b, 0) / filled.length;
+  const result = document.getElementById('sleepResult');
+  const label = document.getElementById('sleepResultLabel');
+  const num = document.getElementById('sleepDebtNum');
+  const desc = document.getElementById('sleepResultDesc');
+
+  num.innerHTML = totalDebt.toFixed(1) + '<span class="sleep-debt-unit"> jam</span>';
+
+  if (totalDebt === 0) {
+    result.className = 'sleep-result healthy';
+    label.textContent = 'TIDAK ADA SLEEP DEBT';
+    label.style.color = 'var(--green)';
+    desc.textContent = `Rata-rata tidurmu ${avgSleep.toFixed(1)} jam — sesuai atau melebihi target. Pertahankan konsistensi ini.`;
+    document.getElementById('sleepPlan').style.display = 'none';
+    document.getElementById('sleepPresc').classList.remove('visible');
+  } else if (totalDebt <= 5) {
+    result.className = 'sleep-result mild';
+    label.textContent = 'SLEEP DEBT RINGAN';
+    label.style.color = 'var(--amber)';
+    desc.textContent = `Kamu kekurangan ${totalDebt.toFixed(1)} jam tidur minggu ini. Rata-rata ${avgSleep.toFixed(1)} jam/malam. Tambahkan 30 menit per malam selama 2 minggu ke depan untuk melunasi.`;
+    showRecoveryPlan(totalDebt, target);
+    showSleepPrescription(totalDebt, days, target);
+  } else {
+    result.className = 'sleep-result severe';
+    label.textContent = 'SLEEP DEBT SERIUS';
+    label.style.color = 'var(--red)';
+    desc.textContent = `Defisit ${totalDebt.toFixed(1)} jam — ini signifikan. Rata-rata ${avgSleep.toFixed(1)} jam/malam vs target ${target} jam. Diperlukan recovery bertahap selama 3-4 minggu. Jangan coba bayar sekaligus di weekend.`;
+    showRecoveryPlan(totalDebt, target);
+    showSleepPrescription(totalDebt, days, target);
+  }
+}
+
+function showSleepPrescription(debt, days, target) {
+  const presc = document.getElementById('sleepPresc');
+  const itemsEl = document.getElementById('sleepPrescItems');
+  const worstEl = document.getElementById('sleepWorstDay');
+  presc.classList.add('visible');
+
+  const dayNames = ['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu'];
+  const worstIdx = days.reduce((minI, h, i, arr) => h < arr[minI] ? i : minI, 0);
+  const worstDay = dayNames[worstIdx];
+  const worstHour = days[worstIdx];
+
+  let items = [];
+
+  if (debt <= 5) {
+    items = [
+      { num: '01', text: `Tambahkan <strong>30 menit lebih awal</strong> setiap malam selama 2 minggu ke depan. Konsisten lebih penting dari satu malam tidur panjang.` },
+      { num: '02', text: `Matikan layar <strong>45 menit sebelum tidur</strong> — blue light menekan melatonin hingga 50% dan menunda onset tidur rata-rata 1 jam.` },
+      { num: '03', text: `Jaga suhu kamar di <strong>18-20°C</strong> jika memungkinkan — ini adalah suhu optimal untuk inisiasi tidur deep.` }
+    ];
+  } else if (debt <= 10) {
+    items = [
+      { num: '01', text: `Sleep debt kamu sedang. Jangan coba bayar di weekend dengan tidur 12 jam — ini merusak sirkadian rhythm. Tambahkan <strong>45 menit per malam</strong> selama 2-3 minggu.` },
+      { num: '02', text: `Jadwalkan <strong>NSDR 15 menit</strong> setelah makan siang (Modul 3). Ini membantu recovery tanpa merusak sleep drive malam hari.` },
+      { num: '03', text: `Hindari kafein setelah jam 14:00 — half-life kafein adalah <strong>5-7 jam</strong>, artinya secangkir kopi jam 3 sore masih aktif jam 10 malam.` },
+      { num: '04', text: `Buat <strong>wind-down routine</strong> 30 menit sebelum tidur: dimmer lampu, tidak ada layar, aktivitas menenangkan. Ini melatih otak untuk asosiasi malam = tidur.` }
+    ];
+  } else {
+    items = [
+      { num: '01', text: `Sleep debt kamu serius — <strong>${debt.toFixed(1)} jam</strong> adalah setara tidak tidur hampir 2 malam penuh. Recovery butuh 3-4 minggu konsisten, bukan 1-2 malam.` },
+      { num: '02', text: `Prioritaskan tidur di atas segalanya minggu ini. Jika ada komitmen yang bisa ditunda, tunda — <strong>kognisi yang kurang tidur setara 2 gelas alkohol</strong>.` },
+      { num: '03', text: `Gunakan <strong>NSDR setiap hari</strong> (Modul 3) sebagai bridge recovery sambil membangun sleep habit baru.` },
+      { num: '04', text: `Pertimbangkan <strong>sleep restriction therapy ringan</strong>: tidur dan bangun di jam yang sama setiap hari, termasuk weekend, untuk reset sirkadian rhythm.` },
+      { num: '05', text: `Jika insomnia atau tidak bisa tidur meski lelah, ini bisa jadi tanda burnout lebih dalam — pertimbangkan konsultasi dengan dokter.` }
+    ];
+  }
+
+  itemsEl.innerHTML = items.map(i =>
+    `<div class="sleep-presc-item"><span class="spi-num">${i.num}</span><span>${i.text}</span></div>`
+  ).join('');
+
+  if (worstHour > 0 && worstHour < target) {
+    worstEl.innerHTML = `<div class="sleep-worst-day">⚠ Hari terburuk: ${worstDay} — hanya ${worstHour}j. Proteksi malam ini duluan.</div>`;
+  } else {
+    worstEl.innerHTML = '';
+  }
+}
+
+function showRecoveryPlan(debt, target) {
+  const plan = document.getElementById('sleepPlan');
+  const week = document.getElementById('recoveryWeek');
+  plan.style.display = 'block';
+  const bonus = Math.min(1, debt / 7);
+  const days = ['Sen','Sel','Rab','Kam','Jum','Sab','Min'];
+  const targets = days.map((_, i) => i >= 5 ? Math.min(target + bonus + 0.5, 10) : target + bonus);
+  const maxT = Math.max(...targets);
+  week.innerHTML = days.map((d, i) => `
+    <div class="recovery-day-row">
+      <span class="rday-label">${d}</span>
+      <div class="rday-bar"><div class="rday-fill" style="width:${(targets[i]/maxT*100).toFixed(0)}%"></div></div>
+      <span class="rday-val">${targets[i].toFixed(1)}j</span>
+    </div>`).join('');
+}
+
+// ── FIELDS ─────────────────────────────────────────────
+function saveField(el) {
+  if (el.dataset.key) localStorage.setItem('fld-'+el.dataset.key, el.value);
+}
+
+// ── RESTORE ────────────────────────────────────────────
+function restoreState() {
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const saved = localStorage.getItem('fld-'+el.dataset.key);
+    if (saved !== null) el.value = saved;
+  });
+
+  const stage = localStorage.getItem('burnout-stage');
+  if (stage !== null) selectStage(parseInt(stage));
+
+  const chrono = localStorage.getItem('chronotype');
+  if (chrono) {
+    document.querySelectorAll('.chrono-card').forEach(c => {
+      if (c.getAttribute('onclick').includes(chrono)) {
+        c.classList.add('selected');
+        selectedChrono = chrono;
+      }
+    });
+  }
+
+  updateProgress();
+  updateEnergyMeter();
+}
+
+// ── HINT DISMISS ───────────────────────────────────────
+function dismissHint(id) {
+  const el = document.getElementById(id);
+  if (el) { el.classList.add('dismissed'); localStorage.setItem('hint-'+id, '1'); }
+}
+function restoreHints() {
+  ['hint-burnout','hint-drain','hint-recharge','hint-protocol','hint-chrono','hint-sleep'].forEach(id => {
+    if (localStorage.getItem('hint-'+id)) dismissHint(id);
+  });
+}
+// Auto-dismiss hints on first interaction in each section
+const hintTriggers = {
+  'burnoutStages': 'hint-burnout',
+  'drainItems': 'hint-drain',
+  'rechargeItems': 'hint-recharge',
+  'protocol-grid': 'hint-protocol',
+};
+
+// ── INIT ───────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  restoreState();
+  updateMobileNav();
+  restoreHints();
+  document.querySelectorAll('[data-key]').forEach(el => {
+    el.addEventListener('input', () => saveField(el));
+  });
+  document.querySelectorAll('.planner-table input').forEach(el => {
+    el.addEventListener('input', () => { if(el.dataset.key) saveField(el); });
+  });
+});
+</script>
+</body>
+</html>

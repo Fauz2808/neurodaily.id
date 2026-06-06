@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Neuro Daily — Email Pagi & Mood Kerja</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --forest:#0D2E28;
+  --teal:#1A6B5A;
+  --green:#5EC9A7;
+  --parchment:#F5F3EE;
+  --amber:#C9A96E;
+  --red:#D96A6A;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0a0a0a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 100px}
+
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#7a807d;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+
+.stage{position:relative;width:min(540px,94vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;position:relative;overflow:hidden}
+.cvs{width:1080px;height:1350px;transform-origin:top left;position:absolute;top:0;left:0;font-family:'DM Sans',sans-serif}
+
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+
+.cvs .head,.cvs .foot{position:absolute;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 64px;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase}
+.cvs .head{top:0;height:78px;border-bottom:1px solid rgba(245,243,238,.12)}
+.cvs .foot{bottom:0;height:64px;border-top:1px solid rgba(245,243,238,.12)}
+.bg-light .head,.bg-light .foot{border-color:rgba(13,46,40,.12)}
+.bg-teal .head,.bg-teal .foot{border-color:rgba(245,243,238,.18)}
+.cvs .head span,.cvs .foot span{opacity:.55}
+.cvs .head .dotmark::before{content:"◆ ";color:var(--green);opacity:1}
+.bg-light .head .dotmark::before{color:var(--teal)}
+.bg-teal .head .dotmark::before{color:var(--amber)}
+
+.hippo-mark{display:flex;align-items:center;gap:10px;opacity:1!important}
+.hippo-mark svg{width:30px;height:30px;flex-shrink:0}
+
+.body{position:absolute;top:78px;bottom:64px;left:0;right:0;padding:52px 72px;display:flex;flex-direction:column}
+
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.bg-dark .eyebrow{color:var(--green)}
+.bg-light .eyebrow{color:var(--teal)}
+.bg-teal .eyebrow{color:var(--amber)}
+.rule{width:48px;height:3px;border-radius:2px;margin-top:18px}
+.bg-dark .rule{background:var(--green)}
+.bg-light .rule{background:var(--teal)}
+.bg-teal .rule{background:var(--amber)}
+
+/* S1 */
+.s1 .ghost{position:absolute;font-family:'DM Serif Display',serif;font-size:820px;line-height:.88;color:rgba(94,201,167,.05);pointer-events:none;user-select:none;right:-80px;top:10px}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:88px;line-height:1.02;letter-spacing:-.02em;margin-top:52px;max-width:820px;position:relative;z-index:2}
+.s1 h1 em{font-style:italic;color:var(--amber)}
+.s1 .lead{margin-top:32px;font-size:22px;line-height:1.65;opacity:.72;max-width:640px;font-weight:300;position:relative;z-index:2}
+.s1 .email-vis{position:absolute;bottom:88px;left:72px;right:72px;z-index:2}
+
+/* S2 */
+.s2 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.06;letter-spacing:-.02em;margin-top:36px;color:var(--forest);max-width:860px}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .stat-row{margin-top:36px;display:flex;gap:20px}
+.stat-card{flex:1;padding:26px 22px;border-radius:16px;display:flex;flex-direction:column;gap:10px}
+.stat-card.a{background:rgba(217,106,106,.06);border:1.5px solid rgba(217,106,106,.22)}
+.stat-card.b{background:rgba(201,169,110,.06);border:1.5px solid rgba(201,169,110,.2)}
+.stat-num{font-family:'DM Serif Display',serif;font-size:68px;line-height:1;letter-spacing:-.03em}
+.stat-card.a .stat-num{color:var(--red)}
+.stat-card.b .stat-num{color:var(--amber)}
+.stat-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;opacity:.6;color:var(--forest)}
+.stat-desc{font-size:22px;line-height:1.55;opacity:.65;font-weight:300;color:var(--forest)}
+.s2 .data-cards{margin-top:24px;display:flex;flex-direction:column;gap:12px}
+.data-card{display:flex;align-items:flex-start;gap:16px;padding:18px 22px;border-radius:12px;background:rgba(255,255,255,.55);border:1px solid rgba(13,46,40,.1)}
+.data-card .dc-num{font-family:'DM Serif Display',serif;font-size:36px;line-height:1;color:var(--teal);flex-shrink:0}
+.data-card .dc-title{font-size:24px;font-weight:500;color:var(--forest);margin-bottom:4px}
+.data-card .dc-text{font-size:22px;line-height:1.55;color:var(--forest);opacity:.65;font-weight:300}
+.s2 .source{margin-top:auto;font-size:22px;letter-spacing:.04em;color:var(--forest);opacity:.45;font-family:'JetBrains Mono',monospace;line-height:1.6;border-top:1px solid rgba(13,46,40,.1);padding-top:16px}
+
+/* S3 */
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:66px;line-height:1.06;letter-spacing:-.02em;margin-top:44px;max-width:860px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .mech-cards{margin-top:44px;display:flex;flex-direction:column;gap:18px}
+.mech-card{padding:24px 28px;border-radius:14px;display:flex;align-items:flex-start;gap:20px}
+.mech-card.a{background:rgba(217,106,106,.07);border:1.5px solid rgba(217,106,106,.22)}
+.mech-card.b{background:rgba(201,169,110,.07);border:1.5px solid rgba(201,169,110,.22)}
+.mech-card.c{background:rgba(94,201,167,.06);border:1.5px solid rgba(94,201,167,.18)}
+.mech-card .mc-icon{width:48px;height:48px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.mech-card.a .mc-icon{background:rgba(217,106,106,.18)}
+.mech-card.b .mc-icon{background:rgba(201,169,110,.18)}
+.mech-card.c .mc-icon{background:rgba(94,201,167,.15)}
+.mech-card .mc-icon svg{width:24px;height:24px}
+.mech-card .mc-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:6px}
+.mech-card.a .mc-label{color:var(--red)}
+.mech-card.b .mc-label{color:var(--amber)}
+.mech-card.c .mc-label{color:var(--green)}
+.mech-card .mc-text{font-size:24px;line-height:1.55;font-weight:300;opacity:.88}
+.s3 .bottom-note{margin-top:auto;padding:20px 26px;border-radius:12px;background:rgba(245,243,238,.05);border:1px solid rgba(245,243,238,.12);font-size:24px;line-height:1.6;opacity:.65;font-weight:300;display:flex;align-items:center;gap:14px}
+.s3 .note-prefix{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--amber);flex-shrink:0}
+
+/* S4 */
+.s4 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-.02em;margin-top:44px;max-width:860px}
+.s4 h2 em{font-style:italic;color:var(--amber)}
+.s4 .def-card{margin-top:32px;background:rgba(245,243,238,.08);border:1.5px solid rgba(245,243,238,.18);border-radius:14px;padding:24px 30px}
+.s4 .def-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+.s4 .def-text{font-size:19px;line-height:1.6;opacity:.9;font-weight:300}
+.s4 .prime-vis{margin-top:28px;display:flex;gap:16px}
+.prime-box{flex:1;padding:22px 18px;border-radius:14px;display:flex;flex-direction:column;gap:8px}
+.prime-box.neg{background:rgba(217,106,106,.1);border:1.5px solid rgba(217,106,106,.3)}
+.prime-box.pos{background:rgba(94,201,167,.1);border:1.5px solid rgba(94,201,167,.28)}
+.prime-box .pb-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.16em;text-transform:uppercase}
+.prime-box.neg .pb-label{color:var(--red)}
+.prime-box.pos .pb-label{color:var(--green)}
+.prime-box .pb-trigger{font-family:'DM Serif Display',serif;font-size:28px;line-height:1.1}
+.prime-box.neg .pb-trigger{color:rgba(217,106,106,.85)}
+.prime-box.pos .pb-trigger{color:var(--green)}
+.prime-box .pb-arrow{font-family:'JetBrains Mono',monospace;font-size:24px;color:rgba(245,243,238,.55);margin:4px 0}
+.prime-box .pb-result{font-size:22px;line-height:1.5;font-weight:300;opacity:.80}
+.s4 .bottom-note{margin-top:auto;padding:18px 24px;border-radius:12px;background:rgba(245,243,238,.06);border:1px solid rgba(245,243,238,.12);font-size:24px;line-height:1.6;opacity:.65;font-weight:300;display:flex;gap:12px;align-items:center}
+.s4 .bottom-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--amber);flex-shrink:0}
+
+/* S5 */
+.s5 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.06;letter-spacing:-.02em;margin-top:40px;color:var(--forest);max-width:860px}
+.s5 h2 em{font-style:italic;color:var(--teal)}
+.s5 .scenarios{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.scenario{padding:28px 24px 22px;border-radius:16px;position:relative;display:flex;flex-direction:column;gap:10px}
+.scenario.bad{background:rgba(217,106,106,.05);border:1.5px solid rgba(217,106,106,.18)}
+.scenario.good{background:rgba(26,107,90,.06);border:1.5px solid rgba(26,107,90,.22)}
+.scenario .s-stamp{position:absolute;top:-13px;left:20px;padding:5px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.16em;text-transform:uppercase;font-weight:500}
+.scenario.bad .s-stamp{background:var(--red);color:#fff}
+.scenario.good .s-stamp{background:var(--teal);color:#fff}
+.scenario .s-number{font-family:'DM Serif Display',serif;font-size:60px;line-height:1;letter-spacing:-.03em}
+.scenario.bad .s-number{color:var(--red)}
+.scenario.good .s-number{color:var(--teal);font-style:italic}
+.scenario .s-label{font-size:24px;font-weight:500;line-height:1.3;color:var(--forest)}
+.scenario .s-desc{font-size:22px;line-height:1.6;color:var(--forest);opacity:.62;font-weight:300}
+.scenario .s-result{margin-top:6px;padding:10px 14px;border-radius:10px;font-size:22px;line-height:1.5;font-weight:400}
+.scenario.bad .s-result{background:rgba(217,106,106,.1);color:var(--red)}
+.scenario.good .s-result{background:rgba(26,107,90,.1);color:var(--teal)}
+.s5 .research-note{margin-top:24px;padding:16px 22px;background:rgba(26,107,90,.05);border:1px solid rgba(26,107,90,.15);border-radius:12px;font-size:22px;line-height:1.6;color:var(--forest);font-weight:300}
+.s5 .research-note strong{font-weight:500;color:var(--teal)}
+
+/* S6 */
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:66px;line-height:1.06;letter-spacing:-.02em;margin-top:44px;max-width:860px}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .formula{margin-top:44px;display:flex;flex-direction:column;gap:0}
+.s6 .f-block{width:100%;padding:24px 30px;border-radius:14px;display:flex;align-items:center;gap:20px}
+.s6 .f-block.a{background:rgba(94,201,167,.1);border:2px solid rgba(94,201,167,.28)}
+.s6 .f-block.b{background:rgba(201,169,110,.1);border:2px solid rgba(201,169,110,.25)}
+.s6 .f-block.c{background:rgba(94,201,167,.16);border:2px solid rgba(94,201,167,.5)}
+.s6 .f-op{text-align:center;padding:6px 0;font-family:'DM Serif Display',serif;font-size:36px;color:var(--parchment);opacity:.22;line-height:1}
+.s6 .f-divider{margin:8px 0;border:none;border-top:1px solid rgba(245,243,238,.12)}
+.s6 .f-icon{width:52px;height:52px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.s6 .f-block.a .f-icon{background:rgba(94,201,167,.18)}
+.s6 .f-block.b .f-icon{background:rgba(201,169,110,.18)}
+.s6 .f-block.c .f-icon{background:rgba(94,201,167,.28)}
+.s6 .f-icon svg{width:26px;height:26px}
+.s6 .f-val{font-family:'DM Serif Display',serif;font-size:32px;line-height:1.1;letter-spacing:-.02em}
+.s6 .f-block.a .f-val{color:var(--green)}
+.s6 .f-block.b .f-val{color:var(--amber)}
+.s6 .f-block.c .f-val{color:var(--green)}
+.s6 .f-desc{margin-top:5px;font-size:22px;line-height:1.5;opacity:.70;font-weight:300}
+.s6 .f-note{margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.04em;color:rgba(245,243,238,.48);line-height:1.9;border-top:1px solid rgba(245,243,238,.1);padding-top:20px}
+.s6 .f-note .punch{color:var(--green);font-weight:500;letter-spacing:.02em}
+
+/* S7 */
+.s7 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:68px;line-height:1.04;letter-spacing:-.02em;margin-top:40px;color:var(--forest);max-width:860px}
+.s7 h2 em{font-style:italic;color:var(--teal)}
+.s7 .sub{margin-top:24px;font-size:20px;line-height:1.65;color:var(--forest);opacity:.65;max-width:780px;font-weight:300}
+.s7 .discussion{margin-top:40px;display:flex;flex-direction:column;gap:14px}
+.s7 .disc-item{display:flex;align-items:center;gap:18px;padding:18px 22px;border:1.5px solid rgba(13,46,40,.12);border-radius:14px;font-size:18px;color:var(--forest);background:rgba(255,255,255,.46);line-height:1.4}
+.s7 .disc-item .ic{width:38px;height:38px;border-radius:10px;background:rgba(26,107,90,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.s7 .disc-item .ic svg{width:20px;height:20px;color:var(--teal)}
+.s7 .shift-note{margin-top:22px;padding:18px 22px;border-radius:12px;border:1px dashed rgba(26,107,90,.35);font-size:24px;line-height:1.6;color:var(--forest);opacity:.62;font-weight:300;display:flex;align-items:center;gap:14px}
+.s7 .shift-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--teal);flex-shrink:0}
+
+/* CHROME */
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:24px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:46px;height:46px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.1em;align-self:center;padding:0 10px}
+.caption-panel{width:min(540px,94vw);margin-top:32px;padding:26px 26px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:20px;line-height:1.7}
+.caption-panel .cap-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+.caption-panel p{margin-bottom:12px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel strong{color:var(--parchment);font-weight:500}
+.caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:16px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Vol. 48 · Brain at Work · Cognitive Appraisal ]</span>
+</div>
+
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- ════ S1 — HOOK ════ -->
+      <section class="slide">
+        <div class="cvs bg-dark s1">
+          <div class="head">
+            <span class="dotmark">Neuro Daily · Vol. 48 · Brain at Work</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow">◆ Cognitive Appraisal · Mood Priming</div>
+            <div class="rule"></div>
+            <div class="ghost">@</div>
+            <h1>Buka email pagi.<br>Langsung ada<br>komplain klien.<br><em>Mood kerjamu baru saja ditentukan.</em></h1>
+            <p class="lead">Bukan karena kamu lemah secara mental. Otak memang bekerja seperti ini — dan ada cara untuk menggunakannya sebaliknya.</p>
+
+            <div class="email-vis">
+              <svg viewBox="0 0 936 175" fill="none" width="100%">
+                <!-- Email negatif -->
+                <rect x="0" y="10" width="420" height="110" rx="12" fill="rgba(217,106,106,.1)" stroke="rgba(217,106,106,.55)" stroke-width="2"/>
+                <text x="210" y="52" text-anchor="middle" font-family="JetBrains Mono" font-size="22" fill="rgba(217,106,106,.85)" letter-spacing=".1em" font-weight="500">EMAIL KOMPLAIN</text>
+                <text x="210" y="80" text-anchor="middle" font-family="DM Sans" font-size="20" fill="rgba(217,106,106,.7)">Input pertama hari ini</text>
+                <text x="210" y="106" text-anchor="middle" font-family="DM Sans" font-size="20" fill="rgba(217,106,106,.55)">Amygdala terpicu</text>
+
+                <text x="468" y="75" text-anchor="middle" font-family="DM Serif Display" font-size="52" fill="rgba(201,169,110,.6)">→</text>
+
+                <!-- Mood seharian -->
+                <rect x="516" y="0" width="420" height="130" rx="12" fill="rgba(201,169,110,.1)" stroke="rgba(201,169,110,.55)" stroke-width="2"/>
+                <text x="726" y="46" text-anchor="middle" font-family="JetBrains Mono" font-size="22" fill="rgba(201,169,106,.9)" letter-spacing=".1em" font-weight="500">MOOD SEHARIAN</text>
+                <text x="726" y="78" text-anchor="middle" font-family="DM Sans" font-size="22" fill="rgba(201,169,110,.8)">Framing defensif aktif</text>
+                <text x="726" y="108" text-anchor="middle" font-family="DM Sans" font-size="20" fill="rgba(201,169,110,.6)">Semua diproses lewat lensa ini</text>
+
+                <text x="468" y="160" text-anchor="middle" font-family="JetBrains Mono" font-size="20" fill="rgba(94,201,167,.65)" letter-spacing=".1em">← COGNITIVE APPRAISAL BEKERJA →</text>
+              </svg>
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span><span>01 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#5EC9A7" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#5EC9A7"/></svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════ S2 — RISET ════ -->
+      <section class="slide">
+        <div class="cvs bg-light s2">
+          <div class="head">
+            <span class="dotmark">Riset · Lazarus · Folkman · 1984</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow">◇ Riset · Cognitive Appraisal Theory</div>
+            <div class="rule"></div>
+            <h2>Emosi pertama pagi hari membentuk <em>framing semua yang berikutnya.</em></h2>
+
+            <div class="stat-row">
+              <div class="stat-card a">
+                <div class="stat-num">27'</div>
+                <div class="stat-label">Durasi Mood Priming</div>
+                <div class="stat-desc">Emosi yang dipicu di pagi hari mempengaruhi cara otak memproses informasi selama rata-rata 27 menit ke depan — bahkan setelah pemicunya berlalu</div>
+              </div>
+              <div class="stat-card b">
+                <div class="stat-num">3×</div>
+                <div class="stat-label">Amplifikasi Sinyal Negatif</div>
+                <div class="stat-desc">Saat otak dalam mode defensif, sinyal negatif diproses 3× lebih cepat dan 3× lebih intens dari sinyal positif</div>
+              </div>
+            </div>
+
+            <div class="data-cards">
+              <div class="data-card">
+                <div class="dc-num">01</div>
+                <div>
+                  <div class="dc-title">Lazarus & Folkman — Cognitive Appraisal</div>
+                  <div class="dc-text">Cara otak menilai sebuah peristiwa (bukan peristiwanya sendiri) yang menentukan respons emosional. Input pertama hari ini menjadi "lens" yang dipakai untuk menilai semua yang berikutnya.</div>
+                </div>
+              </div>
+              <div class="data-card">
+                <div class="dc-num">02</div>
+                <div>
+                  <div class="dc-title">Affect Heuristic — Kahneman</div>
+                  <div class="dc-text">Otak menggunakan emosi saat ini sebagai shortcut untuk menilai situasi baru. Emosi negatif di pagi hari = semua situasi baru dinilai lebih negatif, lebih mengancam, lebih sulit.</div>
+                </div>
+              </div>
+            </div>
+
+            <p class="source">→ Lazarus & Folkman (1984) · "Stress, Appraisal, and Coping" + Kahneman (2011) · "Thinking, Fast and Slow"</p>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span><span>02 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/></svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════ S3 — MEKANISME ════ -->
+      <section class="slide">
+        <div class="cvs bg-dark s3">
+          <div class="head">
+            <span class="dotmark">Konteks · Kenapa Input Pertama Sangat Kuat</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow">↺ Konteks · Tiga Alasan Biologis</div>
+            <div class="rule"></div>
+            <h2>Pagi hari, otak dalam <em>kondisi paling rentan</em> terhadap priming.</h2>
+
+            <div class="mech-cards">
+              <div class="mech-card a">
+                <div class="mc-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#D96A6A" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
+                <div>
+                  <div class="mc-label">Cortisol Awakening Response</div>
+                  <div class="mc-text">Pagi hari adalah puncak kortisol — otak dalam kondisi hypervigilant dan sangat sensitif terhadap sinyal ancaman. Stimulus negatif di pagi hari diabsorbsi lebih kuat dari waktu lain.</div>
+                </div>
+              </div>
+              <div class="mech-card b">
+                <div class="mc-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                </div>
+                <div>
+                  <div class="mc-label">Primacy Effect</div>
+                  <div class="mc-text">Informasi yang diterima pertama selalu mendapat bobot lebih besar. Otak menjadikannya anchor untuk menilai semua informasi berikutnya sepanjang hari.</div>
+                </div>
+              </div>
+              <div class="mech-card c">
+                <div class="mc-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#5EC9A7" stroke-width="1.5"><path d="M9 12l2 2 4-4"/><rect x="3" y="3" width="18" height="18" rx="4"/></svg>
+                </div>
+                <div>
+                  <div class="mc-label">Mood Congruent Processing</div>
+                  <div class="mc-text">Otak yang sudah dalam mode negatif secara aktif mencari dan memprioritaskan informasi yang "cocok" dengan mood tersebut — memperparah dan memperpanjang kondisi awal.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bottom-note">
+              <span class="note-prefix">→</span>
+              Input pertama bukan hanya memengaruhi momen itu. Ia mewarnai seluruh cara otak memproses hari.
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span><span>03 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#5EC9A7" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#5EC9A7"/></svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════ S4 — TEAL ════ -->
+      <section class="slide">
+        <div class="cvs bg-teal s4">
+          <div class="head">
+            <span class="dotmark">Cognitive Appraisal · Mood Priming</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow">○ Cognitive Appraisal Theory</div>
+            <div class="rule"></div>
+            <h2>Bukan peristiwanya<br>yang menentukan —<br>tapi <em>lensa pertamamu.</em></h2>
+
+            <div class="def-card">
+              <div class="def-label">Cognitive Appraisal</div>
+              <div class="def-text">Cara otak mengevaluasi makna sebuah peristiwa berdasarkan konteks emosional yang sedang aktif. Emosi yang terpicu lebih awal menjadi "lensa" yang mewarnai penilaian terhadap semua peristiwa berikutnya.</div>
+            </div>
+
+            <div class="prime-vis">
+              <div class="prime-box neg">
+                <div class="pb-label">Input Negatif Pertama</div>
+                <div class="pb-trigger">Email komplain</div>
+                <div class="pb-arrow">↓</div>
+                <div class="pb-result">Meeting berikutnya terasa lebih berat. Komentar kolega terasa lebih kritis. Tugas terasa lebih sulit dari biasanya.</div>
+              </div>
+              <div class="prime-box pos">
+                <div class="pb-label">Input Positif Pertama</div>
+                <div class="pb-trigger">Pesan apresiasi</div>
+                <div class="pb-arrow">↓</div>
+                <div class="pb-result">Meeting terasa lebih manageable. Kolega terasa lebih suportif. Tugas terasa lebih dalam jangkauan.</div>
+              </div>
+            </div>
+
+            <div class="bottom-note">
+              <span class="bottom-arrow">→</span>
+              Peristiwa di luar belum tentu berubah — tapi cara otak menilainya sangat berbeda tergantung input pertama.
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span><span>04 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#C9A96E" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#C9A96E"/></svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════ S5 — SKENARIO ════ -->
+      <section class="slide">
+        <div class="cvs bg-light s5">
+          <div class="head">
+            <span class="dotmark">Skenario · Dua Cara Mulai Hari</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow">↔ Skenario · Input Pertama yang Berbeda</div>
+            <div class="rule"></div>
+            <h2>Pagi yang sama,<br><em>hari yang berbeda.</em></h2>
+
+            <div class="scenarios">
+              <div class="scenario bad">
+                <span class="s-stamp">Email Dulu</span>
+                <div class="s-number">↓</div>
+                <div class="s-label">Bangun → langsung buka email</div>
+                <div class="s-desc">Komplain klien jadi input pertama. Amygdala terpicu. Framing defensif aktif untuk 27 menit ke depan — dan mewarnai seluruh interaksi pagi itu</div>
+                <div class="s-result">→ Hari terasa lebih berat.</div>
+              </div>
+              <div class="scenario good">
+                <span class="s-stamp">Ritual Dulu</span>
+                <div class="s-number" style="font-style:italic">↑</div>
+                <div class="s-label">Bangun → ritual positif → baru email</div>
+                <div class="s-desc">Otak mendapat input netral/positif terlebih dahulu. Cortisol stabil. Saat email komplain dibuka — diproses lebih jernih tanpa framing defensif</div>
+                <div class="s-result">→ Respons lebih terkontrol.</div>
+              </div>
+            </div>
+
+            <div class="research-note">
+              <strong>Kuncinya:</strong> Email adalah tool — bukan jam alarm. Otak tidak harus menerima input eksternal sebagai hal pertama yang ia proses setiap pagi.
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span><span>05 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/></svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════ S6 — FORMULA ════ -->
+      <section class="slide">
+        <div class="cvs bg-dark s6">
+          <div class="head">
+            <span class="dotmark">Formula · Kendalikan Input Pertama</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow">≡ Formula · Desain Input Pertamamu</div>
+            <div class="rule"></div>
+            <h2>Cara kendalikan <em>lensa pertama</em> sebelum dunia luar mengisinya.</h2>
+
+            <div class="formula">
+              <div class="f-block a">
+                <div class="f-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#5EC9A7" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7" x2="12" y2="12"/><line x1="12" y1="12" x2="15.5" y2="14.5"/></svg>
+                </div>
+                <div>
+                  <div class="f-val">Tunda Email 30 Menit</div>
+                  <div class="f-desc">Jangan buka email, berita, atau media sosial dalam 30 menit pertama bangun. Beri otak waktu untuk aktif dalam mode netral sebelum menerima input eksternal.</div>
+                </div>
+              </div>
+              <div class="f-op">+</div>
+              <div class="f-block b">
+                <div class="f-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="1.5"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 6v6l4 2"/></svg>
+                </div>
+                <div>
+                  <div class="f-val">Pilih Input Pertamamu</div>
+                  <div class="f-desc">Isi 30 menit itu dengan sesuatu yang netral atau positif — jalan, kopi tanpa layar, catatan harian, musik. Ini adalah "priming" yang kamu kendalikan.</div>
+                </div>
+              </div>
+              <hr class="f-divider"/>
+              <div class="f-block c">
+                <div class="f-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#5EC9A7" stroke-width="1.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </div>
+                <div>
+                  <div class="f-val">Buka Email dengan Niat</div>
+                  <div class="f-desc">Saat waktunya membuka email — duduk dengan sadar, bukan sambil melakukan hal lain. Otak yang siap memproses email komplain jauh lebih terkontrol dari yang tidak siap.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="f-note">
+              Kamu tidak bisa mengontrol isi email orang lain —
+              <span class="punch">tapi kamu bisa mengontrol kapan otak kamu siap menerimanya.</span>
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span><span>06 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#5EC9A7" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#5EC9A7"/></svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════ S7 — CTA ════ -->
+      <section class="slide">
+        <div class="cvs bg-light s7">
+          <div class="head">
+            <span class="dotmark">Sekarang giliranmu</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow">◆ Sekarang giliranmu</div>
+            <div class="rule"></div>
+            <h2>Hal pertama yang kamu buka setelah bangun — <em>apa?</em></h2>
+
+            <p class="sub">Jawab di komentar dengan 1 kata. Dan sekarang kamu tahu kenapa itu penting.</p>
+
+            <div class="discussion">
+              <div class="disc-item">
+                <div class="ic">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+                </div>
+                Simpan — besok coba 30 menit tanpa layar setelah bangun. Perhatikan bedanya.
+              </div>
+              <div class="disc-item">
+                <div class="ic">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                </div>
+                Tag rekan kerja yang selalu balas email jam 6 pagi — mereka perlu tahu ini
+              </div>
+            </div>
+
+            <div class="shift-note">
+              <span class="shift-arrow">→</span>
+              Input pertama adalah hak yang bisa kamu ambil kembali. Bukan dunia luar yang harus mengisinya duluan.
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span><span>07 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/></svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="caption-panel">
+  <div class="cap-label">Caption · Vol. 48 — Email Pagi & Mood Kerja</div>
+  <p><strong>Buka email pagi. Langsung ada komplain klien. Mood kerjamu baru saja ditentukan.</strong></p>
+  <p>Ini Cognitive Appraisal — cara otak mengevaluasi makna sebuah peristiwa berdasarkan konteks emosional yang sedang aktif. Emosi yang terpicu pertama kali menjadi lensa yang mewarnai semua penilaian berikutnya.</p>
+  <p>Lazarus & Folkman membuktikan: cara otak menilai sebuah peristiwa — bukan peristiwanya sendiri — yang menentukan respons emosional. Dan pagi hari, saat cortisol awakening response sedang di puncak, otak sangat sensitif terhadap input pertama yang diterimanya.</p>
+  <p>Kamu tidak bisa mengontrol isi inbox. Tapi kamu bisa mengontrol kapan otak kamu siap menerimanya.</p>
+  <p>Hal pertama yang kamu buka setelah bangun — apa? Jawab dengan 1 kata di komentar.</p>
+  <span class="hash">#neurosains #produktivitas #email #mood #morningroutine #cognitiveappraisal #otakmanusia #kerjacerdas</span>
+</div>
+
+<div class="controls">
+  <button id="prev">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next">›</button>
+</div>
+
+<script>
+const track=document.getElementById('track'),dotsEl=document.getElementById('dots'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next');
+const total=track.children.length;let i=0;
+function scaleCanvases(){document.querySelectorAll('.slide').forEach(s=>{const c=s.querySelector('.cvs');if(!c)return;c.style.transform=`scale(${s.clientWidth/1080})`;});}
+window.addEventListener('resize',scaleCanvases);scaleCanvases();
+for(let k=0;k<total;k++){const b=document.createElement('button');b.className='dot'+(k===0?' active':'');b.addEventListener('click',()=>go(k));dotsEl.appendChild(b)}
+const dots=[...dotsEl.children];
+function go(n){i=Math.max(0,Math.min(total-1,n));track.style.transform=`translateX(-${i*100}%)`;dots.forEach((d,k)=>d.classList.toggle('active',k===i));counter.textContent=`${i+1} / ${total}`;prevBtn.disabled=i===0;nextBtn.disabled=i===total-1}
+prevBtn.addEventListener('click',()=>go(i-1));nextBtn.addEventListener('click',()=>go(i+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(i+1);if(e.key==='ArrowLeft')go(i-1)});
+let sx=0,dx=0,drag=false;const vp=document.querySelector('.viewport');
+vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;drag=true;dx=0},{passive:true});
+vp.addEventListener('touchmove',e=>{if(!drag)return;dx=e.touches[0].clientX-sx},{passive:true});
+vp.addEventListener('touchend',()=>{if(!drag)return;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));drag=false});
+go(0);
+</script>
+</body>
+</html>

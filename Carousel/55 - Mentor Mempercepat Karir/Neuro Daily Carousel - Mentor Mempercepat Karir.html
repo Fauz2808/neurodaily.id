@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Neuro Daily — Mentor Mempercepat Karir</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;--red:#D96A6A;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0a0a0a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 100px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#7a807d;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(540px,94vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;position:relative;overflow:hidden}
+.cvs{width:1080px;height:1350px;transform-origin:top left;position:absolute;top:0;left:0;font-family:'DM Sans',sans-serif}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.cvs .head,.cvs .foot{position:absolute;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 64px;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase}
+.cvs .head{top:0;height:78px;border-bottom:1px solid rgba(245,243,238,.12)}
+.cvs .foot{bottom:0;height:64px;border-top:1px solid rgba(245,243,238,.12)}
+.bg-light .head,.bg-light .foot{border-color:rgba(13,46,40,.12)}
+.bg-teal .head,.bg-teal .foot{border-color:rgba(245,243,238,.18)}
+.cvs .head span,.cvs .foot span{opacity:.55}
+.cvs .head .dotmark::before{content:"◆ ";color:var(--green);opacity:1}
+.bg-light .head .dotmark::before{color:var(--teal)}
+.bg-teal .head .dotmark::before{color:var(--amber)}
+.hippo-mark{display:flex;align-items:center;gap:10px;opacity:1!important}
+.hippo-mark svg{width:30px;height:30px;flex-shrink:0}
+.body{position:absolute;top:78px;bottom:64px;left:0;right:0;padding:52px 72px;display:flex;flex-direction:column}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.bg-dark .eyebrow{color:var(--green)}
+.bg-light .eyebrow{color:var(--teal)}
+.bg-teal .eyebrow{color:var(--amber)}
+.rule{width:48px;height:3px;border-radius:2px;margin-top:18px}
+.bg-dark .rule{background:var(--green)}
+.bg-light .rule{background:var(--teal)}
+.bg-teal .rule{background:var(--amber)}
+
+.s1 .ghost{position:absolute;font-family:'DM Serif Display',serif;font-size:820px;line-height:.88;color:rgba(94,201,167,.05);pointer-events:none;user-select:none;right:-80px;top:10px}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:92px;line-height:1.02;letter-spacing:-.02em;margin-top:52px;max-width:820px;position:relative;z-index:2}
+.s1 h1 em{font-style:italic;color:var(--amber)}
+.s1 .lead{margin-top:32px;font-size:22px;line-height:1.65;opacity:.72;max-width:640px;font-weight:300;position:relative;z-index:2}
+.s1 .learn-vis{position:absolute;bottom:88px;left:72px;right:72px;z-index:2}
+
+.s2 h2,.s3 h2,.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;letter-spacing:-.02em}
+.s2 h2{font-size:64px;line-height:1.06;margin-top:36px;color:var(--forest);max-width:860px}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .stat-row{margin-top:36px;display:flex;gap:20px}
+.stat-card{flex:1;padding:26px 22px;border-radius:16px;display:flex;flex-direction:column;gap:10px}
+.stat-card.a{background:rgba(94,201,167,.06);border:1.5px solid rgba(94,201,167,.22)}
+.stat-card.b{background:rgba(201,169,110,.06);border:1.5px solid rgba(201,169,110,.2)}
+.stat-num{font-family:'DM Serif Display',serif;font-size:68px;line-height:1;letter-spacing:-.03em}
+.stat-card.a .stat-num{color:var(--teal)}
+.stat-card.b .stat-num{color:var(--amber)}
+.stat-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;opacity:.6;color:var(--forest)}
+.stat-desc{font-size:22px;line-height:1.55;opacity:.65;font-weight:300;color:var(--forest)}
+.s2 .data-cards{margin-top:24px;display:flex;flex-direction:column;gap:12px}
+.data-card{display:flex;align-items:flex-start;gap:16px;padding:18px 22px;border-radius:12px;background:rgba(255,255,255,.55);border:1px solid rgba(13,46,40,.1)}
+.data-card .dc-num{font-family:'DM Serif Display',serif;font-size:36px;line-height:1;color:var(--teal);flex-shrink:0}
+.data-card .dc-title{font-size:24px;font-weight:500;color:var(--forest);margin-bottom:4px}
+.data-card .dc-text{font-size:22px;line-height:1.55;color:var(--forest);opacity:.65;font-weight:300}
+.s2 .source{margin-top:auto;font-size:22px;letter-spacing:.04em;color:var(--forest);opacity:.45;font-family:'JetBrains Mono',monospace;line-height:1.6;border-top:1px solid rgba(13,46,40,.1);padding-top:16px}
+
+.s3 h2{font-size:66px;line-height:1.06;margin-top:44px;max-width:860px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .mech-cards{margin-top:44px;display:flex;flex-direction:column;gap:18px}
+.mech-card{padding:24px 28px;border-radius:14px;display:flex;align-items:flex-start;gap:20px}
+.mech-card.a{background:rgba(94,201,167,.07);border:1.5px solid rgba(94,201,167,.2)}
+.mech-card.b{background:rgba(201,169,110,.07);border:1.5px solid rgba(201,169,110,.22)}
+.mech-card.c{background:rgba(94,201,167,.05);border:1.5px solid rgba(94,201,167,.15)}
+.mech-card .mc-icon{width:48px;height:48px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.mech-card.a .mc-icon{background:rgba(94,201,167,.18)}
+.mech-card.b .mc-icon{background:rgba(201,169,110,.18)}
+.mech-card.c .mc-icon{background:rgba(94,201,167,.12)}
+.mech-card .mc-icon svg{width:24px;height:24px}
+.mech-card .mc-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:6px}
+.mech-card.a .mc-label,.mech-card.c .mc-label{color:var(--green)}
+.mech-card.b .mc-label{color:var(--amber)}
+.mech-card .mc-text{font-size:24px;line-height:1.55;font-weight:300;opacity:.88}
+.s3 .bottom-note{margin-top:auto;padding:20px 26px;border-radius:12px;background:rgba(245,243,238,.05);border:1px solid rgba(245,243,238,.12);font-size:24px;line-height:1.6;opacity:.65;font-weight:300;display:flex;align-items:center;gap:14px}
+.s3 .note-prefix{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--amber);flex-shrink:0}
+
+.s4 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-.02em;margin-top:44px;max-width:860px}
+.s4 h2 em{font-style:italic;color:var(--amber)}
+.s4 .def-card{margin-top:32px;background:rgba(245,243,238,.08);border:1.5px solid rgba(245,243,238,.18);border-radius:14px;padding:24px 30px}
+.s4 .def-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+.s4 .def-text{font-size:19px;line-height:1.6;opacity:.9;font-weight:300}
+.s4 .learn-compare{margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.lc-box{padding:22px 18px;border-radius:14px;display:flex;flex-direction:column;gap:8px}
+.lc-box.solo{background:rgba(201,169,110,.08);border:1.5px solid rgba(201,169,110,.25)}
+.lc-box.mentor{background:rgba(94,201,167,.1);border:1.5px solid rgba(94,201,167,.3)}
+.lc-box .lb-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.1em;text-transform:uppercase}
+.lc-box.solo .lb-label{color:rgba(201,169,110,.85)}
+.lc-box.mentor .lb-label{color:rgba(94,201,167,.85)}
+.lc-box .lb-time{font-family:'DM Serif Display',serif;font-size:44px;line-height:1}
+.lc-box.solo .lb-time{color:var(--amber)}
+.lc-box.mentor .lb-time{color:var(--green)}
+.lc-box .lb-desc{font-size:22px;line-height:1.5;opacity:.72;font-weight:300}
+.s4 .bottom-note{margin-top:auto;padding:18px 24px;border-radius:12px;background:rgba(245,243,238,.06);border:1px solid rgba(245,243,238,.12);font-size:24px;line-height:1.6;opacity:.65;font-weight:300;display:flex;gap:12px;align-items:center}
+.s4 .bottom-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--amber);flex-shrink:0}
+
+.s5 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.06;letter-spacing:-.02em;margin-top:40px;color:var(--forest);max-width:860px}
+.s5 h2 em{font-style:italic;color:var(--teal)}
+.s5 .scenarios{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.scenario{padding:28px 24px 22px;border-radius:16px;position:relative;display:flex;flex-direction:column;gap:10px}
+.scenario.bad{background:rgba(201,169,110,.05);border:1.5px solid rgba(201,169,110,.2)}
+.scenario.good{background:rgba(26,107,90,.06);border:1.5px solid rgba(26,107,90,.22)}
+.scenario .s-stamp{position:absolute;top:-13px;left:20px;padding:5px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.16em;text-transform:uppercase;font-weight:500}
+.scenario.bad .s-stamp{background:var(--amber);color:#0D2E28}
+.scenario.good .s-stamp{background:var(--teal);color:#fff}
+.scenario .s-number{font-family:'DM Serif Display',serif;font-size:64px;line-height:1;letter-spacing:-.03em}
+.scenario.bad .s-number{color:var(--amber)}
+.scenario.good .s-number{color:var(--teal);font-style:italic}
+.scenario .s-label{font-size:24px;font-weight:500;line-height:1.3;color:var(--forest)}
+.scenario .s-desc{font-size:22px;line-height:1.6;color:var(--forest);opacity:.62;font-weight:300}
+.scenario .s-result{margin-top:6px;padding:10px 14px;border-radius:10px;font-size:22px;line-height:1.5;font-weight:400}
+.scenario.bad .s-result{background:rgba(201,169,110,.1);color:#7a5a20}
+.scenario.good .s-result{background:rgba(26,107,90,.1);color:var(--teal)}
+.s5 .research-note{margin-top:24px;padding:16px 22px;background:rgba(26,107,90,.05);border:1px solid rgba(26,107,90,.15);border-radius:12px;font-size:22px;line-height:1.6;color:var(--forest);font-weight:300}
+.s5 .research-note strong{font-weight:500;color:var(--teal)}
+
+.s6 h2{font-size:66px;line-height:1.06;margin-top:44px;max-width:860px}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .formula{margin-top:44px;display:flex;flex-direction:column;gap:0}
+.s6 .f-block{width:100%;padding:24px 30px;border-radius:14px;display:flex;align-items:center;gap:20px}
+.s6 .f-block.a{background:rgba(94,201,167,.1);border:2px solid rgba(94,201,167,.28)}
+.s6 .f-block.b{background:rgba(201,169,110,.1);border:2px solid rgba(201,169,110,.25)}
+.s6 .f-block.c{background:rgba(94,201,167,.16);border:2px solid rgba(94,201,167,.5)}
+.s6 .f-op{text-align:center;padding:6px 0;font-family:'DM Serif Display',serif;font-size:36px;color:var(--parchment);opacity:.22;line-height:1}
+.s6 .f-divider{margin:8px 0;border:none;border-top:1px solid rgba(245,243,238,.12)}
+.s6 .f-icon{width:52px;height:52px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.s6 .f-block.a .f-icon{background:rgba(94,201,167,.18)}
+.s6 .f-block.b .f-icon{background:rgba(201,169,110,.18)}
+.s6 .f-block.c .f-icon{background:rgba(94,201,167,.28)}
+.s6 .f-icon svg{width:26px;height:26px}
+.s6 .f-val{font-family:'DM Serif Display',serif;font-size:32px;line-height:1.1;letter-spacing:-.02em}
+.s6 .f-block.a .f-val{color:var(--green)}
+.s6 .f-block.b .f-val{color:var(--amber)}
+.s6 .f-block.c .f-val{color:var(--green)}
+.s6 .f-desc{margin-top:5px;font-size:22px;line-height:1.5;opacity:.70;font-weight:300}
+.s6 .f-note{margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.04em;color:rgba(245,243,238,.48);line-height:1.9;border-top:1px solid rgba(245,243,238,.1);padding-top:20px}
+.s6 .f-note .punch{color:var(--green);font-weight:500;letter-spacing:.02em}
+
+.s7 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:68px;line-height:1.04;letter-spacing:-.02em;margin-top:40px;color:var(--forest);max-width:860px}
+.s7 h2 em{font-style:italic;color:var(--teal)}
+.s7 .sub{margin-top:24px;font-size:20px;line-height:1.65;color:var(--forest);opacity:.65;max-width:780px;font-weight:300}
+.s7 .discussion{margin-top:40px;display:flex;flex-direction:column;gap:14px}
+.s7 .disc-item{display:flex;align-items:center;gap:18px;padding:18px 22px;border:1.5px solid rgba(13,46,40,.12);border-radius:14px;font-size:18px;color:var(--forest);background:rgba(255,255,255,.46);line-height:1.4}
+.s7 .disc-item .ic{width:38px;height:38px;border-radius:10px;background:rgba(26,107,90,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.s7 .disc-item .ic svg{width:20px;height:20px;color:var(--teal)}
+.s7 .shift-note{margin-top:22px;padding:18px 22px;border-radius:12px;border:1px dashed rgba(26,107,90,.35);font-size:24px;line-height:1.6;color:var(--forest);opacity:.62;font-weight:300;display:flex;align-items:center;gap:14px}
+.s7 .shift-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--teal);flex-shrink:0}
+
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:24px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:46px;height:46px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.1em;align-self:center;padding:0 10px}
+.caption-panel{width:min(540px,94vw);margin-top:32px;padding:26px 26px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:20px;line-height:1.7}
+.caption-panel .cap-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+.caption-panel p{margin-bottom:12px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel strong{color:var(--parchment);font-weight:500}
+.caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:16px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Vol. 55 · Career Neuroscience · Mirror Neuron ]</span>
+</div>
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- S1 -->
+      <section class="slide">
+        <div class="cvs bg-dark s1">
+          <div class="head"><span class="dotmark">Neuro Daily · Vol. 55 · Career Neuroscience</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Mirror Neuron · Accelerated Learning</div>
+            <div class="rule"></div>
+            <div class="ghost">M</div>
+            <h1>1 tahun punya<br>mentor yang tepat.<br><em>Setara 3–5 tahun belajar sendiri.</em></h1>
+            <p class="lead">Bukan motivasi kosong. Ada penjelasan neurologis konkret kenapa mentor yang tepat mempercepat kurva belajar secara dramatis.</p>
+            <div class="learn-vis">
+              <svg viewBox="0 0 936 170" fill="none" width="100%">
+                <rect x="0" y="15" width="420" height="105" rx="12" fill="rgba(201,169,110,.08)" stroke="rgba(201,169,110,.4)" stroke-width="2"/>
+                <text x="210" y="52" text-anchor="middle" font-family="JetBrains Mono" font-size="24" fill="rgba(201,169,110,.85)" letter-spacing=".1em" font-weight="500">BELAJAR SENDIRI</text>
+                <text x="210" y="82" text-anchor="middle" font-family="DM Sans" font-size="22" fill="rgba(201,169,110,.7)">Trial & error dari nol</text>
+                <text x="210" y="108" text-anchor="middle" font-family="DM Sans" font-size="20" fill="rgba(201,169,110,.55)">3–5 tahun untuk expert level</text>
+
+                <text x="468" y="78" text-anchor="middle" font-family="DM Serif Display" font-size="52" fill="rgba(94,201,167,.6)">vs</text>
+
+                <rect x="516" y="5" width="420" height="125" rx="12" fill="rgba(94,201,167,.1)" stroke="rgba(94,201,167,.5)" stroke-width="2"/>
+                <text x="726" y="46" text-anchor="middle" font-family="JetBrains Mono" font-size="24" fill="rgba(94,201,167,.9)" letter-spacing=".1em" font-weight="500">DENGAN MENTOR</text>
+                <text x="726" y="76" text-anchor="middle" font-family="DM Sans" font-size="22" fill="rgba(94,201,167,.75)">Belajar dari neural pathway expert</text>
+                <text x="726" y="106" text-anchor="middle" font-family="DM Sans" font-size="20" fill="rgba(94,201,167,.6)">1 tahun untuk hasil yang sama</text>
+
+                <text x="468" y="155" text-anchor="middle" font-family="JetBrains Mono" font-size="20" fill="rgba(201,169,110,.65)" letter-spacing=".1em">← MIRROR NEURON SYSTEM BEKERJA →</text>
+              </svg>
+            </div>
+          </div>
+          <div class="foot"><span>neurodaily.id</span><span>01 / 07</span>
+            <span class="hippo-mark"><svg viewBox="0 0 32 32" fill="none" stroke="#5EC9A7" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#5EC9A7"/></svg></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- S2 -->
+      <section class="slide">
+        <div class="cvs bg-light s2">
+          <div class="head"><span class="dotmark">Riset · Rizzolatti · Mirror Neuron · Observational</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◇ Riset · Mirror Neuron & Observational Learning</div>
+            <div class="rule"></div>
+            <h2">Otak belajar dari <em>mengobservasi expert</em> hampir secepat melakukannya sendiri.</h2>
+            <div class="stat-row">
+              <div class="stat-card a">
+                <div class="stat-num">5×</div>
+                <div class="stat-label">Kecepatan Belajar</div>
+                <div class="stat-desc">Belajar dari observasi langsung terhadap expert menghasilkan neural pathway yang sama — dengan kecepatan pembentukan hingga 5× lebih cepat dari trial & error sendiri</div>
+              </div>
+              <div class="stat-card b">
+                <div class="stat-num">90%</div>
+                <div class="stat-label">Neural Overlap</div>
+                <div class="stat-desc">Saat mengobservasi seseorang melakukan sesuatu, 90% area otak yang aktif saat melakukannya sendiri juga aktif — itulah dasar mirror neuron</div>
+              </div>
+            </div>
+            <div class="data-cards">
+              <div class="data-card">
+                <div class="dc-num">01</div>
+                <div>
+                  <div class="dc-title">Rizzolatti et al. — Mirror Neuron Discovery</div>
+                  <div class="dc-text">Mirror neuron aktif saat kita melihat orang lain melakukan sesuatu — sama seperti saat kita melakukannya sendiri. Otak secara harfiah "berlatih" saat mengobservasi expert.</div>
+                </div>
+              </div>
+              <div class="data-card">
+                <div class="dc-num">02</div>
+                <div>
+                  <div class="dc-title">Bandura — Observational Learning Theory</div>
+                  <div class="dc-text">Manusia bisa belajar perilaku kompleks hanya dari mengobservasi — tanpa perlu langsung mencoba dan gagal. Ini mengapa melihat mentor bekerja secara langsung sangat berharga.</div>
+                </div>
+              </div>
+            </div>
+            <p class="source">→ Rizzolatti et al. (1996) · "Premotor cortex and recognition of motor actions" · Cognitive Brain Research</p>
+          </div>
+          <div class="foot"><span>neurodaily.id</span><span>02 / 07</span>
+            <span class="hippo-mark"><svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/></svg></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- S3 -->
+      <section class="slide">
+        <div class="cvs bg-dark s3">
+          <div class="head"><span class="dotmark">Konteks · Kenapa Mentor Beda dari Buku</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">↺ Konteks · Tiga Hal yang Tidak Bisa Diganti Buku</div>
+            <div class="rule"></div>
+            <h2>Mentor memberi sesuatu yang buku <em>tidak bisa berikan.</em></h2>
+            <div class="mech-cards">
+              <div class="mech-card a">
+                <div class="mc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#5EC9A7" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                <div>
+                  <div class="mc-label">Tacit Knowledge</div>
+                  <div class="mc-text">Pengetahuan implisit yang tidak bisa dituliskan — cara berpikir, intuisi yang dibangun dari pengalaman, dan judgment calls yang hanya bisa dipelajari dengan melihat langsung.</div>
+                </div>
+              </div>
+              <div class="mech-card b">
+                <div class="mc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+                <div>
+                  <div class="mc-label">Real-Time Feedback</div>
+                  <div class="mc-text">Buku tidak bisa tahu kamu salah di langkah 3 saat kamu pikir sudah benar. Mentor bisa mengoreksi kesalahan sebelum menjadi kebiasaan yang sulit diubah.</div>
+                </div>
+              </div>
+              <div class="mech-card c">
+                <div class="mc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#5EC9A7" stroke-width="1.5"><path d="M9 12l2 2 4-4"/><rect x="3" y="3" width="18" height="18" rx="4"/></svg></div>
+                <div>
+                  <div class="mc-label">Compressed Experience</div>
+                  <div class="mc-text">Mentor membagikan pelajaran dari 10 tahun kesalahan dalam satu percakapan. Kamu mendapat manfaat dari experience tanpa harus mengalami semua kegagalannya.</div>
+                </div>
+              </div>
+            </div>
+            <div class="bottom-note">
+              <span class="note-prefix">→</span>
+              Buku memberi informasi. Mentor memberi transformasi — karena mirror neuron bekerja pada observasi manusia nyata, bukan teks.
+            </div>
+          </div>
+          <div class="foot"><span>neurodaily.id</span><span>03 / 07</span>
+            <span class="hippo-mark"><svg viewBox="0 0 32 32" fill="none" stroke="#5EC9A7" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#5EC9A7"/></svg></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- S4 -->
+      <section class="slide">
+        <div class="cvs bg-teal s4">
+          <div class="head"><span class="dotmark">Mirror Neuron · Tacit Knowledge</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">○ Mirror Neuron System</div>
+            <div class="rule"></div>
+            <h2">Otak kamu berlatih<br>saat melihat mentor<br><em>bekerja.</em></h2>
+            <div class="def-card">
+              <div class="def-label">Mirror Neuron System</div>
+              <div class="def-text">Jaringan neuron yang aktif baik saat kita melakukan sesuatu maupun saat kita mengobservasi orang lain melakukannya. Inilah dasar biologis kenapa belajar dari mentor yang tepat bisa dramatis mempercepat kurva pembelajaran.</div>
+            </div>
+            <div class="learn-compare">
+              <div class="lc-box solo">
+                <div class="lb-label">Sendirian</div>
+                <div class="lb-time">3–5 Th</div>
+                <div class="lb-desc">Trial & error dari nol, tidak ada yang mengoreksi pola salah, tacit knowledge tidak tersampaikan</div>
+              </div>
+              <div class="lc-box mentor">
+                <div class="lb-label">Dengan Mentor</div>
+                <div class="lb-time">1 Th</div>
+                <div class="lb-desc">Mirror neuron aktif saat observasi, tacit knowledge tersampaikan, kesalahan dikoreksi sebelum menjadi kebiasaan</div>
+              </div>
+            </div>
+            <div class="bottom-note">
+              <span class="bottom-arrow">→</span>
+              Mentor tidak menggantikan kerja keras — ia mengarahkan kerja keras ke jalur yang paling efisien secara neurologis.
+            </div>
+          </div>
+          <div class="foot"><span>neurodaily.id</span><span>04 / 07</span>
+            <span class="hippo-mark"><svg viewBox="0 0 32 32" fill="none" stroke="#C9A96E" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#C9A96E"/></svg></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- S5 -->
+      <section class="slide">
+        <div class="cvs bg-light s5">
+          <div class="head"><span class="dotmark">Skenario · Dua Jalur Karir</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">↔ Skenario · Tanpa vs Dengan Mentor</div>
+            <div class="rule"></div>
+            <h2">Titik mulai yang sama,<br><em>jarak yang berbeda.</em></h2>
+            <div class="scenarios">
+              <div class="scenario bad">
+                <span class="s-stamp">Tanpa Mentor</span>
+                <div class="s-number">5Y</div>
+                <div class="s-label">Belajar sendiri</div>
+                <div class="s-desc">Trial & error, ulang kesalahan yang sama berulang, tidak tahu blind spot sendiri, butuh waktu lama untuk tahu mana yang penting dan mana yang tidak</div>
+                <div class="s-result">→ 5 tahun untuk expert level.</div>
+              </div>
+              <div class="scenario good">
+                <span class="s-stamp">Dengan Mentor</span>
+                <div class="s-number" style="font-style:italic">1Y</div>
+                <div class="s-label">Guided learning</div>
+                <div class="s-desc">Kesalahan dikoreksi sebelum jadi kebiasaan, tacit knowledge tersampaikan langsung, fokus langsung ke hal yang paling berdampak — bukan yang tampak paling menarik</div>
+                <div class="s-result">→ 1–2 tahun untuk hasil setara.</div>
+              </div>
+            </div>
+            <div class="research-note">
+              <strong>Kuncinya:</strong> Mentor yang tepat bukan hanya yang paling expert — tapi yang bisa mengartikulasikan cara berpikirnya dan mau menginvestasikan waktu untuk observasi langsung.
+            </div>
+          </div>
+          <div class="foot"><span>neurodaily.id</span><span>05 / 07</span>
+            <span class="hippo-mark"><svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/></svg></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- S6 -->
+      <section class="slide">
+        <div class="cvs bg-dark s6">
+          <div class="head"><span class="dotmark">Formula · Cara Dapatkan Mentor</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">≡ Formula · Mendapatkan & Memaksimalkan Mentor</div>
+            <div class="rule"></div>
+            <h2">Cara mendapatkan mentor yang <em>benar-benar mengakselerasi</em> karir.</h2>
+            <div class="formula">
+              <div class="f-block a">
+                <div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#5EC9A7" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+                <div>
+                  <div class="f-val">Cari yang Bisa Menjelaskan</div>
+                  <div class="f-desc">Expert terbaik tidak selalu mentor terbaik. Cari yang bisa mengartikulasikan cara berpikirnya — bukan hanya yang bisa melakukan. Mirror neuron butuh observasi yang bisa dipahami.</div>
+                </div>
+              </div>
+              <div class="f-op">+</div>
+              <div class="f-block b">
+                <div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+                <div>
+                  <div class="f-val">Minta Observasi Langsung</div>
+                  <div class="f-desc">Minta izin untuk melihat mentor bekerja — meeting, decision making, problem solving. Observasi langsung mengaktifkan mirror neuron jauh lebih efektif dari cerita atau instruksi.</div>
+                </div>
+              </div>
+              <hr class="f-divider"/>
+              <div class="f-block c">
+                <div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#5EC9A7" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+                <div>
+                  <div class="f-val">Tanya "Kenapa", Bukan "Apa"</div>
+                  <div class="f-desc">Jangan hanya tanya apa yang mereka lakukan — tanya kenapa mereka memilih itu. Tacit knowledge tersimpan di alasan dan pertimbangan, bukan di langkah-langkah teknis.</div>
+                </div>
+              </div>
+            </div>
+            <div class="f-note">
+              Mentor yang tepat bukan keberuntungan —
+              <span class="punch">itu investasi karir dengan return on investment tertinggi yang bisa kamu buat.</span>
+            </div>
+          </div>
+          <div class="foot"><span>neurodaily.id</span><span>06 / 07</span>
+            <span class="hippo-mark"><svg viewBox="0 0 32 32" fill="none" stroke="#5EC9A7" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#5EC9A7"/></svg></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- S7 -->
+      <section class="slide">
+        <div class="cvs bg-light s7">
+          <div class="head"><span class="dotmark">Sekarang giliranmu</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Sekarang giliranmu</div>
+            <div class="rule"></div>
+            <h2">Punya mentor di karir sekarang? <em>Punya, sedang cari, atau tidak pernah kepikiran?</em></h2>
+            <p class="sub">Jawab di komentar — dan kalau belum punya, sekarang kamu tahu kenapa itu worth untuk diprioritaskan.</p>
+            <div class="discussion">
+              <div class="disc-item">
+                <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg></div>
+                Simpan — mulai identifikasi satu orang di karir yang bisa kamu dekati sebagai mentor informal
+              </div>
+              <div class="disc-item">
+                <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></div>
+                Tag teman yang sedang berjuang sendiri membangun karir — mereka perlu tahu ada jalan yang lebih cepat
+              </div>
+            </div>
+            <div class="shift-note">
+              <span class="shift-arrow">→</span>
+              Belajar sendiri itu gagah. Tapi belajar dari yang sudah pernah sampai — itu cerdas secara neurologis.
+            </div>
+          </div>
+          <div class="foot"><span>neurodaily.id</span><span>07 / 07</span>
+            <span class="hippo-mark"><svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/></svg></span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="caption-panel">
+  <div class="cap-label">Caption · Vol. 55 — Mentor Mempercepat Karir</div>
+  <p><strong>1 tahun punya mentor yang tepat. Setara 3–5 tahun belajar sendiri.</strong></p>
+  <p>Ini bukan motivasi — ini Mirror Neuron System. Rizzolatti et al. menemukan bahwa neuron yang aktif saat kita melakukan sesuatu juga aktif saat kita mengobservasi orang lain melakukannya. Otak secara harfiah "berlatih" saat melihat mentor bekerja.</p>
+  <p>Mentor memberi tiga hal yang buku tidak bisa berikan: tacit knowledge (intuisi yang tidak bisa dituliskan), real-time feedback sebelum kesalahan jadi kebiasaan, dan compressed experience dari 10 tahun pelajaran dalam satu percakapan.</p>
+  <p>Mentor yang tepat bukan keberuntungan — itu investasi karir dengan return tertinggi yang bisa kamu buat.</p>
+  <p>Punya mentor di karir sekarang? Jawab: punya / sedang cari / belum pernah kepikiran.</p>
+  <span class="hash">#neurosains #produktivitas #mentor #karir #mirrorneuron #belajar #kerjacerdas #otakmanusia</span>
+</div>
+
+<div class="controls">
+  <button id="prev">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next">›</button>
+</div>
+
+<script>
+const track=document.getElementById('track'),dotsEl=document.getElementById('dots'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next');
+const total=track.children.length;let i=0;
+function scaleCanvases(){document.querySelectorAll('.slide').forEach(s=>{const c=s.querySelector('.cvs');if(!c)return;c.style.transform=`scale(${s.clientWidth/1080})`;});}
+window.addEventListener('resize',scaleCanvases);scaleCanvases();
+for(let k=0;k<total;k++){const b=document.createElement('button');b.className='dot'+(k===0?' active':'');b.addEventListener('click',()=>go(k));dotsEl.appendChild(b)}
+const dots=[...dotsEl.children];
+function go(n){i=Math.max(0,Math.min(total-1,n));track.style.transform=`translateX(-${i*100}%)`;dots.forEach((d,k)=>d.classList.toggle('active',k===i));counter.textContent=`${i+1} / ${total}`;prevBtn.disabled=i===0;nextBtn.disabled=i===total-1}
+prevBtn.addEventListener('click',()=>go(i-1));nextBtn.addEventListener('click',()=>go(i+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(i+1);if(e.key==='ArrowLeft')go(i-1)});
+let sx=0,dx=0,drag=false;const vp=document.querySelector('.viewport');
+vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;drag=true;dx=0},{passive:true});
+vp.addEventListener('touchmove',e=>{if(!drag)return;dx=e.touches[0].clientX-sx},{passive:true});
+vp.addEventListener('touchend',()=>{if(!drag)return;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));drag=false});
+go(0);
+</script>
+</body>
+</html>

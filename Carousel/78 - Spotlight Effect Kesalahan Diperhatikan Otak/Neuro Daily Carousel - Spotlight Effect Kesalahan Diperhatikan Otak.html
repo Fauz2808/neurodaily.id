@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Neuro Daily — Spotlight Effect: Kamu Pikir Semua Orang Memperhatikan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;--red:#D96A6A;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0a0a0a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 100px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#7a807d;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(540px,94vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;position:relative;overflow:hidden}
+.cvs{width:1080px;height:1350px;transform-origin:top left;position:absolute;top:0;left:0;font-family:'DM Sans',sans-serif}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.cvs .head,.cvs .foot{position:absolute;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 64px;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase}
+.cvs .head{top:0;height:78px;border-bottom:1px solid rgba(245,243,238,.12)}
+.cvs .foot{bottom:0;height:64px;border-top:1px solid rgba(245,243,238,.12)}
+.bg-light .head,.bg-light .foot{border-color:rgba(13,46,40,.12)}
+.bg-teal .head,.bg-teal .foot{border-color:rgba(245,243,238,.18)}
+.cvs .head span,.cvs .foot span{opacity:.55}
+.cvs .head .dotmark::before{content:"◆ ";color:var(--green);opacity:1}
+.bg-light .head .dotmark::before{color:var(--teal)}
+.bg-teal .head .dotmark::before{color:var(--amber)}
+.hippo-mark{display:flex;align-items:center;gap:10px;opacity:1!important}
+.hippo-mark svg{width:30px;height:30px;flex-shrink:0}
+.body{position:absolute;top:78px;bottom:64px;left:0;right:0;padding:52px 72px;display:flex;flex-direction:column}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.bg-dark .eyebrow{color:var(--green)}
+.bg-light .eyebrow{color:var(--teal)}
+.bg-teal .eyebrow{color:var(--amber)}
+.rule{width:48px;height:3px;border-radius:2px;margin-top:18px}
+.bg-dark .rule{background:var(--green)}
+.bg-light .rule{background:var(--teal)}
+.bg-teal .rule{background:var(--amber)}
+.s1 .ghost{position:absolute;font-family:'DM Serif Display',serif;font-size:680px;line-height:.88;color:rgba(94,201,167,.04);pointer-events:none;user-select:none;right:-30px;top:30px}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:88px;line-height:1.02;letter-spacing:-.02em;margin-top:44px;max-width:840px;position:relative;z-index:2}
+.s1 h1 em{font-style:italic;color:var(--red)}
+.s1 .lead{margin-top:30px;font-size:24px;line-height:1.65;opacity:.72;max-width:680px;font-weight:300;position:relative;z-index:2}
+.s1 .spot-compare{position:absolute;bottom:78px;left:72px;right:72px;z-index:2;display:flex;gap:16px}
+.spot-box{flex:1;padding:22px 22px;border-radius:12px;text-align:center}
+.spot-box.you{background:rgba(217,106,106,.1);border:1.5px solid rgba(217,106,106,.25)}
+.spot-box.them{background:rgba(94,201,167,.08);border:1.5px solid rgba(94,201,167,.2)}
+.spot-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.spot-box.you .spot-label{color:var(--red)}
+.spot-box.them .spot-label{color:var(--green)}
+.spot-pct{font-family:'DM Serif Display',serif;font-size:72px;line-height:1;margin-bottom:6px}
+.spot-box.you .spot-pct{color:var(--red)}
+.spot-box.them .spot-pct{color:var(--green)}
+.spot-desc{font-size:22px;font-weight:300;opacity:.8;line-height:1.3}
+.s2 h2,.s3 h2,.s4 h2,.s5 h2,.s6 h2,.s7 h2{font-family:'DM Serif Display',serif;font-weight:400;letter-spacing:-.02em}
+.s2 h2{font-size:64px;line-height:1.06;margin-top:32px;color:var(--forest);max-width:860px}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .stat-row{margin-top:36px;display:flex;gap:20px}
+.stat-card{flex:1;padding:28px 24px;border-radius:16px;display:flex;flex-direction:column;gap:10px}
+.stat-card.a{background:rgba(94,201,167,.06);border:1.5px solid rgba(94,201,167,.2)}
+.stat-card.b{background:rgba(201,169,110,.06);border:1.5px solid rgba(201,169,110,.2)}
+.stat-num{font-family:'DM Serif Display',serif;font-size:68px;line-height:1;letter-spacing:-.03em}
+.stat-card.a .stat-num{color:var(--teal)}
+.stat-card.b .stat-num{color:var(--amber)}
+.stat-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;opacity:.6;color:var(--forest)}
+.stat-desc{font-size:22px;line-height:1.55;opacity:.65;font-weight:300;color:var(--forest)}
+.s2 .insight-cards{margin-top:24px;display:flex;flex-direction:column;gap:12px}
+.insight-card{display:flex;align-items:flex-start;gap:16px;padding:20px 24px;border-radius:12px;background:rgba(13,46,40,.04);border:1px solid rgba(13,46,40,.1)}
+.insight-card .ic-icon{font-family:'DM Serif Display',serif;font-style:italic;font-size:36px;line-height:1;color:var(--teal);flex-shrink:0;margin-top:2px}
+.insight-card .ic-title{font-size:24px;font-weight:500;color:var(--forest);margin-bottom:4px}
+.insight-card .ic-text{font-size:22px;line-height:1.55;color:var(--forest);opacity:.65;font-weight:300}
+.s2 .source{margin-top:auto;font-size:20px;letter-spacing:.04em;color:var(--forest);opacity:.42;font-family:'JetBrains Mono',monospace;line-height:1.7;border-top:1px solid rgba(13,46,40,.1);padding-top:16px}
+.s3 h2{font-size:66px;line-height:1.06;margin-top:40px;max-width:860px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .mech-cards{margin-top:44px;display:flex;flex-direction:column;gap:18px}
+.mech-card{padding:26px 30px;border-radius:14px;display:flex;align-items:flex-start;gap:22px}
+.mech-card.a{background:rgba(94,201,167,.07);border:1.5px solid rgba(94,201,167,.2)}
+.mech-card.b{background:rgba(201,169,110,.07);border:1.5px solid rgba(201,169,110,.22)}
+.mech-card.c{background:rgba(94,201,167,.05);border:1.5px solid rgba(94,201,167,.15)}
+.mech-card .mc-icon{width:52px;height:52px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-style:italic;font-size:26px}
+.mech-card.a .mc-icon{background:rgba(94,201,167,.18);color:var(--green)}
+.mech-card.b .mc-icon{background:rgba(201,169,110,.18);color:var(--amber)}
+.mech-card.c .mc-icon{background:rgba(94,201,167,.15);color:var(--green)}
+.mech-card .mc-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px}
+.mech-card.a .mc-label{color:var(--green)}
+.mech-card.b .mc-label{color:var(--amber)}
+.mech-card.c .mc-label{color:var(--green)}
+.mech-card .mc-text{font-size:24px;line-height:1.55;font-weight:300;opacity:.88}
+.s3 .bottom-note{margin-top:auto;padding:20px 28px;border-radius:12px;background:rgba(245,243,238,.05);border:1px solid rgba(245,243,238,.12);font-size:24px;line-height:1.6;opacity:.65;font-weight:300;display:flex;align-items:center;gap:14px}
+.s3 .note-prefix{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--amber);flex-shrink:0}
+.s4 h2{font-size:64px;line-height:1.04;margin-top:36px;max-width:860px}
+.s4 h2 em{font-style:italic;color:var(--amber)}
+.s4 .def-card{margin-top:28px;background:rgba(245,243,238,.1);border:1.5px solid rgba(245,243,238,.2);border-radius:14px;padding:24px 30px}
+.s4 .def-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+.s4 .def-text{font-size:22px;line-height:1.65;opacity:.88;font-weight:300}
+.s4 .cost-list{margin-top:26px;display:flex;flex-direction:column;gap:0}
+.cl-item{display:flex;align-items:flex-start;gap:22px;padding:16px 0}
+.cl-item+.cl-item{border-top:1px solid rgba(245,243,238,.1)}
+.cl-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;margin-top:5px;background:var(--red)}
+.cl-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;color:rgba(217,106,106,.85)}
+.cl-text{font-size:22px;line-height:1.5;opacity:.75;font-weight:300}
+.s4 .bottom-note{margin-top:auto;padding:18px 24px;border-radius:12px;background:rgba(245,243,238,.07);border:1px solid rgba(245,243,238,.14);font-size:24px;line-height:1.6;opacity:.65;font-weight:300;display:flex;gap:12px;align-items:center}
+.s4 .bottom-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--amber);flex-shrink:0}
+.s5 h2{font-size:64px;line-height:1.06;margin-top:36px;color:var(--forest);max-width:860px}
+.s5 h2 em{font-style:italic;color:var(--teal)}
+.s5 .scenarios{margin-top:36px;display:flex;flex-direction:column;gap:18px}
+.scenario{padding:26px 28px;border-radius:14px;display:flex;align-items:flex-start;gap:20px}
+.scenario.bad{background:rgba(217,106,106,.05);border:1.5px solid rgba(217,106,106,.18)}
+.scenario.good{background:rgba(26,107,90,.06);border:1.5px solid rgba(26,107,90,.22)}
+.scenario .s-tag{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;padding:5px 14px;border-radius:99px;flex-shrink:0;margin-top:3px}
+.scenario.bad .s-tag{background:var(--red);color:#fff}
+.scenario.good .s-tag{background:var(--teal);color:#fff}
+.scenario .s-title{font-size:24px;font-weight:500;color:var(--forest);margin-bottom:6px}
+.scenario .s-desc{font-size:22px;line-height:1.6;color:var(--forest);opacity:.65;font-weight:300}
+.s5 .research-note{margin-top:22px;padding:18px 24px;background:rgba(26,107,90,.05);border:1px solid rgba(26,107,90,.15);border-radius:12px;font-size:22px;line-height:1.6;color:var(--forest);font-weight:300}
+.s5 .research-note strong{font-weight:500;color:var(--teal)}
+.s6 h2{font-size:66px;line-height:1.06;margin-top:40px;max-width:860px}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .protocol{margin-top:44px;display:flex;flex-direction:column;gap:0}
+.s6 .p-block{width:100%;padding:26px 32px;border-radius:14px;display:flex;align-items:flex-start;gap:22px}
+.s6 .p-block.a{background:rgba(94,201,167,.1);border:2px solid rgba(94,201,167,.28)}
+.s6 .p-block.b{background:rgba(201,169,110,.1);border:2px solid rgba(201,169,110,.25)}
+.s6 .p-block.c{background:rgba(94,201,167,.16);border:2px solid rgba(94,201,167,.5)}
+.s6 .p-divider{margin:10px 0;border:none;border-top:1px solid rgba(245,243,238,.1)}
+.s6 .p-num{font-family:'DM Serif Display',serif;font-size:48px;line-height:1;flex-shrink:0;margin-top:-4px}
+.s6 .p-block.a .p-num{color:var(--green)}
+.s6 .p-block.b .p-num{color:var(--amber)}
+.s6 .p-block.c .p-num{color:var(--green)}
+.s6 .p-title{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.s6 .p-block.a .p-title{color:var(--green)}
+.s6 .p-block.b .p-title{color:var(--amber)}
+.s6 .p-block.c .p-title{color:var(--green)}
+.s6 .p-desc{font-size:24px;line-height:1.55;opacity:.85;font-weight:300}
+.s6 .p-note{margin-top:22px;font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.04em;color:rgba(245,243,238,.48);line-height:1.9;border-top:1px solid rgba(245,243,238,.1);padding-top:20px}
+.s6 .p-note .punch{color:var(--green);font-weight:500}
+.s7 h2{font-size:68px;line-height:1.04;margin-top:36px;color:var(--forest);max-width:860px}
+.s7 h2 em{font-style:italic;color:var(--teal)}
+.s7 .sub{margin-top:22px;font-size:24px;line-height:1.65;color:var(--forest);opacity:.65;max-width:800px;font-weight:300}
+.s7 .discussion{margin-top:36px;display:flex;flex-direction:column;gap:14px}
+.s7 .disc-item{display:flex;align-items:center;gap:18px;padding:20px 24px;border:1.5px solid rgba(13,46,40,.12);border-radius:14px;font-size:22px;color:var(--forest);background:rgba(255,255,255,.46);line-height:1.4}
+.s7 .disc-item .ic{width:40px;height:40px;border-radius:10px;background:rgba(26,107,90,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.s7 .disc-item .ic svg{width:22px;height:22px;color:var(--teal)}
+.s7 .shift-note{margin-top:24px;padding:20px 24px;border-radius:12px;border:1px dashed rgba(26,107,90,.35);font-size:24px;line-height:1.6;color:var(--forest);opacity:.62;font-weight:300;display:flex;align-items:center;gap:14px}
+.s7 .shift-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:24px;color:var(--teal);flex-shrink:0}
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:24px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:46px;height:46px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.1em;align-self:center;padding:0 10px}
+.caption-panel{width:min(540px,94vw);margin-top:32px;padding:26px 26px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:20px;line-height:1.7}
+.caption-panel .cap-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+.caption-panel p{margin-bottom:12px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel strong{color:var(--parchment);font-weight:500}
+.caption-panel .hash{color:#7a8480;font-size:18px;margin-top:16px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="topbar"><span>Neuro Daily · Carousel Preview</span><span class="pill">[ Vol. 78 · Spotlight Effect · Self-Consciousness ]</span></div>
+<div class="stage"><div class="viewport"><div class="track" id="track">
+
+<!-- S1 DARK -->
+<section class="slide"><div class="cvs bg-dark s1">
+  <div class="head"><span class="dotmark">Neuro Daily · Vol. 78 · Bias & Self-Perception</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Spotlight Effect · Gilovich & Epley</div>
+    <div class="rule"></div>
+    <div class="ghost">☀</div>
+    <h1>Kamu salah bicara<br>di meeting.<br>Kamu yakin semua<br><em>orang ingat itu.</em></h1>
+    <p class="lead">Mereka tidak. Ini Spotlight Effect — otak kita secara otomatis melebih-lebahkan seberapa banyak orang lain memperhatikan kita, khususnya saat kita membuat kesalahan.</p>
+    <div class="spot-compare">
+      <div class="spot-box you">
+        <div class="spot-label">Kamu Pikir</div>
+        <div class="spot-pct">~50%</div>
+        <div class="spot-desc">orang ingat kesalahanmu</div>
+      </div>
+      <div class="spot-box them">
+        <div class="spot-label">Realitanya</div>
+        <div class="spot-pct">~10%</div>
+        <div class="spot-desc">yang benar-benar memperhatikan</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>01 / 07</span></div>
+</div></section>
+
+<!-- S2 LIGHT -->
+<section class="slide"><div class="cvs bg-light s2">
+  <div class="head"><span class="dotmark">Spotlight Effect · Cornell Research</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Kita semua overestimate perhatian orang lain</div>
+    <div class="rule"></div>
+    <h2>Semua orang <em>terlalu sibuk memikirkan dirinya sendiri</em> untuk memperhatikanmu sebanyak yang kamu kira.</h2>
+    <div class="stat-row">
+      <div class="stat-card a">
+        <div class="stat-num">50%</div>
+        <div class="stat-label">Overestimasi</div>
+        <div class="stat-desc">Rata-rata seseorang melebih-lebahkan seberapa banyak orang lain memperhatikan penampilan atau tindakannya (Gilovich, Cornell)</div>
+      </div>
+      <div class="stat-card b">
+        <div class="stat-num">2–3×</div>
+        <div class="stat-label">Lebih Besar</div>
+        <div class="stat-desc">Perkiraan kita tentang perhatian orang lain rata-rata 2–3x lebih besar dari perhatian yang sebenarnya terjadi</div>
+      </div>
+    </div>
+    <div class="insight-cards">
+      <div class="insight-card">
+        <div class="ic-icon">→</div>
+        <div>
+          <div class="ic-title">Eksperimen kaos memalukan</div>
+          <div class="ic-text">Gilovich (1999): mahasiswa diminta memakai kaos gambar Barry Manilow ke kelas. Mereka memperkirakan 50% teman memperhatikannya. Kenyataannya: hanya 25% yang menyadari</div>
+        </div>
+      </div>
+      <div class="insight-card">
+        <div class="ic-icon">→</div>
+        <div>
+          <div class="ic-title">Semua orang adalah protagonis ceritanya sendiri</div>
+          <div class="ic-text">Orang lain terlalu sibuk khawatir tentang dirinya sendiri untuk memperhatikanmu sebanyak yang kamu bayangkan. Kamu bukan pusat perhatian di film hidup orang lain</div>
+        </div>
+      </div>
+    </div>
+    <div class="source">Gilovich, Medvec & Savitsky (2000) · Epley & Gilovich (2001) · Cornell University</div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>02 / 07</span></div>
+</div></section>
+
+<!-- S3 DARK -->
+<section class="slide"><div class="cvs bg-dark s3">
+  <div class="head"><span class="dotmark">Self-Consciousness · Why It Happens</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Kenapa otak menciptakan spotlight yang tidak ada</div>
+    <div class="rule"></div>
+    <h2>Tiga alasan neurologis kenapa <em>otak meyakinkan kamu sedang diperhatikan.</em></h2>
+    <div class="mech-cards">
+      <div class="mech-card a">
+        <div class="mc-icon">◎</div>
+        <div>
+          <div class="mc-label">Egocentric Anchoring</div>
+          <div class="mc-text">Otak menggunakan perspektif sendiri sebagai titik awal untuk mengestimasi perspektif orang lain — dan tidak cukup menyesuaikan dari sana. Kita lebih mudah mengakses perasaan kita sendiri dari yang dirasakan orang lain</div>
+        </div>
+      </div>
+      <div class="mech-card b">
+        <div class="mc-icon">⚡</div>
+        <div>
+          <div class="mc-label">Emotional Salience</div>
+          <div class="mc-text">Saat kamu merasa malu atau canggung, amygdala mengamplifikasi perasaan itu — membuatnya terasa lebih besar dan lebih terlihat dari kenyataannya. Intensitas internal kita "bocor" ke persepsi tentang apa yang orang lain lihat</div>
+        </div>
+      </div>
+      <div class="mech-card c">
+        <div class="mc-icon">⟳</div>
+        <div>
+          <div class="mc-label">Rumination Loop</div>
+          <div class="mc-text">Default Mode Network terus memutar ulang kejadian memalukan — memperkuat memori dan membuatnya terasa lebih signifikan. Semakin sering diputar ulang, semakin yakin kamu bahwa "semua orang pasti ingat itu"</div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-note">
+      <span class="note-prefix">Paradoks:</span>
+      Semua orang sibuk mengira mereka diperhatikan — sehingga tidak punya waktu memperhatikan orang lain.
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>03 / 07</span></div>
+</div></section>
+
+<!-- S4 TEAL -->
+<section class="slide"><div class="cvs bg-teal s4">
+  <div class="head"><span class="dotmark">Spotlight Effect · Workplace Cost</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Bagaimana spotlight effect menghambat karirmu</div>
+    <div class="rule"></div>
+    <h2>Spotlight effect yang tidak disadari <em>membatasi potensi</em> setiap hari.</h2>
+    <div class="def-card">
+      <div class="def-label">Spotlight Effect</div>
+      <div class="def-text">Kecenderungan kognitif untuk melebih-lebahkan seberapa banyak orang lain memperhatikan penampilan, tindakan, atau kesalahan kita — karena kesadaran kita tentang diri sendiri membuat kita mengira orang lain sama fokusnya pada kita.</div>
+    </div>
+    <div class="cost-list">
+      <div class="cl-item">
+        <div class="cl-dot"></div>
+        <div>
+          <div class="cl-label">Tidak Berani Speak Up</div>
+          <div class="cl-text">Takut salah bicara dan "semua orang akan ingat" — padahal mereka tidak. Kesempatan untuk berkontribusi hilang</div>
+        </div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-dot"></div>
+        <div>
+          <div class="cl-label">Overthinking Setelah Kesalahan</div>
+          <div class="cl-text">Menghabiskan energi memutar ulang kejadian yang sudah orang lain lupakan dalam hitungan menit setelah meeting berakhir</div>
+        </div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-dot"></div>
+        <div>
+          <div class="cl-label">Takut Ambil Risiko</div>
+          <div class="cl-text">Menghindari eksperimen atau ide baru karena "kalau gagal, semua akan melihat" — padahal mayoritas tidak sepeduli yang dibayangkan</div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-note">
+      <span class="bottom-arrow">→</span>
+      Berapa banyak langkah yang tidak diambil karena takut "semua orang akan melihat"?
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(201,169,110,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#C9A96E">N</text></svg>NEURODAILY.ID</span><span>04 / 07</span></div>
+</div></section>
+
+<!-- S5 LIGHT -->
+<section class="slide"><div class="cvs bg-light s5">
+  <div class="head"><span class="dotmark">Trapped vs Free · Two Mindsets</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Dua cara berbeda merespons kesalahan di depan umum</div>
+    <div class="rule"></div>
+    <h2">Spotlight effect <em>yang membatasi</em> vs yang sudah <em>dilampaui.</em></h2>
+    <div class="scenarios">
+      <div class="scenario bad">
+        <div class="s-tag">Terjebak</div>
+        <div>
+          <div class="s-title">Salah sebut nama di presentasi — spiral rasa malu</div>
+          <div class="s-desc">Otak langsung: "semua orang pasti ingat ini." Energi habis untuk memikirkan kejadian yang sudah presenter lain lupakan 5 menit kemudian. Performa di sisa presentasi turun karena self-consciousness mendominasi</div>
+        </div>
+      </div>
+      <div class="scenario good">
+        <div class="s-tag">Bebas</div>
+        <div>
+          <div class="s-title">Salah sebut nama — koreksi, lanjut, selesai</div>
+          <div class="s-desc">Sadar bahwa audiens sudah lanjut memikirkan hal lain. Energi dialihkan ke konten berikutnya. Otak yang tidak terjebak spotlight effect jauh lebih bebas mengambil risiko dan bereksperimen di depan umum</div>
+        </div>
+      </div>
+    </div>
+    <div class="research-note">Epley & Gilovich: <strong>orang yang diberitahu tentang spotlight effect langsung menunjukkan pengurangan social anxiety</strong> dalam situasi publik — pengetahuan ini sendiri sudah membebaskan.</div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>05 / 07</span></div>
+</div></section>
+
+<!-- S6 DARK -->
+<section class="slide"><div class="cvs bg-dark s6">
+  <div class="head"><span class="dotmark">De-Spotlighting Protocol · Three Moves</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Cara melepaskan diri dari spotlight yang tidak ada</div>
+    <div class="rule"></div>
+    <h2">Tiga cara <em>mematikan spotlight</em> yang hanya ada di kepalamu.</h2>
+    <div class="protocol">
+      <div class="p-block a">
+        <div class="p-num">1</div>
+        <div>
+          <div class="p-title">The 5-Minute Test</div>
+          <div class="p-desc">Tanya diri sendiri: "Akankah ini masih penting dalam 5 menit bagi orang yang melihatnya?" Untuk 95% kejadian memalukan, jawabannya tidak. Otak orang lain sudah pindah ke hal berikutnya</div>
+        </div>
+      </div>
+      <hr class="p-divider"/>
+      <div class="p-block b">
+        <div class="p-num">2</div>
+        <div>
+          <div class="p-title">Recall Their Spotlight</div>
+          <div class="p-desc">Ingat satu momen orang lain terlihat canggung di depanmu. Seberapa lama kamu memikirkannya? Seberapa jelas kamu mengingatnya sekarang? Itu bukti bahwa kamu juga tidak memperhatikan sebanyak yang mereka kira</div>
+        </div>
+      </div>
+      <hr class="p-divider"/>
+      <div class="p-block c">
+        <div class="p-num">3</div>
+        <div>
+          <div class="p-title">Action Anyway</div>
+          <div class="p-desc">Beri tahu diri sendiri: "Spotlight ini tidak nyata, tapi manfaat dari tindakan ini nyata." Ambil langkah itu — bicara di meeting, coba ide baru, ajukan diri untuk proyek besar. Regretnya lebih nyata dari spotlight-nya</div>
+        </div>
+      </div>
+    </div>
+    <div class="p-note">Spotlight yang paling kamu khawatirkan <span class="punch">tidak pernah ada di luar kepalamu.</span> Yang ada adalah kesempatan yang terlewat karena menghinarinya.</div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>06 / 07</span></div>
+</div></section>
+
+<!-- S7 LIGHT -->
+<section class="slide"><div class="cvs bg-light s7">
+  <div class="head"><span class="dotmark">Spotlight Effect · Freedom to Act</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Refleksi & diskusi</div>
+    <div class="rule"></div>
+    <h2">Semua orang <em>terlalu sibuk dengan spotlight mereka sendiri</em> untuk benar-benar melihatmu.</h2>
+    <p class="sub">Memahami spotlight effect tidak membuat kesalahanmu tidak nyata — tapi membuat kamu sadar bahwa dampaknya pada persepsi orang lain jauh lebih kecil dari yang kamu bayangkan. Dan itu membebaskan.</p>
+    <div class="discussion">
+      <div class="disc-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
+        Sesuatu yang kamu pikirkan sebagai "memalukan" di meeting — apakah rekan-rekanmu masih mengingatnya?
+      </div>
+      <div class="disc-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        Apa satu langkah yang tidak kamu ambil karena takut "semua orang akan melihat kalau gagal"?
+      </div>
+      <div class="disc-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        Jika kamu tahu tidak ada yang akan ingat kesalahanmu besok — apa yang akan kamu coba hari ini?
+      </div>
+    </div>
+    <div class="shift-note">
+      <span class="shift-arrow">→</span>
+      Ambil satu tindakan yang selama ini kamu tunda karena spotlight effect. Orang lain sedang terlalu sibuk memikirkan spotlight mereka sendiri.
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>07 / 07</span></div>
+</div></section>
+
+</div></div></div>
+<div class="dots"><button class="dot active" onclick="goTo(0)"></button><button class="dot" onclick="goTo(1)"></button><button class="dot" onclick="goTo(2)"></button><button class="dot" onclick="goTo(3)"></button><button class="dot" onclick="goTo(4)"></button><button class="dot" onclick="goTo(5)"></button><button class="dot" onclick="goTo(6)"></button></div>
+<div class="controls"><button id="prev" onclick="prev()" disabled>←</button><span class="counter" id="counter">1 / 7</span><button id="next" onclick="next()">→</button></div>
+<div class="caption-panel">
+  <div class="cap-label">Caption · Instagram / TikTok</div>
+  <p>Kamu salah bicara di meeting. Kamu yakin semua orang ingat itu. Mereka tidak. ☀</p>
+  <p>Ini <strong>Spotlight Effect</strong> — otak secara otomatis melebih-lebahkan seberapa banyak orang lain memperhatikan kita. Studi Cornell: kita memperkirakan ~50% orang memperhatikan kesalahan kita. Realitanya: ~25%. Dan mereka melupakannya jauh lebih cepat dari yang kita kira.</p>
+  <p>Kenapa? Semua orang terlalu sibuk khawatir tentang spotlight mereka sendiri untuk benar-benar memperhatikanmu sebanyak yang kamu bayangkan.</p>
+  <p>Spotlight yang paling kamu khawatirkan tidak pernah ada di luar kepalamu. <strong>Yang nyata adalah kesempatan yang terlewat karena menghindarinya.</strong></p>
+  <span class="hash">#NeuroscienceIndonesia #SpotlightEffect #BiasKognitif #NeurodailyID #SocialAnxiety #PublicSpeaking #Kepercayaan Diri #Gilovich #Produktivitas</span>
+</div>
+<script>
+const track=document.getElementById('track'),dots=document.querySelectorAll('.dot'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next'),TOTAL=7;let cur=0;
+function scale(){const vw=document.querySelector('.viewport').offsetWidth;document.querySelectorAll('.cvs').forEach(c=>{c.style.transform=`scale(${vw/1080})`});}
+scale();window.addEventListener('resize',scale);
+function goTo(i){cur=i;track.style.transform=`translateX(-${cur*100}%)`;dots.forEach((d,j)=>d.classList.toggle('active',j===cur));counter.textContent=`${cur+1} / ${TOTAL}`;prevBtn.disabled=cur===0;nextBtn.disabled=cur===TOTAL-1;}
+function prev(){if(cur>0)goTo(cur-1);}function next(){if(cur<TOTAL-1)goTo(cur+1);}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')prev();if(e.key==='ArrowRight')next();});
+</script>
+</body>
+</html>

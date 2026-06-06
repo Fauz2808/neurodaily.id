@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Neuro Daily — Meeting Sore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#0D2E28;
+    --teal:#1A6B5A;
+    --green:#5EC9A7;
+    --parchment:#F5F3EE;
+    --amber:#C9A96E;
+    --ink:#0D2E28;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#1a1a1a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+  body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px}
+
+  .topbar{
+    width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;
+    color:#9aa39f;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;
+    margin-bottom:24px;
+  }
+  .topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+
+  .stage{
+    position:relative;
+    width:min(440px, 92vw);
+    aspect-ratio:4/5;
+  }
+  .viewport{
+    position:relative;width:100%;height:100%;
+    border-radius:18px;overflow:hidden;
+    box-shadow:0 30px 80px -20px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.04);
+  }
+  .track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+  .slide{
+    flex:0 0 100%;height:100%;
+    display:flex;flex-direction:column;
+    padding:36px 32px 28px;
+    position:relative;overflow:hidden;
+  }
+
+  .bg-dark{background:var(--forest);color:var(--parchment)}
+  .bg-light{background:var(--parchment);color:var(--forest)}
+  .bg-teal{background:var(--teal);color:var(--parchment)}
+
+  .slide .header{
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'DM Sans',sans-serif;font-weight:500;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;
+    opacity:.85;
+  }
+  .bg-light .header{opacity:.7}
+  .pillar-tag{display:inline-flex;align-items:center;gap:6px}
+  .pillar-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--green)}
+  .bg-light .pillar-tag::before{background:var(--teal)}
+
+  .slide .footer{
+    margin-top:auto;
+    display:flex;justify-content:space-between;align-items:flex-end;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;
+    opacity:.55;text-transform:uppercase;
+  }
+
+  /* SLIDE 1 — HOOK */
+  .s1 .body{margin-top:auto;margin-bottom:auto}
+  .s1 h1{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:50px;line-height:1.05;letter-spacing:-.01em;
+    color:var(--parchment);
+  }
+  .s1 h1 em{color:var(--amber);font-style:italic}
+  .s1 .lead{margin-top:18px;font-size:13px;line-height:1.7;opacity:.7;max-width:300px}
+  .s1 .swipe{
+    position:absolute;bottom:24px;right:32px;display:flex;align-items:center;gap:8px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6;
+  }
+  .s1 .swipe .arrow{display:inline-block;animation:nudge 1.6s ease-in-out infinite}
+  @keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+
+  /* Calendar BG decoration for S1 */
+  .cal-bg{
+    position:absolute;inset:0;pointer-events:none;opacity:.06;
+  }
+
+  /* SLIDE 2 — BIG NUMBER */
+  .s2{justify-content:space-between;align-items:stretch}
+  .s2 .num{
+    font-family:'DM Serif Display',serif;font-size:220px;line-height:.85;
+    letter-spacing:-.04em;color:var(--forest);
+    margin-top:auto;
+    position:relative;
+  }
+  .s2 .unit{
+    font-family:'DM Serif Display',serif;font-style:italic;
+    font-size:32px;color:var(--teal);margin-top:-10px;
+  }
+  .s2 .caption{
+    margin-top:12px;font-size:14px;line-height:1.6;color:var(--forest);opacity:.75;max-width:280px;
+  }
+  .s2 .meta{
+    position:absolute;top:80px;left:32px;right:32px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);opacity:.65;
+  }
+
+  /* SLIDE 3 — MECHANISM */
+  .s3 h2{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:30px;line-height:1.18;letter-spacing:-.01em;margin-top:28px;
+  }
+  .s3 .term{
+    margin-top:24px;padding:18px 20px;border-radius:10px;
+    background:rgba(94,201,167,.08);border-left:2px solid var(--green);
+  }
+  .s3 .term .name{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);
+  }
+  .s3 .term .def{
+    margin-top:8px;font-size:13px;line-height:1.65;color:var(--parchment);opacity:.92;
+  }
+  .s3 .source{
+    margin-top:18px;font-size:11px;color:var(--parchment);opacity:.55;line-height:1.55;
+  }
+
+  /* SLIDE 4 — SCHEDULE COMPARISON */
+  .s4 h2{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:24px;line-height:1.25;margin-top:22px;color:var(--forest);
+  }
+  .s4 h2 em{font-style:italic;color:var(--teal)}
+  .s4 .schedule{margin-top:24px;display:flex;flex-direction:column;gap:16px}
+  .s4 .row-label{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--forest);opacity:.55;margin-bottom:6px;
+  }
+  .s4 .blocks{display:flex;gap:4px;align-items:center}
+  .s4 .block{
+    height:28px;border-radius:5px;display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.06em;
+    font-weight:500;flex-shrink:0;
+  }
+  .block-active{background:var(--teal);color:#fff;}
+  .block-rest{background:rgba(26,107,90,.12);color:var(--teal);border:1px dashed rgba(26,107,90,.3);}
+  .block-meeting{background:var(--amber);color:var(--forest);}
+  .block-idle{background:rgba(13,46,40,.06);color:var(--forest);opacity:.4;}
+  .block-depleted{background:rgba(201,169,110,.2);color:#9a7940;border:1px dashed rgba(201,169,110,.4);}
+  .s4 .divider{height:1px;background:rgba(13,46,40,.1);margin:4px 0}
+  .s4 .note{font-size:11px;color:var(--forest);opacity:.6;line-height:1.55;margin-top:4px}
+
+  /* SLIDE 5 — CONSEQUENCE */
+  .s5{padding-top:28px}
+  .s5 .stat-big{
+    margin-top:auto;
+    display:flex;align-items:baseline;gap:14px;
+  }
+  .s5 .stat-big .n{
+    font-family:'DM Serif Display',serif;font-size:110px;line-height:.85;color:var(--parchment);
+    letter-spacing:-.03em;
+  }
+  .s5 .stat-big .n em{color:var(--amber);font-style:italic}
+  .s5 .stat-big .u{font-family:'DM Sans';font-weight:500;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);max-width:130px;line-height:1.4}
+  .s5 .copy{margin-top:18px;font-size:13.5px;line-height:1.65;opacity:.85;max-width:340px}
+  .s5 .copy strong{font-weight:500;color:var(--green)}
+  .s5 .math{
+    margin-top:20px;padding:14px 18px;border:1px dashed rgba(94,201,167,.3);border-radius:10px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);letter-spacing:.04em;line-height:1.8;
+  }
+
+  /* SLIDE 6 — REFRAME */
+  .s6 h2{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:36px;line-height:1.12;margin-top:28px;letter-spacing:-.01em;
+  }
+  .s6 h2 em{font-style:italic;color:var(--green)}
+  .s6 .ps{margin-top:20px;font-size:13.5px;line-height:1.65;opacity:.88;max-width:340px}
+  .s6 .ps + .ps{margin-top:14px;opacity:.72}
+
+  /* SLIDE 7 — CTA */
+  .s7{justify-content:space-between;text-align:left}
+  .s7 .lead-q{
+    font-family:'DM Serif Display',serif;font-size:28px;line-height:1.2;letter-spacing:-.01em;
+    margin-top:32px;color:var(--forest);
+  }
+  .s7 .lead-q em{font-style:italic;color:var(--teal)}
+  .s7 .ask{margin-top:16px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.7;max-width:300px}
+  .s7 .actions{margin-top:22px;display:flex;flex-direction:column;gap:10px}
+  .s7 .btn{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 18px;border:1px solid rgba(13,46,40,.15);border-radius:10px;
+    font-size:12.5px;color:var(--forest);
+  }
+  .s7 .btn .ic{width:18px;height:18px;color:var(--teal);flex-shrink:0}
+  .s7 .signoff{
+    margin-top:20px;padding-top:16px;border-top:1px solid rgba(13,46,40,.12);
+  }
+  .s7 .tag{font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;color:var(--teal);line-height:1.3}
+  .s7 .sub{margin-top:6px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--forest);opacity:.6;font-weight:500}
+
+  /* dots & nav */
+  .dots{
+    margin-top:18px;display:flex;gap:6px;justify-content:center;
+  }
+  .dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s, background .3s;cursor:pointer;border:0;padding:0}
+  .dot.active{background:var(--green);width:22px}
+
+  .controls{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+    display:flex;gap:8px;z-index:5;
+  }
+  .controls button{
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);
+    width:42px;height:42px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;
+    transition:background .2s;
+  }
+  .controls button:hover{background:rgba(94,201,167,.12);border-color:rgba(94,201,167,.3)}
+  .controls button:disabled{opacity:.3;cursor:not-allowed}
+
+  .counter{
+    color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;
+    align-self:center;padding:0 8px;
+  }
+
+  .caption-panel{
+    width:min(440px,92vw);margin-top:32px;padding:22px 22px 24px;
+    background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;
+    color:#cfd3d1;font-size:13px;line-height:1.7;
+  }
+  .caption-panel .label{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);
+    margin-bottom:12px;
+  }
+  .caption-panel .char-count{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--amber);
+    margin-top:10px;opacity:.7;
+  }
+  .caption-panel p{margin-bottom:10px}
+  .caption-panel p:last-child{margin-bottom:0}
+  .caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:14px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Brain at Work ]</span>
+</div>
+
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- SLIDE 1 — HOOK -->
+      <section class="slide bg-dark s1" data-screen-label="01 Hook">
+        <!-- Subtle grid bg -->
+        <svg class="cal-bg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(245,243,238,1)" stroke-width=".5"/>
+            </pattern>
+          </defs>
+          <rect width="400" height="500" fill="url(#grid)"/>
+          <!-- Clock hands suggestion -->
+          <circle cx="340" cy="80" r="30" fill="none" stroke="rgba(94,201,167,1)" stroke-width=".8" opacity=".4"/>
+          <line x1="340" y1="80" x2="340" y2="56" stroke="rgba(94,201,167,1)" stroke-width="1.5" opacity=".5" stroke-linecap="round"/>
+          <line x1="340" y1="80" x2="358" y2="88" stroke="rgba(94,201,167,1)" stroke-width="1" opacity=".4" stroke-linecap="round"/>
+        </svg>
+
+        <div class="header">
+          <span class="pillar-tag">Brain at Work</span>
+          <span>01 / 07</span>
+        </div>
+        <div class="body">
+          <h1>Meeting jam 4 sore membuat otakmu <em>lebih bodoh.</em></h1>
+          <p class="lead">Bukan hiperbola. Ada siklus biologis di otakmu yang dilanggar setiap kali kamu jadwalkan meeting marathon sampai sore.</p>
+        </div>
+        <div class="swipe">
+          <span>Geser</span><span class="arrow">→</span>
+        </div>
+      </section>
+
+      <!-- SLIDE 2 — BIG NUMBER -->
+      <section class="slide bg-light s2" data-screen-label="02 Number">
+        <div class="header">
+          <span class="pillar-tag">The Number</span>
+          <span>02 / 07</span>
+        </div>
+        <div class="meta">Riset · Basic Rest-Activity Cycle · Nathaniel Kleitman</div>
+        <div class="num">90<span style="color:var(--amber)">.</span></div>
+        <div class="unit">menit</div>
+        <p class="caption">Itu panjang satu siklus kognitif optimal otak. Setelah 90 menit kerja intens, otakmu butuh recovery window — dengan atau tanpa tambahan kopi.</p>
+        <div class="footer">
+          <span>NEURO DAILY</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- SLIDE 3 — MECHANISM -->
+      <section class="slide bg-dark s3" data-screen-label="03 Mechanism">
+        <div class="header">
+          <span class="pillar-tag">Yang terjadi di otakmu</span>
+          <span>03 / 07</span>
+        </div>
+        <h2>Setiap keputusan menguras prefrontal cortex. Dan stoknya habis lebih cepat dari yang kamu kira.</h2>
+        <div class="term">
+          <div class="name">Decision Fatigue</div>
+          <div class="def">Penurunan kualitas dan kecepatan pengambilan keputusan setelah terlalu banyak keputusan berturutan. Semakin sore meeting kamu, semakin terdeplesi kapasitas keputusan yang tersisa.</div>
+        </div>
+        <p class="source">Didokumentasikan dalam penelitian Shai Danziger et al. (PNAS, 2011) dan penelitian neurosains tentang glucose depletion di prefrontal cortex.</p>
+        <div class="footer" style="margin-top:auto">
+          <span>03 — MECHANISM</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- SLIDE 4 — SCHEDULE COMPARISON -->
+      <section class="slide bg-light s4" data-screen-label="04 Schedule">
+        <div class="header">
+          <span class="pillar-tag">Siklus alami vs jadwal meeting</span>
+          <span>04 / 07</span>
+        </div>
+        <h2>Otak dirancang untuk <em>bergelombang,</em> bukan berlari terus.</h2>
+
+        <div class="schedule">
+          <!-- Ideal cycle -->
+          <div>
+            <div class="row-label">Siklus optimal otak</div>
+            <div class="blocks">
+              <div class="block block-active" style="width:90px">90 min</div>
+              <div class="block block-rest" style="width:36px">20'</div>
+              <div class="block block-active" style="width:90px">90 min</div>
+              <div class="block block-rest" style="width:36px">20'</div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Typical meeting schedule -->
+          <div>
+            <div class="row-label">Jadwal meeting rata-rata</div>
+            <div class="blocks">
+              <div class="block block-meeting" style="width:55px">10:00</div>
+              <div class="block block-idle" style="width:18px"></div>
+              <div class="block block-meeting" style="width:55px">11:00</div>
+              <div class="block block-idle" style="width:10px"></div>
+              <div class="block block-meeting" style="width:55px">14:00</div>
+              <div class="block block-idle" style="width:10px"></div>
+              <div class="block block-depleted" style="width:55px">16:00</div>
+            </div>
+            <div class="note" style="margin-top:8px">Meeting terakhir = otak sudah melewati <strong>3–4 siklus tanpa recovery penuh.</strong></div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <span>04 — JADWAL</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- SLIDE 5 — CONSEQUENCE -->
+      <section class="slide bg-teal s5" data-screen-label="05 Consequence">
+        <div class="header">
+          <span class="pillar-tag" style="color:#fff">Hitung kerugiannya</span>
+          <span>05 / 07</span>
+        </div>
+        <p class="copy" style="margin-top:24px">Kalau kamu punya 4 meeting berturutan sejak pagi, dan setiap 90 menit otak butuh recovery yang tidak pernah datang…</p>
+
+        <div class="stat-big">
+          <span class="n"><em>0</em></span>
+          <span class="u">menit recovery yang kamu berikan ke otak di hari itu</span>
+        </div>
+
+        <div class="math">
+          Pagi  → Otak segar, keputusan optimal<br>
+          Siang → Mulai terdeplesi, butuh jeda<br>
+          Sore  → <span style="color:var(--amber)">Prefrontal cortex kelelahan</span><br>
+          Meeting 16:00 → versi terburuk otakmu yang hadir.
+        </div>
+
+        <div class="footer">
+          <span>05 — IMPACT</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- SLIDE 6 — REFRAME -->
+      <section class="slide bg-dark s6" data-screen-label="06 Reframe">
+        <div class="header">
+          <span class="pillar-tag">Reframe</span>
+          <span>06 / 07</span>
+        </div>
+        <h2>Masalahnya bukan kamu <em>tidak bersemangat</em> di meeting sore.</h2>
+        <p class="ps">Masalahnya adalah jadwal yang tidak mempertimbangkan biologi otakmu. Otak bukan mesin yang bisa run terus — dia beroperasi dalam gelombang, bukan garis lurus.</p>
+        <p class="ps">Keputusan terbaik dibuat di awal siklus. Bukan setelah 6 jam meeting tanpa jeda yang cukup.</p>
+        <div class="footer">
+          <span>06 — REFRAME</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- SLIDE 7 — CTA -->
+      <section class="slide bg-light s7" data-screen-label="07 CTA">
+        <div class="header">
+          <span class="pillar-tag">Sekarang giliranmu</span>
+          <span>07 / 07</span>
+        </div>
+
+        <div>
+          <p class="lead-q">Jam berapa meeting paling <em>produktif</em> dan paling <em>sia-sia</em> di kantormu?</p>
+          <p class="ask">Tulis jawaban kamu di komentar. Dan kalau kamu punya atasan yang suka jadwalkan meeting jam 4 sore — kirim slide ini.</p>
+        </div>
+
+        <div class="actions">
+          <div class="btn">
+            <span>Simpan untuk dibagikan ke tim sebelum rapat</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+          </div>
+          <div class="btn">
+            <span>Kirim ke atasan yang suka meeting sore</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </div>
+
+        <div class="signoff">
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="1.5">
+              <path d="M4 14c0-5 3-8 8-8 4 0 6 2 6 5 0 2-1.5 3.5-4 3.5-2 0-3 1-3 2.5 0 1.5 1 2.5 2.5 2.5"/>
+              <circle cx="15" cy="9" r="1" fill="#1A6B5A"/>
+            </svg>
+            <span class="tag">Neuro Daily</span>
+          </div>
+          <div class="sub">Kerja lebih cerdas, bukan lebih keras. Ini sains-nya.</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<!-- CAPTION PANEL -->
+<div class="caption-panel">
+  <div class="label">Caption · Formula C — Number Hook · ≤ 500 karakter</div>
+  <p><strong style="color:var(--parchment)">Meeting jam 4 sore bukan sekadar melelahkan.</strong></p>
+  <p>Otak beroperasi dalam siklus 90 menit — ultradian rhythm — setelah itu butuh recovery sebelum bisa berpikir jernih.</p>
+  <p>Back-to-back meeting mengabaikan siklus ini. Hasilnya: keputusan di sore hari itu bukan versi terbaik dari otakmu.</p>
+  <p>Bukan soal semangat. Soal biologi.</p>
+  <p>Jam berapa meeting paling produktif di kantormu — dan jam berapa yang paling sia-sia?</p>
+  <span class="hash">#NeuroDaily #NeurosainsKerja #BrainAtWork #DecisionFatigue #ProduktivitasBerbasisSains</span>
+  <div class="char-count" id="charCount"></div>
+</div>
+
+<div class="controls">
+  <button id="prev" aria-label="Sebelumnya">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next" aria-label="Berikutnya">›</button>
+</div>
+
+<script>
+  const track = document.getElementById('track');
+  const dotsEl = document.getElementById('dots');
+  const counter = document.getElementById('counter');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  const total = track.children.length;
+  let i = 0;
+
+  for(let k=0;k<total;k++){
+    const b = document.createElement('button');
+    b.className = 'dot' + (k===0?' active':'');
+    b.addEventListener('click',()=>go(k));
+    dotsEl.appendChild(b);
+  }
+  const dots = [...dotsEl.children];
+
+  function go(n){
+    i = Math.max(0, Math.min(total-1, n));
+    track.style.transform = `translateX(-${i*100}%)`;
+    dots.forEach((d,k)=>d.classList.toggle('active', k===i));
+    counter.textContent = `${i+1} / ${total}`;
+    prevBtn.disabled = i===0;
+    nextBtn.disabled = i===total-1;
+  }
+  prevBtn.addEventListener('click',()=>go(i-1));
+  nextBtn.addEventListener('click',()=>go(i+1));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight')go(i+1);
+    if(e.key==='ArrowLeft')go(i-1);
+  });
+
+  let sx=0, dx=0, dragging=false;
+  const vp = document.querySelector('.viewport');
+  vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;dragging=true;dx=0});
+  vp.addEventListener('touchmove',e=>{if(!dragging)return;dx=e.touches[0].clientX-sx});
+  vp.addEventListener('touchend',()=>{
+    if(!dragging)return;
+    if(Math.abs(dx)>40){go(i + (dx<0?1:-1));}
+    dragging=false;
+  });
+
+  // Live char counter for caption
+  const captionText = `Meeting jam 4 sore bukan sekadar melelahkan.
+
+Otak beroperasi dalam siklus 90 menit — ultradian rhythm — setelah itu butuh recovery sebelum bisa berpikir jernih.
+
+Back-to-back meeting mengabaikan siklus ini. Hasilnya: keputusan di sore hari itu bukan versi terbaik dari otakmu.
+
+Bukan soal semangat. Soal biologi.
+
+Jam berapa meeting paling produktif di kantormu — dan jam berapa yang paling sia-sia?
+
+#NeuroDaily #NeurosainsKerja #BrainAtWork #DecisionFatigue #ProduktivitasBerbasisSains`;
+
+  const cc = document.getElementById('charCount');
+  const len = captionText.length;
+  cc.textContent = `${len} / 500 karakter ${len <= 500 ? '✓' : '⚠ Melebihi batas Threads'}`;
+  if(len > 500) cc.style.color = '#e05252';
+
+  go(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Neuro Daily — Lupa Nama Orang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#1a1a1a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+  body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px}
+
+  .topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#9aa39f;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px}
+  .topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+
+  .stage{position:relative;width:min(440px,92vw);aspect-ratio:4/5}
+  .viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04)}
+  .track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+  .slide{flex:0 0 100%;height:100%;display:flex;flex-direction:column;padding:36px 32px 28px;position:relative;overflow:hidden}
+
+  .bg-dark{background:var(--forest);color:var(--parchment)}
+  .bg-light{background:var(--parchment);color:var(--forest)}
+  .bg-teal{background:var(--teal);color:var(--parchment)}
+
+  .slide .header{display:flex;justify-content:space-between;align-items:center;font-family:'DM Sans',sans-serif;font-weight:500;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.85}
+  .bg-light .header{opacity:.7}
+  .pillar-tag{display:inline-flex;align-items:center;gap:6px}
+  .pillar-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--green)}
+  .bg-light .pillar-tag::before{background:var(--teal)}
+  .slide .footer{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;opacity:.55;text-transform:uppercase}
+
+  /* ── SLIDE 1 ── */
+  .s1 .body{margin-top:auto;margin-bottom:auto}
+  .s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:46px;line-height:1.05;letter-spacing:-.01em;color:var(--parchment)}
+  .s1 h1 em{color:var(--amber);font-style:italic}
+  .s1 .lead{margin-top:18px;font-size:13px;line-height:1.7;opacity:.7;max-width:300px}
+  .s1 .swipe{position:absolute;bottom:24px;right:32px;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+  .s1 .arrow{display:inline-block;animation:nudge 1.6s ease-in-out infinite}
+  @keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+  .static-bg{position:absolute;inset:0;pointer-events:none;opacity:.045}
+
+  /* ── SLIDE 2 — DIAGNOSIS ── */
+  .s2-diag{justify-content:space-between}
+  .s2-diag .eyebrow{margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);opacity:.8}
+  .s2-diag h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:32px;line-height:1.13;letter-spacing:-.01em;margin-top:10px;color:var(--forest)}
+  .s2-diag h2 em{font-style:italic;color:var(--teal)}
+  .s2-diag .desc{margin-top:14px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.8;max-width:340px}
+  .s2-diag .pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+  .s2-diag .pill{padding:7px 13px;border-radius:99px;font-size:11px;font-weight:500;letter-spacing:.06em}
+  .pill-amber{background:rgba(201,169,110,.15);color:#9a7940;border:1px solid rgba(201,169,110,.3)}
+  .pill-teal{background:rgba(26,107,90,.1);color:var(--teal);border:1px solid rgba(26,107,90,.2)}
+  .s2-diag .note{margin-top:14px;font-size:11.5px;line-height:1.6;color:var(--forest);opacity:.6;border-top:1px solid rgba(13,46,40,.1);padding-top:12px}
+
+  /* ── SLIDE 3 — MECHANISM ── */
+  .s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:26px;line-height:1.24;letter-spacing:-.01em;margin-top:20px}
+  .s3 h2 em{font-style:italic;color:var(--amber)}
+  .s3 .term{margin-top:16px;padding:14px 16px;border-radius:10px;background:rgba(94,201,167,.08);border-left:2px solid var(--green)}
+  .s3 .term .name{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+  .s3 .term .def{margin-top:7px;font-size:12.5px;line-height:1.65;color:var(--parchment);opacity:.92}
+  .s3 .priority-list{margin-top:14px;display:flex;flex-direction:column;gap:6px}
+  .s3 .prio-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:7px}
+  .prio-high{background:rgba(94,201,167,.1);border:1px solid rgba(94,201,167,.18)}
+  .prio-med{background:rgba(201,169,110,.08);border:1px solid rgba(201,169,110,.15)}
+  .prio-low{background:rgba(224,112,112,.08);border:1px solid rgba(224,112,112,.15)}
+  .s3 .prio-num{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;width:18px;flex-shrink:0}
+  .prio-high .prio-num{color:var(--green)}
+  .prio-med  .prio-num{color:var(--amber)}
+  .prio-low  .prio-num{color:#e07070}
+  .s3 .prio-text{font-size:11px;line-height:1.4;color:var(--parchment);opacity:.85}
+  .s3 .source{margin-top:10px;font-size:10.5px;color:var(--parchment);opacity:.5;line-height:1.55}
+
+  /* ── SLIDE 4 — KAPASITAS VISUAL ── */
+  .s4-cap h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:22px;line-height:1.28;margin-top:14px;color:var(--forest)}
+  .s4-cap h2 em{font-style:italic;color:var(--teal)}
+  .s4-cap .cap-label{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);margin-bottom:4mm}
+  .cap-bar-wrap{margin-top:16px}
+  .cap-bar-title{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:6px}
+  .cap-bar{height:32px;border-radius:6px;overflow:hidden;display:flex;border:1px solid rgba(13,46,40,.1);margin-bottom:3px}
+  .cap-seg{display:flex;align-items:center;justify-content:center;font-size:8.5px;font-weight:500;line-height:1.2;text-align:center;padding:0 4px;transition:all .3s}
+  .seg-face   {background:#1A6B5A;color:#fff;width:22%}
+  .seg-status {background:#2a8a72;color:#fff;width:20%}
+  .seg-utter  {background:#3aaa8e;color:#fff;width:25%}
+  .seg-impress{background:#4dc4a8;color:var(--forest);width:18%}
+  .seg-overflow{background:rgba(224,112,112,.7);color:#fff;border:1.5px dashed #e07070;width:15%;font-size:8px;border-radius:0 5px 5px 0}
+  .cap-legend{display:flex;flex-direction:column;gap:5px;margin-top:10px}
+  .leg-item{display:flex;align-items:center;gap:8px;font-size:10.5px;color:var(--forest)}
+  .leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+  .leg-sub{font-size:9.5px;color:var(--forest);opacity:.55}
+  .s4-cap .conclusion{margin-top:12px;padding:10px 13px;border-radius:7px;background:rgba(224,112,112,.06);border:1px solid rgba(224,112,112,.18);font-size:11.5px;line-height:1.55;color:var(--forest);opacity:.85}
+  .s4-cap .conclusion strong{color:#c05050;font-weight:500}
+
+  /* ── SLIDE 5 — CONSEQUENCE ── */
+  .s5{padding-top:28px}
+  .s5 .stat-big{margin-top:auto;display:flex;align-items:baseline;gap:12px}
+  .s5 .stat-big .n{font-family:'DM Serif Display',serif;font-size:86px;line-height:.85;color:var(--parchment);letter-spacing:-.03em}
+  .s5 .stat-big .n em{color:var(--amber);font-style:italic}
+  .s5 .stat-big .u{font-family:'DM Sans';font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);max-width:130px;line-height:1.5}
+  .s5 .copy{margin-top:16px;font-size:13px;line-height:1.65;opacity:.85;max-width:340px}
+  .s5 .copy strong{font-weight:500;color:var(--green)}
+  .s5 .math{margin-top:16px;padding:13px 16px;border:1px dashed rgba(94,201,167,.3);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);letter-spacing:.04em;line-height:1.85}
+
+  /* ── SLIDE 6 — REFRAME + STRATEGI ── */
+  .s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:28px;line-height:1.18;margin-top:22px;letter-spacing:-.01em}
+  .s6 h2 em{font-style:italic;color:var(--green)}
+  .s6 .ps{margin-top:14px;font-size:12.5px;line-height:1.65;opacity:.82;max-width:340px}
+  .s6 .steps{margin-top:14px;display:flex;flex-direction:column;gap:0}
+  .s6 .step{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(245,243,238,.07)}
+  .s6 .step:last-child{border-bottom:none}
+  .s6 .step-num{width:20px;height:20px;border-radius:50%;background:rgba(94,201,167,.15);color:var(--green);font-family:'JetBrains Mono',monospace;font-size:8.5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .s6 .step-title{font-size:11.5px;font-weight:500;color:var(--parchment);line-height:1.3;margin-bottom:2px}
+  .s6 .step-desc{font-size:10.5px;color:var(--parchment);opacity:.62;line-height:1.5}
+
+  /* ── SLIDE 7 — CTA ── */
+  .s7{justify-content:space-between}
+  .s7 .lead-q{font-family:'DM Serif Display',serif;font-size:26px;line-height:1.24;letter-spacing:-.01em;margin-top:26px;color:var(--forest)}
+  .s7 .lead-q em{font-style:italic;color:var(--teal)}
+  .s7 .ask{margin-top:13px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.7;max-width:300px}
+  .s7 .actions{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+  .s7 .btn{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border:1px solid rgba(13,46,40,.15);border-radius:10px;font-size:12.5px;color:var(--forest)}
+  .s7 .btn .ic{width:18px;height:18px;color:var(--teal);flex-shrink:0}
+  .s7 .signoff{margin-top:18px;padding-top:14px;border-top:1px solid rgba(13,46,40,.12)}
+  .s7 .tag{font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;color:var(--teal);line-height:1.3}
+  .s7 .sub{margin-top:6px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--forest);opacity:.6;font-weight:500}
+
+  .dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+  .dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+  .dot.active{background:var(--green);width:22px}
+  .controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+  .controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:42px;height:42px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+  .controls button:hover{background:rgba(94,201,167,.12);border-color:rgba(94,201,167,.3)}
+  .controls button:disabled{opacity:.3;cursor:not-allowed}
+  .counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 8px}
+
+  .caption-panel{width:min(440px,92vw);margin-top:32px;padding:22px 22px 24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:13px;line-height:1.7}
+  .caption-panel .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+  .caption-panel .char-count{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--amber);margin-top:10px;opacity:.7}
+  .caption-panel p{margin-bottom:10px}
+  .caption-panel p:last-child{margin-bottom:0}
+  .caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:14px;display:block;line-height:1.7}
+  /* ── EXPORT MODE ── */
+  html.export-html{width:440px!important;height:550px!important;min-height:0!important;overflow:hidden!important;margin:0!important;padding:0!important;background:#0D2E28}
+  body.export-mode{width:440px!important;height:550px!important;min-height:0!important;overflow:hidden!important;padding:0!important;margin:0!important;background:#0D2E28;display:block!important}
+  body.export-mode .topbar,body.export-mode .caption-panel,body.export-mode .dots,body.export-mode .controls{display:none!important}
+  body.export-mode .stage{position:relative!important;width:440px!important;height:550px!important;aspect-ratio:auto!important}
+  body.export-mode .viewport{position:absolute!important;inset:0!important;border-radius:0!important;box-shadow:none!important;overflow:hidden!important}
+  body.export-mode .track{position:absolute!important;top:0!important;left:0!important;height:100%!important;display:flex!important}
+  body.export-mode .slide{height:550px!important;min-height:550px!important;flex-shrink:0!important}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Brain at Work ]</span>
+</div>
+
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- ── SLIDE 1 — HOOK ── -->
+      <section class="slide bg-dark s1" data-screen-label="01 Hook">
+        <!-- Overloaded brain signals SVG -->
+        <svg class="static-bg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <!-- Brain outline -->
+          <ellipse cx="200" cy="230" rx="100" ry="80" fill="none" stroke="rgba(245,243,238,1)" stroke-width="1"/>
+          <!-- Multiple competing signals entering brain -->
+          <!-- Face signal -->
+          <circle cx="80" cy="150" r="5" fill="rgba(94,201,167,.5)"/>
+          <path d="M85 155 Q130 190 175 220" stroke="rgba(94,201,167,.4)" stroke-width="1.2" stroke-dasharray="3,3"/>
+          <text x="42" y="148" font-family="DM Sans" font-size="8" fill="rgba(94,201,167,.5)">Wajah</text>
+          <!-- Status signal -->
+          <circle cx="320" cy="150" r="5" fill="rgba(201,169,110,.5)"/>
+          <path d="M315 155 Q270 190 225 220" stroke="rgba(201,169,110,.4)" stroke-width="1.2" stroke-dasharray="3,3"/>
+          <text x="300" y="148" font-family="DM Sans" font-size="8" fill="rgba(201,169,110,.5)">Status</text>
+          <!-- What-to-say signal -->
+          <circle cx="140" cy="105" r="5" fill="rgba(94,201,167,.35)"/>
+          <path d="M142 110 Q168 165 190 210" stroke="rgba(94,201,167,.3)" stroke-width="1" stroke-dasharray="2,4"/>
+          <text x="80" y="102" font-family="DM Sans" font-size="8" fill="rgba(94,201,167,.4)">Harus bilang apa</text>
+          <!-- Impression signal -->
+          <circle cx="260" cy="105" r="5" fill="rgba(201,169,110,.35)"/>
+          <path d="M258 110 Q232 165 210 210" stroke="rgba(201,169,110,.3)" stroke-width="1" stroke-dasharray="2,4"/>
+          <text x="265" y="102" font-family="DM Sans" font-size="8" fill="rgba(201,169,110,.4)">Kesan pertama</text>
+          <!-- Name - floating and fading -->
+          <circle cx="200" cy="70" r="4" fill="rgba(224,112,112,.4)"/>
+          <path d="M200 74 Q200 140 200 200" stroke="rgba(224,112,112,.25)" stroke-width="1" stroke-dasharray="1,5"/>
+          <text x="200" y="52" text-anchor="middle" font-family="DM Sans" font-size="9" fill="rgba(224,112,112,.5)">Nama?</text>
+          <!-- Overload X in center of brain -->
+          <text x="200" y="238" text-anchor="middle" font-family="DM Serif Display" font-size="20" fill="rgba(201,169,110,.15)">overload</text>
+        </svg>
+
+        <div class="header">
+          <span class="pillar-tag">Brain at Work</span>
+          <span>01 / 07</span>
+        </div>
+        <div class="body">
+          <h1>Baru diperkenalkan. <em>10 detik</em> kemudian — namanya lupa.</h1>
+          <p class="lead">Ini bukan kamu yang tidak perhatian. Dan bukan soal usia atau daya ingat yang buruk.</p>
+        </div>
+        <div class="swipe">
+          <span>Geser</span><span class="arrow">→</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 2 — DIAGNOSIS ── -->
+      <section class="slide bg-light s2-diag" data-screen-label="02 Diagnosis">
+        <div class="header">
+          <span class="pillar-tag">Diagnosisnya</span>
+          <span>02 / 07</span>
+        </div>
+        <div class="eyebrow">Bukan masalah memori</div>
+        <h2>Ini <em>working memory overload</em> — otakmu terlalu sibuk untuk mencatat nama.</h2>
+        <p class="desc">Saat bertemu orang baru, otak tidak hanya memproses namanya. Ia memproses segalanya sekaligus — dan nama adalah satu-satunya yang tidak punya makna kontekstual untuk dipegang.</p>
+        <div class="pill-row">
+          <span class="pill pill-amber">Working memory penuh</span>
+          <span class="pill pill-amber">Nama tidak ter-encode</span>
+          <span class="pill pill-teal">Bukan soal perhatian</span>
+        </div>
+        <p class="note">Nama adalah label arbitrer tanpa makna semantik — paling sulit diingat dibanding wajah, jabatan, atau konteks percakapan. Ini konsisten lintas budaya dan usia. (Miller, 1956 · Rubin & Friendly, 1986)</p>
+        <div class="footer">
+          <span>NEURO DAILY</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 3 — MECHANISM ── -->
+      <section class="slide bg-dark s3" data-screen-label="03 Mechanism">
+        <div class="header">
+          <span class="pillar-tag">Yang terjadi di otakmu</span>
+          <span>03 / 07</span>
+        </div>
+        <h2>Working memory punya kapasitas terbatas — dan otak <em>memprioritaskan ancaman sosial</em> di atas nama.</h2>
+        <div class="term">
+          <div class="name">Working Memory</div>
+          <div class="def">Sistem memori jangka pendek dengan kapasitas ~7±2 item (Miller, 1956). Saat bertemu orang baru dalam konteks profesional, sistem ini langsung penuh dengan pemrosesan sosial — jauh sebelum nama sempat di-encode ke memori jangka panjang.</div>
+        </div>
+        <div class="priority-list">
+          <div class="prio-item prio-high">
+            <span class="prio-num">P1</span>
+            <span class="prio-text">Evaluasi ancaman sosial — siapa ini, apakah aman?</span>
+          </div>
+          <div class="prio-item prio-high">
+            <span class="prio-num">P2</span>
+            <span class="prio-text">Manajemen kesan — aku terlihat bagaimana di mata mereka?</span>
+          </div>
+          <div class="prio-item prio-med">
+            <span class="prio-num">P3</span>
+            <span class="prio-text">Pemrosesan wajah dan bahasa tubuh — visual lebih kuat dari verbal</span>
+          </div>
+          <div class="prio-item prio-low">
+            <span class="prio-num">P4</span>
+            <span class="prio-text">Nama — label arbitrer, masuk terakhir, keluar pertama</span>
+          </div>
+        </div>
+        <p class="source">Miller (1956) · Rubin & Friendly (1986): proper names paling sulit diingat karena tidak punya semantic cue. · Eisenberger (2003): social evaluation aktifkan area prioritas tinggi di otak.</p>
+      </section>
+
+      <!-- ── SLIDE 4 — KAPASITAS VISUAL ── -->
+      <section class="slide bg-light s4-cap" data-screen-label="04 Kapasitas">
+        <div class="header">
+          <span class="pillar-tag">Visualisasinya</span>
+          <span>04 / 07</span>
+        </div>
+        <h2>Kapasitas working memory kamu saat <em>bertemu orang baru</em> — sepenuh ini.</h2>
+
+        <div class="cap-bar-wrap">
+          <div class="cap-bar-title">Working Memory — 100% kapasitas terpakai</div>
+          <div class="cap-bar">
+            <div class="cap-seg seg-face">Wajah</div>
+            <div class="cap-seg seg-status">Status</div>
+            <div class="cap-seg seg-utter">Mau bilang apa</div>
+            <div class="cap-seg seg-impress">Kesan</div>
+            <div class="cap-seg seg-overflow">Nama ↑</div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;margin-top:3px">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:8px;color:#c05050;letter-spacing:.1em">← overflow, tidak ter-encode</span>
+          </div>
+        </div>
+
+        <div class="cap-legend">
+          <div class="leg-item">
+            <div class="leg-dot" style="background:#1A6B5A"></div>
+            <div><span>Wajah & penampilan</span> <span class="leg-sub">— visual, mudah diingat</span></div>
+          </div>
+          <div class="leg-item">
+            <div class="leg-dot" style="background:#2a8a72"></div>
+            <div><span>Evaluasi status sosial</span> <span class="leg-sub">— prioritas tinggi</span></div>
+          </div>
+          <div class="leg-item">
+            <div class="leg-dot" style="background:#3aaa8e"></div>
+            <div><span>Kalimat & respons</span> <span class="leg-sub">— aktif terus diproses</span></div>
+          </div>
+          <div class="leg-item">
+            <div class="leg-dot" style="background:#4dc4a8"></div>
+            <div><span>Manajemen kesan</span> <span class="leg-sub">— selalu aktif di latar</span></div>
+          </div>
+          <div class="leg-item">
+            <div class="leg-dot" style="background:rgba(224,112,112,.7)"></div>
+            <div><span style="color:#c05050;font-weight:500">Nama</span> <span class="leg-sub">— masuk terakhir, langsung overflow</span></div>
+          </div>
+        </div>
+
+        <div class="conclusion">
+          Nama tidak lupa karena tidak didengar. Lupa karena <strong>tidak ada ruang tersisa untuk menyimpannya.</strong>
+        </div>
+
+        <div class="footer">
+          <span>04 — KAPASITAS</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 5 — CONSEQUENCE ── -->
+      <section class="slide bg-teal s5" data-screen-label="05 Consequence">
+        <div class="header">
+          <span class="pillar-tag" style="color:#fff">Dampaknya di karir</span>
+          <span>05 / 07</span>
+        </div>
+        <p class="copy" style="margin-top:24px">Kemampuan mengingat dan memanggil nama orang secara konsisten adalah salah satu sinyal paling kuat dari <strong>social intelligence di tempat kerja</strong> — dan bisa dilatih.</p>
+
+        <div class="stat-big">
+          <span class="n"><em>Sinyal</em></span>
+          <span class="u">terkuat dari rasa hormat & perhatian</span>
+        </div>
+
+        <div class="math">
+          Ingat nama → orang merasa dihargai<br>
+          → koneksi lebih kuat<br>
+          → kepercayaan lebih cepat terbentuk<br>
+          <span style="color:var(--amber)">─────────────────────────</span><br>
+          Bukan soal sopan santun — ini neurologi sosial.<br>
+          <span style="opacity:.6;font-size:10px">*Dale Carnegie dikonfirmasi riset social cognition (Levin & Sims, 1994)</span>
+        </div>
+
+        <div class="footer">
+          <span>05 — DAMPAK</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 6 — REFRAME + STRATEGI ── -->
+      <section class="slide bg-dark s6" data-screen-label="06 Strategi">
+        <div class="header">
+          <span class="pillar-tag">3 Teknik Berbasis Sains</span>
+          <span>06 / 07</span>
+        </div>
+        <h2>Mengingat nama bukan soal <em>memori yang lebih baik</em> — tapi encoding yang lebih disengaja.</h2>
+        <p class="ps">Working memory bisa di-hack dengan memberi nama lebih banyak "jangkar" untuk dipegang — sehingga ia tidak langsung overflow.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <div class="step-title">Ulangi nama segera — keras atau dalam hati</div>
+              <div class="step-desc">"Senang berkenalan, Reza." Pengulangan aktif memindahkan nama dari working memory ke encoding yang lebih dalam. Lakukan dalam 5 detik pertama.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <div class="step-title">Buat asosiasi visual dalam 3 detik</div>
+              <div class="step-desc">Hubungkan nama dengan sesuatu yang konkret — orang lain dengan nama yang sama, kata yang bunyinya mirip, atau detail fisik yang mencolok. Memori visual jauh lebih kuat dari memori verbal.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <div class="step-title">Panggil namanya satu kali lagi dalam percakapan</div>
+              <div class="step-desc">"Jadi, Reza, kamu sudah berapa lama di tim ini?" Repetisi dalam konteks memperkuat encoding ke long-term memory secara signifikan.</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer">
+          <span>06 — TEKNIK</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 7 — CTA ── -->
+      <section class="slide bg-light s7" data-screen-label="07 CTA">
+        <div class="header">
+          <span class="pillar-tag">Sekarang giliranmu</span>
+          <span>07 / 07</span>
+        </div>
+
+        <div>
+          <p class="lead-q">Kamu paling sering lupa nama di situasi <em>yang mana?</em></p>
+          <p class="ask">Tulis di komentar. Mungkin situasinya sama persis dengan yang dialami orang lain tapi belum tahu ini ada penjelasan sainsnya.</p>
+        </div>
+
+        <div class="actions">
+          <div class="btn">
+            <span>Simpan — coba 3 teknik ini di perkenalan berikutnya</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+          </div>
+          <div class="btn">
+            <span>Kirim ke teman yang juga sering lupa nama orang</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </div>
+
+        <div class="signoff">
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="1.5">
+              <path d="M4 14c0-5 3-8 8-8 4 0 6 2 6 5 0 2-1.5 3.5-4 3.5-2 0-3 1-3 2.5 0 1.5 1 2.5 2.5 2.5"/>
+              <circle cx="15" cy="9" r="1" fill="#1A6B5A"/>
+            </svg>
+            <span class="tag">Neuro Daily</span>
+          </div>
+          <div class="sub">Kerja lebih cerdas, bukan lebih keras. Ini sains-nya.</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<!-- CAPTION PANEL -->
+<div class="caption-panel">
+  <div class="label">Caption · Formula B — Explain Your Life · ≤ 500 karakter</div>
+  <p><strong style="color:var(--parchment)">Baru 10 detik diperkenalkan — namanya sudah lupa.</strong></p>
+  <p>Ini bukan kamu yang tidak perhatian. Otakmu sedang memproses terlalu banyak hal sekaligus: wajah, status sosial, apa yang harus dikatakan, kesan pertama.</p>
+  <p>Nama — label arbitrer tanpa makna — selalu kalah prioritas di working memory yang sudah penuh.</p>
+  <p>Bukan tidak sopan. Ini cara otak bekerja saat overload.</p>
+  <p>Kamu paling sering lupa nama di situasi apa?</p>
+  <span class="hash">#NeuroDaily #NeurosainsKerja #BrainAtWork #WorkingMemory #NetworkingTips</span>
+  <div class="char-count" id="charCount"></div>
+</div>
+
+<div class="controls">
+  <button id="prev" aria-label="Sebelumnya">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next" aria-label="Berikutnya">›</button>
+</div>
+
+<script>
+  const track=document.getElementById('track');
+  const dotsEl=document.getElementById('dots');
+  const counter=document.getElementById('counter');
+  const prevBtn=document.getElementById('prev');
+  const nextBtn=document.getElementById('next');
+  const total=track.children.length;
+  let i=0;
+  for(let k=0;k<total;k++){
+    const b=document.createElement('button');
+    b.className='dot'+(k===0?' active':'');
+    b.addEventListener('click',()=>go(k));
+    dotsEl.appendChild(b);
+  }
+  const dots=[...dotsEl.children];
+  function go(n){
+    i=Math.max(0,Math.min(total-1,n));
+    track.style.transform=`translateX(-${i*100}%)`;
+    dots.forEach((d,k)=>d.classList.toggle('active',k===i));
+    counter.textContent=`${i+1} / ${total}`;
+    prevBtn.disabled=i===0;
+    nextBtn.disabled=i===total-1;
+  }
+  prevBtn.addEventListener('click',()=>go(i-1));
+  nextBtn.addEventListener('click',()=>go(i+1));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight')go(i+1);
+    if(e.key==='ArrowLeft')go(i-1);
+  });
+  let sx=0,dx=0,dragging=false;
+  const vp=document.querySelector('.viewport');
+  vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;dragging=true;dx=0});
+  vp.addEventListener('touchmove',e=>{if(!dragging)return;dx=e.touches[0].clientX-sx});
+  vp.addEventListener('touchend',()=>{
+    if(!dragging)return;
+    if(Math.abs(dx)>40)go(i+(dx<0?1:-1));
+    dragging=false;
+  });
+
+  const captionText=`Baru 10 detik diperkenalkan — namanya sudah lupa.
+
+Ini bukan kamu yang tidak perhatian. Otakmu sedang memproses terlalu banyak hal sekaligus: wajah, status sosial, apa yang harus dikatakan, kesan pertama.
+
+Nama — label arbitrer tanpa makna — selalu kalah prioritas di working memory yang sudah penuh.
+
+Bukan tidak sopan. Ini cara otak bekerja saat overload.
+
+Kamu paling sering lupa nama di situasi apa?
+
+#NeuroDaily #NeurosainsKerja #BrainAtWork #WorkingMemory #NetworkingTips`;
+
+  const cc=document.getElementById('charCount');
+  const len=captionText.length;
+  cc.textContent=`${len} / 500 karakter ${len<=500?'✓':'⚠ Melebihi batas Threads'}`;
+  if(len>500)cc.style.color='#e05252';
+    const params=new URLSearchParams(location.search),sp=params.get('slide');
+  if(sp){document.documentElement.classList.add('export-html');document.body.classList.add('export-mode');go(parseInt(sp)-1)}else{go(0)}
+</script>
+</body>
+</html>

@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Neuro Daily · Gut Feeling Karir · Vol. 36</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --forest:#0D2E28;
+  --teal:#1A6B5A;
+  --green:#5EC9A7;
+  --parchment:#F5F3EE;
+  --amber:#C9A96E;
+  --red:#D96A6A;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0a0a0a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 100px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#7a807d;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(540px,94vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;position:relative;overflow:hidden}
+.cvs{width:1080px;height:1350px;transform-origin:top left;position:absolute;top:0;left:0;font-family:'DM Sans',sans-serif}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.cvs .head,.cvs .foot{position:absolute;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 64px;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase}
+.cvs .head{top:0;height:78px;border-bottom:1px solid rgba(245,243,238,.12)}
+.cvs .foot{bottom:0;height:64px;border-top:1px solid rgba(245,243,238,.12)}
+.bg-light .head,.bg-light .foot{border-color:rgba(13,46,40,.12)}
+.bg-teal .head,.bg-teal .foot{border-color:rgba(245,243,238,.18)}
+.cvs .head span,.cvs .foot span{opacity:.55}
+.cvs .head .dotmark::before{content:"◆ ";color:var(--green);opacity:1}
+.bg-light .head .dotmark::before{color:var(--teal)}
+.hippo-mark{display:flex;align-items:center;gap:10px;opacity:1!important}
+.hippo-mark svg{width:30px;height:30px;flex-shrink:0}
+.body{position:absolute;top:78px;bottom:64px;left:0;right:0;padding:52px 72px 52px;display:flex;flex-direction:column}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.bg-dark .eyebrow{color:var(--green)}
+.bg-light .eyebrow{color:var(--teal)}
+.bg-teal .eyebrow{color:var(--amber)}
+.rule{width:48px;height:3px;border-radius:2px;margin-top:18px}
+.bg-dark .rule{background:var(--green)}
+.bg-light .rule{background:var(--teal)}
+.bg-teal .rule{background:var(--amber)}
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:24px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:46px;height:46px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 10px}
+.caption-panel{width:min(540px,94vw);margin-top:32px;padding:26px 26px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:13px;line-height:1.7}
+.caption-panel .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+.caption-panel p{margin-bottom:12px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel strong{color:var(--parchment);font-weight:500}
+.caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:16px;display:block;line-height:1.7}
+
+/* ===== SLIDE 1 — HOOK (bg-dark) ===== */
+.s1 .ghost-q{
+  position:absolute;font-family:'DM Serif Display',serif;font-size:900px;line-height:.78;
+  color:rgba(201,169,110,.08);pointer-events:none;user-select:none;
+  right:-80px;top:-40px;letter-spacing:-.06em;
+}
+.s1 h1{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:92px;line-height:1.02;letter-spacing:-.02em;
+  margin-top:56px;max-width:800px;position:relative;z-index:2;
+}
+.s1 h1 em{font-style:italic;color:var(--amber)}
+.s1 .lead{margin-top:36px;font-size:22px;line-height:1.65;opacity:.72;max-width:600px;font-weight:300;position:relative;z-index:2}
+.s1 .scale-vis{position:absolute;bottom:100px;left:72px;right:72px;z-index:2}
+.s1 .bar-label{font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,243,238,.6);margin-bottom:6px}
+.s1 .bar-row{display:flex;align-items:center;gap:16px;margin-bottom:14px}
+.s1 .bar-name{font-family:'JetBrains Mono',monospace;font-size:13px;width:360px;flex-shrink:0;line-height:1.4;color:rgba(245,243,238,.72)}
+.s1 .bar-track{flex:1;height:36px;background:rgba(245,243,238,.05);border-radius:8px;position:relative;overflow:hidden}
+.s1 .bar-fill{position:absolute;top:0;bottom:0;left:0;border-radius:8px}
+.s1 .bar-fill.good{background:rgba(94,201,167,.65)}
+.s1 .bar-fill.bad{background:rgba(217,106,106,.65)}
+.s1 .bar-pct{font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(245,243,238,.5);flex-shrink:0;width:46px;text-align:right}
+
+/* ===== SLIDE 2 — LIGHT ===== */
+.s2 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:68px;line-height:1.06;letter-spacing:-.02em;
+  margin-top:40px;color:var(--forest);max-width:900px;
+}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .big-num{
+  font-family:'DM Serif Display',serif;font-size:180px;line-height:1;letter-spacing:-.04em;
+  color:var(--teal);margin-top:12px;
+}
+.s2 .big-lbl{font-size:16px;font-weight:400;color:var(--forest);opacity:.6;margin-top:6px;max-width:480px;line-height:1.5}
+.s2 .info-grid{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.info-card{padding:22px 20px;border-radius:14px;background:rgba(26,107,90,.06);border:1.5px solid rgba(26,107,90,.15)}
+.info-card .ic-title{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+.info-card .ic-text{font-size:15px;line-height:1.6;color:var(--forest);opacity:.72;font-weight:300}
+.s2 .src-note{margin-top:auto;font-size:14px;line-height:1.6;color:var(--forest);opacity:.45;font-family:'JetBrains Mono',monospace;letter-spacing:.04em}
+
+/* ===== SLIDE 3 — DARK ===== */
+.s3 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:66px;line-height:1.06;letter-spacing:-.02em;
+  margin-top:50px;max-width:900px;
+}
+.s3 h2 em{font-style:italic;color:var(--green)}
+.s3 .flow-stack{margin-top:48px;display:flex;flex-direction:column;gap:18px}
+.flow-card{padding:26px 28px;border-radius:14px;display:flex;align-items:flex-start;gap:20px}
+.flow-card.fc-green{background:rgba(94,201,167,.08);border:1.5px solid rgba(94,201,167,.28)}
+.flow-card.fc-amber{background:rgba(201,169,110,.08);border:1.5px solid rgba(201,169,110,.28)}
+.flow-card .fc-num{
+  font-family:'DM Serif Display',serif;font-size:48px;line-height:1;letter-spacing:-.03em;flex-shrink:0;width:52px;
+}
+.flow-card.fc-green .fc-num{color:var(--green)}
+.flow-card.fc-amber .fc-num{color:var(--amber)}
+.flow-card .fc-content{}
+.flow-card .fc-title{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+.flow-card.fc-green .fc-title{color:var(--green)}
+.flow-card.fc-amber .fc-title{color:var(--amber)}
+.flow-card .fc-text{font-size:16px;line-height:1.6;opacity:.78;font-weight:300}
+.s3 .flow-note{
+  margin-top:28px;padding:18px 22px;
+  background:rgba(94,201,167,.05);border:1px solid rgba(94,201,167,.15);border-radius:12px;
+  font-size:15px;line-height:1.6;font-weight:300;opacity:.8;
+}
+.s3 .flow-note strong{color:var(--green);font-weight:500}
+
+/* ===== SLIDE 4 — TEAL ===== */
+.s4 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:64px;line-height:1.06;letter-spacing:-.02em;
+  margin-top:50px;max-width:900px;
+}
+.s4 h2 em{font-style:italic;color:var(--amber)}
+.s4 .term-card{
+  margin-top:36px;
+  background:rgba(245,243,238,.08);border:1.5px solid rgba(245,243,238,.2);
+  border-radius:14px;padding:28px 32px;
+}
+.s4 .term-name{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+.s4 .term-def{font-size:18px;line-height:1.65;font-weight:300;opacity:.9}
+.s4 .callout-row{margin-top:32px;display:flex;gap:14px}
+.s4 .callout{flex:1;padding:20px 18px;border-radius:12px}
+.s4 .callout.a{background:rgba(94,201,167,.12);border:1px solid rgba(94,201,167,.3)}
+.s4 .callout.b{background:rgba(201,169,110,.12);border:1px solid rgba(201,169,110,.3)}
+.s4 .callout.c{background:rgba(94,201,167,.08);border:1px solid rgba(94,201,167,.2)}
+.s4 .callout .c-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:7px;font-weight:500}
+.s4 .callout.a .c-title,.s4 .callout.c .c-title{color:var(--green)}
+.s4 .callout.b .c-title{color:var(--amber)}
+.s4 .callout .c-text{font-size:15px;line-height:1.5;color:var(--parchment);opacity:.8;font-weight:300}
+
+/* ===== SLIDE 5 — LIGHT ===== */
+.s5 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:66px;line-height:1.06;letter-spacing:-.02em;
+  margin-top:44px;color:var(--forest);max-width:900px;
+}
+.s5 h2 em{font-style:italic;color:var(--teal)}
+.s5 .scenarios{margin-top:52px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.scenario{padding:28px 24px 22px;border-radius:16px;position:relative;display:flex;flex-direction:column;gap:10px}
+.scenario.bad{background:rgba(217,106,106,.06);border:1.5px solid rgba(217,106,106,.2)}
+.scenario.good{background:rgba(26,107,90,.06);border:1.5px solid rgba(26,107,90,.25)}
+.scenario .s-stamp{
+  position:absolute;top:-13px;left:22px;padding:5px 14px;border-radius:99px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;
+}
+.scenario.bad .s-stamp{background:var(--red);color:#fff}
+.scenario.good .s-stamp{background:var(--teal);color:#fff}
+.scenario .s-number{font-family:'DM Serif Display',serif;font-size:64px;line-height:1;letter-spacing:-.03em}
+.scenario.bad .s-number{color:var(--red)}
+.scenario.good .s-number{color:var(--teal);font-style:italic}
+.scenario .s-label{font-size:17px;font-weight:500;line-height:1.3;color:var(--forest)}
+.scenario .s-desc{font-size:13px;line-height:1.6;color:var(--forest);opacity:.62;font-weight:300}
+.scenario .s-result{margin-top:10px;padding:10px 13px;border-radius:10px;font-size:13px;line-height:1.5;font-weight:400}
+.scenario.bad .s-result{background:rgba(217,106,106,.1);color:var(--red)}
+.scenario.good .s-result{background:rgba(26,107,90,.1);color:var(--teal)}
+.s5 .research-note{
+  margin-top:24px;padding:18px 22px;
+  background:rgba(26,107,90,.05);border:1px solid rgba(26,107,90,.16);border-radius:12px;
+  font-size:14px;line-height:1.6;color:var(--forest);font-weight:300;
+}
+.s5 .research-note strong{font-weight:500;color:var(--teal)}
+
+/* ===== SLIDE 6 — DARK ===== */
+.s6 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:70px;line-height:1.06;letter-spacing:-.02em;
+  margin-top:44px;max-width:900px;
+}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .formula{margin-top:48px;display:flex;flex-direction:column;gap:0}
+.s6 .f-block{width:100%;padding:24px 28px;border-radius:14px;display:flex;align-items:center;gap:20px}
+.s6 .f-block.a{background:rgba(94,201,167,.1);border:2px solid rgba(94,201,167,.32)}
+.s6 .f-block.b{background:rgba(201,169,110,.1);border:2px solid rgba(201,169,110,.28)}
+.s6 .f-block.result{background:rgba(94,201,167,.18);border:2px solid rgba(94,201,167,.55)}
+.s6 .f-op{text-align:center;padding:6px 0;font-family:'DM Serif Display',serif;font-size:38px;color:var(--parchment);opacity:.25;line-height:1}
+.s6 .f-divider{height:1px;background:rgba(245,243,238,.1);margin:16px 0}
+.s6 .f-icon{width:52px;height:52px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.s6 .f-block.a .f-icon{background:rgba(94,201,167,.18)}
+.s6 .f-block.b .f-icon{background:rgba(201,169,110,.18)}
+.s6 .f-block.result .f-icon{background:rgba(94,201,167,.28)}
+.s6 .f-icon svg{width:26px;height:26px}
+.s6 .f-content{}
+.s6 .f-val{font-family:'DM Serif Display',serif;font-size:32px;line-height:1;letter-spacing:-.02em}
+.s6 .f-block.a .f-val{color:var(--green)}
+.s6 .f-block.b .f-val{color:var(--amber)}
+.s6 .f-block.result .f-val{color:var(--green)}
+.s6 .f-desc{margin-top:4px;font-size:15px;line-height:1.5;opacity:.72;font-weight:300}
+.s6 .f-note{
+  margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.04em;
+  color:rgba(245,243,238,.5);text-align:center;line-height:1.9;
+  border-top:1px solid rgba(245,243,238,.1);padding-top:22px;
+}
+
+/* ===== SLIDE 7 — LIGHT ===== */
+.s7 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:70px;line-height:1.04;letter-spacing:-.02em;
+  margin-top:44px;color:var(--forest);max-width:900px;
+}
+.s7 h2 em{font-style:italic;color:var(--teal)}
+.s7 .sub{margin-top:28px;font-size:20px;line-height:1.65;color:var(--forest);opacity:.68;max-width:820px;font-weight:300}
+.s7 .discussion{margin-top:44px;display:flex;flex-direction:column;gap:14px}
+.s7 .disc-item{
+  display:flex;align-items:center;gap:18px;padding:18px 22px;
+  border:1.5px solid rgba(13,46,40,.12);border-radius:14px;
+  font-size:16px;color:var(--forest);background:rgba(255,255,255,.46);line-height:1.4;
+}
+.s7 .disc-item .ic{
+  width:40px;height:40px;border-radius:10px;background:rgba(26,107,90,.1);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.s7 .disc-item .ic svg{width:20px;height:20px}
+.s7 .shift-note{
+  margin-top:auto;padding:18px 22px;
+  border:1.5px solid rgba(13,46,40,.1);border-radius:12px;
+  font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.04em;
+  color:rgba(13,46,40,.55);line-height:1.7;
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Neuro Daily · Vol. 36 · Career Neuroscience · P3</span>
+  <span class="pill">Gut Feeling Karir</span>
+</div>
+
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- SLIDE 1: Hook (bg-dark) -->
+      <section class="slide">
+        <div class="cvs bg-dark s1">
+          <div class="head">
+            <span class="dotmark">Somatic Marker · Gut Feeling</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="ghost-q">?</div>
+          <div class="body">
+            <div class="eyebrow">🧠 Somatic Marker · Gut Feeling</div>
+            <div class="rule"></div>
+            <h1>
+              Logikanya masuk akal.<br>
+              <em>Tapi rasanya tidak enak.</em>
+            </h1>
+            <p class="lead">Antonio Damasio menemukan ini saat merawat pasien dengan kerusakan otak yang kehilangan gut feeling — dan kemampuan membuat keputusan yang baik.</p>
+            <div class="scale-vis">
+              <div class="bar-row">
+                <span class="bar-name">Dengan gut feeling</span>
+                <div class="bar-track"><div class="bar-fill good" style="width:85%"></div></div>
+                <span class="bar-pct">85%</span>
+              </div>
+              <div class="bar-row">
+                <span class="bar-name">Tanpa gut feeling (vmPFC damaged)</span>
+                <div class="bar-track"><div class="bar-fill bad" style="width:25%"></div></div>
+                <span class="bar-pct">25%</span>
+              </div>
+              <div class="bar-label" style="margin-top:8px">Decision quality</div>
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>01 / 07</span>
+            <div class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#5EC9A7" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#5EC9A7"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 2: Iowa Gambling Task (bg-light) -->
+      <section class="slide">
+        <div class="cvs bg-light s2">
+          <div class="head">
+            <span class="dotmark">Riset · Iowa Gambling Task</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow">◇ Riset · Iowa Gambling Task</div>
+            <div class="rule"></div>
+            <h2>Pasien tanpa gut feeling <em>selalu buat keputusan buruk</em> — meski IQ normal.</h2>
+            <div class="big-num">50×</div>
+            <div class="big-lbl">lebih lama untuk membuat keputusan sederhana</div>
+            <div class="info-grid">
+              <div class="info-card">
+                <div class="ic-title">Pasien vmPFC</div>
+                <div class="ic-text">Kerusakan di ventromedial prefrontal cortex. IQ normal, logika normal.</div>
+              </div>
+              <div class="info-card">
+                <div class="ic-title">Iowa Gambling Task</div>
+                <div class="ic-text">Pilih kartu dari 4 deck. Deck A/B = kerugian besar, C/D = untung kecil konsisten.</div>
+              </div>
+              <div class="info-card">
+                <div class="ic-title">Kontrol normal</div>
+                <div class="ic-text">Dalam 50 kartu pertama, mulai menghindari deck A/B secara intuitif — sebelum sadar alasannya.</div>
+              </div>
+              <div class="info-card">
+                <div class="ic-title">Pasien vmPFC</div>
+                <div class="ic-text">Tidak pernah belajar menghindari deck berbahaya. Terus rugi.</div>
+              </div>
+            </div>
+            <div class="src-note" style="margin-top:auto">→ Damasio et al. (1994) · Bechara et al. (1997) · University of Iowa · Somatic Marker Hypothesis</div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>02 / 07</span>
+            <div class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 3: Mekanisme Somatic Marker (bg-dark) -->
+      <section class="slide">
+        <div class="cvs bg-dark s3">
+          <div class="head">
+            <span class="dotmark">Mekanisme · Somatic Marker</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow">↺ Mekanisme · Somatic Marker</div>
+            <div class="rule"></div>
+            <h2>Gut feeling bukan <em>tebakan</em> — ini database <em>pengalaman masa lalu.</em></h2>
+            <div class="flow-stack">
+              <div class="flow-card fc-green">
+                <div class="fc-num">1</div>
+                <div class="fc-content">
+                  <div class="fc-title">Pengalaman → Emosi</div>
+                  <div class="fc-text">Setiap keputusan yang kamu buat di masa lalu, plus hasilnya, disimpan sebagai memori emosional di vmPFC.</div>
+                </div>
+              </div>
+              <div class="flow-card fc-amber">
+                <div class="fc-num">2</div>
+                <div class="fc-content">
+                  <div class="fc-title">Situasi baru → Pencocokan</div>
+                  <div class="fc-text">Saat menghadapi situasi serupa, vmPFC memicu somatic marker — sensasi fisik ringan (gut feeling) yang merangkum pelajaran masa lalu.</div>
+                </div>
+              </div>
+              <div class="flow-card fc-green">
+                <div class="fc-num">3</div>
+                <div class="fc-content">
+                  <div class="fc-title">Sinyal → Keputusan</div>
+                  <div class="fc-text">Somatic marker berfungsi sebagai "pre-selection" — mempersempit opsi sebelum logika mulai bekerja.</div>
+                </div>
+              </div>
+            </div>
+            <div class="flow-note">Ini mengapa orang berpengalaman sering 'tahu' jawaban yang benar sebelum bisa menjelaskannya secara logis.</div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>03 / 07</span>
+            <div class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#5EC9A7" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#5EC9A7"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 4: vmPFC (bg-teal) -->
+      <section class="slide">
+        <div class="cvs bg-teal s4">
+          <div class="head">
+            <span class="dotmark" style="color:var(--amber)">○ vmPFC · Area Gut Feeling</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow">○ vmPFC · Area Gut Feeling</div>
+            <div class="rule"></div>
+            <h2>vmPFC: tempat otak <em>menyimpan pelajaran</em> dari setiap keputusan.</h2>
+            <div class="term-card">
+              <div class="term-name">Ventromedial Prefrontal Cortex (vmPFC)</div>
+              <div class="term-def">Area otak yang mengintegrasikan logika dengan memori emosional. Menyimpan somatic markers — jejak biologis dari hasil keputusan masa lalu — dan memicunya kembali saat situasi serupa muncul.</div>
+            </div>
+            <div class="callout-row">
+              <div class="callout a">
+                <div class="c-title">Intuisi karir</div>
+                <div class="c-text">Gut feeling tentang tawaran kerja, partner bisnis, atau lingkungan baru</div>
+              </div>
+              <div class="callout b">
+                <div class="c-title">Social reading</div>
+                <div class="c-text">Perasaan tentang apakah seseorang bisa dipercaya</div>
+              </div>
+              <div class="callout c">
+                <div class="c-title">Risk sensing</div>
+                <div class="c-text">Deteksi risiko yang belum bisa diartikulasikan secara logis</div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>04 / 07</span>
+            <div class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#C9A96E" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#C9A96E"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 5: Dua Skenario (bg-light) -->
+      <section class="slide">
+        <div class="cvs bg-light s5">
+          <div class="head">
+            <span class="dotmark">Skenario · Gut Feeling vs Anxiety</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow">↔ Skenario · Gut Feeling vs Anxiety</div>
+            <div class="rule"></div>
+            <h2>Tidak semua perasaan adalah gut feeling. <em>Ada yang harus dibedakan.</em></h2>
+            <div class="scenarios">
+              <div class="scenario bad">
+                <div class="s-stamp">Anxiety/Fear</div>
+                <div class="s-number">↓</div>
+                <div class="s-label">Noise, bukan sinyal</div>
+                <div class="s-desc">Rasanya tidak enak karena situasi baru, takut gagal, atau tidak familiar. Tidak ada data historis — hanya ketakutan.</div>
+                <div class="s-result">→ Bukan gut feeling — ini comfort zone bias</div>
+              </div>
+              <div class="scenario good">
+                <div class="s-stamp">Somatic Marker</div>
+                <div class="s-number">↑</div>
+                <div class="s-label">Signal dari database</div>
+                <div class="s-desc">Rasanya tidak enak karena ada pola yang dikenali otak dari pengalaman serupa sebelumnya. Ada sesuatu yang spesifik.</div>
+                <div class="s-result">→ Ini worth didengarkan dan ditelusuri alasannya</div>
+              </div>
+            </div>
+            <div class="research-note">
+              <strong>Kunci pembeda:</strong> gut feeling biasanya spesifik (ada yang 'off' dari seseorang/situasi tertentu), anxiety biasanya difus (tidak enak secara umum)
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>05 / 07</span>
+            <div class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 6: Formula (bg-dark) -->
+      <section class="slide">
+        <div class="cvs bg-dark s6">
+          <div class="head">
+            <span class="dotmark">Formula · Membaca Sinyal</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow">≡ Formula · Membaca Sinyal</div>
+            <div class="rule"></div>
+            <h2>Cara membedakan gut feeling <em>yang valid</em> dari anxiety biasa.</h2>
+            <div class="formula">
+              <div class="f-block a">
+                <div class="f-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#5EC9A7" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                </div>
+                <div class="f-content">
+                  <div class="f-val">Identify</div>
+                  <div class="f-desc">Apa tepatnya yang terasa off? Gut feeling yang valid biasanya bisa dipersempit ke sesuatu yang spesifik. Anxiety tidak bisa.</div>
+                </div>
+              </div>
+              <div class="f-op">+</div>
+              <div class="f-block b">
+                <div class="f-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+                </div>
+                <div class="f-content">
+                  <div class="f-val">Trace</div>
+                  <div class="f-desc">Ada pengalaman serupa sebelumnya? Tanya: pernah ketemu situasi/orang seperti ini? Somatic marker bekerja dari data nyata.</div>
+                </div>
+              </div>
+              <div class="f-divider"></div>
+              <div class="f-block result">
+                <div class="f-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#5EC9A7" stroke-width="2" stroke-linecap="round"><path d="M9 12l2 2 4-4M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+                </div>
+                <div class="f-content">
+                  <div class="f-val">Decide with both</div>
+                  <div class="f-desc">Gunakan logika untuk verifikasi, gut feeling untuk validasi awal. Keduanya perlu — bukan pilih salah satu.</div>
+                </div>
+              </div>
+            </div>
+            <div class="f-note">Intuisi terbaik adalah <em style="font-style:italic">logika yang sudah diproses</em> jadi sinyal tubuh — <span style="color:var(--green);font-weight:500">bukan tebakan acak.</span></div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>06 / 07</span>
+            <div class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#5EC9A7" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#5EC9A7"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 7: CTA (bg-light) -->
+      <section class="slide">
+        <div class="cvs bg-light s7">
+          <div class="head">
+            <span class="dotmark">Sekarang giliranmu</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow">◆ Sekarang giliranmu</div>
+            <div class="rule"></div>
+            <h2>Pernah tolak tawaran yang 'masuk akal' <em>karena rasanya tidak enak?</em></h2>
+            <p class="sub">Hasilnya terbukti benar atau salah? Cerita singkat di komentar.</p>
+            <div class="discussion">
+              <div class="disc-item">
+                <div class="ic">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="2" stroke-linecap="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                Simpan — next time ada gut feeling, coba identify apa tepatnya yang terasa off
+              </div>
+              <div class="disc-item">
+                <div class="ic">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="2" stroke-linecap="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+                </div>
+                Kirim ke teman yang lagi dihadapkan keputusan karir besar
+              </div>
+            </div>
+            <div class="shift-note">→ Gut feeling bukan pengganti riset. Tapi mengabaikannya juga bukan keputusan yang lebih baik.</div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>07 / 07</span>
+            <div class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<div class="dots" id="dots"></div>
+
+<div class="controls">
+  <button id="prev">←</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next">→</button>
+</div>
+
+<div class="caption-panel">
+  <div class="label">Caption · Instagram / TikTok</div>
+  <p>Logikanya masuk akal. Tapi rasanya tidak enak. Perasaan itu bukan tebakan. Ini sains.</p>
+  <p>Antonio Damasio menemukan ini dari pasien dengan kerusakan vmPFC — otak yang kehilangan kemampuan merasakan gut feeling. Mereka IQ normal, logika normal. Tapi selalu buat keputusan buruk.</p>
+  <p>Gut feeling adalah database pengalaman masa lalu yang dikonversi jadi sinyal tubuh. Bukan noise — ini fitur otak.</p>
+  <p>Pernah tolak tawaran yang masuk akal karena rasanya tidak enak? Hasilnya terbukti benar atau salah?</p>
+  <span class="hash">#neurosains #produktivitas #karir #gutfeeling #keputusan #otakmanusia #kerjacerdas</span>
+</div>
+
+<script>
+const track=document.getElementById('track'),dotsEl=document.getElementById('dots'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next');
+const total=track.children.length;let i=0;
+function scaleCanvases(){document.querySelectorAll('.slide').forEach(s=>{const c=s.querySelector('.cvs');if(!c)return;c.style.transform=`scale(${s.clientWidth/1080})`;});}
+window.addEventListener('resize',scaleCanvases);scaleCanvases();
+for(let k=0;k<total;k++){const b=document.createElement('button');b.className='dot'+(k===0?' active':'');b.addEventListener('click',()=>go(k));dotsEl.appendChild(b)}
+const dots=[...dotsEl.children];
+function go(n){i=Math.max(0,Math.min(total-1,n));track.style.transform=`translateX(-${i*100}%)`;dots.forEach((d,k)=>d.classList.toggle('active',k===i));counter.textContent=`${i+1} / ${total}`;prevBtn.disabled=i===0;nextBtn.disabled=i===total-1}
+prevBtn.addEventListener('click',()=>go(i-1));nextBtn.addEventListener('click',()=>go(i+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(i+1);if(e.key==='ArrowLeft')go(i-1)});
+let sx=0,dx=0,drag=false;const vp=document.querySelector('.viewport');
+vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;drag=true;dx=0},{passive:true});
+vp.addEventListener('touchmove',e=>{if(!drag)return;dx=e.touches[0].clientX-sx},{passive:true});
+vp.addEventListener('touchend',()=>{if(!drag)return;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));drag=false});
+go(0);
+</script>
+</body>
+</html>

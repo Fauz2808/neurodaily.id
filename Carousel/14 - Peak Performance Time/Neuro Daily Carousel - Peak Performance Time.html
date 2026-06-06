@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Neuro Daily — Jam Peak Performance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#1a1a1a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#9aa39f;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(440px,92vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;display:flex;flex-direction:column;padding:36px 32px 28px;position:relative;overflow:hidden}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.slide .header{display:flex;justify-content:space-between;align-items:center;font-family:'DM Sans',sans-serif;font-weight:500;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.85}
+.bg-light .header{opacity:.7}
+.pillar-tag{display:inline-flex;align-items:center;gap:6px}
+.pillar-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--green)}
+.bg-light .pillar-tag::before{background:var(--teal)}
+.slide .footer{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;opacity:.55;text-transform:uppercase}
+.s1 .body{margin-top:auto;margin-bottom:auto}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:46px;line-height:1.05;letter-spacing:-.01em;color:var(--parchment)}
+.s1 h1 em{color:var(--amber);font-style:italic}
+.s1 .lead{margin-top:18px;font-size:13px;line-height:1.7;opacity:.7;max-width:300px}
+.s1 .swipe{position:absolute;bottom:24px;right:32px;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.s1 .arrow{display:inline-block;animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+.static-bg{position:absolute;inset:0;pointer-events:none;opacity:.045}
+.s2-diag{justify-content:space-between}
+.s2-diag .eyebrow{margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);opacity:.8}
+.s2-diag h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:30px;line-height:1.13;letter-spacing:-.01em;margin-top:10px;color:var(--forest)}
+.s2-diag h2 em{font-style:italic;color:var(--teal)}
+.s2-diag .desc{margin-top:14px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.8;max-width:340px}
+.s2-diag .pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.s2-diag .pill{padding:7px 13px;border-radius:99px;font-size:11px;font-weight:500;letter-spacing:.06em}
+.pill-amber{background:rgba(201,169,110,.15);color:#9a7940;border:1px solid rgba(201,169,110,.3)}
+.pill-teal{background:rgba(26,107,90,.1);color:var(--teal);border:1px solid rgba(26,107,90,.2)}
+.pill-red{background:rgba(224,112,112,.1);color:#c05050;border:1px solid rgba(224,112,112,.25)}
+.s2-diag .note{margin-top:14px;font-size:11.5px;line-height:1.6;color:var(--forest);opacity:.6;border-top:1px solid rgba(13,46,40,.1);padding-top:12px}
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:26px;line-height:1.24;letter-spacing:-.01em;margin-top:20px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .term{margin-top:16px;padding:14px 16px;border-radius:10px;background:rgba(94,201,167,.08);border-left:2px solid var(--green)}
+.s3 .term .name{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+.s3 .term .def{margin-top:7px;font-size:12.5px;line-height:1.65;color:var(--parchment);opacity:.92}
+.s3 .priority-list{margin-top:14px;display:flex;flex-direction:column;gap:6px}
+.s3 .prio-item{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;border-radius:7px}
+.prio-high{background:rgba(94,201,167,.1);border:1px solid rgba(94,201,167,.18)}
+.prio-med{background:rgba(201,169,110,.08);border:1px solid rgba(201,169,110,.15)}
+.prio-low{background:rgba(224,112,112,.08);border:1px solid rgba(224,112,112,.15)}
+.s3 .prio-num{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;width:18px;flex-shrink:0;margin-top:2px}
+.prio-high .prio-num{color:var(--green)}
+.prio-med .prio-num{color:var(--amber)}
+.prio-low .prio-num{color:#e07070}
+.s3 .prio-text{font-size:11px;line-height:1.4;color:var(--parchment);opacity:.85}
+.s3 .source{margin-top:10px;font-size:10.5px;color:var(--parchment);opacity:.5;line-height:1.55}
+.s4-type h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:20px;line-height:1.28;margin-top:14px;color:var(--forest)}
+.s4-type h2 em{font-style:italic;color:var(--teal)}
+.chrono-list{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.chrono-item{padding:12px 14px;background:rgba(255,255,255,.55);border:1px solid rgba(13,46,40,.1);border-radius:10px}
+.chrono-item.you{background:rgba(26,107,90,.06);border-color:rgba(26,107,90,.2)}
+.chrono-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.chrono-name{font-size:12px;font-weight:500;color:var(--forest)}
+.chrono-pct{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--teal)}
+.chrono-peak{font-size:11px;color:var(--forest);opacity:.7}
+.chrono-peak strong{color:var(--teal);font-weight:500;opacity:1}
+.s4-type .note{margin-top:12px;font-size:11px;color:var(--forest);opacity:.55;line-height:1.6;border-top:1px solid rgba(13,46,40,.1);padding-top:10px}
+.s5{padding-top:28px}
+.s5 .stat-big{margin-top:auto;display:flex;align-items:baseline;gap:12px}
+.s5 .stat-big .n{font-family:'DM Serif Display',serif;font-size:86px;line-height:.85;color:var(--parchment);letter-spacing:-.03em}
+.s5 .stat-big .n em{color:var(--amber);font-style:italic}
+.s5 .stat-big .u{font-family:'DM Sans';font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);max-width:130px;line-height:1.5}
+.s5 .copy{margin-top:16px;font-size:13px;line-height:1.65;opacity:.85;max-width:340px}
+.s5 .copy strong{font-weight:500;color:var(--green)}
+.s5 .math{margin-top:16px;padding:13px 16px;border:1px dashed rgba(94,201,167,.3);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);letter-spacing:.04em;line-height:1.85}
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:26px;line-height:1.18;margin-top:22px;letter-spacing:-.01em}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .ps{margin-top:14px;font-size:12.5px;line-height:1.65;opacity:.82;max-width:340px}
+.s6 .steps{margin-top:14px;display:flex;flex-direction:column;gap:0}
+.s6 .step{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(245,243,238,.07)}
+.s6 .step:last-child{border-bottom:none}
+.s6 .step-num{width:20px;height:20px;border-radius:50%;background:rgba(94,201,167,.15);color:var(--green);font-family:'JetBrains Mono',monospace;font-size:8.5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.s6 .step-title{font-size:11.5px;font-weight:500;color:var(--parchment);line-height:1.3;margin-bottom:2px}
+.s6 .step-desc{font-size:10.5px;color:var(--parchment);opacity:.62;line-height:1.5}
+.s7{justify-content:space-between}
+.s7 .lead-q{font-family:'DM Serif Display',serif;font-size:26px;line-height:1.24;letter-spacing:-.01em;margin-top:26px;color:var(--forest)}
+.s7 .lead-q em{font-style:italic;color:var(--teal)}
+.s7 .ask{margin-top:13px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.7;max-width:300px}
+.poll{margin-top:18px;display:flex;flex-direction:column;gap:8px}
+.poll-btn{padding:12px 16px;border:1px solid rgba(13,46,40,.15);border-radius:9px;font-size:12.5px;color:var(--forest);display:flex;align-items:center;gap:10px}
+.poll-btn .emoji{font-size:16px}
+.s7 .signoff{margin-top:16px;padding-top:14px;border-top:1px solid rgba(13,46,40,.12)}
+.s7 .tag{font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;color:var(--teal);line-height:1.3}
+.s7 .sub{margin-top:6px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--forest);opacity:.6;font-weight:500}
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:22px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:42px;height:42px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.controls button:hover{background:rgba(94,201,167,.12);border-color:rgba(94,201,167,.3)}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 8px}
+.caption-panel{width:min(440px,92vw);margin-top:32px;padding:22px 22px 24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:13px;line-height:1.7}
+.caption-panel .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+.caption-panel .char-count{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--amber);margin-top:10px;opacity:.7}
+.caption-panel p{margin-bottom:10px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:14px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Peak Performance · P2 ]</span>
+</div>
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- SLIDE 1 — HOOK -->
+      <section class="slide bg-dark s1">
+        <svg class="static-bg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <!-- Clock arc suggesting time of day -->
+          <circle cx="200" cy="230" r="110" fill="none" stroke="rgba(245,243,238,.5)" stroke-width=".8"/>
+          <circle cx="200" cy="230" r="75" fill="none" stroke="rgba(94,201,167,.3)" stroke-width=".8"/>
+          <!-- Peak zone arc — morning highlight -->
+          <path d="M 200 120 A 110 110 0 0 1 310 230" fill="none" stroke="rgba(201,169,110,.4)" stroke-width="2.5"/>
+          <!-- Hour markers -->
+          <line x1="200" y1="125" x2="200" y2="140" stroke="rgba(201,169,110,.4)" stroke-width="1.5"/>
+          <text x="200" y="115" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(201,169,110,.5)">6am</text>
+          <line x1="310" y1="230" x2="295" y2="230" stroke="rgba(245,243,238,.2)" stroke-width="1"/>
+          <text x="325" y="233" font-family="JetBrains Mono" font-size="8" fill="rgba(245,243,238,.3)">12pm</text>
+          <!-- Clock hands pointing to morning peak -->
+          <line x1="200" y1="230" x2="240" y2="158" stroke="rgba(201,169,110,.5)" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="200" y1="230" x2="220" y2="190" stroke="rgba(94,201,167,.4)" stroke-width="1.2" stroke-linecap="round"/>
+          <circle cx="200" cy="230" r="4" fill="rgba(201,169,110,.6)"/>
+          <!-- Peak label -->
+          <text x="255" y="170" font-family="DM Serif Display" font-size="10" fill="rgba(201,169,110,.45)" font-style="italic">peak?</text>
+        </svg>
+        <div class="header">
+          <span class="pillar-tag">Peak Performance · P2</span>
+          <span>01 / 07</span>
+        </div>
+        <div class="body">
+          <h1>Kamu kerja 8 jam. Otak optimal <em>4–5 jam.</em> Jam berapa?</h1>
+          <p class="lead">Bukan soal kerja lebih keras. Tapi soal kerja di waktu yang tepat untuk otakmu secara biologis.</p>
+        </div>
+        <div class="swipe"><span>Geser</span><span class="arrow">→</span></div>
+      </section>
+
+      <!-- SLIDE 2 — DATA -->
+      <section class="slide bg-light s2-diag">
+        <div class="header">
+          <span class="pillar-tag">Faktanya</span>
+          <span>02 / 07</span>
+        </div>
+        <div class="eyebrow">Number Hook · Formula C</div>
+        <h2>Tidak semua jam kerja <em>bernilai sama</em> bagi otakmu.</h2>
+        <p class="desc">Otak manusia memiliki window fokus dan kreativitas yang berfluktuasi sepanjang hari — dikendalikan oleh jam biologis internal yang disebut circadian rhythm. Bekerja melawan ritme ini seperti berenang melawan arus.</p>
+        <div class="pill-row">
+          <span class="pill pill-teal">Circadian rhythm</span>
+          <span class="pill pill-amber">Cortisol peak</span>
+          <span class="pill pill-teal">4–5 jam optimal</span>
+        </div>
+        <p class="note">Penelitian Daniel Pink (When, 2018) dan Christoph Randler (2010): waktu peak performance secara kognitif berkorelasi kuat dengan tipe chronotype seseorang — dan bisa diidentifikasi.</p>
+        <div class="footer"><span>NEURO DAILY</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 3 — MECHANISM -->
+      <section class="slide bg-dark s3">
+        <div class="header">
+          <span class="pillar-tag">Yang terjadi di otakmu</span>
+          <span>03 / 07</span>
+        </div>
+        <h2>Cortisol Awakening Response menentukan <em>jam terbaikmu.</em></h2>
+        <div class="term">
+          <div class="name">Cortisol Awakening Response (CAR)</div>
+          <div class="def">Lonjakan kortisol 50–100% dalam 30 menit pertama setelah bangun tidur. Ini bukan stres — ini sinyal biologis yang mempersiapkan otak untuk alertness, fokus, dan problem-solving tingkat tinggi.</div>
+        </div>
+        <div class="priority-list">
+          <div class="prio-item prio-high">
+            <span class="prio-num">↑</span>
+            <span class="prio-text">Peak kortisol (1–3 jam post-wake) → fokus analitis dan deep work optimal</span>
+          </div>
+          <div class="prio-item prio-med">
+            <span class="prio-num">→</span>
+            <span class="prio-text">Sore: kortisol turun, suhu tubuh naik → kreativitas dan kolaborasi meningkat</span>
+          </div>
+          <div class="prio-item prio-low">
+            <span class="prio-num">↓</span>
+            <span class="prio-text">After-lunch dip (early afternoon) → kognitif paling lemah, keputusan paling buruk</span>
+          </div>
+        </div>
+        <p class="source">Clow et al. (2010): Cortisol awakening response · Daniel Pink (2018): When — The Scientific Secrets of Perfect Timing</p>
+      </section>
+
+      <!-- SLIDE 4 — CHRONOTYPES -->
+      <section class="slide bg-light s4-type">
+        <div class="header">
+          <span class="pillar-tag">Tipe otakmu</span>
+          <span>04 / 07</span>
+        </div>
+        <h2>3 chronotype — waktu peak <em>berbeda-beda</em> tiap orang.</h2>
+        <div class="chrono-list">
+          <div class="chrono-item you">
+            <div class="chrono-header">
+              <span class="chrono-name">🌅 Early Bird (Lark)</span>
+              <span class="chrono-pct">~25%</span>
+            </div>
+            <p class="chrono-peak">Peak: <strong>05.00–09.00</strong> — deep work paling optimal di pagi buta</p>
+          </div>
+          <div class="chrono-item">
+            <div class="chrono-header">
+              <span class="chrono-name">🌤 Intermediate (Third Bird)</span>
+              <span class="chrono-pct">~50%</span>
+            </div>
+            <p class="chrono-peak">Peak: <strong>09.00–12.00</strong> — mayoritas pekerja kantoran masuk tipe ini</p>
+          </div>
+          <div class="chrono-item">
+            <div class="chrono-header">
+              <span class="chrono-name">🦉 Night Owl (Wolf)</span>
+              <span class="chrono-pct">~25%</span>
+            </div>
+            <p class="chrono-peak">Peak: <strong>11.00–14.00 & 21.00+</strong> — dipaksa kerja pagi = performa suboptimal</p>
+          </div>
+        </div>
+        <p class="note">Chronotype ditentukan genetik (gen CLOCK). Tidak bisa diubah — hanya bisa dioptimalkan. Riset: Roenneberg et al. (2003), sampel >70.000 orang.</p>
+        <div class="footer"><span>04 — CHRONOTYPE</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 5 — CONSEQUENCE -->
+      <section class="slide bg-teal s5">
+        <div class="header">
+          <span class="pillar-tag" style="color:#fff">Dampaknya</span>
+          <span>05 / 07</span>
+        </div>
+        <p class="copy" style="margin-top:24px">Mengerjakan tugas analitis berat di luar window peak kognitifmu bisa menurunkan performa hingga <strong>20–40%</strong> — tanpa kamu sadari. Waktu adalah multiplier, bukan sekadar container.</p>
+        <div class="stat-big">
+          <span class="n"><em>20–40%</em></span>
+          <span class="u">performa lebih rendah di luar window peak</span>
+        </div>
+        <div class="math">
+          Deep work di peak window →<br>
+          output 2x lebih berkualitas<br>
+          dalam waktu yang sama<br>
+          <span style="color:var(--amber)">────────────────────────</span><br>
+          Bukan soal kerja lebih lama —<br>
+          <span style="color:#fff;font-weight:500">soal kerja di waktu yang benar</span><br>
+          <span style="opacity:.6;font-size:10px">*Smarr & Schirmer (2018): individual-level circadian alignment</span>
+        </div>
+        <div class="footer"><span>05 — DAMPAK</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 6 — STRATEGY -->
+      <section class="slide bg-dark s6">
+        <div class="header">
+          <span class="pillar-tag">Cara memanfaatkannya</span>
+          <span>06 / 07</span>
+        </div>
+        <h2>Jadwalkan task berat di <em>window peak</em> kamu.</h2>
+        <p class="ps">Kamu tidak bisa mengubah chronotype-mu. Tapi kamu bisa mengatur jadwal kerja agar tugas terpenting jatuh di saat otak paling siap.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <div class="step-title">Identifikasi window peak kamu</div>
+              <div class="step-desc">Selama 2 minggu, catat kapan kamu merasa paling fokus dan ide paling jernih. Pola akan muncul — ini chronotype aslimu.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <div class="step-title">Blok window peak untuk deep work saja</div>
+              <div class="step-desc">Tidak ada meeting, tidak ada email. Window peak terlalu berharga untuk diisi dengan tugas yang bisa dilakukan kapan saja.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <div class="step-title">Jadwalkan meeting & admin di trough</div>
+              <div class="step-desc">After-lunch dip (13.00–15.00 untuk intermediate) lebih cocok untuk task rutin: email, meeting update, review dokumen ringan.</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>06 — STRATEGI</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 7 — CTA -->
+      <section class="slide bg-light s7">
+        <div class="header">
+          <span class="pillar-tag">Sekarang giliranmu</span>
+          <span>07 / 07</span>
+        </div>
+        <div>
+          <p class="lead-q">Kamu paling produktif <em>jam berapa?</em></p>
+          <p class="ask">Jawab di komentar — dan apakah jadwal kerja kamu sekarang sudah selaras dengan window peak itu?</p>
+        </div>
+        <div class="poll">
+          <div class="poll-btn"><span class="emoji">🌅</span><span>Pagi (sebelum jam 9)</span></div>
+          <div class="poll-btn"><span class="emoji">🌤</span><span>Siang (jam 9–12)</span></div>
+          <div class="poll-btn"><span class="emoji">🌇</span><span>Sore (setelah jam 3)</span></div>
+          <div class="poll-btn"><span class="emoji">🌙</span><span>Malam (setelah jam 9)</span></div>
+        </div>
+        <div class="signoff">
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="1.5"><path d="M4 14c0-5 3-8 8-8 4 0 6 2 6 5 0 2-1.5 3.5-4 3.5-2 0-3 1-3 2.5 0 1.5 1 2.5 2.5 2.5"/><circle cx="15" cy="9" r="1" fill="#1A6B5A"/></svg>
+            <span class="tag">Neuro Daily</span>
+          </div>
+          <div class="sub">Kerja lebih cerdas, bukan lebih keras. Ini sains-nya.</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="caption-panel">
+  <div class="label">Caption · Formula C — Number Hook · ≤ 500 karakter</div>
+  <p><strong style="color:var(--parchment)">Kamu kerja 8 jam. Tapi otak kamu hanya optimal 4–5 jam. Pertanyaannya: jam berapa?</strong></p>
+  <p>Bukan soal kerja lebih lama — soal kerja di window yang tepat. Cortisol Awakening Response dan chronotype menentukan kapan otakmu benar-benar siap untuk deep work.</p>
+  <p>Kamu paling produktif jam berapa? Poll di komentar 👇</p>
+  <span class="hash">#NeuroDaily #NeurosainsKerja #PeakPerformance #Produktivitas #FokusKerja #CircadianRhythm</span>
+  <div class="char-count" id="charCount"></div>
+</div>
+
+<div class="controls">
+  <button id="prev">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next">›</button>
+</div>
+
+<script>
+const track=document.getElementById('track'),dotsEl=document.getElementById('dots'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next');
+const total=track.children.length;let i=0;
+for(let k=0;k<total;k++){const b=document.createElement('button');b.className='dot'+(k===0?' active':'');b.addEventListener('click',()=>go(k));dotsEl.appendChild(b)}
+const dots=[...dotsEl.children];
+function go(n){i=Math.max(0,Math.min(total-1,n));track.style.transform=`translateX(-${i*100}%)`;dots.forEach((d,k)=>d.classList.toggle('active',k===i));counter.textContent=`${i+1} / ${total}`;prevBtn.disabled=i===0;nextBtn.disabled=i===total-1}
+prevBtn.addEventListener('click',()=>go(i-1));nextBtn.addEventListener('click',()=>go(i+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(i+1);if(e.key==='ArrowLeft')go(i-1)});
+let sx=0,dx=0,drag=false;const vp=document.querySelector('.viewport');
+vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;drag=true;dx=0});
+vp.addEventListener('touchmove',e=>{if(!drag)return;dx=e.touches[0].clientX-sx});
+vp.addEventListener('touchend',()=>{if(!drag)return;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));drag=false});
+const captionText=`Kamu kerja 8 jam. Tapi otak kamu hanya optimal 4–5 jam. Pertanyaannya: jam berapa?
+
+Bukan soal kerja lebih lama — soal kerja di window yang tepat. Cortisol Awakening Response dan chronotype menentukan kapan otakmu benar-benar siap untuk deep work.
+
+Kamu paling produktif jam berapa? Poll di komentar 👇
+
+#NeuroDaily #NeurosainsKerja #PeakPerformance #Produktivitas #FokusKerja #CircadianRhythm`;
+const cc=document.getElementById('charCount'),len=captionText.length;
+cc.textContent=`${len} / 500 karakter ${len<=500?'✓':'⚠ Melebihi batas Threads'}`;
+if(len>500)cc.style.color='#e05252';
+go(0);
+</script>
+</body>
+</html>

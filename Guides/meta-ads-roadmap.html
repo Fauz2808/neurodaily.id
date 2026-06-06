@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meta Ads Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F0E8;--bg-card:#FDFAF4;--ink:#1A1612;--ink-muted:#6B6358;--accent:#C84B2F;--accent-warm:#E8A44A;--line:#D9D2C5;--phase-1:#3B6E8C;--phase-2:#5B8C5A;--phase-3:#C84B2F;--phase-4:#8C5B3B;--phase-5:#6B5B8C;--phase-6:#2C7B6F}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:"DM Sans",sans-serif;font-weight:300;min-height:100vh;padding:60px 24px 120px}
+.wrap{max-width:780px;margin:0 auto}
+.header{margin-bottom:72px}
+.label{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.label::after{content:"";flex:1;height:1px;background:var(--accent);opacity:.3;max-width:80px}
+h1{font-family:"Fraunces",serif;font-size:clamp(42px,7vw,72px);font-weight:300;line-height:1;letter-spacing:-.02em;margin-bottom:20px}
+h1 em{font-style:italic;color:var(--accent)}
+.subtitle{font-size:15px;color:var(--ink-muted);line-height:1.7;max-width:480px}
+.meta{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap}
+.meta-pill{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-muted);border:1px solid var(--line);padding:5px 14px;border-radius:100px;letter-spacing:.06em}
+.timeline{position:relative;padding-left:32px}
+.timeline::before{content:"";position:absolute;left:8px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--line) 90%,transparent)}
+.phase{position:relative;margin-bottom:48px;opacity:0;animation:fadeUp .5s ease forwards}
+.phase:nth-child(1){animation-delay:.1s}.phase:nth-child(2){animation-delay:.2s}.phase:nth-child(3){animation-delay:.3s}.phase:nth-child(4){animation-delay:.4s}.phase:nth-child(5){animation-delay:.5s}.phase:nth-child(6){animation-delay:.6s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.phase::before{content:"";position:absolute;left:-28px;top:20px;width:10px;height:10px;border-radius:50%;background:var(--phase-color,var(--accent));box-shadow:0 0 0 3px var(--bg),0 0 0 4px var(--phase-color,var(--accent))}
+.phase-1{--phase-color:var(--phase-1)}.phase-2{--phase-color:var(--phase-2)}.phase-3{--phase-color:var(--phase-3)}.phase-4{--phase-color:var(--phase-4)}.phase-5{--phase-color:var(--phase-5)}.phase-6{--phase-color:var(--phase-6)}
+.phase-card{background:var(--bg-card);border:1px solid var(--line);border-radius:12px;overflow:hidden;transition:box-shadow .2s}
+.phase-card:hover{box-shadow:0 8px 32px rgba(0,0,0,.08)}
+.phase-header{padding:24px 28px 20px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.phase-num{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--phase-color);margin-bottom:6px}
+.phase-title{font-family:"Fraunces",serif;font-size:22px;font-weight:400;line-height:1.2;letter-spacing:-.01em}
+.phase-goal{font-size:13px;color:var(--ink-muted);margin-top:6px;font-style:italic;font-family:"Fraunces",serif}
+.phase-badge{white-space:nowrap;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;padding:4px 10px;border-radius:100px;background:color-mix(in srgb,var(--phase-color) 12%,transparent);color:var(--phase-color);border:1px solid color-mix(in srgb,var(--phase-color) 30%,transparent);flex-shrink:0}
+.phase-progress{padding:14px 28px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line)}
+.progress-bar{flex:1;height:3px;background:var(--line);border-radius:100px;overflow:hidden}
+.progress-fill{height:100%;background:var(--phase-color);border-radius:100px;width:0%;transition:width .5s ease}
+.progress-label{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-muted);white-space:nowrap;min-width:36px;text-align:right}
+.phase-body{padding:20px 28px 24px}
+.checklist{list-style:none;display:flex;flex-direction:column;gap:0}
+.checklist li{display:flex;align-items:flex-start;gap:12px;font-size:14px;line-height:1.55;color:#2A2420;padding:10px 0;border-bottom:1px solid var(--line)}
+.checklist li:last-child{border-bottom:none;padding-bottom:0}
+.check{width:18px;height:18px;border:1.5px solid var(--line);border-radius:4px;flex-shrink:0;margin-top:2px;position:relative;cursor:pointer;transition:all .15s;background:white}
+.check:hover{border-color:var(--phase-color);background:color-mix(in srgb,var(--phase-color) 8%,white)}
+.checklist li.done .check{background:var(--phase-color);border-color:var(--phase-color)}
+.checklist li.done .check::after{content:"";position:absolute;left:4px;top:2px;width:8px;height:5px;border-left:2px solid white;border-bottom:2px solid white;transform:rotate(-45deg)}
+.checklist li.done .item-text{text-decoration:line-through;color:var(--ink-muted)}
+.item-content{flex:1;display:flex;flex-direction:column;gap:6px}
+.item-text{font-size:14px;line-height:1.55}
+.item-resources{display:flex;flex-wrap:wrap;gap:6px}
+.res-link{display:inline-flex;align-items:center;gap:4px;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.04em;padding:3px 9px;border-radius:100px;text-decoration:none;border:1px solid;transition:all .15s;white-space:nowrap}
+.res-link.yt{color:#b91c1c;border-color:rgba(185,28,28,.25);background:rgba(185,28,28,.06)}
+.res-link.yt:hover{background:rgba(185,28,28,.14);border-color:rgba(185,28,28,.5)}
+.res-link.meta{color:var(--accent-cool,#3B6E8C);border-color:rgba(59,110,140,.25);background:rgba(59,110,140,.06)}
+.res-link.meta:hover{background:rgba(59,110,140,.14);border-color:rgba(59,110,140,.5)}
+.res-link.article{color:var(--phase-2,#5B8C5A);border-color:rgba(91,140,90,.25);background:rgba(91,140,90,.06)}
+.res-link.article:hover{background:rgba(91,140,90,.14);border-color:rgba(91,140,90,.5)}
+.res-link svg{width:10px;height:10px;flex-shrink:0}
+.tag{font-family:"JetBrains Mono",monospace;font-size:10px;padding:1px 7px;border-radius:4px;background:color-mix(in srgb,var(--accent-warm) 15%,transparent);color:color-mix(in srgb,var(--accent-warm) 80%,#333);margin-left:4px;vertical-align:middle}
+.resources{margin-top:64px;padding-top:40px;border-top:1px solid var(--line);opacity:0;animation:fadeUp .5s ease .7s forwards}
+.resources h2{font-family:"Fraunces",serif;font-size:26px;font-weight:300;margin-bottom:8px;letter-spacing:-.01em}
+.sub{font-size:13px;color:var(--ink-muted);margin-bottom:28px}
+.resource-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.resource-card{background:var(--bg-card);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.r-type{font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-muted);margin-bottom:6px}
+.r-name{font-size:14px;font-weight:500;margin-bottom:4px}
+.r-desc{font-size:12px;color:var(--ink-muted);line-height:1.5}
+.principle{margin-top:40px;background:var(--ink);color:#F5F0E8;border-radius:12px;padding:36px 40px;opacity:0;animation:fadeUp .5s ease .8s forwards}
+.p-label{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-warm);margin-bottom:14px}
+.principle blockquote{font-family:"Fraunces",serif;font-size:clamp(20px,3vw,28px);font-weight:300;font-style:italic;line-height:1.4;letter-spacing:-.01em;color:#F5F0E8}
+.principle blockquote em{color:var(--accent-warm);font-style:normal}
+.p-sub{margin-top:16px;font-size:13px;color:rgba(245,240,232,.5);line-height:1.6;max-width:480px}
+.footer{margin-top:60px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-muted);letter-spacing:.06em;opacity:0;animation:fadeUp .5s ease .9s forwards}
+@media(max-width:600px){body{padding:40px 16px 80px}.timeline{padding-left:24px}.phase-header{flex-direction:column}.phase-body,.phase-header,.phase-progress{padding-left:20px;padding-right:20px}.principle{padding:28px 24px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="header">
+  <div class="label">Learning Roadmap</div>
+  <h1>Meta Ads<br><em>dari nol</em><br>ke profit.</h1>
+  <p class="subtitle">Panduan belajar Meta Ads yang terstruktur — dari fondasi sampai scaling. Klik checkbox untuk track progress, klik resource untuk langsung belajar.</p>
+  <div class="meta">
+    <span class="meta-pill">6 Phase</span>
+    <span class="meta-pill">12 Minggu</span>
+    <span class="meta-pill">Facebook + Instagram</span>
+  </div>
+</header>
+
+<div class="timeline">
+
+<!-- PHASE 1 -->
+<div class="phase phase-1"><div class="phase-card">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 01 &middot; Minggu 1&ndash;2</div><div class="phase-title">Fondasi &amp; Ekosistem</div><div class="phase-goal">Paham cara kerja platform sebelum pegang uang</div></div>
+    <div class="phase-badge">MULAI DI SINI</div>
+  </div>
+  <div class="phase-progress"><div class="progress-bar"><div class="progress-fill"></div></div><span class="progress-label">0 / 6</span></div>
+  <div class="phase-body"><ul class="checklist">
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Pahami perbedaan Facebook Ads vs Instagram Ads &mdash; satu platform, beda placement</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=facebook+ads+vs+instagram+ads+placement+explained" target="_blank">&#9654; YouTube</a>
+          <a class="res-link meta" href="https://www.facebook.com/business/help/1513393428972189" target="_blank">&#8599; Meta Help</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Pelajari struktur <strong>Campaign &rarr; Ad Set &rarr; Ad</strong> dan fungsi masing-masing</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+campaign+adset+ad+structure+explained" target="_blank">&#9654; YouTube</a>
+          <a class="res-link meta" href="https://www.facebook.com/business/help/706338566062209" target="_blank">&#8599; Meta Blueprint</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Setup Meta Business Suite + Ads Manager dengan benar</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=cara+setup+meta+business+suite+ads+manager+2024" target="_blank">&#9654; YouTube</a>
+          <a class="res-link meta" href="https://www.facebook.com/business/help/1710077379203657" target="_blank">&#8599; Meta Help</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Install dan verifikasi <strong>Meta Pixel</strong> di website/landing page <span class="tag">penting</span></span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=cara+install+meta+pixel+facebook+pixel+website" target="_blank">&#9654; YouTube</a>
+          <a class="res-link meta" href="https://www.facebook.com/business/help/952192354843755" target="_blank">&#8599; Pixel Docs</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Pahami semua Objective: Awareness, Traffic, Engagement, Leads, Sales</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+campaign+objectives+explained+which+to+choose" target="_blank">&#9654; YouTube</a>
+          <a class="res-link meta" href="https://www.facebook.com/business/help/1438417719786914" target="_blank">&#8599; Meta Help</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Baca kebijakan iklan Meta &mdash; hindari akun banned sejak awal <span class="tag">wajib</span></span>
+        <div class="item-resources">
+          <a class="res-link meta" href="https://www.facebook.com/policies/ads/" target="_blank">&#8599; Meta Ads Policy</a>
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+policy+avoid+account+banned" target="_blank">&#9654; YouTube</a>
+        </div>
+      </div>
+    </li>
+  </ul></div>
+</div></div>
+
+<!-- PHASE 2 -->
+<div class="phase phase-2"><div class="phase-card">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 02 &middot; Minggu 3&ndash;4</div><div class="phase-title">Targeting &amp; Audience</div><div class="phase-goal">Temukan orang yang tepat untuk iklanmu</div></div>
+    <div class="phase-badge">KUNCI EFISIENSI</div>
+  </div>
+  <div class="phase-progress"><div class="progress-bar"><div class="progress-fill"></div></div><span class="progress-label">0 / 5</span></div>
+  <div class="phase-body"><ul class="checklist">
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text"><strong>Core Audience</strong> &mdash; interest, demografi, behaviour</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+core+audience+interest+targeting+tutorial" target="_blank">&#9654; YouTube</a>
+          <a class="res-link meta" href="https://www.facebook.com/business/help/633474486776199" target="_blank">&#8599; Meta Help</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text"><strong>Custom Audience</strong> &mdash; dari website visitor (pixel), video viewer, IG engager <span class="tag">powerful</span></span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+custom+audience+tutorial+2024" target="_blank">&#9654; YouTube</a>
+          <a class="res-link meta" href="https://www.facebook.com/business/help/744354708981227" target="_blank">&#8599; Meta Help</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text"><strong>Lookalike Audience</strong> &mdash; duplikasi audiens terbaik kamu secara otomatis</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+lookalike+audience+tutorial" target="_blank">&#9654; YouTube</a>
+          <a class="res-link meta" href="https://www.facebook.com/business/help/164749007013531" target="_blank">&#8599; Meta Help</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Pahami ukuran audience yang ideal untuk tiap objective</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+audience+size+how+big+should+it+be" target="_blank">&#9654; YouTube</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Latihan: buat 3 audience berbeda untuk 1 produk yang sama</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+audience+testing+strategy" target="_blank">&#9654; YouTube</a>
+        </div>
+      </div>
+    </li>
+  </ul></div>
+</div></div>
+
+<!-- PHASE 3 -->
+<div class="phase phase-3"><div class="phase-card">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 03 &middot; Minggu 5&ndash;6</div><div class="phase-title">Creative &amp; Copywriting</div><div class="phase-goal">Buat iklan yang orang mau berhenti scroll</div></div>
+    <div class="phase-badge">PALING KREATIF</div>
+  </div>
+  <div class="phase-progress"><div class="progress-bar"><div class="progress-fill"></div></div><span class="progress-label">0 / 5</span></div>
+  <div class="phase-body"><ul class="checklist">
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Pelajari <strong>hook formula</strong> untuk video &mdash; 3 detik pertama adalah segalanya <span class="tag">kritis</span></span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=facebook+ads+video+hook+formula+first+3+seconds" target="_blank">&#9654; YouTube</a>
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=ben+heath+ad+creative+hook" target="_blank">&#9654; Ben Heath</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Kuasai format iklan: Single Image, Carousel, Video, Story, Reels</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+format+single+image+carousel+video+which+best" target="_blank">&#9654; YouTube</a>
+          <a class="res-link meta" href="https://www.facebook.com/business/ads/ad-formats" target="_blank">&#8599; Meta Formats</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Copywriting ads dengan formula <strong>Pain &rarr; Agitate &rarr; Solution</strong></span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=PAS+copywriting+formula+ads+pain+agitate+solution" target="_blank">&#9654; YouTube</a>
+          <a class="res-link article" href="https://www.youtube.com/results?search_query=facebook+ads+copywriting+formula+that+converts" target="_blank">&#9654; Copywriting Ads</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Pahami peran primary text, headline, dan description</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+primary+text+headline+description+best+practices" target="_blank">&#9654; YouTube</a>
+          <a class="res-link meta" href="https://www.facebook.com/business/help/2157258167874818" target="_blank">&#8599; Meta Help</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">A/B test dengan disiplin: hanya <em>1 variabel</em> yang berubah per test</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+ab+testing+how+to+split+test+correctly" target="_blank">&#9654; YouTube</a>
+          <a class="res-link meta" href="https://www.facebook.com/business/help/1738164643098669" target="_blank">&#8599; Meta A/B Test</a>
+        </div>
+      </div>
+    </li>
+  </ul></div>
+</div></div>
+
+<!-- PHASE 4 -->
+<div class="phase phase-4"><div class="phase-card">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 04 &middot; Minggu 7&ndash;8</div><div class="phase-title">Campaign Pertama</div><div class="phase-goal">Launch dengan budget kecil, belajar dari data nyata</div></div>
+    <div class="phase-badge">ACTION TIME</div>
+  </div>
+  <div class="phase-progress"><div class="progress-bar"><div class="progress-fill"></div></div><span class="progress-label">0 / 5</span></div>
+  <div class="phase-body"><ul class="checklist">
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Mulai dengan campaign <strong>Traffic atau Engagement</strong> &mdash; lebih murah untuk belajar</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+first+campaign+beginners+traffic+engagement" target="_blank">&#9654; YouTube</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Budget test: Rp 50&ndash;100 rb/hari per ad set</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+daily+budget+testing+how+much+spend" target="_blank">&#9654; YouTube</a>
+          <a class="res-link meta" href="https://www.facebook.com/business/help/190490051321426" target="_blank">&#8599; Meta Budget</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Pahami metric dasar: <strong>CPM, CPC, CTR, ROAS</strong></span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+metrics+explained+CPM+CPC+CTR+ROAS+beginners" target="_blank">&#9654; YouTube</a>
+          <a class="res-link meta" href="https://www.facebook.com/business/help/337449676684663" target="_blank">&#8599; Meta Metrics</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Durasi test minimal <strong>3&ndash;5 hari</strong> sebelum evaluasi &mdash; jangan terburu-buru</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+how+long+to+run+before+judging+results" target="_blank">&#9654; YouTube</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Jangan ubah iklan yang masih dalam <em>learning phase</em> <span class="tag">wajib</span></span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+learning+phase+what+it+means+do+not+edit" target="_blank">&#9654; YouTube</a>
+          <a class="res-link meta" href="https://www.facebook.com/business/help/112167992830700" target="_blank">&#8599; Learning Phase</a>
+        </div>
+      </div>
+    </li>
+  </ul></div>
+</div></div>
+
+<!-- PHASE 5 -->
+<div class="phase phase-5"><div class="phase-card">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 05 &middot; Minggu 9&ndash;10</div><div class="phase-title">Analisis &amp; Optimasi</div><div class="phase-goal">Baca data dan ambil keputusan yang tepat</div></div>
+    <div class="phase-badge">DATA-DRIVEN</div>
+  </div>
+  <div class="phase-progress"><div class="progress-bar"><div class="progress-fill"></div></div><span class="progress-label">0 / 5</span></div>
+  <div class="phase-body"><ul class="checklist">
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Setup custom kolom di Ads Manager sesuai tujuan campaign</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+manager+custom+columns+setup+tutorial" target="_blank">&#9654; YouTube</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Kapan harus <strong>matikan ad set</strong> vs kapan harus <strong>scale</strong></span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+when+to+kill+ad+set+vs+scale+rules" target="_blank">&#9654; YouTube</a>
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=depesh+mandalia+scaling+meta+ads" target="_blank">&#9654; Depesh Mandalia</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Pahami <strong>Attribution Window</strong>: 1-day vs 7-day click</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+attribution+window+explained+1+day+7+day" target="_blank">&#9654; YouTube</a>
+          <a class="res-link meta" href="https://www.facebook.com/business/help/458681590974355" target="_blank">&#8599; Meta Help</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Monitor <strong>Frequency</strong> &mdash; tanda iklan mulai jenuh di audiens</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+frequency+ad+fatigue+what+to+do" target="_blank">&#9654; YouTube</a>
+          <a class="res-link meta" href="https://www.facebook.com/business/help/675615482516035" target="_blank">&#8599; Meta Help</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Breakdown by age, gender, placement untuk insight targeting lebih tajam</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+breakdown+by+age+gender+placement+analysis" target="_blank">&#9654; YouTube</a>
+        </div>
+      </div>
+    </li>
+  </ul></div>
+</div></div>
+
+<!-- PHASE 6 -->
+<div class="phase phase-6"><div class="phase-card">
+  <div class="phase-header">
+    <div><div class="phase-num">Phase 06 &middot; Minggu 11&ndash;12</div><div class="phase-title">Scaling</div><div class="phase-goal">Duplikasi yang berhasil dengan efisien</div></div>
+    <div class="phase-badge">LEVEL UP</div>
+  </div>
+  <div class="phase-progress"><div class="progress-bar"><div class="progress-fill"></div></div><span class="progress-label">0 / 5</span></div>
+  <div class="phase-body"><ul class="checklist">
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text"><strong>Horizontal scaling</strong> &mdash; duplikasi ad set yang menang ke audience baru</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+horizontal+scaling+duplicate+ad+sets" target="_blank">&#9654; YouTube</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text"><strong>Vertical scaling</strong> &mdash; naikkan budget perlahan, max 20&ndash;30%/hari <span class="tag">hati-hati</span></span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+vertical+scaling+increase+budget+safely" target="_blank">&#9654; YouTube</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Pahami perbedaan <strong>CBO vs ABO</strong> dan kapan masing-masing digunakan</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+CBO+vs+ABO+which+is+better+2024" target="_blank">&#9654; YouTube</a>
+          <a class="res-link meta" href="https://www.facebook.com/business/help/153514848493595" target="_blank">&#8599; CBO Docs</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Bangun retargeting funnel: Cold &rarr; Warm &rarr; Hot audience</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+ads+retargeting+funnel+cold+warm+hot+audience" target="_blank">&#9654; YouTube</a>
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=ben+heath+facebook+ads+funnel+strategy" target="_blank">&#9654; Ben Heath</a>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="check" onclick="toggle(this)"></div>
+      <div class="item-content">
+        <span class="item-text">Pelajari <strong>Advantage+ Campaign</strong> untuk otomatisasi lebih efisien</span>
+        <div class="item-resources">
+          <a class="res-link yt" href="https://www.youtube.com/results?search_query=meta+advantage+plus+campaign+explained+2024" target="_blank">&#9654; YouTube</a>
+          <a class="res-link meta" href="https://www.facebook.com/business/help/915454841921082" target="_blank">&#8599; Advantage+</a>
+        </div>
+      </div>
+    </li>
+  </ul></div>
+</div></div>
+
+</div><!-- /timeline -->
+
+<div class="resources">
+  <h2>Resource Utama</h2>
+  <p class="sub">Mulai dari yang gratis. Praktik langsung lebih berharga dari menonton.</p>
+  <div class="resource-grid">
+    <div class="resource-card"><div class="r-type">Platform Resmi &middot; Gratis</div><div class="r-name">Meta Blueprint</div><div class="r-desc">Fondasi langsung dari Meta. Lengkap dan ada sertifikasinya.</div></div>
+    <div class="resource-card"><div class="r-type">YouTube &middot; Pemula&ndash;Menengah</div><div class="r-name">Ben Heath</div><div class="r-desc">Studi kasus dan strategi terbaru, penjelasannya sangat praktis.</div></div>
+    <div class="resource-card"><div class="r-type">YouTube &middot; Advanced</div><div class="r-name">Depesh Mandalia</div><div class="r-desc">Advanced optimization dan mindset data-driven. Cocok di phase 5&ndash;6.</div></div>
+    <div class="resource-card"><div class="r-type">YouTube &middot; Lokal</div><div class="r-name">CTX Academy / Nozzle</div><div class="r-desc">Konten bahasa Indonesia untuk konteks pasar lokal.</div></div>
+  </div>
+</div>
+
+<div class="principle">
+  <div class="p-label">Prinsip Utama</div>
+  <blockquote>&ldquo;Data beats <em>opinion.</em> Jangan tebak &mdash; <em>test</em>, ukur, putuskan berdasarkan angka.&rdquo;</blockquote>
+  <p class="p-sub">Iklan yang kamu rasa bagus belum tentu perform. Iklan yang datanya bagus &mdash; itulah yang dijalankan. Biarkan angka yang bicara.</p>
+</div>
+
+<div class="footer">Meta Ads Roadmap &middot; 12 Minggu &middot; Progress tersimpan otomatis di browser</div>
+</div>
+
+<script>
+function toggle(el){const li=el.closest("li");li.classList.toggle("done");updateProgress(li.closest(".phase-card"));saveProgress()}
+function updateProgress(card){const done=card.querySelectorAll(".checklist li.done").length,total=card.querySelectorAll(".checklist li").length,fill=card.querySelector(".progress-fill"),label=card.querySelector(".progress-label");if(fill)fill.style.width=(done/total*100)+"%";if(label)label.textContent=done+" / "+total}
+function saveProgress(){const state={};document.querySelectorAll(".phase-card").forEach((card,ci)=>{state["p"+ci]=[];card.querySelectorAll(".checklist li").forEach((li,i)=>{if(li.classList.contains("done"))state["p"+ci].push(i)})});localStorage.setItem("meta_ads_v1",JSON.stringify(state))}
+function loadProgress(){try{const saved=localStorage.getItem("meta_ads_v1");if(!saved)return;const state=JSON.parse(saved);document.querySelectorAll(".phase-card").forEach((card,ci)=>{(state["p"+ci]||[]).forEach(i=>{const li=card.querySelectorAll(".checklist li")[i];if(li)li.classList.add("done")});updateProgress(card)})}catch(e){}}
+loadProgress();
+</script>
+</body>
+</html>

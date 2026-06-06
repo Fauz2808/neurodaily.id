@@ -1,0 +1,1083 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<title>Free Sample — Amygdala Hijack | Brain Kit for Work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --forest:    #0D2E28;
+  --teal:      #1A6B5A;
+  --green:     #5EC9A7;
+  --parchment: #F5F3EE;
+  --amber:     #C9A96E;
+  --red:       #D96A6A;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  background: #1a1a1a;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 32px 16px 80px;
+}
+
+/* ── PAGE BASE ─────────────────────────────────────── */
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  height: 297mm;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+@media print {
+  body { background: white; padding: 0; gap: 0; }
+  .page { page-break-after: always; }
+}
+@page { size: A4; margin: 0; }
+
+.pg-dark    { background: var(--forest); color: var(--parchment); }
+.pg-light   { background: var(--parchment); color: var(--forest); }
+.pg-teal    { background: var(--teal); color: var(--parchment); }
+
+/* ── HEADER & FOOTER (sesuai carousel) ──────────────── */
+.pg-head, .pg-foot {
+  position: absolute;
+  left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 14mm;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7.5pt;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.pg-head {
+  top: 0;
+  height: 13mm;
+  border-bottom: 1px solid rgba(245,243,238,.12);
+}
+.pg-foot {
+  bottom: 0;
+  height: 10mm;
+  border-top: 1px solid rgba(245,243,238,.12);
+}
+.pg-light .pg-head,
+.pg-light .pg-foot {
+  border-color: rgba(13,46,40,.12);
+}
+.pg-teal .pg-head,
+.pg-teal .pg-foot {
+  border-color: rgba(245,243,238,.18);
+}
+
+.pg-head span, .pg-foot span { opacity: .5; }
+.pg-head .dotmark::before { content: "◆ "; color: var(--green); opacity: 1; }
+.pg-light .pg-head .dotmark::before { color: var(--teal); }
+.pg-teal .pg-head .dotmark::before { color: var(--amber); }
+
+/* ── BODY AREA ──────────────────────────────────────── */
+.body {
+  position: absolute;
+  top: 13mm; bottom: 10mm;
+  left: 0; right: 0;
+  padding: 10mm 14mm 10mm;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── EYEBROW ─────────────────────────────────────────── */
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7pt;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pg-dark .eyebrow  { color: var(--green); }
+.pg-light .eyebrow { color: var(--teal); }
+.pg-teal .eyebrow  { color: var(--amber); }
+
+.rule {
+  width: 24px; height: 2px;
+  border-radius: 2px;
+  margin-top: 6px;
+}
+.pg-dark .rule   { background: var(--green); }
+.pg-light .rule  { background: var(--teal); }
+.pg-teal .rule   { background: var(--amber); }
+
+/* ── TYPOGRAPHY ──────────────────────────────────────── */
+h1, h2 {
+  font-family: 'DM Serif Display', serif;
+  font-weight: 400;
+  letter-spacing: -.02em;
+  line-height: 1.05;
+}
+
+p {
+  font-size: 9.5pt;
+  line-height: 1.75;
+  font-weight: 300;
+  opacity: .85;
+}
+
+strong { font-weight: 500; opacity: 1; }
+
+/* ─────────────────────────────────────────────────────
+   PAGE 1 — COVER
+───────────────────────────────────────────────────── */
+.p1 .body {
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0;
+  padding: 14mm 14mm 12mm;
+}
+
+.p1 .cover-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7pt;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 8mm;
+}
+
+.p1 .cover-kicker span { opacity: .5; color: var(--parchment); margin: 0 6px; }
+
+.p1 h1 {
+  font-size: 34pt;
+  max-width: 155mm;
+  margin-bottom: 6mm;
+}
+.p1 h1 em { font-style: italic; color: var(--amber); }
+
+.p1 .cover-quote {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 11pt;
+  line-height: 1.6;
+  color: var(--parchment);
+  opacity: .65;
+  max-width: 130mm;
+  margin-bottom: 12mm;
+  padding-left: 5mm;
+  border-left: 2px solid rgba(201,169,110,.4);
+}
+
+.p1 .cover-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 5mm;
+  margin-bottom: 12mm;
+}
+
+.p1 .meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 8.5pt;
+  line-height: 1.5;
+  opacity: .7;
+  font-weight: 300;
+}
+.p1 .meta-row .meta-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 6.5pt;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--green);
+  opacity: 1;
+  min-width: 22mm;
+}
+
+.p1 .cover-chapters {
+  margin-top: 10mm;
+  border-top: 1px solid rgba(245,243,238,.12);
+  padding-top: 8mm;
+  display: flex;
+  flex-direction: column;
+  gap: 4mm;
+}
+
+.p1 .cover-chapters .ch-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 6.5pt;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--green);
+  opacity: .7;
+  margin-bottom: 3mm;
+}
+
+.p1 .ch-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 8.5pt;
+  line-height: 1.5;
+  font-weight: 300;
+  opacity: .7;
+}
+.p1 .ch-item .ch-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7pt;
+  color: var(--green);
+  opacity: 1;
+  min-width: 6mm;
+}
+
+.p1 .ghost-num {
+  position: absolute;
+  font-family: 'DM Serif Display', serif;
+  font-size: 320pt;
+  line-height: 1;
+  color: rgba(94,201,167,.04);
+  right: -10mm;
+  bottom: -20mm;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ─────────────────────────────────────────────────────
+   PAGE 2 — SITUASI (light)
+───────────────────────────────────────────────────── */
+.p2 h2 {
+  font-size: 22pt;
+  margin-top: 5mm;
+  margin-bottom: 7mm;
+  max-width: 155mm;
+  color: var(--forest);
+}
+.p2 h2 em { font-style: italic; color: var(--teal); }
+
+.p2 .scenario-box {
+  padding: 6mm 7mm;
+  background: rgba(13,46,40,.04);
+  border: 1.5px solid rgba(13,46,40,.1);
+  border-radius: 10px;
+  margin-bottom: 6mm;
+}
+
+.p2 .scenario-box p {
+  font-size: 9.5pt;
+  line-height: 1.75;
+  color: var(--forest);
+}
+
+.p2 .body-copy { display: flex; flex-direction: column; gap: 4mm; }
+.p2 .body-copy p { color: var(--forest); }
+
+.p2 .highlight-line {
+  margin-top: 5mm;
+  padding: 5mm 7mm;
+  background: rgba(26,107,90,.05);
+  border-left: 3px solid var(--teal);
+  border-radius: 0 8px 8px 0;
+  font-size: 10pt;
+  font-weight: 500;
+  color: var(--forest);
+  line-height: 1.5;
+}
+
+/* ─────────────────────────────────────────────────────
+   PAGE 3 — MEKANISME (dark)
+───────────────────────────────────────────────────── */
+.p3 h2 {
+  font-size: 21pt;
+  margin-top: 5mm;
+  margin-bottom: 6mm;
+  max-width: 155mm;
+}
+.p3 h2 em { font-style: italic; color: var(--amber); }
+
+.p3 .brain-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6mm;
+  padding: 6mm 0;
+  margin-bottom: 5mm;
+}
+
+.p3 .brain-node {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3mm;
+}
+
+.p3 .node-circle {
+  width: 28mm;
+  height: 28mm;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5mm;
+}
+.p3 .node-circle.amyg {
+  background: rgba(217,106,106,.12);
+  border: 2px solid rgba(217,106,106,.45);
+}
+.p3 .node-circle.pfc {
+  background: rgba(94,201,167,.1);
+  border: 2px solid rgba(94,201,167,.35);
+}
+.p3 .node-name {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: 10.5pt;
+}
+.p3 .node-circle.amyg .node-name { color: var(--red); }
+.p3 .node-circle.pfc .node-name  { color: var(--green); }
+.p3 .node-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 5.5pt;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  opacity: .5;
+}
+
+.p3 .arrow-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1mm;
+  padding-bottom: 6mm;
+}
+.p3 .arrow-flow .arr { font-size: 18pt; color: rgba(217,106,106,.5); }
+.p3 .arrow-flow .arr-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 5.5pt;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--red);
+  opacity: .6;
+  text-align: center;
+  max-width: 18mm;
+}
+
+.p3 .node-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 6pt;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  opacity: .55;
+  text-align: center;
+  max-width: 36mm;
+  line-height: 1.4;
+}
+
+.p3 .reaction-list {
+  margin-bottom: 5mm;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5mm;
+}
+
+.p3 .r-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 4mm;
+  font-size: 8.5pt;
+  line-height: 1.6;
+  font-weight: 300;
+  opacity: .82;
+}
+.p3 .r-item .r-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--amber);
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.p3 .key-insight {
+  margin-top: auto;
+  padding: 5mm 6mm;
+  background: rgba(94,201,167,.08);
+  border: 1.5px solid rgba(94,201,167,.22);
+  border-radius: 10px;
+  font-size: 8.5pt;
+  line-height: 1.7;
+  font-weight: 300;
+}
+.p3 .key-insight strong { color: var(--green); font-weight: 500; }
+
+/* ─────────────────────────────────────────────────────
+   PAGE 4 — INFOGRAFIS TIMELINE (teal)
+───────────────────────────────────────────────────── */
+.p4 h2 {
+  font-size: 19pt;
+  margin-top: 4mm;
+  margin-bottom: 8mm;
+  max-width: 155mm;
+}
+.p4 h2 em { font-style: italic; color: var(--amber); }
+
+.p4 .timeline-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex: 1;
+}
+
+.p4 .tl-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 8mm;
+}
+.p4 .tl-connector::before {
+  content: '';
+  width: 1px;
+  height: 100%;
+  background: rgba(245,243,238,.2);
+}
+
+.p4 .tl-node {
+  display: flex;
+  align-items: flex-start;
+  gap: 5mm;
+}
+
+.p4 .tl-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5mm;
+  min-width: 28mm;
+  flex-shrink: 0;
+  padding-top: 1mm;
+}
+
+.p4 .tl-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7pt;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.3;
+}
+.tl-node.t-minus .tl-time { color: rgba(245,243,238,.45); }
+.tl-node.t-zero  .tl-time { color: var(--amber); }
+.tl-node.t-peak  .tl-time { color: var(--red); }
+.tl-node.t-plus  .tl-time { color: var(--green); }
+
+.p4 .tl-dot {
+  width: 8mm; height: 8mm;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.tl-node.t-minus .tl-dot { background: rgba(245,243,238,.12); border: 1.5px solid rgba(245,243,238,.25); }
+.tl-node.t-zero  .tl-dot { background: rgba(201,169,110,.2); border: 2px solid rgba(201,169,110,.7); }
+.tl-node.t-peak  .tl-dot { background: rgba(217,106,106,.2); border: 2.5px solid rgba(217,106,106,.8); }
+.tl-node.t-plus  .tl-dot { background: rgba(94,201,167,.15); border: 1.5px solid rgba(94,201,167,.5); }
+
+.p4 .tl-content {
+  padding: 4mm 5mm;
+  border-radius: 10px;
+  flex: 1;
+}
+.tl-node.t-minus .tl-content { background: rgba(245,243,238,.04); border: 1px solid rgba(245,243,238,.1); }
+.tl-node.t-zero  .tl-content { background: rgba(201,169,110,.08); border: 1.5px solid rgba(201,169,110,.25); }
+.tl-node.t-peak  .tl-content { background: rgba(217,106,106,.1); border: 1.5px solid rgba(217,106,106,.3); }
+.tl-node.t-plus  .tl-content { background: rgba(94,201,167,.08); border: 1.5px solid rgba(94,201,167,.22); }
+
+.p4 .tl-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 11pt;
+  line-height: 1.2;
+  margin-bottom: 1.5mm;
+}
+.tl-node.t-minus .tl-title { color: rgba(245,243,238,.8); }
+.tl-node.t-zero  .tl-title { color: var(--amber); }
+.tl-node.t-peak  .tl-title { color: var(--red); font-style: italic; }
+.tl-node.t-plus  .tl-title { color: var(--green); }
+
+.p4 .tl-desc {
+  font-size: 8pt;
+  line-height: 1.65;
+  font-weight: 300;
+  opacity: .7;
+}
+
+/* ─────────────────────────────────────────────────────
+   PAGE 5 — TIGA STRATEGI (light)
+───────────────────────────────────────────────────── */
+.p5 h2 {
+  font-size: 20pt;
+  margin-top: 4mm;
+  margin-bottom: 7mm;
+  color: var(--forest);
+}
+.p5 h2 em { font-style: italic; color: var(--teal); }
+
+.p5 .strategy-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 4mm;
+  flex: 1;
+}
+
+.strat-card {
+  padding: 5mm 6mm;
+  border-radius: 10px;
+  display: flex;
+  gap: 5mm;
+}
+.strat-card.s1 { background: rgba(94,201,167,.06); border: 1.5px solid rgba(94,201,167,.22); }
+.strat-card.s2 { background: rgba(201,169,110,.06); border: 1.5px solid rgba(201,169,110,.22); }
+.strat-card.s3 { background: rgba(26,107,90,.06); border: 1.5px solid rgba(26,107,90,.2); }
+
+.strat-card .sc-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22pt;
+  line-height: 1;
+  flex-shrink: 0;
+  min-width: 10mm;
+}
+.strat-card.s1 .sc-num { color: var(--green); }
+.strat-card.s2 .sc-num { color: var(--amber); }
+.strat-card.s3 .sc-num { color: var(--teal); }
+
+.strat-card .sc-body { display: flex; flex-direction: column; gap: 1.5mm; }
+
+.strat-card .sc-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 6pt;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+.strat-card.s1 .sc-label { color: var(--green); }
+.strat-card.s2 .sc-label { color: var(--amber); }
+.strat-card.s3 .sc-label { color: var(--teal); }
+
+.strat-card .sc-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 12pt;
+  color: var(--forest);
+  line-height: 1.2;
+  margin-bottom: 1mm;
+}
+
+.strat-card .sc-desc {
+  font-size: 8.5pt;
+  line-height: 1.7;
+  color: var(--forest);
+  opacity: .7;
+  font-weight: 300;
+}
+
+.strat-card .sc-how {
+  margin-top: 2mm;
+  padding: 2.5mm 4mm;
+  background: rgba(13,46,40,.06);
+  border-radius: 6px;
+  font-size: 8pt;
+  line-height: 1.6;
+  color: var(--forest);
+  opacity: .8;
+  font-weight: 400;
+}
+.strat-card .sc-how span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7pt;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 1mm;
+}
+.strat-card.s1 .sc-how span { color: var(--green); }
+.strat-card.s2 .sc-how span { color: var(--amber); }
+.strat-card.s3 .sc-how span { color: var(--teal); }
+
+/* ─────────────────────────────────────────────────────
+   PAGE 6 — RINGKASAN + CTA (dark)
+───────────────────────────────────────────────────── */
+.p6 h2 {
+  font-size: 20pt;
+  margin-top: 4mm;
+  margin-bottom: 6mm;
+}
+.p6 h2 em { font-style: italic; color: var(--green); }
+
+.p6 .summary-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5mm;
+  margin-bottom: 6mm;
+}
+
+.sum-block {
+  padding: 4.5mm 6mm;
+  border-radius: 10px;
+  background: rgba(245,243,238,.04);
+  border: 1px solid rgba(245,243,238,.1);
+  display: flex;
+  gap: 4mm;
+}
+
+.sum-block .sb-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 6pt;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--green);
+  flex-shrink: 0;
+  min-width: 28mm;
+  padding-top: 1mm;
+  opacity: .8;
+}
+
+.sum-block .sb-text {
+  font-size: 8.5pt;
+  line-height: 1.7;
+  font-weight: 300;
+  opacity: .8;
+}
+.sum-block .sb-text strong { color: var(--parchment); font-weight: 500; opacity: 1; }
+
+.p6 .cta-box {
+  margin-top: auto;
+  padding: 7mm 8mm;
+  background: var(--teal);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3mm;
+}
+
+.p6 .cta-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 6.5pt;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(245,243,238,.65);
+}
+
+.p6 .cta-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 15pt;
+  color: var(--parchment);
+  line-height: 1.2;
+}
+.p6 .cta-title em { font-style: italic; color: var(--amber); }
+
+.p6 .cta-sub {
+  font-size: 8.5pt;
+  line-height: 1.65;
+  color: rgba(245,243,238,.75);
+  font-weight: 300;
+  max-width: 140mm;
+}
+
+.p6 .cta-chapters {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2mm;
+  margin-top: 2mm;
+}
+
+.p6 .cta-ch {
+  padding: 2.5mm 3mm;
+  background: rgba(13,46,40,.2);
+  border-radius: 6px;
+  font-size: 7.5pt;
+  line-height: 1.45;
+  color: rgba(245,243,238,.8);
+  font-weight: 300;
+}
+
+.p6 .cta-ch .cta-ch-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 6pt;
+  letter-spacing: .14em;
+  color: var(--amber);
+  opacity: .9;
+  display: block;
+  margin-bottom: 1mm;
+}
+
+.p6 .cta-link {
+  margin-top: 4mm;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7pt;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--amber);
+  opacity: .9;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════
+     PAGE 1 — COVER
+══════════════════════════════════════════════════ -->
+<div class="page pg-dark p1">
+  <div class="pg-head">
+    <span class="dotmark">Neuro Daily</span>
+    <span>Brain Kit for Work</span>
+  </div>
+
+  <div class="body">
+    <div class="cover-kicker">
+      Free Sample <span>·</span> Bab 01 <span>·</span> Amygdala Hijack
+    </div>
+
+    <h1>Kenapa Kamu<br><em>Blank</em> Saat<br>Presentasi<br>Padahal Sudah<br>Siap</h1>
+
+    <div class="cover-quote">
+      "Kamu tidak grogi karena tidak persiapan. Kamu grogi karena otakmu sedang menyelamatkan hidupmu — di momen yang paling tidak tepat."
+    </div>
+
+    <div class="cover-meta">
+      <div class="meta-row">
+        <span class="meta-label">Mekanisme</span>
+        Amygdala Hijack — istilah yang dipopulerkan Daniel Goleman
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Formula</span>
+        Explain Your Life · Situasi → Sains → Strategi
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Bisa dibaca</span>
+        15 menit · Langsung bisa dipraktikkan hari ini
+      </div>
+    </div>
+
+    <div class="cover-chapters">
+      <div class="ch-label">Isi Sampel Gratis Ini</div>
+      <div class="ch-item"><span class="ch-num">01 —</span> Situasi yang pernah kamu alami</div>
+      <div class="ch-item"><span class="ch-num">02 —</span> Apa yang sebenarnya terjadi di otakmu</div>
+      <div class="ch-item"><span class="ch-num">03 —</span> Timeline 90 detik kritis saat presentasi</div>
+      <div class="ch-item"><span class="ch-num">04 —</span> 3 strategi berbasis neurosains</div>
+    </div>
+  </div>
+
+  <div class="pg-foot">
+    <span>neurodaily.id</span>
+    <span>Brain Kit for Work — Bab 01</span>
+  </div>
+
+  <div class="ghost-num">01</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     PAGE 2 — SITUASI YANG KAMU KENAL
+══════════════════════════════════════════════════ -->
+<div class="page pg-light p2">
+  <div class="pg-head">
+    <span class="dotmark">Brain at Work</span>
+    <span>Bab 01 · 01 / 04</span>
+  </div>
+
+  <div class="body">
+    <div class="eyebrow">Situasi yang Kamu Kenal</div>
+    <div class="rule"></div>
+
+    <h2 style="margin-top:5mm;">Kamu sudah latihan.<br><em>Tapi begitu giliran bicara —<br>semua hilang.</em></h2>
+
+    <div class="scenario-box">
+      <p>Semalam kamu buka slide sampai jam 11 malam. Kamu hafalkan poin-poin utama. Latihan di depan cermin, di depan teman, bahkan di dalam mobil waktu berangkat ke kantor tadi pagi.</p>
+      <br>
+      <p>Tapi begitu nama kamu dipanggil — begitu semua mata berpindah ke arahmu dan layar proyektor menyala — sesuatu terjadi. <strong>Otakmu kosong.</strong></p>
+      <br>
+      <p>Kata-kata yang tadi terasa begitu jelas tiba-tiba lenyap. Jantung berdegup lebih cepat. Tangan sedikit berkeringat. Dan selama beberapa detik yang terasa seperti beberapa menit, kamu berdiri di sana — blank.</p>
+    </div>
+
+    <div class="body-copy">
+      <p>Kamu mungkin pernah menyebutnya gugup. Atau kurang percaya diri. Atau tidak cukup siap.</p>
+      <p>Tapi tidak satu pun dari itu yang benar.</p>
+      <p>Yang terjadi punya nama ilmiah. Dan memahaminya adalah langkah pertama untuk mengatasinya.</p>
+    </div>
+
+    <div class="highlight-line">
+      Ini bukan soal mentalmu yang lemah. Ini adalah sistem biologis yang bekerja persis seperti yang dirancang — hanya saja di waktu yang paling tidak kamu inginkan.
+    </div>
+  </div>
+
+  <div class="pg-foot">
+    <span>neurodaily.id</span>
+    <span>Neuro Daily · Mei 2026</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     PAGE 3 — MEKANISME
+══════════════════════════════════════════════════ -->
+<div class="page pg-dark p3">
+  <div class="pg-head">
+    <span class="dotmark">Mekanisme</span>
+    <span>Bab 01 · 02 / 04</span>
+  </div>
+
+  <div class="body">
+    <div class="eyebrow">Apa yang Terjadi di Otakmu</div>
+    <div class="rule"></div>
+
+    <h2>30 Detik Pertama<br>Presentasi — <em>Secara<br>Neurologis</em></h2>
+
+    <div class="brain-diagram">
+      <!-- Amygdala node -->
+      <div class="brain-node">
+        <div class="node-circle amyg">
+          <span class="node-name">Amygdala</span>
+          <span class="node-sub">threat detector</span>
+        </div>
+        <span class="node-label">Aktif. Mendeteksi audiens sebagai ancaman sosial</span>
+      </div>
+
+      <!-- Arrow -->
+      <div class="arrow-flow">
+        <span class="arr">→</span>
+        <span class="arr-label">Ambil alih sumber daya</span>
+      </div>
+
+      <!-- PFC node -->
+      <div class="brain-node">
+        <div class="node-circle pfc">
+          <span class="node-name">Prefrontal<br>Cortex</span>
+          <span class="node-sub">rational mind</span>
+        </div>
+        <span class="node-label">Kehilangan sumber daya. Memori kerja & logika terganggu</span>
+      </div>
+    </div>
+
+    <div class="reaction-list">
+      <div class="r-item"><span class="r-dot"></span><span>Adrenalin dan kortisol dilepaskan ke aliran darah dalam hitungan milidetik</span></div>
+      <div class="r-item"><span class="r-dot"></span><span>Detak jantung meningkat, pernapasan dangkal, tangan berkeringat</span></div>
+      <div class="r-item"><span class="r-dot"></span><span>Aliran darah dialihkan dari prefrontal cortex — tempat memori, logika, dan kemampuan berbicara berada</span></div>
+      <div class="r-item"><span class="r-dot"></span><span>Hasilnya: kalimat yang sudah dilatih tidak bisa dirangkai. Otak masih berfungsi — tapi tidak dalam mode yang kamu butuhkan</span></div>
+    </div>
+
+    <div class="key-insight">
+      Ini yang disebut <strong>amygdala hijack</strong> — istilah dari Daniel Goleman. Amygdala tidak membedakan ancaman fisik dengan ancaman sosial. Bagi amygdala, tatapan 20 orang yang menunggu kamu bicara diproses sama seperti predator yang mendekat.
+    </div>
+  </div>
+
+  <div class="pg-foot">
+    <span>neurodaily.id</span>
+    <span>Neuro Daily · Mei 2026</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     PAGE 4 — INFOGRAFIS TIMELINE
+══════════════════════════════════════════════════ -->
+<div class="page pg-teal p4">
+  <div class="pg-head">
+    <span class="dotmark">Infografis</span>
+    <span>Bab 01 · 03 / 04</span>
+  </div>
+
+  <div class="body">
+    <div class="eyebrow">Timeline Neurologis</div>
+    <div class="rule"></div>
+
+    <h2>90 Detik Kritis —<br>Dari Nama Dipanggil<br>Sampai <em>Blank Total</em></h2>
+
+    <div class="timeline-wrap">
+
+      <div class="tl-node t-minus">
+        <div class="tl-left">
+          <span class="tl-time">T − 30 detik</span>
+          <div class="tl-dot"></div>
+        </div>
+        <div class="tl-content">
+          <div class="tl-title">Nama kamu dipanggil</div>
+          <div class="tl-desc">Amygdala mulai memindai lingkungan. Sinyal pertama "potensi ancaman" terdeteksi. Kortisol mulai meningkat perlahan.</div>
+        </div>
+      </div>
+
+      <div class="tl-connector"></div>
+
+      <div class="tl-node t-zero">
+        <div class="tl-left">
+          <span class="tl-time">T − 15 detik</span>
+          <div class="tl-dot"></div>
+        </div>
+        <div class="tl-content">
+          <div class="tl-title">Semua mata berpindah ke kamu</div>
+          <div class="tl-desc">Social evaluative threat aktif. Amygdala mengklasifikasikan tatapan banyak orang sebagai ancaman sosial tingkat tinggi. Kortisol dan adrenalin mulai naik signifikan.</div>
+        </div>
+      </div>
+
+      <div class="tl-connector"></div>
+
+      <div class="tl-node t-peak">
+        <div class="tl-left">
+          <span class="tl-time">T = 0</span>
+          <div class="tl-dot"></div>
+        </div>
+        <div class="tl-content">
+          <div class="tl-title">Amygdala hijack — blank total</div>
+          <div class="tl-desc">Sumber daya prefrontal cortex berkurang drastis. Memori kerja, kemampuan berbicara terstruktur, dan akses ke ingatan terlatih — semuanya terganggu. Ini momen yang kamu rasakan sebagai "blank."</div>
+        </div>
+      </div>
+
+      <div class="tl-connector"></div>
+
+      <div class="tl-node t-plus">
+        <div class="tl-left">
+          <span class="tl-time">T + 60 detik</span>
+          <div class="tl-dot"></div>
+        </div>
+        <div class="tl-content">
+          <div class="tl-title">Otak mulai kalibrasi ulang</div>
+          <div class="tl-desc">Jika kamu berhasil melewati 60 detik pertama, amygdala mulai memperbarui "data ancaman" dan prefrontal cortex secara bertahap mendapat sumber daya kembali. Inilah kenapa menit pertama presentasi paling berat.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="pg-foot">
+    <span>neurodaily.id</span>
+    <span>Neuro Daily · Mei 2026</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     PAGE 5 — TIGA STRATEGI
+══════════════════════════════════════════════════ -->
+<div class="page pg-light p5">
+  <div class="pg-head">
+    <span class="dotmark">Strategi</span>
+    <span>Bab 01 · 04 / 04</span>
+  </div>
+
+  <div class="body">
+    <div class="eyebrow">3 Strategi Berbasis Neurosains</div>
+    <div class="rule"></div>
+
+    <h2 style="margin-top:4mm;margin-bottom:6mm;">Yang Bisa Kamu<br>Lakukan — <em>Bukan<br>Sekadar Teori</em></h2>
+
+    <div class="strategy-cards">
+
+      <div class="strat-card s1">
+        <span class="sc-num">01</span>
+        <div class="sc-body">
+          <span class="sc-label">Physiological Sigh · Stanford, Huberman Lab</span>
+          <div class="sc-title">Reset Sistem Saraf dalam 5 Detik</div>
+          <div class="sc-desc">Tarik napas panjang melalui hidung, lalu tarik napas pendek tambahan di atas napas pertama, kemudian hembuskan perlahan melalui mulut. Hembusan panjang mengaktifkan sistem saraf parasimpatik — cara paling cepat menurunkan aktivasi amygdala secara fisiologis.</div>
+          <div class="sc-how">
+            <span>Cara pakai</span>
+            Lakukan tepat sebelum nama kamu dipanggil atau saat kamu berdiri di depan audiens. 5 detik cukup.
+          </div>
+        </div>
+      </div>
+
+      <div class="strat-card s2">
+        <span class="sc-num">02</span>
+        <div class="sc-body">
+          <span class="sc-label">Pre-Performance Reappraisal · Harvard, Alison Wood Brooks</span>
+          <div class="sc-title">Ubah "Cemas" Menjadi "Bersemangat"</div>
+          <div class="sc-desc">Respons fisiologis cemas dan antusias hampir identik. Yang berbeda hanya label kognitifnya. Riset membuktikan: peserta yang berkata "aku bersemangat" sebelum presentasi tampil lebih baik dari yang mencoba "tetap tenang."</div>
+          <div class="sc-how">
+            <span>Cara pakai</span>
+            Katakan dalam hati "aku bersemangat dengan ini" — bukan sebagai afirmasi, tapi sebagai reframe neurologis yang mengubah jalur neural yang aktif.
+          </div>
+        </div>
+      </div>
+
+      <div class="strat-card s3">
+        <span class="sc-num">03</span>
+        <div class="sc-body">
+          <span class="sc-label">Exposure Bertahap · Cognitive Behavioral Neuroscience</span>
+          <div class="sc-title">Latih Amygdala Kenali Ini Sebagai Aman</div>
+          <div class="sc-desc">Cara paling efektif jangka panjang: desensitisasi sistematis. Semakin sering otak terekspos situasi yang memicunya dan melihat bahwa tidak ada bahaya nyata, semakin lemah respons amygdala terhadap pemicu yang sama.</div>
+          <div class="sc-how">
+            <span>Cara pakai</span>
+            Presentasikan satu slide di depan 1–2 orang. Secara bertahap. Konsistensinya yang membangun data neurologis baru di amygdala — bukan skala eksposurnya.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="pg-foot">
+    <span>neurodaily.id</span>
+    <span>Neuro Daily · Mei 2026</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     PAGE 6 — RINGKASAN + CTA
+══════════════════════════════════════════════════ -->
+<div class="page pg-dark p6">
+  <div class="pg-head">
+    <span class="dotmark">Ringkasan</span>
+    <span>Brain Kit for Work</span>
+  </div>
+
+  <div class="body">
+    <div class="eyebrow">Yang Perlu Kamu Ingat</div>
+    <div class="rule"></div>
+
+    <h2 style="margin-top:4mm;">Amygdala Hijack —<br><em>Bukan Kelemahanmu</em></h2>
+
+    <div class="summary-blocks">
+      <div class="sum-block">
+        <span class="sb-label">Apa yang terjadi</span>
+        <span class="sb-text">Amygdala mendeteksi audiens sebagai <strong>ancaman sosial</strong> dan memicu amygdala hijack — mengalihkan sumber daya dari prefrontal cortex yang kamu butuhkan untuk berpikir dan berbicara.</span>
+      </div>
+      <div class="sum-block">
+        <span class="sb-label">Kenapa latihan tidak cukup</span>
+        <span class="sb-text">Latihan sendirian membangun memori prosedural dalam kondisi "aman." Tapi <strong>social evaluative threat</strong> menciptakan state neurologis yang berbeda — memori itu tidak selalu bisa diakses.</span>
+      </div>
+      <div class="sum-block">
+        <span class="sb-label">Mulai dari mana</span>
+        <span class="sb-text"><strong>Physiological sigh.</strong> Latih di luar konteks presentasi dulu — saat rapat kecil, telepon penting, atau bahkan macet. Tujuannya: buat ini menjadi respons otomatis sebelum kamu benar-benar membutuhkannya.</span>
+      </div>
+    </div>
+
+    <div class="cta-box">
+      <span class="cta-kicker">Brain Kit for Work — Full Edition</span>
+      <div class="cta-title">Masih Ada <em>6 Bab Lagi</em><br>yang Perlu Kamu Tahu</div>
+      <div class="cta-sub">Dari prokrastinasi yang bukan kemalasan, multitasking yang merusak otak, sampai jadwal kerja ideal versi neurosains. Semua dengan strategi konkret yang langsung bisa dipraktikkan.</div>
+
+      <div class="cta-chapters">
+        <div class="cta-ch"><span class="cta-ch-num">Bab 02</span>Kenapa Otak Tidak Bisa Multitasking</div>
+        <div class="cta-ch"><span class="cta-ch-num">Bab 03</span>Prokrastinasi Bukan Kemalasan</div>
+        <div class="cta-ch"><span class="cta-ch-num">Bab 04</span>Otak dalam Mode Survival</div>
+        <div class="cta-ch"><span class="cta-ch-num">Bab 05</span>Otak Sabotase Keputusan Karir</div>
+        <div class="cta-ch"><span class="cta-ch-num">Bab 06</span>Peak Performance Protocol</div>
+        <div class="cta-ch"><span class="cta-ch-num">+ Bonus</span>Infografis & Toolkit Kerja</div>
+      </div>
+
+      <div class="cta-link">→ neurodaily.id / brain-kit-for-work</div>
+    </div>
+  </div>
+
+  <div class="pg-foot">
+    <span>neurodaily.id</span>
+    <span>© 2026 Neuro Daily</span>
+  </div>
+</div>
+
+</body>
+</html>

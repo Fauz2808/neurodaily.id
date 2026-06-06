@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=440"/>
+<title>Neuro Daily – Decision Fatigue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --forest:   #0D2E28;
+    --teal:     #1A6B5A;
+    --green:    #5EC9A7;
+    --parchment:#F5F3EE;
+    --amber:    #C9A96E;
+    --red:      #D96A6A;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111; display: flex; flex-direction: column; align-items: center; font-family: 'DM Sans', sans-serif; }
+
+  .stage { width: 440px; position: relative; }
+
+  .topbar {
+    width: 440px; background: var(--forest);
+    border-bottom: 1px solid rgba(94,201,167,.18);
+    padding: 9px 20px;
+    display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
+  }
+  .topbar-brand { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--green); letter-spacing:.12em; }
+  .topbar-tag   { font-family:'JetBrains Mono',monospace; font-size:9px;  color:var(--amber); opacity:.75; letter-spacing:.08em; }
+
+  .viewport {
+    width: 440px; height: 550px;
+    overflow: hidden; border-radius: 16px;
+    box-shadow: 0 24px 64px rgba(0,0,0,.55);
+    position: relative;
+  }
+  .track {
+    display: flex; width: 700%; height: 100%;
+    transition: transform .42s cubic-bezier(.4,0,.2,1);
+  }
+  .slide {
+    width: 440px; height: 550px; flex-shrink: 0;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 36px 32px; position: relative; overflow: hidden;
+  }
+
+  .bg-dark  { background: var(--forest); }
+  .bg-light { background: var(--parchment); }
+  .bg-teal  { background: var(--teal); }
+
+  .bg-dark::before, .bg-teal::before {
+    content:''; position:absolute; inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity:.4; pointer-events:none;
+  }
+
+  .chip {
+    display: inline-block; font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: .12em;
+    padding: 4px 10px; border-radius: 20px; margin-bottom: 18px;
+  }
+  .chip-green { background: rgba(94,201,167,.15); color: var(--green); border:1px solid rgba(94,201,167,.3); }
+  .chip-amber { background: rgba(201,169,110,.15); color: var(--amber); border:1px solid rgba(201,169,110,.3); }
+  .chip-dark  { background: rgba(13,46,40,.15);   color: var(--teal);  border:1px solid rgba(26,107,90,.4); }
+
+  .hook-kicker {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: .18em; color: var(--green); opacity: .7; margin-bottom: 14px;
+  }
+  .hook-headline {
+    font-family: 'DM Serif Display', serif; font-size: 25px;
+    line-height: 1.22; color: var(--parchment); margin-bottom: 16px;
+  }
+  .hook-sub {
+    font-size: 13px; font-weight: 300;
+    color: var(--parchment); opacity: .65; line-height: 1.55;
+  }
+
+  .myth-label { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.16em; color:var(--red); margin-bottom:8px; }
+  .myth-text {
+    font-family:'DM Serif Display',serif; font-size:19px; line-height:1.3;
+    color:var(--forest); border-left:3px solid var(--red); padding-left:14px; margin-bottom:22px;
+  }
+  .reality-label { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.16em; color:var(--teal); margin-bottom:8px; }
+  .reality-text {
+    font-size:13.5px; font-weight:300; line-height:1.6;
+    color:var(--forest); border-left:3px solid var(--teal); padding-left:14px;
+  }
+
+  .s3-title { font-family:'DM Serif Display',serif; font-size:18px; color:var(--parchment); margin-bottom:20px; line-height:1.3; }
+  .term-box {
+    background:rgba(94,201,167,.07); border:1px solid rgba(94,201,167,.2);
+    border-radius:10px; padding:14px 16px; margin-bottom:12px;
+  }
+  .term-name  { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--green); letter-spacing:.1em; margin-bottom:5px; }
+  .term-source{ font-family:'JetBrains Mono',monospace; font-size:8px; color:var(--amber); opacity:.7; margin-bottom:6px; }
+  .term-desc  { font-size:12.5px; font-weight:300; color:var(--parchment); line-height:1.5; opacity:.85; }
+
+  .s4-title { font-family:'DM Serif Display',serif; font-size:20px; color:var(--forest); margin-bottom:18px; line-height:1.3; }
+  .list-item { display:flex; align-items:flex-start; gap:12px; margin-bottom:12px; }
+  .list-num  { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--teal); font-weight:700; min-width:20px; padding-top:1px; }
+  .list-text { font-size:12.5px; font-weight:300; color:var(--forest); line-height:1.5; }
+  .list-text strong { font-weight:400; color:var(--teal); }
+
+  .stat-eyebrow { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.16em; color:var(--green); opacity:.7; margin-bottom:12px; }
+  .stat-number  { font-family:'DM Serif Display',serif; font-size:90px; line-height:.95; color:var(--parchment); margin-bottom:8px; }
+  .stat-number .n-unit { font-size:38px; opacity:.75; }
+  .stat-label   { font-size:14px; font-weight:300; color:var(--parchment); opacity:.75; line-height:1.5; margin-bottom:16px; }
+  .stat-source  { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--green); opacity:.55; letter-spacing:.06em; }
+
+  .s6-title { font-family:'DM Serif Display',serif; font-size:19px; color:var(--parchment); margin-bottom:20px; line-height:1.3; }
+  .strat-item { display:flex; align-items:flex-start; gap:12px; margin-bottom:15px; }
+  .strat-dot  { width:6px; height:6px; border-radius:50%; background:var(--green); margin-top:5px; flex-shrink:0; }
+  .strat-text { font-size:13px; font-weight:300; color:var(--parchment); line-height:1.55; opacity:.85; }
+  .strat-text strong { font-weight:400; color:var(--green); opacity:1; }
+
+  .cta-headline { font-family:'DM Serif Display',serif; font-size:21px; color:var(--forest); line-height:1.3; margin-bottom:14px; }
+  .cta-q { font-size:13px; font-weight:300; color:var(--forest); line-height:1.6; margin-bottom:18px; opacity:.85; }
+  .cta-options { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px; }
+  .cta-pill {
+    font-family:'JetBrains Mono',monospace; font-size:9.5px;
+    padding:6px 12px; border-radius:20px;
+    border:1px solid rgba(26,107,90,.35); color:var(--teal); letter-spacing:.06em;
+  }
+  .signoff { display:flex; align-items:center; gap:10px; padding-top:16px; border-top:1px solid rgba(13,46,40,.15); }
+  .signoff-logo { width:28px;height:28px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center; }
+  .signoff-logo svg { width:16px;height:16px; }
+  .signoff-name   { font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:.1em; }
+  .signoff-handle { font-size:11px;font-weight:300;color:var(--forest);opacity:.5; }
+
+  .controls { display:flex;justify-content:space-between;align-items:center;width:440px;padding:12px 20px;background:var(--forest); }
+  .btn { font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);background:none;border:1px solid rgba(94,201,167,.3);border-radius:6px;padding:6px 14px;cursor:pointer; }
+  .btn:hover { background:rgba(94,201,167,.08); }
+  .btn:disabled { opacity:.25;cursor:default; }
+  .slide-counter { font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--parchment);opacity:.45; }
+
+  .dots { display:flex;gap:6px;padding:8px 0 4px;width:440px;justify-content:center; }
+  .dot { width:6px;height:6px;border-radius:50%;background:rgba(94,201,167,.25);cursor:pointer;transition:background .2s; }
+  .dot.active { background:var(--green); }
+
+  .caption-panel { width:440px;background:#1a1a1a;border-top:1px solid rgba(255,255,255,.06);padding:14px 20px 18px; }
+  .caption-title { font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--amber);letter-spacing:.1em;margin-bottom:8px; }
+  .caption-text  { font-size:12px;font-weight:300;color:rgba(245,243,238,.7);line-height:1.6;white-space:pre-wrap; }
+
+  .corner-accent { position:absolute;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(94,201,167,.12) 0%,transparent 70%);pointer-events:none; }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="topbar">
+    <span class="topbar-brand">NEURO DAILY</span>
+    <span class="topbar-tag">[ Peak Performance · P2 ]</span>
+  </div>
+
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- ─── SLIDE 1 · HOOK ─── -->
+      <div class="slide bg-dark">
+        <div class="corner-accent" style="top:-40px;right:-40px;"></div>
+
+        <svg viewBox="0 0 376 205" style="width:100%;margin-bottom:20px;" xmlns="http://www.w3.org/2000/svg">
+
+          <!-- Time axis labels -->
+          <text x="28"  y="18" font-family="JetBrains Mono" font-size="8" fill="#5EC9A7" letter-spacing="1" opacity="0.7">08.00</text>
+          <text x="148" y="18" font-family="JetBrains Mono" font-size="8" fill="#C9A96E" letter-spacing="1" opacity="0.7" text-anchor="middle">12.00</text>
+          <text x="265" y="18" font-family="JetBrains Mono" font-size="8" fill="#D96A6A" letter-spacing="1" opacity="0.7" text-anchor="middle">15.00</text>
+          <text x="348" y="18" font-family="JetBrains Mono" font-size="8" fill="#D96A6A" letter-spacing="1" opacity="0.5" text-anchor="end">17.00</text>
+
+          <!-- Fuel tank background track -->
+          <rect x="20" y="28" width="336" height="36" rx="8" fill="rgba(245,243,238,0.05)" stroke="rgba(245,243,238,0.12)" stroke-width="1"/>
+
+          <!-- Green fill (morning – full) -->
+          <rect x="22" y="30" width="120" height="32" rx="7" fill="rgba(94,201,167,0.38)"/>
+          <!-- Amber fill (midday – partial) -->
+          <rect x="142" y="30" width="90"  height="32" fill="rgba(201,169,110,0.28)"/>
+          <!-- Red fill (afternoon – low) -->
+          <rect x="232" y="30" width="55"  height="32" fill="rgba(217,106,106,0.22)"/>
+          <!-- Empty remainder -->
+
+          <!-- Percentage labels inside tank -->
+          <text x="82"  y="50" font-family="JetBrains Mono" font-size="9" fill="#5EC9A7" text-anchor="middle" font-weight="700">100%</text>
+          <text x="187" y="50" font-family="JetBrains Mono" font-size="9" fill="#C9A96E" text-anchor="middle" font-weight="700">55%</text>
+          <text x="259" y="50" font-family="JetBrains Mono" font-size="9" fill="#D96A6A" text-anchor="middle" font-weight="700">20%</text>
+          <text x="318" y="50" font-family="JetBrains Mono" font-size="9" fill="#D96A6A" text-anchor="middle" font-weight="700" opacity="0.45">~0%</text>
+
+          <!-- Tank label -->
+          <text x="188" y="80" font-family="JetBrains Mono" font-size="7.5" fill="#F5F3EE" text-anchor="middle" opacity="0.3" letter-spacing="2">DECISION FUEL</text>
+
+          <!-- Decision chips draining the tank — with drop lines -->
+          <!-- Chip 1 morning -->
+          <rect x="35" y="90" width="44" height="16" rx="4" fill="rgba(94,201,167,0.12)" stroke="rgba(94,201,167,0.35)" stroke-width="0.8"/>
+          <text x="57" y="101" font-family="DM Sans" font-size="7" fill="#5EC9A7" text-anchor="middle">email pagi</text>
+          <path d="M57 64 L57 90" stroke="#5EC9A7" stroke-width="0.7" stroke-dasharray="2,2" opacity="0.25"/>
+
+          <!-- Chip 2 morning -->
+          <rect x="88" y="90" width="50" height="16" rx="4" fill="rgba(94,201,167,0.12)" stroke="rgba(94,201,167,0.35)" stroke-width="0.8"/>
+          <text x="113" y="101" font-family="DM Sans" font-size="7" fill="#5EC9A7" text-anchor="middle">brief tim</text>
+          <path d="M113 64 L113 90" stroke="#5EC9A7" stroke-width="0.7" stroke-dasharray="2,2" opacity="0.25"/>
+
+          <!-- Chip 3 midday -->
+          <rect x="155" y="90" width="44" height="16" rx="4" fill="rgba(201,169,110,0.12)" stroke="rgba(201,169,110,0.4)" stroke-width="0.8"/>
+          <text x="177" y="101" font-family="DM Sans" font-size="7" fill="#C9A96E" text-anchor="middle">revisi doc</text>
+          <path d="M177 64 L177 90" stroke="#C9A96E" stroke-width="0.7" stroke-dasharray="2,2" opacity="0.25"/>
+
+          <!-- Chip 4 midday -->
+          <rect x="208" y="90" width="44" height="16" rx="4" fill="rgba(201,169,110,0.12)" stroke="rgba(201,169,110,0.4)" stroke-width="0.8"/>
+          <text x="230" y="101" font-family="DM Sans" font-size="7" fill="#C9A96E" text-anchor="middle">meeting 2</text>
+          <path d="M230 64 L230 90" stroke="#C9A96E" stroke-width="0.7" stroke-dasharray="2,2" opacity="0.25"/>
+
+          <!-- Chip 5 afternoon — the critical one -->
+          <rect x="263" y="86" width="72" height="22" rx="5" fill="rgba(217,106,106,0.15)" stroke="rgba(217,106,106,0.55)" stroke-width="1.2"/>
+          <text x="299" y="100" font-family="DM Sans" font-size="8" fill="#D96A6A" text-anchor="middle" font-weight="400">"iya aja deh"</text>
+          <path d="M299 64 L299 86" stroke="#D96A6A" stroke-width="0.9" stroke-dasharray="2,2" opacity="0.4"/>
+
+          <!-- Arrow showing depletion direction -->
+          <path d="M22 115 L354 115" stroke="rgba(245,243,238,0.08)" stroke-width="1"/>
+          <polygon points="354,111 362,115 354,119" fill="rgba(245,243,238,0.08)"/>
+
+          <!-- Critical moment label -->
+          <text x="188" y="140" font-family="DM Serif Display" font-size="14" fill="#D96A6A" text-anchor="middle" opacity="0.9">Sore hari: fuel habis.</text>
+          <text x="188" y="160" font-family="DM Sans" font-size="11" fill="#F5F3EE" text-anchor="middle" font-weight="300" opacity="0.5">Otak memilih jalur paling hemat energi — bilang iya.</text>
+        </svg>
+
+        <div class="hook-kicker">PEAK PERFORMANCE</div>
+        <div class="hook-headline">Atasan minta tolong jam 4 sore — padahal sudah overloaded — dan kamu bilang iya.</div>
+        <div class="hook-sub">Bukan karena kamu lemah. Karena kemampuan otak untuk menolak sudah habis sejak tadi.</div>
+      </div>
+
+      <!-- ─── SLIDE 2 · MITOS vs REALITA ─── -->
+      <div class="slide bg-light">
+        <span class="chip chip-dark">MITOS vs REALITA</span>
+
+        <div class="myth-label">MITOS UMUM</div>
+        <div class="myth-text">"Orang yang disiplin dan tegas bisa mengambil keputusan bagus kapan saja, sepanjang hari."</div>
+
+        <div class="reality-label">REALITA NEUROSAINS</div>
+        <div class="reality-text">Kemampuan mengambil keputusan yang baik adalah sumber daya biologis yang terbatas — dan habis seiring hari berlangsung. Ini berlaku untuk semua orang, tanpa kecuali.</div>
+
+        <div style="margin-top:22px; padding:14px 16px; background:rgba(13,46,40,.06); border-radius:10px; border-left:3px solid var(--teal);">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:.1em;margin-bottom:6px;">KONTEKS</div>
+          <div style="font-size:13px;font-weight:300;color:var(--forest);line-height:1.55;">Fenomena ini dikenal sebagai <em>decision fatigue</em> — dan menjelaskan kenapa orang paling disiplin sekalipun sering membuat keputusan buruk di penghujung hari kerja.</div>
+        </div>
+      </div>
+
+      <!-- ─── SLIDE 3 · MEKANISME ─── -->
+      <div class="slide bg-dark">
+        <div class="corner-accent" style="bottom:-40px;left:-40px;"></div>
+        <span class="chip chip-green">MEKANISME OTAK</span>
+
+        <div class="s3-title">Dua konsep di balik decision fatigue:</div>
+
+        <div class="term-box">
+          <div class="term-name">EGO DEPLETION</div>
+          <div class="term-source">Baumeister et al. (1998) · Journal of Personality &amp; Social Psychology</div>
+          <div class="term-desc">Setiap tindakan yang membutuhkan self-control — menolak permintaan, menahan emosi, memilih — menggunakan <strong style="color:var(--green)">sumber daya kognitif yang sama</strong>. Dan sumber daya ini habis seperti otot yang kelelahan.</div>
+        </div>
+
+        <div class="term-box">
+          <div class="term-name">PREFRONTAL CORTEX FATIGUE</div>
+          <div class="term-source">Gailliot et al. (2007) · Journal of Personality &amp; Social Psychology</div>
+          <div class="term-desc">PFC — pusat keputusan rasional — membutuhkan glukosa sebagai bahan bakar. Setiap keputusan mengonsumsinya. Saat kadar turun, PFC melemah dan <strong style="color:var(--green)">otak beralih ke mode default</strong>: setuju, hindari, atau tunda.</div>
+        </div>
+      </div>
+
+      <!-- ─── SLIDE 4 · KENAPA INI TERJADI ─── -->
+      <div class="slide bg-light">
+        <div class="s4-title">Kenapa ini terjadi tanpa kamu sadari:</div>
+
+        <div class="list-item">
+          <div class="list-num">01</div>
+          <div class="list-text">Otak <strong>tidak bisa membedakan</strong> keputusan penting vs tidak penting — keduanya menguras "fuel" yang sama dari PFC</div>
+        </div>
+        <div class="list-item">
+          <div class="list-num">02</div>
+          <div class="list-text">Di sore hari, PFC kelelahan → otak beralih ke <strong>jalur default</strong>: bilang iya, atau menghindari keputusan sama sekali</div>
+        </div>
+        <div class="list-item">
+          <div class="list-num">03</div>
+          <div class="list-text">Semakin banyak micro-decisions di pagi hari (outfit, sarapan, email), <strong>semakin cepat fuel terkuras</strong> sebelum keputusan penting datang</div>
+        </div>
+        <div class="list-item">
+          <div class="list-num">04</div>
+          <div class="list-text">Baumeister (1998): setelah satu sesi self-control intensif, performa di sesi berikutnya turun <strong>~50%</strong> — tanpa disadari</div>
+        </div>
+        <div class="list-item">
+          <div class="list-num">05</div>
+          <div class="list-text">Ini berlaku untuk semua orang — <strong>CEO, dokter, hakim</strong>, dan siapapun yang membuat banyak keputusan setiap hari</div>
+        </div>
+      </div>
+
+      <!-- ─── SLIDE 5 · STAT ─── -->
+      <div class="slide bg-teal">
+        <div class="corner-accent" style="top:-20px;right:-20px;"></div>
+
+        <div class="stat-eyebrow">DATA NEUROSAINS</div>
+        <div class="stat-number">~50<span class="n-unit">%</span></div>
+        <div class="stat-label">penurunan kemampuan self-control setelah satu sesi pengambilan keputusan intensif — diukur pada sesi berikutnya, pada partisipan yang tidak merasa lelah</div>
+        <div class="stat-source">Baumeister et al. (1998) · Journal of Personality &amp; Social Psychology</div>
+
+        <div style="margin-top:20px; padding:12px 16px; background:rgba(245,243,238,.08); border-radius:8px; border:1px solid rgba(245,243,238,.15);">
+          <div style="font-size:12.5px;font-weight:300;color:var(--parchment);opacity:.8;line-height:1.5;">Yang paling berbahaya: penurunan ini terjadi <em>di bawah kesadaran</em>. Kamu merasa keputusanmu rasional — padahal otak sudah beralih ke mode hemat energi.</div>
+        </div>
+      </div>
+
+      <!-- ─── SLIDE 6 · STRATEGI ─── -->
+      <div class="slide bg-dark">
+        <div class="corner-accent" style="top:-30px;left:-30px;"></div>
+        <span class="chip chip-green">YANG BISA KAMU LAKUKAN</span>
+
+        <div class="s6-title">Cara kerja dengan decision fatigue:</div>
+
+        <div class="strat-item">
+          <div class="strat-dot"></div>
+          <div class="strat-text"><strong>Front-load keputusan penting:</strong> jadwalkan keputusan besar dan negosiasi di pagi hari — sebelum fuel terkuras oleh hal-hal kecil</div>
+        </div>
+        <div class="strat-item">
+          <div class="strat-dot"></div>
+          <div class="strat-text"><strong>Kurangi micro-decisions:</strong> prep malam sebelumnya untuk outfit, sarapan, agenda — ini strategi yang dipakai Obama dan Jobs bukan soal gaya, tapi biologi</div>
+        </div>
+        <div class="strat-item">
+          <div class="strat-dot"></div>
+          <div class="strat-text"><strong>Aturan default sore hari:</strong> buat protokol pribadi — "permintaan masuk setelah jam 3 sore akan saya respons besok pagi" — bukan malas, ini perlindungan kualitas keputusan</div>
+        </div>
+        <div class="strat-item">
+          <div class="strat-dot"></div>
+          <div class="strat-text"><strong>Glucose top-up:</strong> camilan karbohidrat kompleks sebelum rapat penting bukan mitos — ini intervensi biokimia nyata yang merestorasi PFC (Gailliot et al. 2007)</div>
+        </div>
+      </div>
+
+      <!-- ─── SLIDE 7 · CTA ─── -->
+      <div class="slide bg-light">
+        <span class="chip chip-dark">PERTANYAAN BUAT KAMU</span>
+
+        <div class="cta-headline">Jam berapa kamu biasanya membuat keputusan yang paling disesali keesokan harinya?</div>
+
+        <div class="cta-q">Jawab di komentar — dan simpan carousel ini untuk next time kamu mau bilang iya ke sesuatu di jam 4 sore.</div>
+
+        <div class="cta-options">
+          <span class="cta-pill">pagi (sebelum 10)</span>
+          <span class="cta-pill">siang (10–14)</span>
+          <span class="cta-pill">sore (14–18)</span>
+          <span class="cta-pill">malam (&gt; 18)</span>
+        </div>
+
+        <div class="signoff">
+          <div class="signoff-logo">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="10" cy="7" r="3.5" stroke="#F5F3EE" stroke-width="1.4"/>
+              <path d="M3 17c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="#F5F3EE" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="signoff-name">NEURO DAILY</div>
+            <div class="signoff-handle">@neurodaily.id</div>
+          </div>
+          <div style="margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--amber);opacity:.6;">30 / 30</div>
+        </div>
+      </div>
+
+    </div><!-- /track -->
+  </div><!-- /viewport -->
+
+  <div class="controls">
+    <button class="btn" id="prev" onclick="move(-1)">← prev</button>
+    <span class="slide-counter" id="counter">1 / 7</span>
+    <button class="btn" id="next" onclick="move(1)">next →</button>
+  </div>
+
+  <div class="dots" id="dots"></div>
+
+  <div class="caption-panel">
+    <div class="caption-title">CAPTION · INSTAGRAM</div>
+    <div class="caption-text" id="caption-text"></div>
+  </div>
+</div>
+
+<script>
+const CAPTION = `Atasan minta tolong jam 4 sore. Kamu sudah overloaded. Tapi kamu bilang iya.
+
+Bukan karena lemah. Karena decision-making fuel otak kamu sudah habis sejak tadi.
+
+Baumeister et al. (1998): setelah sesi self-control intensif, kemampuan menolak dan memilih turun ~50% — tanpa kamu sadari. PFC kelelahan, otak beralih ke default: "iya aja deh."
+
+Jam berapa kamu biasanya buat keputusan yang paling disesali?
+✦ pagi  ✦ siang  ✦ sore  ✦ malam
+
+#NeuroDailyID #DecisionFatigue #BrainAtWork #PeakPerformance #PsikologiKerja`;
+
+let cur = 0;
+const TOTAL = 7;
+const track = document.getElementById('track');
+const counter = document.getElementById('counter');
+const captionEl = document.getElementById('caption-text');
+const dotsContainer = document.getElementById('dots');
+
+for (let i = 0; i < TOTAL; i++) {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => goTo(i);
+  dotsContainer.appendChild(d);
+}
+
+captionEl.textContent = CAPTION;
+
+function render() {
+  track.style.transform = `translateX(-${cur * 440}px)`;
+  counter.textContent = `${cur + 1} / ${TOTAL}`;
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+  document.getElementById('prev').disabled = cur === 0;
+  document.getElementById('next').disabled = cur === TOTAL - 1;
+}
+
+function move(dir) { goTo(cur + dir); }
+function goTo(i)   { cur = Math.max(0, Math.min(TOTAL - 1, i)); render(); }
+
+render();
+</script>
+</body>
+</html>

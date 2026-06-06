@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Neuro Daily — Public Speaking Lebih Menakutkan dari Kematian</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#1a1a1a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#9aa39f;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(440px,92vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;display:flex;flex-direction:column;padding:36px 32px 28px;position:relative;overflow:hidden}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.slide .header{display:flex;justify-content:space-between;align-items:center;font-family:'DM Sans',sans-serif;font-weight:500;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.85}
+.bg-light .header{opacity:.7}
+.pillar-tag{display:inline-flex;align-items:center;gap:6px}
+.pillar-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--green)}
+.bg-light .pillar-tag::before{background:var(--teal)}
+.slide .footer{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;opacity:.55;text-transform:uppercase}
+.s1 .body{margin-top:auto;margin-bottom:auto}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:43px;line-height:1.05;letter-spacing:-.01em;color:var(--parchment)}
+.s1 h1 em{color:var(--amber);font-style:italic}
+.s1 .lead{margin-top:18px;font-size:13px;line-height:1.7;opacity:.7;max-width:300px}
+.s1 .swipe{position:absolute;bottom:24px;right:32px;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.s1 .arrow{display:inline-block;animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+.static-bg{position:absolute;inset:0;pointer-events:none;opacity:.045}
+.s2-diag{justify-content:space-between}
+.s2-diag .eyebrow{margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);opacity:.8}
+.s2-diag h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:30px;line-height:1.13;letter-spacing:-.01em;margin-top:10px;color:var(--forest)}
+.s2-diag h2 em{font-style:italic;color:var(--teal)}
+.s2-diag .desc{margin-top:14px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.8;max-width:340px}
+.s2-diag .pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.s2-diag .pill{padding:7px 13px;border-radius:99px;font-size:11px;font-weight:500;letter-spacing:.06em}
+.pill-amber{background:rgba(201,169,110,.15);color:#9a7940;border:1px solid rgba(201,169,110,.3)}
+.pill-teal{background:rgba(26,107,90,.1);color:var(--teal);border:1px solid rgba(26,107,90,.2)}
+.pill-red{background:rgba(224,112,112,.1);color:#c05050;border:1px solid rgba(224,112,112,.25)}
+.s2-diag .note{margin-top:14px;font-size:11.5px;line-height:1.6;color:var(--forest);opacity:.6;border-top:1px solid rgba(13,46,40,.1);padding-top:12px}
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:26px;line-height:1.24;letter-spacing:-.01em;margin-top:20px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .term{margin-top:16px;padding:14px 16px;border-radius:10px;background:rgba(94,201,167,.08);border-left:2px solid var(--green)}
+.s3 .term .name{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+.s3 .term .def{margin-top:7px;font-size:12.5px;line-height:1.65;color:var(--parchment);opacity:.92}
+.s3 .priority-list{margin-top:14px;display:flex;flex-direction:column;gap:6px}
+.s3 .prio-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:7px}
+.prio-high{background:rgba(94,201,167,.1);border:1px solid rgba(94,201,167,.18)}
+.prio-med{background:rgba(201,169,110,.08);border:1px solid rgba(201,169,110,.15)}
+.prio-low{background:rgba(224,112,112,.08);border:1px solid rgba(224,112,112,.15)}
+.s3 .prio-num{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;width:18px;flex-shrink:0}
+.prio-high .prio-num{color:var(--green)}
+.prio-med  .prio-num{color:var(--amber)}
+.prio-low  .prio-num{color:#e07070}
+.s3 .prio-text{font-size:11px;line-height:1.4;color:var(--parchment);opacity:.85}
+.s3 .source{margin-top:10px;font-size:10.5px;color:var(--parchment);opacity:.5;line-height:1.55}
+.s4-fear h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:20px;line-height:1.3;margin-top:14px;color:var(--forest)}
+.s4-fear h2 em{font-style:italic;color:var(--teal)}
+.fear-list{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.fear-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:rgba(255,255,255,.6);border:1px solid rgba(13,46,40,.1)}
+.fear-item.top{background:rgba(224,112,112,.08);border-color:rgba(224,112,112,.2)}
+.fear-rank{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;width:24px;flex-shrink:0;color:var(--teal)}
+.fear-item.top .fear-rank{color:#c05050}
+.fear-name{font-size:12px;color:var(--forest);font-weight:500}
+.fear-bar-wrap{margin-left:auto;width:70px;flex-shrink:0}
+.fear-bar-bg{height:6px;border-radius:3px;background:rgba(13,46,40,.08)}
+.fear-bar-fill{height:100%;border-radius:3px}
+.s4-fear .note{margin-top:14px;font-size:11px;line-height:1.6;color:var(--forest);opacity:.6;border-top:1px solid rgba(13,46,40,.1);padding-top:12px}
+.s5{padding-top:28px}
+.s5 .stat-big{margin-top:auto;display:flex;align-items:baseline;gap:12px}
+.s5 .stat-big .n{font-family:'DM Serif Display',serif;font-size:80px;line-height:.85;color:var(--parchment);letter-spacing:-.03em}
+.s5 .stat-big .n em{color:var(--amber);font-style:italic}
+.s5 .stat-big .u{font-family:'DM Sans';font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);max-width:140px;line-height:1.5}
+.s5 .copy{margin-top:16px;font-size:13px;line-height:1.65;opacity:.85;max-width:340px}
+.s5 .copy strong{font-weight:500;color:var(--green)}
+.s5 .math{margin-top:16px;padding:13px 16px;border:1px dashed rgba(94,201,167,.3);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);letter-spacing:.04em;line-height:1.85}
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:28px;line-height:1.18;margin-top:22px;letter-spacing:-.01em}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .ps{margin-top:14px;font-size:12.5px;line-height:1.65;opacity:.82;max-width:340px}
+.s6 .steps{margin-top:14px;display:flex;flex-direction:column;gap:0}
+.s6 .step{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(245,243,238,.07)}
+.s6 .step:last-child{border-bottom:none}
+.s6 .step-num{width:20px;height:20px;border-radius:50%;background:rgba(94,201,167,.15);color:var(--green);font-family:'JetBrains Mono',monospace;font-size:8.5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.s6 .step-title{font-size:11.5px;font-weight:500;color:var(--parchment);line-height:1.3;margin-bottom:2px}
+.s6 .step-desc{font-size:10.5px;color:var(--parchment);opacity:.62;line-height:1.5}
+.s7{justify-content:space-between}
+.s7 .lead-q{font-family:'DM Serif Display',serif;font-size:26px;line-height:1.24;letter-spacing:-.01em;margin-top:26px;color:var(--forest)}
+.s7 .lead-q em{font-style:italic;color:var(--teal)}
+.s7 .ask{margin-top:13px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.7;max-width:300px}
+.s7 .actions{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.s7 .btn{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border:1px solid rgba(13,46,40,.15);border-radius:10px;font-size:12.5px;color:var(--forest)}
+.s7 .btn .ic{width:18px;height:18px;color:var(--teal);flex-shrink:0}
+.s7 .signoff{margin-top:18px;padding-top:14px;border-top:1px solid rgba(13,46,40,.12)}
+.s7 .tag{font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;color:var(--teal);line-height:1.3}
+.s7 .sub{margin-top:6px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--forest);opacity:.6;font-weight:500}
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:22px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:42px;height:42px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.controls button:hover{background:rgba(94,201,167,.12);border-color:rgba(94,201,167,.3)}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 8px}
+.caption-panel{width:min(440px,92vw);margin-top:32px;padding:22px 22px 24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:13px;line-height:1.7}
+.caption-panel .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+.caption-panel .char-count{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--amber);margin-top:10px;opacity:.7}
+.caption-panel p{margin-bottom:10px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:14px;display:block;line-height:1.7}
+body.export-mode{background:transparent;padding:0;margin:0;width:1080px;height:1350px;overflow:hidden;display:block}
+body.export-mode .topbar,body.export-mode .caption-panel,body.export-mode .dots,body.export-mode .controls{display:none!important}
+body.export-mode .stage{width:440px!important;height:550px!important;aspect-ratio:auto!important;transform:scale(2.4545)!important;transform-origin:top left!important}
+body.export-mode .viewport{border-radius:0!important;box-shadow:none!important}
+  /* ── EXPORT MODE ── */
+  html.export-html{width:440px!important;height:550px!important;min-height:0!important;overflow:hidden!important;margin:0!important;padding:0!important;background:#0D2E28}
+  body.export-mode{width:440px!important;height:550px!important;min-height:0!important;overflow:hidden!important;padding:0!important;margin:0!important;background:#0D2E28;display:block!important}
+  body.export-mode .topbar,body.export-mode .caption-panel,body.export-mode .dots,body.export-mode .controls{display:none!important}
+  body.export-mode .stage{position:relative!important;width:440px!important;height:550px!important;aspect-ratio:auto!important}
+  body.export-mode .viewport{position:absolute!important;inset:0!important;border-radius:0!important;box-shadow:none!important;overflow:hidden!important}
+  body.export-mode .track{position:absolute!important;top:0!important;left:0!important;height:100%!important;display:flex!important}
+  body.export-mode .slide{height:550px!important;min-height:550px!important;flex-shrink:0!important}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Career Neuroscience · P3 ]</span>
+</div>
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- SLIDE 1 — HOOK -->
+      <section class="slide bg-dark s1" data-screen-label="01 Hook">
+        <svg class="static-bg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <!-- Audience dots representing crowd -->
+          <circle cx="80" cy="350" r="5" fill="rgba(255,255,255,.12)"/><circle cx="110" cy="340" r="4" fill="rgba(255,255,255,.1)"/>
+          <circle cx="140" cy="355" r="5" fill="rgba(255,255,255,.12)"/><circle cx="170" cy="338" r="4" fill="rgba(255,255,255,.1)"/>
+          <circle cx="200" cy="352" r="5" fill="rgba(255,255,255,.12)"/><circle cx="230" cy="340" r="4" fill="rgba(255,255,255,.1)"/>
+          <circle cx="260" cy="355" r="5" fill="rgba(255,255,255,.12)"/><circle cx="290" cy="342" r="4" fill="rgba(255,255,255,.1)"/>
+          <circle cx="320" cy="350" r="5" fill="rgba(255,255,255,.12)"/><circle cx="350" cy="338" r="4" fill="rgba(255,255,255,.1)"/>
+          <!-- Row 2 -->
+          <circle cx="65" cy="390" r="5" fill="rgba(255,255,255,.08)"/><circle cx="95" cy="380" r="4" fill="rgba(255,255,255,.07)"/>
+          <circle cx="125" cy="395" r="5" fill="rgba(255,255,255,.08)"/><circle cx="155" cy="378" r="4" fill="rgba(255,255,255,.07)"/>
+          <circle cx="185" cy="392" r="5" fill="rgba(255,255,255,.08)"/><circle cx="215" cy="380" r="4" fill="rgba(255,255,255,.07)"/>
+          <circle cx="245" cy="395" r="5" fill="rgba(255,255,255,.08)"/><circle cx="275" cy="382" r="4" fill="rgba(255,255,255,.07)"/>
+          <circle cx="305" cy="390" r="5" fill="rgba(255,255,255,.08)"/><circle cx="335" cy="378" r="4" fill="rgba(255,255,255,.07)"/>
+          <!-- Speaker spotlight from above -->
+          <path d="M200 80 L120 320 L280 320 Z" fill="rgba(201,169,110,.04)" stroke="rgba(201,169,110,.1)" stroke-width=".8"/>
+          <!-- Stage line -->
+          <line x1="60" y1="320" x2="340" y2="320" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+          <!-- Heartbeat/pulse above speaker -->
+          <path d="M140 200 L160 200 L170 170 L180 230 L190 190 L200 200 L220 200 L230 180 L240 220 L260 200" fill="none" stroke="rgba(224,112,112,.35)" stroke-width="1.5"/>
+        </svg>
+        <div class="header">
+          <span class="pillar-tag">Career Neuroscience · P3</span>
+          <span>01 / 07</span>
+        </div>
+        <div class="body">
+          <h1>Orang lebih takut public speaking dari <em>kematian.</em></h1>
+          <p class="lead">Neurosaintis akhirnya tahu kenapa. Dan jawabannya ada di amygdala — bukan di mentalmu.</p>
+        </div>
+        <div class="swipe"><span>Geser</span><span class="arrow">→</span></div>
+      </section>
+
+      <!-- SLIDE 2 — DATA SURVEI -->
+      <section class="slide bg-light s2-diag" data-screen-label="02 Data">
+        <div class="header">
+          <span class="pillar-tag">Datanya</span>
+          <span>02 / 07</span>
+        </div>
+        <div class="eyebrow">Number Hook · Formula C</div>
+        <h2>Survei konsisten selama <em>50 tahun</em> menunjukkan hal yang sama.</h2>
+        <p class="desc">Chapman University Survey of American Fears (2014–2023) dan berbagai survei serupa lintas negara menunjukkan: public speaking secara konsisten masuk top 3 ketakutan terbesar manusia — mengalahkan ketinggian, laba-laba, bahkan kematian.</p>
+        <div class="pill-row">
+          <span class="pill pill-red">#1 Ketakutan terbesar</span>
+          <span class="pill pill-amber">73% populasi umum</span>
+          <span class="pill pill-teal">Lintas budaya & usia</span>
+        </div>
+        <p class="note">Bukan kelemahan karakter. Ini respons biologis yang sama pada semua manusia. Memahaminya adalah langkah pertama untuk mengelolanya.</p>
+        <div class="footer"><span>NEURO DAILY</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 3 — MECHANISM -->
+      <section class="slide bg-dark s3" data-screen-label="03 Mekanisme">
+        <div class="header">
+          <span class="pillar-tag">Yang terjadi di otakmu</span>
+          <span>03 / 07</span>
+        </div>
+        <h2>Amygdala memperlakukan audiens seperti <em>kawanan predator.</em></h2>
+        <div class="term">
+          <div class="name">Social Threat Response</div>
+          <div class="def">Saat kamu berdiri di depan banyak orang, amygdala mendeteksi ratusan mata yang menatap sebagai sinyal ancaman sosial — mengaktifkan respons fight-or-flight yang sama dengan ancaman fisik nyata. Ini bukan irasional. Ini evolusi.</div>
+        </div>
+        <div class="priority-list">
+          <div class="prio-item prio-low">
+            <span class="prio-num">!</span>
+            <span class="prio-text">Amygdala aktif — otak masuk mode survival, bukan performa</span>
+          </div>
+          <div class="prio-item prio-med">
+            <span class="prio-num">→</span>
+            <span class="prio-text">Kortisol & adrenalin melonjak — jantung cepat, tangan gemetar, keringat</span>
+          </div>
+          <div class="prio-item prio-high">
+            <span class="prio-num">↓</span>
+            <span class="prio-text">Prefrontal cortex tertekan — kata-kata yang sudah dipersiapkan terasa hilang</span>
+          </div>
+        </div>
+        <p class="source">LeDoux (1996): The Emotional Brain · Eisenberger (2003): Social threat = physical pain di otak · Chapman Survey of American Fears (2022)</p>
+      </section>
+
+      <!-- SLIDE 4 — FEAR RANKING -->
+      <section class="slide bg-light s4-fear" data-screen-label="04 Ranking Ketakutan">
+        <div class="header">
+          <span class="pillar-tag">Konteksnya</span>
+          <span>04 / 07</span>
+        </div>
+        <h2>Daftar ketakutan terbesar manusia — <em>public speaking ada di puncak.</em></h2>
+        <div class="fear-list">
+          <div class="fear-item top">
+            <span class="fear-rank">#1</span>
+            <span class="fear-name">Public Speaking / Glossophobia</span>
+            <div class="fear-bar-wrap"><div class="fear-bar-bg"><div class="fear-bar-fill" style="background:#c05050;width:92%"></div></div></div>
+          </div>
+          <div class="fear-item">
+            <span class="fear-rank">#2</span>
+            <span class="fear-name">Ketinggian</span>
+            <div class="fear-bar-wrap"><div class="fear-bar-bg"><div class="fear-bar-fill" style="background:var(--teal);width:68%"></div></div></div>
+          </div>
+          <div class="fear-item">
+            <span class="fear-rank">#3</span>
+            <span class="fear-name">Serangga & laba-laba</span>
+            <div class="fear-bar-wrap"><div class="fear-bar-bg"><div class="fear-bar-fill" style="background:var(--teal);width:56%"></div></div></div>
+          </div>
+          <div class="fear-item">
+            <span class="fear-rank">#4</span>
+            <span class="fear-name">Kematian</span>
+            <div class="fear-bar-wrap"><div class="fear-bar-bg"><div class="fear-bar-fill" style="background:rgba(201,169,110,.6);width:42%"></div></div></div>
+          </div>
+          <div class="fear-item">
+            <span class="fear-rank">#5</span>
+            <span class="fear-name">Ruang sempit / gelap</span>
+            <div class="fear-bar-wrap"><div class="fear-bar-bg"><div class="fear-bar-fill" style="background:rgba(201,169,110,.4);width:35%"></div></div></div>
+          </div>
+        </div>
+        <p class="note" style="margin-top:12px">Chapman University Survey of American Fears, 2022. Data serupa ditemukan di survei lintas 20+ negara.</p>
+        <div class="footer"><span>04 — DATA</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 5 — REFRAME -->
+      <section class="slide bg-teal s5" data-screen-label="05 Reframe">
+        <div class="header">
+          <span class="pillar-tag" style="color:#fff">Yang perlu diubah</span>
+          <span>05 / 07</span>
+        </div>
+        <p class="copy" style="margin-top:24px">Ketakutan public speaking bukan kelemahan. Ini <strong>respons biologis yang bisa dikelola</strong> — sama seperti kamu bisa melatih otot, kamu bisa melatih amygdala untuk tidak memperlakukan audiens sebagai ancaman.</p>
+        <div class="stat-big">
+          <span class="n"><em>73%</em></span>
+          <span class="u">orang takut — tapi ketakutan itu bisa dilatih ulang</span>
+        </div>
+        <div class="math">
+          Bukan soal "pede" atau tidak pede<br>
+          Bukan soal introvert atau ekstrovert<br>
+          <span style="color:var(--amber)">────────────────────────────</span><br>
+          Soal melatih amygdala untuk membaca<br>
+          audiens sebagai <span style="color:#fff;font-weight:500">sinyal aman, bukan ancaman</span><br>
+          <span style="opacity:.6;font-size:10px">*LeDoux (1996) · Neuroscience of Fear Extinction</span>
+        </div>
+        <div class="footer"><span>05 — REFRAME</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 6 — STRATEGI -->
+      <section class="slide bg-dark s6" data-screen-label="06 Strategi">
+        <div class="header">
+          <span class="pillar-tag">3 teknik berbasis neurosains</span>
+          <span>06 / 07</span>
+        </div>
+        <h2>Reduksi respons amygdala — <em>sebelum</em> naik panggung.</h2>
+        <p class="ps">Tujuannya bukan menghilangkan nervous — tapi mencegah amygdala mengambil alih prefrontal cortex di momen kritis.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <div class="step-title">Reframe: "excited" bukan "nervous"</div>
+              <div class="step-desc">Alison Wood Brooks (Harvard, 2014): mengatakan "Saya excited" — bukan menekan rasa nervous — secara signifikan meningkatkan performa. Arousal state yang sama, interpretasi yang berbeda.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <div class="step-title">Slow exhale sebelum mulai bicara</div>
+              <div class="step-desc">Napas keluar panjang mengaktifkan parasympathetic nervous system — counter langsung terhadap respons fight-or-flight. 4 hitungan tarik, 8 hitungan buang.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <div class="step-title">Fokus ke satu orang dulu, bukan semua orang</div>
+              <div class="step-desc">Memulai kontak mata dengan satu wajah yang ramah membantu amygdala membaca situasi sebagai "aman" — bukan "ratusan predator." Audiens besar terasa lebih kecil secara neurobiologis.</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>06 — TEKNIK</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 7 — CTA -->
+      <section class="slide bg-light s7" data-screen-label="07 CTA">
+        <div class="header">
+          <span class="pillar-tag">Sekarang giliranmu</span>
+          <span>07 / 07</span>
+        </div>
+        <div>
+          <p class="lead-q">Ketakutan public speaking kamu <em>angka berapa?</em></p>
+          <p class="ask">Rate di komentar: 1 (santai banget) sampai 10 (mau pingsan). Dan ceritakan situasi public speaking paling memorable — baik atau buruk.</p>
+        </div>
+        <div class="actions">
+          <div class="btn">
+            <span>Simpan — baca ulang sebelum presentasi berikutnya</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+          </div>
+          <div class="btn">
+            <span>Kirim ke teman yang takut presentasi</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </div>
+        <div class="signoff">
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="1.5"><path d="M4 14c0-5 3-8 8-8 4 0 6 2 6 5 0 2-1.5 3.5-4 3.5-2 0-3 1-3 2.5 0 1.5 1 2.5 2.5 2.5"/><circle cx="15" cy="9" r="1" fill="#1A6B5A"/></svg>
+            <span class="tag">Neuro Daily</span>
+          </div>
+          <div class="sub">Kerja lebih cerdas, bukan lebih keras. Ini sains-nya.</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="caption-panel">
+  <div class="label">Caption · Formula C — Number Hook · ≤ 500 karakter</div>
+  <p><strong style="color:var(--parchment)">73% orang lebih takut public speaking daripada kematian.</strong></p>
+  <p>Ini bukan kelemahan mental. Amygdala kamu memperlakukan ratusan mata yang menatap sebagai kawanan predator — sama seperti ancaman fisik nyata.</p>
+  <p>Bukan soal pede atau tidak. Ini biologi yang bisa dilatih.</p>
+  <p>Ketakutan public speaking kamu angka berapa? (1–10)</p>
+  <span class="hash">#NeuroDaily #NeurosainsKerja #PublicSpeaking #CareerNeuroscience #KomunikasiKerja</span>
+  <div class="char-count" id="charCount"></div>
+</div>
+
+<div class="controls">
+  <button id="prev">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next">›</button>
+</div>
+
+<script>
+const track=document.getElementById('track'),dotsEl=document.getElementById('dots'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next');
+const total=track.children.length;let i=0;
+for(let k=0;k<total;k++){const b=document.createElement('button');b.className='dot'+(k===0?' active':'');b.addEventListener('click',()=>go(k));dotsEl.appendChild(b)}
+const dots=[...dotsEl.children];
+function go(n){i=Math.max(0,Math.min(total-1,n));track.style.transform=`translateX(-${i*100}%)`;dots.forEach((d,k)=>d.classList.toggle('active',k===i));counter.textContent=`${i+1} / ${total}`;prevBtn.disabled=i===0;nextBtn.disabled=i===total-1}
+prevBtn.addEventListener('click',()=>go(i-1));nextBtn.addEventListener('click',()=>go(i+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(i+1);if(e.key==='ArrowLeft')go(i-1)});
+let sx=0,dx=0,drag=false;const vp=document.querySelector('.viewport');
+vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;drag=true;dx=0});
+vp.addEventListener('touchmove',e=>{if(!drag)return;dx=e.touches[0].clientX-sx});
+vp.addEventListener('touchend',()=>{if(!drag)return;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));drag=false});
+const captionText=`73% orang lebih takut public speaking daripada kematian.
+
+Ini bukan kelemahan mental. Amygdala kamu memperlakukan ratusan mata yang menatap sebagai kawanan predator — sama seperti ancaman fisik nyata.
+
+Bukan soal pede atau tidak. Ini biologi yang bisa dilatih.
+
+Ketakutan public speaking kamu angka berapa? (1–10)
+
+#NeuroDaily #NeurosainsKerja #PublicSpeaking #CareerNeuroscience #KomunikasiKerja`;
+const cc=document.getElementById('charCount'),len=captionText.length;
+cc.textContent=`${len} / 500 karakter ${len<=500?'✓':'⚠ Melebihi batas Threads'}`;
+if(len>500)cc.style.color='#e05252';
+const params=new URLSearchParams(location.search),sp=params.get('slide');
+if(sp){document.body.classList.add('export-mode');go(parseInt(sp)-1)}else{go(0)}
+</script>
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Neuro Daily — Peak-End Rule: Otak Hanya Mengingat Dua Momen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;--red:#D96A6A;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0a0a0a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 100px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#7a807d;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(540px,94vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;position:relative;overflow:hidden}
+.cvs{width:1080px;height:1350px;transform-origin:top left;position:absolute;top:0;left:0;font-family:'DM Sans',sans-serif}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.cvs .head,.cvs .foot{position:absolute;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 64px;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase}
+.cvs .head{top:0;height:78px;border-bottom:1px solid rgba(245,243,238,.12)}
+.cvs .foot{bottom:0;height:64px;border-top:1px solid rgba(245,243,238,.12)}
+.bg-light .head,.bg-light .foot{border-color:rgba(13,46,40,.12)}
+.bg-teal .head,.bg-teal .foot{border-color:rgba(245,243,238,.18)}
+.cvs .head span,.cvs .foot span{opacity:.55}
+.cvs .head .dotmark::before{content:"◆ ";color:var(--green);opacity:1}
+.bg-light .head .dotmark::before{color:var(--teal)}
+.bg-teal .head .dotmark::before{color:var(--amber)}
+.hippo-mark{display:flex;align-items:center;gap:10px;opacity:1!important}
+.hippo-mark svg{width:30px;height:30px;flex-shrink:0}
+.body{position:absolute;top:78px;bottom:64px;left:0;right:0;padding:52px 72px;display:flex;flex-direction:column}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.bg-dark .eyebrow{color:var(--green)}
+.bg-light .eyebrow{color:var(--teal)}
+.bg-teal .eyebrow{color:var(--amber)}
+.rule{width:48px;height:3px;border-radius:2px;margin-top:18px}
+.bg-dark .rule{background:var(--green)}
+.bg-light .rule{background:var(--teal)}
+.bg-teal .rule{background:var(--amber)}
+.s1 .ghost{position:absolute;font-family:'DM Serif Display',serif;font-size:680px;line-height:.88;color:rgba(94,201,167,.04);pointer-events:none;user-select:none;right:-30px;top:30px}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:88px;line-height:1.02;letter-spacing:-.02em;margin-top:44px;max-width:840px;position:relative;z-index:2}
+.s1 h1 em{font-style:italic;color:var(--amber)}
+.s1 .lead{margin-top:30px;font-size:24px;line-height:1.65;opacity:.72;max-width:680px;font-weight:300;position:relative;z-index:2}
+.s1 .pe-vis{position:absolute;bottom:78px;left:72px;right:72px;z-index:2;display:flex;flex-direction:column;gap:10px}
+.pe-timeline{display:flex;align-items:flex-end;gap:6px;height:80px}
+.pe-bar{border-radius:4px 4px 0 0;flex:1}
+.pe-bar.low{background:rgba(245,243,238,.15);height:25%}
+.pe-bar.mid{background:rgba(245,243,238,.25);height:40%}
+.pe-bar.high{background:rgba(245,243,238,.35);height:55%}
+.pe-bar.peak{background:var(--amber);height:100%}
+.pe-bar.end{background:var(--green);height:70%}
+.pe-labels{display:flex;gap:6px}
+.pe-label{flex:1;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.06em;text-transform:uppercase;text-align:center;opacity:.45}
+.pe-label.peak{color:var(--amber);opacity:1;font-weight:500}
+.pe-label.end{color:var(--green);opacity:1;font-weight:500}
+.s2 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.06;letter-spacing:-.02em;margin-top:32px;color:var(--forest);max-width:860px}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .stat-row{margin-top:36px;display:flex;gap:20px}
+.stat-card{flex:1;padding:28px 24px;border-radius:16px;display:flex;flex-direction:column;gap:10px}
+.stat-card.a{background:rgba(201,169,110,.06);border:1.5px solid rgba(201,169,110,.2)}
+.stat-card.b{background:rgba(94,201,167,.06);border:1.5px solid rgba(94,201,167,.2)}
+.stat-num{font-family:'DM Serif Display',serif;font-size:68px;line-height:1;letter-spacing:-.03em}
+.stat-card.a .stat-num{color:var(--amber)}
+.stat-card.b .stat-num{color:var(--teal)}
+.stat-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;opacity:.6;color:var(--forest)}
+.stat-desc{font-size:22px;line-height:1.55;opacity:.65;font-weight:300;color:var(--forest)}
+.s2 .insight-cards{margin-top:24px;display:flex;flex-direction:column;gap:12px}
+.insight-card{display:flex;align-items:flex-start;gap:16px;padding:20px 24px;border-radius:12px;background:rgba(13,46,40,.04);border:1px solid rgba(13,46,40,.1)}
+.insight-card .ic-icon{font-family:'DM Serif Display',serif;font-style:italic;font-size:36px;line-height:1;color:var(--teal);flex-shrink:0;margin-top:2px}
+.insight-card .ic-title{font-size:24px;font-weight:500;color:var(--forest);margin-bottom:4px}
+.insight-card .ic-text{font-size:22px;line-height:1.55;color:var(--forest);opacity:.65;font-weight:300}
+.s2 .source{margin-top:auto;font-size:20px;letter-spacing:.04em;color:var(--forest);opacity:.42;font-family:'JetBrains Mono',monospace;line-height:1.7;border-top:1px solid rgba(13,46,40,.1);padding-top:16px}
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:66px;line-height:1.06;letter-spacing:-.02em;margin-top:40px;max-width:860px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .mech-cards{margin-top:44px;display:flex;flex-direction:column;gap:18px}
+.mech-card{padding:26px 30px;border-radius:14px;display:flex;align-items:flex-start;gap:22px}
+.mech-card.a{background:rgba(94,201,167,.07);border:1.5px solid rgba(94,201,167,.2)}
+.mech-card.b{background:rgba(201,169,110,.07);border:1.5px solid rgba(201,169,110,.22)}
+.mech-card.c{background:rgba(94,201,167,.05);border:1.5px solid rgba(94,201,167,.15)}
+.mech-card .mc-icon{width:52px;height:52px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-style:italic;font-size:26px}
+.mech-card.a .mc-icon{background:rgba(94,201,167,.18);color:var(--green)}
+.mech-card.b .mc-icon{background:rgba(201,169,110,.18);color:var(--amber)}
+.mech-card.c .mc-icon{background:rgba(94,201,167,.15);color:var(--green)}
+.mech-card .mc-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px}
+.mech-card.a .mc-label{color:var(--green)}
+.mech-card.b .mc-label{color:var(--amber)}
+.mech-card.c .mc-label{color:var(--green)}
+.mech-card .mc-text{font-size:24px;line-height:1.55;font-weight:300;opacity:.88}
+.s3 .bottom-note{margin-top:auto;padding:20px 28px;border-radius:12px;background:rgba(245,243,238,.05);border:1px solid rgba(245,243,238,.12);font-size:24px;line-height:1.6;opacity:.65;font-weight:300;display:flex;align-items:center;gap:14px}
+.s3 .note-prefix{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--amber);flex-shrink:0}
+.s4 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-.02em;margin-top:36px;max-width:860px}
+.s4 h2 em{font-style:italic;color:var(--amber)}
+.s4 .def-card{margin-top:28px;background:rgba(245,243,238,.1);border:1.5px solid rgba(245,243,238,.2);border-radius:14px;padding:24px 30px}
+.s4 .def-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+.s4 .def-text{font-size:22px;line-height:1.65;opacity:.88;font-weight:300}
+.s4 .apply-grid{margin-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ap-item{padding:22px 22px;border-radius:12px}
+.ap-item.peak-focus{background:rgba(201,169,110,.08);border:1.5px solid rgba(201,169,110,.2)}
+.ap-item.end-focus{background:rgba(94,201,167,.08);border:1.5px solid rgba(94,201,167,.2)}
+.ap-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.ap-item.peak-focus .ap-label{color:var(--amber)}
+.ap-item.end-focus .ap-label{color:var(--green)}
+.ap-text{font-size:22px;line-height:1.5;opacity:.8;font-weight:300}
+.s4 .bottom-note{margin-top:auto;padding:18px 24px;border-radius:12px;background:rgba(245,243,238,.07);border:1px solid rgba(245,243,238,.14);font-size:24px;line-height:1.6;opacity:.65;font-weight:300;display:flex;gap:12px;align-items:center}
+.s4 .bottom-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--amber);flex-shrink:0}
+.s5 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.06;letter-spacing:-.02em;margin-top:36px;color:var(--forest);max-width:860px}
+.s5 h2 em{font-style:italic;color:var(--teal)}
+.s5 .scenarios{margin-top:36px;display:flex;flex-direction:column;gap:18px}
+.scenario{padding:26px 28px;border-radius:14px;display:flex;align-items:flex-start;gap:20px}
+.scenario.bad{background:rgba(217,106,106,.05);border:1.5px solid rgba(217,106,106,.18)}
+.scenario.good{background:rgba(26,107,90,.06);border:1.5px solid rgba(26,107,90,.22)}
+.scenario .s-tag{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;padding:5px 14px;border-radius:99px;flex-shrink:0;margin-top:3px}
+.scenario.bad .s-tag{background:var(--red);color:#fff}
+.scenario.good .s-tag{background:var(--teal);color:#fff}
+.scenario .s-title{font-size:24px;font-weight:500;color:var(--forest);margin-bottom:6px}
+.scenario .s-desc{font-size:22px;line-height:1.6;color:var(--forest);opacity:.65;font-weight:300}
+.s5 .research-note{margin-top:22px;padding:18px 24px;background:rgba(26,107,90,.05);border:1px solid rgba(26,107,90,.15);border-radius:12px;font-size:22px;line-height:1.6;color:var(--forest);font-weight:300}
+.s5 .research-note strong{font-weight:500;color:var(--teal)}
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:66px;line-height:1.06;letter-spacing:-.02em;margin-top:40px;max-width:860px}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .protocol{margin-top:44px;display:flex;flex-direction:column;gap:0}
+.s6 .p-block{width:100%;padding:26px 32px;border-radius:14px;display:flex;align-items:flex-start;gap:22px}
+.s6 .p-block.a{background:rgba(94,201,167,.1);border:2px solid rgba(94,201,167,.28)}
+.s6 .p-block.b{background:rgba(201,169,110,.1);border:2px solid rgba(201,169,110,.25)}
+.s6 .p-block.c{background:rgba(94,201,167,.16);border:2px solid rgba(94,201,167,.5)}
+.s6 .p-divider{margin:10px 0;border:none;border-top:1px solid rgba(245,243,238,.1)}
+.s6 .p-num{font-family:'DM Serif Display',serif;font-size:48px;line-height:1;flex-shrink:0;margin-top:-4px}
+.s6 .p-block.a .p-num{color:var(--green)}
+.s6 .p-block.b .p-num{color:var(--amber)}
+.s6 .p-block.c .p-num{color:var(--green)}
+.s6 .p-title{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.s6 .p-block.a .p-title{color:var(--green)}
+.s6 .p-block.b .p-title{color:var(--amber)}
+.s6 .p-block.c .p-title{color:var(--green)}
+.s6 .p-desc{font-size:24px;line-height:1.55;opacity:.85;font-weight:300}
+.s6 .p-note{margin-top:22px;font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.04em;color:rgba(245,243,238,.48);line-height:1.9;border-top:1px solid rgba(245,243,238,.1);padding-top:20px}
+.s6 .p-note .punch{color:var(--green);font-weight:500}
+.s7 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:68px;line-height:1.04;letter-spacing:-.02em;margin-top:36px;color:var(--forest);max-width:860px}
+.s7 h2 em{font-style:italic;color:var(--teal)}
+.s7 .sub{margin-top:22px;font-size:24px;line-height:1.65;color:var(--forest);opacity:.65;max-width:800px;font-weight:300}
+.s7 .discussion{margin-top:36px;display:flex;flex-direction:column;gap:14px}
+.s7 .disc-item{display:flex;align-items:center;gap:18px;padding:20px 24px;border:1.5px solid rgba(13,46,40,.12);border-radius:14px;font-size:22px;color:var(--forest);background:rgba(255,255,255,.46);line-height:1.4}
+.s7 .disc-item .ic{width:40px;height:40px;border-radius:10px;background:rgba(26,107,90,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.s7 .disc-item .ic svg{width:22px;height:22px;color:var(--teal)}
+.s7 .shift-note{margin-top:24px;padding:20px 24px;border-radius:12px;border:1px dashed rgba(26,107,90,.35);font-size:24px;line-height:1.6;color:var(--forest);opacity:.62;font-weight:300;display:flex;align-items:center;gap:14px}
+.s7 .shift-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:24px;color:var(--teal);flex-shrink:0}
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:24px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:46px;height:46px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.1em;align-self:center;padding:0 10px}
+.caption-panel{width:min(540px,94vw);margin-top:32px;padding:26px 26px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:20px;line-height:1.7}
+.caption-panel .cap-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+.caption-panel p{margin-bottom:12px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel strong{color:var(--parchment);font-weight:500}
+.caption-panel .hash{color:#7a8480;font-size:18px;margin-top:16px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="topbar"><span>Neuro Daily · Carousel Preview</span><span class="pill">[ Vol. 77 · Peak-End Rule · Memori Pengalaman ]</span></div>
+<div class="stage"><div class="viewport"><div class="track" id="track">
+
+<!-- S1 DARK -->
+<section class="slide"><div class="cvs bg-dark s1">
+  <div class="head"><span class="dotmark">Neuro Daily · Vol. 77 · Memori & Pengalaman</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Peak-End Rule · Kahneman</div>
+    <div class="rule"></div>
+    <div class="ghost">◈</div>
+    <h1>Meeting 2 jam.<br>Otak hanya ingat<br>dua momen.<br><em>Puncak dan akhirnya.</em></h1>
+    <p class="lead">Bukan rata-rata keseluruhan pengalaman yang menentukan ingatan — tapi momen terkuat dan bagaimana ia berakhir. Ini disebut Peak-End Rule oleh Kahneman.</p>
+    <div class="pe-vis">
+      <div class="pe-timeline">
+        <div class="pe-bar low"></div>
+        <div class="pe-bar mid"></div>
+        <div class="pe-bar low"></div>
+        <div class="pe-bar high"></div>
+        <div class="pe-bar mid"></div>
+        <div class="pe-bar peak"></div>
+        <div class="pe-bar low"></div>
+        <div class="pe-bar mid"></div>
+        <div class="pe-bar end"></div>
+      </div>
+      <div class="pe-labels">
+        <div class="pe-label">—</div>
+        <div class="pe-label">—</div>
+        <div class="pe-label">—</div>
+        <div class="pe-label">—</div>
+        <div class="pe-label">—</div>
+        <div class="pe-label peak">Peak</div>
+        <div class="pe-label">—</div>
+        <div class="pe-label">—</div>
+        <div class="pe-label end">End</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>01 / 07</span></div>
+</div></section>
+
+<!-- S2 LIGHT -->
+<section class="slide"><div class="cvs bg-light s2">
+  <div class="head"><span class="dotmark">Peak-End Rule · Kahneman Research</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Studi yang mengubah cara kita memahami ingatan</div>
+    <div class="rule"></div>
+    <h2">Durasi pengalaman hampir <em>tidak relevan</em> untuk ingatan yang terbentuk.</h2>
+    <div class="stat-row">
+      <div class="stat-card a">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Momen yang Diingat</div>
+        <div class="stat-desc">Dari pengalaman sepanjang apapun, otak hanya menggunakan puncak emosional dan momen terakhir untuk membentuk ingatan keseluruhan</div>
+      </div>
+      <div class="stat-card b">
+        <div class="stat-num">~0%</div>
+        <div class="stat-label">Pengaruh Durasi</div>
+        <div class="stat-desc">Duration neglect — lamanya pengalaman hampir tidak mempengaruhi bagaimana otak menilai pengalaman itu dalam ingatan</div>
+      </div>
+    </div>
+    <div class="insight-cards">
+      <div class="insight-card">
+        <div class="ic-icon">→</div>
+        <div>
+          <div class="ic-title">Studi kolonoskopi Kahneman</div>
+          <div class="ic-text">Pasien dengan prosedur lebih lama tapi diakhiri dengan nyeri lebih rendah menilai keseluruhan pengalaman lebih baik dibanding yang lebih pendek tapi berakhir dengan nyeri puncak — meski total nyeri lebih banyak</div>
+        </div>
+      </div>
+      <div class="insight-card">
+        <div class="ic-icon">→</div>
+        <div>
+          <div class="ic-title">Experiencing Self vs Remembering Self</div>
+          <div class="ic-text">Kahneman membedakan dua "diri" — yang mengalami momen demi momen, dan yang mengingat. Yang membuat keputusan adalah yang mengingat — dan ia hanya peduli pada peak dan end</div>
+        </div>
+      </div>
+    </div>
+    <div class="source">Kahneman, Fredrickson, Redelmeier & Schreiber (1993) · Thinking Fast and Slow (2011)</div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>02 / 07</span></div>
+</div></section>
+
+<!-- S3 DARK -->
+<section class="slide"><div class="cvs bg-dark s3">
+  <div class="head"><span class="dotmark">Peak-End Rule · Why It Works This Way</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Kenapa otak bekerja seperti ini</div>
+    <div class="rule"></div>
+    <h2>Tiga alasan otak <em>tidak merekam rata-rata</em> — hanya highlight.</h2>
+    <div class="mech-cards">
+      <div class="mech-card a">
+        <div class="mc-icon">⚡</div>
+        <div>
+          <div class="mc-label">Emotional Salience</div>
+          <div class="mc-text">Amygdala memprioritaskan konsolidasi memori yang memiliki intensitas emosional tinggi. Momen biasa tidak mendapatkan "flagging" yang sama — jadi tidak tersimpan dengan kuat dalam long-term memory</div>
+        </div>
+      </div>
+      <div class="mech-card b">
+        <div class="mc-icon">◎</div>
+        <div>
+          <div class="mc-label">Recency Effect</div>
+          <div class="mc-text">Momen terakhir masih aktif dalam working memory saat konsolidasi dimulai — jadi mendapat bobot yang tidak proporsional dalam ingatan jangka panjang yang dibentuk setelah pengalaman selesai</div>
+        </div>
+      </div>
+      <div class="mech-card c">
+        <div class="mc-icon">⟳</div>
+        <div>
+          <div class="mc-label">Narrative Construction</div>
+          <div class="mc-text">Otak membangun cerita dari pengalaman, bukan rekaman. Cerita butuh climax (peak) dan resolution (end) — sisanya adalah background yang tidak mendapat tempat dalam narasi yang tersimpan</div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-note">
+      <span class="note-prefix">Intinya:</span>
+      Kamu tidak mengingat pengalaman — kamu mengingat cerita tentang pengalaman itu.
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>03 / 07</span></div>
+</div></section>
+
+<!-- S4 TEAL -->
+<section class="slide"><div class="cvs bg-teal s4">
+  <div class="head"><span class="dotmark">Peak-End Rule · Application at Work</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Cara menggunakan peak-end rule di tempat kerja</div>
+    <div class="rule"></div>
+    <h2>Dua momen yang <em>paling menentukan</em> ingatan tim tentang setiap pengalaman kerja.</h2>
+    <div class="def-card">
+      <div class="def-label">Peak-End Rule</div>
+      <div class="def-text">Heuristik kognitif di mana penilaian seseorang terhadap suatu pengalaman sebagian besar ditentukan oleh momen paling intens (peak) dan bagaimana pengalaman itu berakhir (end) — bukan rata-rata keseluruhan.</div>
+    </div>
+    <div class="apply-grid">
+      <div class="ap-item peak-focus">
+        <div class="ap-label">Design the Peak</div>
+        <div class="ap-text">Meeting yang membosankan tapi punya satu momen insight kuat akan diingat lebih baik dari meeting yang steady bagus seluruhnya</div>
+      </div>
+      <div class="ap-item end-focus">
+        <div class="ap-label">Design the End</div>
+        <div class="ap-text">Cara kamu menutup meeting, presentasi, atau hari kerja menentukan 50% dari ingatan yang akan tersisa di kepala tim</div>
+      </div>
+      <div class="ap-item peak-focus">
+        <div class="ap-label">Performance Review</div>
+        <div class="ap-text">Feedback paling memorable bukan yang paling banyak — tapi yang paling emosionally resonant dan bagaimana sesi itu diakhiri</div>
+      </div>
+      <div class="ap-item end-focus">
+        <div class="ap-label">Project Closure</div>
+        <div class="ap-text">Bagaimana proyek ditutup (celebration, debrief, next steps) lebih menentukan memori tim tentang proyek dibanding 90% proses di tengahnya</div>
+      </div>
+    </div>
+    <div class="bottom-note">
+      <span class="bottom-arrow">→</span>
+      Jika hanya bisa memperbaiki dua hal: buat peak yang berarti dan end yang positif.
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(201,169,110,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#C9A96E">N</text></svg>NEURODAILY.ID</span><span>04 / 07</span></div>
+</div></section>
+
+<!-- S5 LIGHT -->
+<section class="slide"><div class="cvs bg-light s5">
+  <div class="head"><span class="dotmark">Weak End vs Strong End · Meeting Design</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Dua cara yang berbeda hasilnya di kepala tim</div>
+    <div class="rule"></div>
+    <h2">Meeting yang berakhir <em>dengan baik</em> diingat sangat berbeda dari yang <em>berakhir gantung.</em></h2>
+    <div class="scenarios">
+      <div class="scenario bad">
+        <div class="s-tag">Weak End</div>
+        <div>
+          <div class="s-title">Meeting selesai karena waktu habis, tanpa closure</div>
+          <div class="s-desc">Tim meninggalkan ruangan dengan memori akhir yang ambigu atau negatif. Meski konten meeting bagus, ingatan yang tersimpan: "meeting yang tidak jelas hasilnya." Motivasi dan clarity untuk action item jauh lebih rendah</div>
+        </div>
+      </div>
+      <div class="scenario good">
+        <div class="s-tag">Strong End</div>
+        <div>
+          <div class="s-title">Ditutup dengan decision clear + satu apresiasi spesifik</div>
+          <div class="s-desc">Meski konten meeting biasa-biasa, akhir yang kuat meningkatkan ingatan positif keseluruhan. Tim pergi dengan memori: "itu meeting yang produktif." Komitmen terhadap next action secara otomatis lebih tinggi</div>
+        </div>
+      </div>
+    </div>
+    <div class="research-note">Studi Cornell: <strong>akhir yang positif dari presentasi meningkatkan penilaian keseluruhan presentasi sebesar 30%</strong> — bahkan saat konten tengahnya identik.</div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>05 / 07</span></div>
+</div></section>
+
+<!-- S6 DARK -->
+<section class="slide"><div class="cvs bg-dark s6">
+  <div class="head"><span class="dotmark">Peak-End Design Protocol</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Cara merancang pengalaman yang diingat dengan baik</div>
+    <div class="rule"></div>
+    <h2">Tiga cara menerapkan <em>peak-end rule</em> dalam pekerjaan sehari-hari.</h2>
+    <div class="protocol">
+      <div class="p-block a">
+        <div class="p-num">1</div>
+        <div>
+          <div class="p-title">Plan Your Peak</div>
+          <div class="p-desc">Sebelum meeting atau presentasi penting, identifikasi: momen mana yang ingin jadi puncak emosional? Insight besar, keputusan krusial, atau momen yang benar-benar menyentuh? Pastikan momen itu dirancang, bukan terjadi kebetulan</div>
+        </div>
+      </div>
+      <hr class="p-divider"/>
+      <div class="p-block b">
+        <div class="p-num">2</div>
+        <div>
+          <div class="p-title">Engineer the End</div>
+          <div class="p-desc">Selalu sisakan 5 menit terakhir untuk: satu keputusan yang jelas, satu appreciation genuine, dan satu kalimat yang menghubungkan ke masa depan. Ini template akhir yang memaksimalkan ingatan positif</div>
+        </div>
+      </div>
+      <hr class="p-divider"/>
+      <div class="p-block c">
+        <div class="p-num">3</div>
+        <div>
+          <div class="p-title">End Your Day Right</div>
+          <div class="p-desc">5 menit sebelum selesai kerja: catat satu hal yang diselesaikan dengan baik hari ini. Otak yang berakhir dengan sense of completion memiliki motivasi lebih tinggi untuk memulai keesokan harinya</div>
+        </div>
+      </div>
+    </div>
+    <div class="p-note">Kamu tidak bisa mengontrol semua momen — tapi bisa <span class="punch">selalu mengontrol bagaimana sesuatu dimulai dan berakhir.</span></div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>06 / 07</span></div>
+</div></section>
+
+<!-- S7 LIGHT -->
+<section class="slide"><div class="cvs bg-light s7">
+  <div class="head"><span class="dotmark">Memory Design · Lasting Impressions</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Refleksi & diskusi</div>
+    <div class="rule"></div>
+    <h2">Ingatan yang orang simpan <em>tentang kamu</em> ditentukan oleh momen tertentu — bukan keseluruhan interaksi.</h2>
+    <p class="sub">Ini berlaku untuk meeting, presentasi, hari kerja, bahkan karir secara keseluruhan. Yang akan diingat bukan seberapa konsisten kamu baik — tapi momen terbaik dan bagaimana kamu mengakhiri berbagai chapter dalam hidupmu.</p>
+    <div class="discussion">
+      <div class="disc-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
+        Meeting atau pengalaman kerja terakhir yang benar-benar berkesan — apa yang membuat kamu mengingatnya?
+      </div>
+      <div class="disc-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        Meeting yang kamu pimpin — apakah selalu punya "end" yang dirancang, atau sering berakhir gantung?
+      </div>
+      <div class="disc-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        Jika kamu bisa merancang satu "peak" di hari kerja besok — momen apa yang ingin paling diingat?
+      </div>
+    </div>
+    <div class="shift-note">
+      <span class="shift-arrow">→</span>
+      Meeting berikutnya: siapkan strong end 5 menit sebelum waktu habis. Satu keputusan jelas + satu apresiasi genuine.
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>07 / 07</span></div>
+</div></section>
+
+</div></div></div>
+<div class="dots"><button class="dot active" onclick="goTo(0)"></button><button class="dot" onclick="goTo(1)"></button><button class="dot" onclick="goTo(2)"></button><button class="dot" onclick="goTo(3)"></button><button class="dot" onclick="goTo(4)"></button><button class="dot" onclick="goTo(5)"></button><button class="dot" onclick="goTo(6)"></button></div>
+<div class="controls"><button id="prev" onclick="prev()" disabled>←</button><span class="counter" id="counter">1 / 7</span><button id="next" onclick="next()">→</button></div>
+<div class="caption-panel">
+  <div class="cap-label">Caption · Instagram / TikTok</div>
+  <p>Meeting 2 jam. Otak hanya ingat dua momen — puncak dan akhirnya. ◈</p>
+  <p>Ini bukan soal perhatian yang pendek. Ini <strong>Peak-End Rule</strong> (Kahneman) — cara otak membangun ingatan dari pengalaman. Bukan rata-rata seluruhnya yang tersimpan, tapi momen paling intens dan bagaimana ia berakhir.</p>
+  <p>Kahneman membuktikannya lewat studi kolonoskopi: pasien dengan prosedur lebih lama tapi diakhiri dengan rasa nyeri yang lebih rendah menilai keseluruhan pengalaman LEBIH BAIK dari yang lebih pendek tapi berakhir dengan puncak nyeri.</p>
+  <p>Implikasi untuk tempat kerja: <strong>5 menit terakhir meeting menentukan 50% ingatan yang tersimpan.</strong> Apakah selalu kamu rancang?</p>
+  <span class="hash">#NeuroscienceIndonesia #PeakEndRule #Kahneman #NeurodailyID #Meeting #Ingatan #LeadershipTips #ExperienceDesign #Produktivitas</span>
+</div>
+<script>
+const track=document.getElementById('track'),dots=document.querySelectorAll('.dot'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next'),TOTAL=7;let cur=0;
+function scale(){const vw=document.querySelector('.viewport').offsetWidth;document.querySelectorAll('.cvs').forEach(c=>{c.style.transform=`scale(${vw/1080})`});}
+scale();window.addEventListener('resize',scale);
+function goTo(i){cur=i;track.style.transform=`translateX(-${cur*100}%)`;dots.forEach((d,j)=>d.classList.toggle('active',j===cur));counter.textContent=`${cur+1} / ${TOTAL}`;prevBtn.disabled=cur===0;nextBtn.disabled=cur===TOTAL-1;}
+function prev(){if(cur>0)goTo(cur-1);}function next(){if(cur<TOTAL-1)goTo(cur+1);}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')prev();if(e.key==='ArrowRight')next();});
+</script>
+</body>
+</html>

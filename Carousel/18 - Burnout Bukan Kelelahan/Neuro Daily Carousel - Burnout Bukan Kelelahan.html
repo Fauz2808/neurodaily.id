@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Neuro Daily — Burnout Bukan Kelelahan Biasa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;--red:#D96A6A}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#1a1a1a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#9aa39f;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(440px,92vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;display:flex;flex-direction:column;padding:36px 32px 28px;position:relative;overflow:hidden}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.slide .header{display:flex;justify-content:space-between;align-items:center;font-family:'DM Sans',sans-serif;font-weight:500;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.85}
+.bg-light .header{opacity:.7}
+.pillar-tag{display:inline-flex;align-items:center;gap:6px}
+.pillar-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--green)}
+.bg-light .pillar-tag::before{background:var(--teal)}
+.slide .footer{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;opacity:.55;text-transform:uppercase}
+.static-bg{position:absolute;inset:0;pointer-events:none;opacity:.045}
+
+/* S1 — HOOK */
+.s1 .body{margin-top:auto;margin-bottom:auto}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:42px;line-height:1.06;letter-spacing:-.01em;color:var(--parchment)}
+.s1 h1 em{color:var(--amber);font-style:italic}
+.s1 .lead{margin-top:18px;font-size:13px;line-height:1.7;opacity:.7;max-width:300px}
+.s1 .swipe{position:absolute;bottom:24px;right:32px;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.s1 .arrow{display:inline-block;animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+
+/* S2 — MYTH BUSTER */
+.s2 .eyebrow{margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);opacity:.8}
+.s2 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:28px;line-height:1.15;letter-spacing:-.01em;margin-top:10px;color:var(--forest)}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .compare{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.s2 .compare-row{padding:11px 14px;border-radius:9px;font-size:11.5px;line-height:1.55}
+.compare-myth{background:rgba(217,106,106,.08);border:1px solid rgba(217,106,106,.18);color:var(--forest)}
+.compare-fact{background:rgba(26,107,90,.08);border:1px solid rgba(26,107,90,.2);color:var(--forest)}
+.compare-row .label{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:4px;opacity:.7}
+.compare-myth .label{color:var(--red)}
+.compare-fact .label{color:var(--teal)}
+.s2 .note{margin-top:12px;font-size:11px;line-height:1.6;color:var(--forest);opacity:.6;border-top:1px solid rgba(13,46,40,.1);padding-top:10px}
+
+/* S3 — MECHANISM */
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:26px;line-height:1.24;letter-spacing:-.01em;margin-top:20px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .term{margin-top:14px;padding:13px 15px;border-radius:10px;background:rgba(94,201,167,.08);border-left:2px solid var(--green)}
+.s3 .term .name{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+.s3 .term .def{margin-top:7px;font-size:12.5px;line-height:1.65;color:var(--parchment);opacity:.9}
+.s3 .mech-list{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+.s3 .mech-item{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;border-radius:7px}
+.mech-a{background:rgba(217,106,106,.1);border:1px solid rgba(217,106,106,.2)}
+.mech-b{background:rgba(201,169,110,.08);border:1px solid rgba(201,169,110,.18)}
+.mech-c{background:rgba(94,201,167,.08);border:1px solid rgba(94,201,167,.15)}
+.s3 .mech-icon{font-size:12px;flex-shrink:0;margin-top:1px;width:16px;text-align:center}
+.s3 .mech-text{font-size:11px;line-height:1.45;color:var(--parchment);opacity:.85}
+.s3 .source{margin-top:10px;font-size:10px;color:var(--parchment);opacity:.45;line-height:1.55}
+
+/* S4 — CONSEQUENCE LIST */
+.s4 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:22px;line-height:1.28;margin-top:14px;color:var(--forest)}
+.s4 h2 em{font-style:italic;color:var(--teal)}
+.s4 .sub{margin-top:8px;font-size:12px;line-height:1.6;color:var(--forest);opacity:.65}
+.s4 .change-list{margin-top:14px;display:flex;flex-direction:column;gap:7px}
+.change-item{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;background:rgba(255,255,255,.55);border:1px solid rgba(13,46,40,.1);border-radius:9px}
+.change-num{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--red);font-weight:500;flex-shrink:0;margin-top:2px;width:16px}
+.change-body .change-title{font-size:11.5px;font-weight:500;color:var(--forest);margin-bottom:3px;line-height:1.3}
+.change-body .change-sub{font-size:10.5px;color:var(--forest);opacity:.62;line-height:1.45}
+
+/* S5 — STAT */
+.s5{padding-top:28px}
+.s5 .stat-big{margin-top:auto;display:flex;align-items:baseline;gap:12px}
+.s5 .stat-big .n{font-family:'DM Serif Display',serif;font-size:80px;line-height:.85;color:var(--parchment);letter-spacing:-.03em}
+.s5 .stat-big .n em{color:var(--amber);font-style:italic}
+.s5 .stat-big .u{font-family:'DM Sans';font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--green);max-width:140px;line-height:1.5}
+.s5 .copy{margin-top:16px;font-size:13px;line-height:1.65;opacity:.85;max-width:340px}
+.s5 .copy strong{font-weight:500;color:var(--green)}
+.s5 .math{margin-top:16px;padding:13px 16px;border:1px dashed rgba(94,201,167,.3);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);letter-spacing:.04em;line-height:1.9}
+
+/* S6 — STRATEGY */
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:26px;line-height:1.18;margin-top:22px;letter-spacing:-.01em}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .ps{margin-top:12px;font-size:12.5px;line-height:1.65;opacity:.78;max-width:340px}
+.s6 .steps{margin-top:14px;display:flex;flex-direction:column;gap:0}
+.s6 .step{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(245,243,238,.07)}
+.s6 .step:last-child{border-bottom:none}
+.s6 .step-num{width:20px;height:20px;border-radius:50%;background:rgba(94,201,167,.15);color:var(--green);font-family:'JetBrains Mono',monospace;font-size:8.5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.s6 .step-title{font-size:11.5px;font-weight:500;color:var(--parchment);line-height:1.3;margin-bottom:2px}
+.s6 .step-desc{font-size:10.5px;color:var(--parchment);opacity:.62;line-height:1.5}
+
+/* S7 — CTA */
+.s7{justify-content:space-between}
+.s7 .lead-q{font-family:'DM Serif Display',serif;font-size:26px;line-height:1.24;letter-spacing:-.01em;margin-top:22px;color:var(--forest)}
+.s7 .lead-q em{font-style:italic;color:var(--teal)}
+.s7 .ask{margin-top:13px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.7;max-width:310px}
+.s7 .actions{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.s7 .btn{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border:1px solid rgba(13,46,40,.15);border-radius:10px;font-size:12.5px;color:var(--forest)}
+.s7 .btn .ic{width:18px;height:18px;color:var(--teal);flex-shrink:0}
+.s7 .signoff{margin-top:18px;padding-top:14px;border-top:1px solid rgba(13,46,40,.12)}
+.s7 .tag{font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;color:var(--teal);line-height:1.3}
+.s7 .sub{margin-top:6px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--forest);opacity:.6;font-weight:500}
+
+/* Nav */
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:22px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:42px;height:42px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.controls button:hover{background:rgba(94,201,167,.12);border-color:rgba(94,201,167,.3)}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 8px}
+
+/* Caption Panel */
+.caption-panel{width:min(440px,92vw);margin-top:32px;padding:22px 22px 24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:13px;line-height:1.7}
+.caption-panel .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+.caption-panel .char-count{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--amber);margin-top:10px;opacity:.7}
+.caption-panel p{margin-bottom:10px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:14px;display:block;line-height:1.7}
+
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Burnout & Recovery · P4 ]</span>
+</div>
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- SLIDE 1 — HOOK -->
+      <section class="slide bg-dark s1">
+        <svg class="static-bg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <!-- MRI-like brain scan rings -->
+          <ellipse cx="200" cy="210" rx="130" ry="110" fill="none" stroke="rgba(94,201,167,.4)" stroke-width=".8"/>
+          <ellipse cx="200" cy="210" rx="100" ry="82" fill="none" stroke="rgba(94,201,167,.3)" stroke-width=".7"/>
+          <ellipse cx="200" cy="210" rx="70" ry="56" fill="none" stroke="rgba(201,169,110,.3)" stroke-width=".7"/>
+          <ellipse cx="200" cy="210" rx="42" ry="32" fill="none" stroke="rgba(201,169,110,.25)" stroke-width=".6"/>
+          <!-- Brain fissure lines -->
+          <path d="M150 180 Q175 165 200 175 Q225 185 248 170" fill="none" stroke="rgba(245,243,238,.1)" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M160 205 Q185 195 205 200 Q225 205 242 198" fill="none" stroke="rgba(245,243,238,.08)" stroke-width="1" stroke-linecap="round"/>
+          <path d="M155 225 Q180 218 200 222 Q222 226 240 218" fill="none" stroke="rgba(245,243,238,.07)" stroke-width="1" stroke-linecap="round"/>
+          <!-- Dimming indicator — stress signal depleting -->
+          <circle cx="200" cy="210" r="18" fill="none" stroke="rgba(217,106,106,.3)" stroke-width="1" stroke-dasharray="4 3"/>
+          <text x="200" y="215" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="rgba(217,106,106,.5)" letter-spacing="1">CORTISOL</text>
+          <!-- Scan crosshairs -->
+          <line x1="200" y1="90" x2="200" y2="106" stroke="rgba(94,201,167,.2)" stroke-width=".8"/>
+          <line x1="200" y1="314" x2="200" y2="330" stroke="rgba(94,201,167,.2)" stroke-width=".8"/>
+          <line x1="58" y1="210" x2="74" y2="210" stroke="rgba(94,201,167,.2)" stroke-width=".8"/>
+          <line x1="326" y1="210" x2="342" y2="210" stroke="rgba(94,201,167,.2)" stroke-width=".8"/>
+          <!-- Label bottom -->
+          <text x="200" y="380" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(245,243,238,.1)" letter-spacing="2">BRAIN MRI · CHRONIC STRESS</text>
+        </svg>
+        <div class="header">
+          <span class="pillar-tag">Burnout & Recovery · P4</span>
+          <span>01 / 07</span>
+        </div>
+        <div class="body">
+          <h1>Burnout bukan drama. Lihat <em>MRI-nya.</em></h1>
+          <p class="lead">Studi scan otak menunjukkan bahwa otak yang burnout secara fisik berbeda dari otak yang sehat. Ini bukan soal mentalitas — ini sains.</p>
+        </div>
+        <div class="swipe"><span>Geser</span><span class="arrow">→</span></div>
+      </section>
+
+      <!-- SLIDE 2 — MYTH BUSTER -->
+      <section class="slide bg-light s2">
+        <div class="header">
+          <span class="pillar-tag">Mitos vs Fakta</span>
+          <span>02 / 07</span>
+        </div>
+        <div class="eyebrow">Myth Buster · Formula A</div>
+        <h2>Burnout bukan kelelahan <em>yang bisa hilang dengan tidur malam.</em></h2>
+        <div class="compare">
+          <div class="compare-row compare-myth">
+            <div class="label">Mitos yang beredar</div>
+            Burnout itu cuma stres berlebihan. Liburan seminggu atau istirahat panjang sudah cukup untuk pulih.
+          </div>
+          <div class="compare-row compare-fact">
+            <div class="label">Fakta neurosains</div>
+            Burnout adalah kondisi neurologis yang ditandai perubahan struktural di otak — bukan sekadar kelelahan emosional yang bisa "direset" dengan istirahat singkat.
+          </div>
+        </div>
+        <p class="note">WHO (2019) mengklasifikasikan burnout sebagai fenomena pekerjaan yang terukur. Penelitian neuroimaging menunjukkan perbedaan nyata pada volume dan aktivitas otak individu dengan burnout kronis vs. kontrol sehat.</p>
+        <div class="footer"><span>NEURO DAILY</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 3 — MECHANISM -->
+      <section class="slide bg-dark s3">
+        <div class="header">
+          <span class="pillar-tag">Yang terjadi di otakmu</span>
+          <span>03 / 07</span>
+        </div>
+        <h2>Kortisol kronis secara harfiah <em>mengubah struktur otak.</em></h2>
+        <div class="term">
+          <div class="name">Hippocampal Atrophy</div>
+          <div class="def">Paparan kortisol berkepanjangan menyebabkan neuron di hippocampus — pusat memori dan regulasi stres — mengkerut dan kehilangan koneksi. Volume hippocampus bisa berkurang secara terukur pada individu dengan burnout kronis.</div>
+        </div>
+        <div class="mech-list">
+          <div class="mech-item mech-a">
+            <span class="mech-icon">↓</span>
+            <span class="mech-text">Hippocampus mengkerut → memori dan konsentrasi menurun, regulasi stres makin lemah</span>
+          </div>
+          <div class="mech-item mech-b">
+            <span class="mech-icon">↓</span>
+            <span class="mech-text">Prefrontal cortex melemah → pengambilan keputusan, perencanaan, dan kontrol impuls terganggu</span>
+          </div>
+          <div class="mech-item mech-c">
+            <span class="mech-icon">↑</span>
+            <span class="mech-text">Amygdala hiperaktif → lebih mudah reaktif secara emosional terhadap ancaman kecil sekalipun</span>
+          </div>
+        </div>
+        <p class="source">Sapolsky (2004): Why Zebras Don't Get Ulcers · Arnsten et al. (2009): Stress signalling pathways that impair prefrontal cortex structure</p>
+      </section>
+
+      <!-- SLIDE 4 — 3 TANDA -->
+      <section class="slide bg-light s4">
+        <div class="header">
+          <span class="pillar-tag">3 tanda yang sering salah dibaca</span>
+          <span>04 / 07</span>
+        </div>
+        <h2>Tanda burnout yang <em>sering dikira malas.</em></h2>
+        <p class="sub">Ini bukan karakter atau kelemahan — ini respons neurologis dari otak yang sudah kelebihan beban kortisol.</p>
+        <div class="change-list">
+          <div class="change-item">
+            <span class="change-num">01</span>
+            <div class="change-body">
+              <div class="change-title">Tidak bisa mulai tugas kecil sekalipun</div>
+              <div class="change-sub">Executive dysfunction akibat prefrontal cortex melemah. Otak kehilangan kemampuan initiating action — bukan kemalasan, tapi kegagalan sistem</div>
+            </div>
+          </div>
+          <div class="change-item">
+            <span class="change-num">02</span>
+            <div class="change-body">
+              <div class="change-title">Lupa hal-hal yang harusnya mudah diingat</div>
+              <div class="change-sub">Kortisol merusak fungsi working memory di hippocampus. Semakin tinggi stress load, semakin parah memory retrieval terganggu</div>
+            </div>
+          </div>
+          <div class="change-item">
+            <span class="change-num">03</span>
+            <div class="change-body">
+              <div class="change-title">Emosi meledak di hal yang sepele</div>
+              <div class="change-sub">Amygdala hiperaktif tanpa rem dari prefrontal cortex yang lelah. Bukan lebay — tapi otak yang sedang berjalan tanpa sistem regulasi emosi yang berfungsi</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>04 — SINYAL</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 5 — STAT -->
+      <section class="slide bg-teal s5">
+        <div class="header">
+          <span class="pillar-tag" style="color:#fff">Angkanya</span>
+          <span>05 / 07</span>
+        </div>
+        <p class="copy" style="margin-top:24px">Stres kronis tidak hanya melelahkan — ia secara biologis <strong>melemahkan kemampuan otak untuk pulih sendiri.</strong> Semakin lama dibiarkan, semakin dalam strukturnya berubah.</p>
+        <div class="stat-big">
+          <span class="n">6<em>×</em></span>
+          <span class="u">lebih lama waktu recovery burnout kronis vs kelelahan biasa</span>
+        </div>
+        <div class="math">
+          Kelelahan biasa → tidur malam → pulih<br>
+          Burnout struktural → istirahat → belum tentu cukup<br>
+          <span style="color:var(--amber)">────────────────────────────────</span><br>
+          Otak butuh <span style="color:#fff;font-weight:500">recovery aktif berbasis sains</span>,<br>
+          bukan hanya absen dari stres<br>
+          <span style="opacity:.55;font-size:9.5px">*Berdasarkan data klinis burnout recovery (Ahola et al., 2017)</span>
+        </div>
+        <div class="footer"><span>05 — DATA</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 6 — STRATEGY -->
+      <section class="slide bg-dark s6">
+        <div class="header">
+          <span class="pillar-tag">Recovery yang benar-benar bekerja</span>
+          <span>06 / 07</span>
+        </div>
+        <h2>Otak yang burnout butuh <em>lebih dari sekadar istirahat.</em></h2>
+        <p class="ps">Recovery burnout neurologis adalah proses aktif — bukan pasif. Otak perlu kondisi spesifik untuk memulihkan koneksi saraf yang rusak.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <div class="step-title">Cognitive rest yang sesungguhnya</div>
+              <div class="step-desc">Istirahat dari input kognitif — bukan scrolling media sosial, bukan konten video pasif. Otak butuh mode default network aktif: bengong, jalan tanpa tujuan, atau melamun secara sadar. Ini yang memulihkan prefrontal cortex.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <div class="step-title">Koneksi sosial berkualitas (bukan networking)</div>
+              <div class="step-desc">Oksitosin dari koneksi sosial genuine secara langsung menekan kortisol. Percakapan bermakna dengan orang yang kamu percaya lebih efektif dari solo rest untuk menurunkan allostatic load.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <div class="step-title">Paparan bertahap (bukan avoidance)</div>
+              <div class="step-desc">Menghindari stressor sepenuhnya memperpanjang hipersensitivitas amygdala. Recovery sehat butuh re-exposure bertahap ke tantangan kecil — untuk melatih ulang respons regulasi prefrontal cortex.</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>06 — RECOVERY</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 7 — CTA -->
+      <section class="slide bg-light s7">
+        <div class="header">
+          <span class="pillar-tag">Sekarang giliranmu</span>
+          <span>07 / 07</span>
+        </div>
+        <div>
+          <p class="lead-q">3 tanda burnout itu — berapa yang <em>kamu centang</em> hari ini?</p>
+          <p class="ask">Jawab jujur di komentar. Dan ceritakan: tanda yang mana yang paling sering kamu abaikan karena dikira malas?</p>
+        </div>
+        <div class="actions">
+          <div class="btn">
+            <span>Simpan — kirim ke rekan kerja yang butuh ini</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+          </div>
+          <div class="btn">
+            <span>Bagikan ke atasan yang perlu tahu ini</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </div>
+        <div class="signoff">
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="1.5"><path d="M4 14c0-5 3-8 8-8 4 0 6 2 6 5 0 2-1.5 3.5-4 3.5-2 0-3 1-3 2.5 0 1.5 1 2.5 2.5 2.5"/><circle cx="15" cy="9" r="1" fill="#1A6B5A"/></svg>
+            <span class="tag">Neuro Daily</span>
+          </div>
+          <div class="sub">Kerja lebih cerdas, bukan lebih keras. Ini sains-nya.</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="caption-panel">
+  <div class="label">Caption · Formula A — Myth Buster · ≤ 500 karakter</div>
+  <p><strong style="color:var(--parchment)">Burnout bukan drama. Lihat MRI-nya.</strong></p>
+  <p>Studi scan otak menunjukkan burnout kronis secara fisik mengubah struktur otak — hippocampus mengkerut, prefrontal cortex melemah, amygdala hiperaktif. Bukan kelemahan karakter.</p>
+  <p>3 tanda burnout yang sering dikira malas — berapa yang kamu centang hari ini?</p>
+  <span class="hash">#NeuroDaily #NeurosainsKerja #Burnout #BurnoutRecovery #KesihatanMental #Produktivitas #KesihatanKerja</span>
+  <div class="char-count" id="charCount"></div>
+</div>
+
+<div class="controls">
+  <button id="prev">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next">›</button>
+</div>
+
+<script>
+const track=document.getElementById('track'),dotsEl=document.getElementById('dots'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next');
+const total=track.children.length;let i=0;
+for(let k=0;k<total;k++){const b=document.createElement('button');b.className='dot'+(k===0?' active':'');b.addEventListener('click',()=>go(k));dotsEl.appendChild(b)}
+const dots=[...dotsEl.children];
+function go(n){i=Math.max(0,Math.min(total-1,n));track.style.transform=`translateX(-${i*100}%)`;dots.forEach((d,k)=>d.classList.toggle('active',k===i));counter.textContent=`${i+1} / ${total}`;prevBtn.disabled=i===0;nextBtn.disabled=i===total-1}
+prevBtn.addEventListener('click',()=>go(i-1));nextBtn.addEventListener('click',()=>go(i+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(i+1);if(e.key==='ArrowLeft')go(i-1)});
+let sx=0,dx=0,drag=false;const vp=document.querySelector('.viewport');
+vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;drag=true;dx=0});
+vp.addEventListener('touchmove',e=>{if(!drag)return;dx=e.touches[0].clientX-sx});
+vp.addEventListener('touchend',()=>{if(!drag)return;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));drag=false});
+const captionText=`Burnout bukan drama. Lihat MRI-nya.
+
+Studi scan otak menunjukkan burnout kronis secara fisik mengubah struktur otak — hippocampus mengkerut, prefrontal cortex melemah, amygdala hiperaktif. Bukan kelemahan karakter.
+
+3 tanda burnout yang sering dikira malas — berapa yang kamu centang hari ini?
+
+#NeuroDaily #NeurosainsKerja #Burnout #BurnoutRecovery #KesihatanMental #Produktivitas #KesihatanKerja`;
+const cc=document.getElementById('charCount'),len=captionText.length;
+cc.textContent=`${len} / 500 karakter ${len<=500?'✓':'⚠ Melebihi batas Threads'}`;
+if(len>500)cc.style.color='#e05252';
+go(0);
+</script>
+</body>
+</html>

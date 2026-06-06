@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Neuro Daily — Kenapa Reaktif di Meeting Padahal Niat Awalnya Tenang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;--red:#D96A6A}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#1a1a1a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#9aa39f;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(440px,92vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;display:flex;flex-direction:column;padding:36px 32px 28px;position:relative;overflow:hidden}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.slide .header{display:flex;justify-content:space-between;align-items:center;font-family:'DM Sans',sans-serif;font-weight:500;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.85}
+.bg-light .header{opacity:.7}
+.pillar-tag{display:inline-flex;align-items:center;gap:6px}
+.pillar-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--green)}
+.bg-light .pillar-tag::before{background:var(--teal)}
+.slide .footer{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;opacity:.55;text-transform:uppercase}
+.static-bg{position:absolute;inset:0;pointer-events:none;opacity:.045}
+
+/* S1 */
+.s1 .body{margin-top:auto;margin-bottom:auto}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:36px;line-height:1.1;letter-spacing:-.01em;color:var(--parchment)}
+.s1 h1 em{color:var(--amber);font-style:italic}
+.s1 .lead{margin-top:18px;font-size:13px;line-height:1.7;opacity:.7;max-width:310px}
+.s1 .swipe{position:absolute;bottom:24px;right:32px;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.s1 .arrow{display:inline-block;animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+
+/* S2 */
+.s2 .eyebrow{margin-top:22px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);opacity:.8}
+.s2 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:25px;line-height:1.18;letter-spacing:-.01em;margin-top:10px;color:var(--forest)}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .compare{margin-top:15px;display:flex;flex-direction:column;gap:8px}
+.compare-row{padding:11px 14px;border-radius:9px;font-size:11.5px;line-height:1.55}
+.compare-myth{background:rgba(217,106,106,.08);border:1px solid rgba(217,106,106,.18);color:var(--forest)}
+.compare-fact{background:rgba(26,107,90,.08);border:1px solid rgba(26,107,90,.2);color:var(--forest)}
+.compare-row .label{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:4px;opacity:.7}
+.compare-myth .label{color:var(--red)}
+.compare-fact .label{color:var(--teal)}
+.s2 .note{margin-top:11px;font-size:11px;line-height:1.6;color:var(--forest);opacity:.6;border-top:1px solid rgba(13,46,40,.1);padding-top:10px}
+
+/* S3 */
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:22px;line-height:1.28;letter-spacing:-.01em;margin-top:13px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .term{margin-top:10px;padding:11px 14px;border-radius:10px;background:rgba(94,201,167,.08);border-left:2px solid var(--green)}
+.s3 .term.term-b{background:rgba(201,169,110,.08);border-left-color:var(--amber)}
+.s3 .term .name{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+.s3 .term.term-b .name{color:var(--amber)}
+.s3 .term .def{margin-top:5px;font-size:11.5px;line-height:1.55;color:var(--parchment);opacity:.88}
+.s3 .combo{margin-top:10px;padding:9px 13px;border-radius:8px;background:rgba(245,243,238,.05);border:1px solid rgba(245,243,238,.08);font-size:10.5px;line-height:1.6;color:var(--parchment);opacity:.72}
+.s3 .combo strong{opacity:1;color:var(--parchment);font-weight:500}
+.s3 .source{margin-top:8px;font-size:9.5px;color:var(--parchment);opacity:.4;line-height:1.55}
+
+/* S4 */
+.s4 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:21px;line-height:1.28;margin-top:10px;color:var(--forest)}
+.s4 h2 em{font-style:italic;color:var(--teal)}
+.s4 .intro{margin-top:6px;font-size:11.5px;line-height:1.6;color:var(--forest);opacity:.65}
+.s4 .block-list{margin-top:10px;display:flex;flex-direction:column;gap:5px}
+.block-item{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;background:rgba(255,255,255,.55);border:1px solid rgba(13,46,40,.1);border-radius:9px}
+.block-num{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--red);font-weight:500;flex-shrink:0;margin-top:2px;width:16px}
+.block-body .block-title{font-size:11px;font-weight:500;color:var(--forest);margin-bottom:2px;line-height:1.3}
+.block-body .block-sub{font-size:10px;color:var(--forest);opacity:.62;line-height:1.45}
+
+/* S5 */
+.s5{padding-top:28px}
+.s5 .stat-big{margin-top:auto;display:flex;align-items:baseline;gap:12px}
+.s5 .stat-big .n{font-family:'DM Serif Display',serif;font-size:80px;line-height:.85;color:var(--parchment);letter-spacing:-.03em}
+.s5 .stat-big .n em{color:var(--amber);font-style:italic;font-size:52px}
+.s5 .stat-big .u{font-family:'DM Sans';font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--green);max-width:160px;line-height:1.5}
+.s5 .copy{margin-top:16px;font-size:13px;line-height:1.65;opacity:.85;max-width:340px}
+.s5 .copy strong{font-weight:500;color:var(--green)}
+.s5 .insight{margin-top:14px;padding:12px 16px;border:1px dashed rgba(94,201,167,.3);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);letter-spacing:.04em;line-height:1.9}
+
+/* S6 */
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:24px;line-height:1.2;margin-top:18px;letter-spacing:-.01em}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .ps{margin-top:10px;font-size:12px;line-height:1.65;opacity:.78;max-width:340px}
+.s6 .steps{margin-top:12px;display:flex;flex-direction:column;gap:0}
+.s6 .step{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(245,243,238,.07)}
+.s6 .step:last-child{border-bottom:none}
+.s6 .step-num{width:20px;height:20px;border-radius:50%;background:rgba(94,201,167,.15);color:var(--green);font-family:'JetBrains Mono',monospace;font-size:8.5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.s6 .step-title{font-size:11.5px;font-weight:500;color:var(--parchment);line-height:1.3;margin-bottom:2px}
+.s6 .step-desc{font-size:10.5px;color:var(--parchment);opacity:.62;line-height:1.5}
+
+/* S7 */
+.s7{justify-content:space-between}
+.s7 .lead-q{font-family:'DM Serif Display',serif;font-size:25px;line-height:1.24;letter-spacing:-.01em;margin-top:22px;color:var(--forest)}
+.s7 .lead-q em{font-style:italic;color:var(--teal)}
+.s7 .ask{margin-top:13px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.7;max-width:310px}
+.s7 .actions{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.s7 .btn{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border:1px solid rgba(13,46,40,.15);border-radius:10px;font-size:12.5px;color:var(--forest)}
+.s7 .btn .ic{width:18px;height:18px;color:var(--teal);flex-shrink:0}
+.s7 .signoff{margin-top:18px;padding-top:14px;border-top:1px solid rgba(13,46,40,.12)}
+.s7 .tag{font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;color:var(--teal);line-height:1.3}
+.s7 .sub{margin-top:6px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--forest);opacity:.6;font-weight:500}
+
+/* Nav */
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:22px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:42px;height:42px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.controls button:hover{background:rgba(94,201,167,.12);border-color:rgba(94,201,167,.3)}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 8px}
+.caption-panel{width:min(440px,92vw);margin-top:32px;padding:22px 22px 24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:13px;line-height:1.7}
+.caption-panel .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+.caption-panel .char-count{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--amber);margin-top:10px;opacity:.7}
+.caption-panel p{margin-bottom:10px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:14px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Brain at Work · P1 ]</span>
+</div>
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- SLIDE 1 — HOOK -->
+      <section class="slide bg-dark s1">
+        <svg class="static-bg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <!-- Emotional contagion spread visualization -->
+          <!-- Spread rings from source -->
+          <circle cx="200" cy="210" r="38" fill="none" stroke="rgba(217,106,106,.16)" stroke-width=".9" stroke-dasharray="5,4"/>
+          <circle cx="200" cy="210" r="65" fill="none" stroke="rgba(217,106,106,.1)" stroke-width=".7" stroke-dasharray="5,4"/>
+          <circle cx="200" cy="210" r="94" fill="none" stroke="rgba(217,106,106,.06)" stroke-width=".6" stroke-dasharray="5,4"/>
+          <!-- Source node (person with defensive emotion) -->
+          <circle cx="200" cy="210" r="19" fill="rgba(217,106,106,.1)" stroke="rgba(217,106,106,.38)" stroke-width="1.4"/>
+          <circle cx="200" cy="210" r="8" fill="rgba(217,106,106,.22)"/>
+          <text x="200" y="207" text-anchor="middle" font-family="JetBrains Mono" font-size="6" fill="rgba(217,106,106,.55)" letter-spacing=".3">DEFENSIF</text>
+          <text x="200" y="216" text-anchor="middle" font-family="JetBrains Mono" font-size="6" fill="rgba(217,106,106,.45)" letter-spacing=".3">→ MENYEBAR</text>
+          <!-- Nearby nodes (close participants - strongly affected) -->
+          <circle cx="148" cy="172" r="13" fill="rgba(201,169,110,.1)" stroke="rgba(201,169,110,.35)" stroke-width="1"/>
+          <circle cx="252" cy="165" r="13" fill="rgba(201,169,110,.1)" stroke="rgba(201,169,110,.32)" stroke-width="1"/>
+          <circle cx="148" cy="252" r="13" fill="rgba(201,169,110,.09)" stroke="rgba(201,169,110,.3)" stroke-width=".9"/>
+          <circle cx="253" cy="252" r="13" fill="rgba(201,169,110,.09)" stroke="rgba(201,169,110,.3)" stroke-width=".9"/>
+          <text x="148" y="192" text-anchor="middle" font-family="JetBrains Mono" font-size="5.5" fill="rgba(201,169,110,.38)" letter-spacing=".2">terbawa</text>
+          <text x="252" y="185" text-anchor="middle" font-family="JetBrains Mono" font-size="5.5" fill="rgba(201,169,110,.36)" letter-spacing=".2">terbawa</text>
+          <!-- Connection lines source to near nodes -->
+          <line x1="183" y1="199" x2="161" y2="183" stroke="rgba(217,106,106,.14)" stroke-width=".7"/>
+          <line x1="217" y1="197" x2="240" y2="177" stroke="rgba(217,106,106,.14)" stroke-width=".7"/>
+          <line x1="183" y1="221" x2="161" y2="240" stroke="rgba(217,106,106,.12)" stroke-width=".6"/>
+          <line x1="217" y1="221" x2="241" y2="240" stroke="rgba(217,106,106,.12)" stroke-width=".6"/>
+          <!-- Far nodes (outer ring - mildly affected) -->
+          <circle cx="108" cy="210" r="9" fill="rgba(245,243,238,.04)" stroke="rgba(245,243,238,.15)" stroke-width=".7"/>
+          <circle cx="292" cy="210" r="9" fill="rgba(245,243,238,.04)" stroke="rgba(245,243,238,.15)" stroke-width=".7"/>
+          <circle cx="200" cy="135" r="9" fill="rgba(245,243,238,.04)" stroke="rgba(245,243,238,.15)" stroke-width=".7"/>
+          <circle cx="200" cy="285" r="9" fill="rgba(245,243,238,.04)" stroke="rgba(245,243,238,.15)" stroke-width=".7"/>
+          <!-- Corner nodes -->
+          <circle cx="128" cy="140" r="7" fill="rgba(245,243,238,.03)" stroke="rgba(245,243,238,.1)" stroke-width=".6"/>
+          <circle cx="272" cy="140" r="7" fill="rgba(245,243,238,.03)" stroke="rgba(245,243,238,.1)" stroke-width=".6"/>
+          <circle cx="128" cy="282" r="7" fill="rgba(245,243,238,.03)" stroke="rgba(245,243,238,.1)" stroke-width=".6"/>
+          <circle cx="272" cy="282" r="7" fill="rgba(245,243,238,.03)" stroke="rgba(245,243,238,.1)" stroke-width=".6"/>
+          <!-- Top label -->
+          <text x="200" y="95" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="rgba(245,243,238,.15)" letter-spacing=".5">EMOTIONAL CONTAGION</text>
+          <line x1="70" y1="105" x2="330" y2="105" stroke="rgba(245,243,238,.06)" stroke-width=".5"/>
+          <!-- Brain waves at bottom -->
+          <path d="M30 400 C62 378 85 422 118 400 C151 378 174 422 207 400 C240 378 263 422 296 400 C329 378 352 422 385 400"
+            fill="none" stroke="rgba(245,243,238,.07)" stroke-width=".8"/>
+        </svg>
+        <div class="header">
+          <span class="pillar-tag">Brain at Work · P1</span>
+          <span>01 / 07</span>
+        </div>
+        <div class="body">
+          <h1>Masuk meeting dengan mood netral. Satu orang bicara defensif — dan tiba-tiba <em>semua tegang. Termasuk kamu.</em></h1>
+          <p class="lead">Kamu bahkan tidak tahu kapan itu terjadi. Karena prosesnya memang berjalan sebelum kamu sempat sadar.</p>
+        </div>
+        <div class="swipe"><span>Geser</span><span class="arrow">→</span></div>
+      </section>
+
+      <!-- SLIDE 2 — MYTH BUSTER -->
+      <section class="slide bg-light s2">
+        <div class="header">
+          <span class="pillar-tag">Mitos vs Fakta</span>
+          <span>02 / 07</span>
+        </div>
+        <div class="eyebrow">Explain Your Life · Formula B</div>
+        <h2>Bukan kurang kontrol diri. <em>Ini otakmu yang mencerminkan</em> ruangan secara otomatis.</h2>
+        <div class="compare">
+          <div class="compare-row compare-myth">
+            <div class="label">Yang selama ini dikira</div>
+            Kamu reaktif di meeting karena terlalu sensitif atau tidak bisa mengontrol emosi. Orang lain bisa tetap tenang di situasi yang sama — harusnya kamu juga bisa.
+          </div>
+          <div class="compare-row compare-fact">
+            <div class="label">Fakta neurosains</div>
+            Otak manusia dilengkapi sistem yang secara otomatis memproses dan mencerminkan emosi orang di sekitarnya — jauh sebelum kesadaran sempat menangkap apa yang terjadi. Ini bukan kelemahan karakter, ini desain biologis yang ada di setiap otak manusia.
+          </div>
+        </div>
+        <p class="note">Fenomena ini disebut emotional contagion, dan penelitian Hatfield, Cacioppo & Rapson (1993) menunjukkan bahwa proses ini terjadi secara primitif dan otomatis — melalui ekspresi wajah, intonasi suara, dan postur tubuh, sebelum ada analisis kognitif yang terjadi.</p>
+        <div class="footer"><span>NEURO DAILY</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 3 — MECHANISM -->
+      <section class="slide bg-dark s3">
+        <div class="header">
+          <span class="pillar-tag">Dua sistem yang bekerja</span>
+          <span>03 / 07</span>
+        </div>
+        <h2>Otak tidak menunggu giliran bicara <em>untuk mulai merespons</em> emosi di ruangan.</h2>
+        <div class="term">
+          <div class="name">Mirror Neuron System</div>
+          <div class="def">Sistem neural yang secara otomatis "mencerminkan" tindakan dan ekspresi emosi orang lain. Saat seseorang di meeting menunjukkan ketegangan, mirror neurons orang lain di ruangan mengaktifkan pola neural yang sama — sebelum ada kata yang diucapkan. (Rizzolatti & Craighero, 2004 · Annual Review of Neuroscience)</div>
+        </div>
+        <div class="term term-b">
+          <div class="name">Emotional Contagion</div>
+          <div class="def">Proses otomatis di mana emosi satu orang menyebar ke orang lain melalui facial expression, intonasi, dan body language. Dimberg et al. (2000) menemukan bahwa wajah emosional yang di-flash dalam 30ms — di bawah ambang kesadaran — sudah cukup untuk memicu respons emosi yang sama di otot wajah orang yang melihatnya.</div>
+        </div>
+        <div class="combo"><strong>Hasilnya di meeting:</strong> satu orang dengan emosi kuat dapat secara harfiah mengubah state neurobiologis seluruh ruangan — tanpa siapapun menyadari bahwa proses itu sudah dimulai.</div>
+        <p class="source">Hatfield, Cacioppo & Rapson (1993) · Emotional Contagion · Dimberg, Thunberg & Elmehed (2000) · Psychological Science</p>
+      </section>
+
+      <!-- SLIDE 4 — 4 TITIK CONTAGION PALING KUAT -->
+      <section class="slide bg-light s4">
+        <div class="header">
+          <span class="pillar-tag">4 titik di mana ini paling kuat</span>
+          <span>04 / 07</span>
+        </div>
+        <h2>Saat contagion paling <em>mudah mengambil alih</em> di dalam meeting.</h2>
+        <p class="intro">Empat kondisi di mana mirror neuron system bekerja paling kuat dan paling sulit dilawan secara sadar.</p>
+        <div class="block-list">
+          <div class="block-item">
+            <span class="block-num">01</span>
+            <div class="block-body">
+              <div class="block-title">Satu orang berpengaruh menunjukkan sinyal ancaman</div>
+              <div class="block-sub">Hierarki sosial mengamplifikasi efek ini. Atasan atau orang dominan di ruangan yang menunjukkan ketegangan mengaktifkan contagion dengan intensitas jauh lebih tinggi dari semua orang lain.</div>
+            </div>
+          </div>
+          <div class="block-item">
+            <span class="block-num">02</span>
+            <div class="block-body">
+              <div class="block-title">Silence panjang setelah pertanyaan sulit</div>
+              <div class="block-sub">Otak menginterpretasi keheningan dalam konteks sosial sebagai sinyal ambiguitas yang mengancam. Amygdala aktif — dan ketidaknyamanan satu orang menyebar melalui micro-expressions yang ditangkap mirror neurons seluruh ruangan.</div>
+            </div>
+          </div>
+          <div class="block-item">
+            <span class="block-num">03</span>
+            <div class="block-body">
+              <div class="block-title">Bahasa tubuh defensif yang terpantul ke seluruh peserta</div>
+              <div class="block-sub">Crossed arms, kontak mata yang dihindari, postur tertutup — mirror neuron memproses sinyal ini secara paralel dan mengaktifkan pola defensif pada semua yang melihatnya, bahkan tanpa kata-kata.</div>
+            </div>
+          </div>
+          <div class="block-item">
+            <span class="block-num">04</span>
+            <div class="block-body">
+              <div class="block-title">Satu reaksi negatif memicu emotional cascade</div>
+              <div class="block-sub">Satu reaksi negatif → cerminan dari yang lain → memicu yang lain lagi. Dalam menit, seluruh ruangan dalam emotional state yang berbeda dari saat masuk — tanpa seorangpun tahu kapan berubahnya.</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>04 — TRIGGER POINTS</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 5 — STAT -->
+      <section class="slide bg-teal s5">
+        <div class="header">
+          <span class="pillar-tag" style="color:#fff">Angkanya</span>
+          <span>05 / 07</span>
+        </div>
+        <p class="copy" style="margin-top:20px">Sebelum kamu sadar ada yang berubah di ruangan, sebelum ada kata yang terproses — otakmu sudah merespons. <strong>Ini bukan lambat menyadari. Ini memang di bawah ambang kesadaran.</strong></p>
+        <div class="stat-big">
+          <span class="n">30<em>ms</em></span>
+          <span class="u">cukup untuk ekspresi emosi memicu respons di otakmu</span>
+        </div>
+        <div class="insight">
+          Ekspresi emosi masuk ke ruangan →<br>
+          Mirror neurons aktif dalam 30ms →<br>
+          Di bawah ambang kesadaran →<br>
+          <span style="color:var(--amber)">────────────────────────────────</span><br>
+          Kamu sudah reactive →<br>
+          sebelum sempat memutuskan →<br>
+          untuk jadi reactive<br>
+          <span style="opacity:.55;font-size:9.5px">*Dimberg, Thunberg & Elmehed (2000) · Psychological Science</span>
+        </div>
+        <div class="footer"><span>05 — DATA</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 6 — STRATEGY -->
+      <section class="slide bg-dark s6">
+        <div class="header">
+          <span class="pillar-tag">Cara mengelolanya</span>
+          <span>06 / 07</span>
+        </div>
+        <h2>Tidak bisa stop mirror neurons. <em>Tapi bisa intercept</em> sebelum jadi respons penuh.</h2>
+        <p class="ps">Karena contagion terjadi di bawah kesadaran, solusinya bukan "lebih kontrol diri" — tapi membangun sistem yang menangkap prosesnya sebelum terlanjur menjadi respons.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <div class="step-title">Emotional check-in sebelum masuk meeting</div>
+              <div class="step-desc">Kamu juga sumber contagion — bukan hanya penerima. 60 detik sebelum meeting, sadari emosi kamu sendiri. Mood negatif yang kamu bawa masuk akan menyebar ke ruangan, bukan hanya dirasakan diam-diam.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <div class="step-title">Kenali sinyal contagion saat sedang terjadi</div>
+              <div class="step-desc">Saat tiba-tiba terasa tegang di tengah meeting tanpa sebab yang jelas, tanyakan: "Ini emosi saya, atau saya cerminkan ruangan?" Satu pertanyaan metacognitive ini cukup untuk memutus loop otomatis dan mengembalikan korteks ke kendali.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <div class="step-title">Strategic calm — contagion bekerja dua arah</div>
+              <div class="step-desc">Calm yang disengaja dari satu orang yang berpengaruh di ruangan bisa membalikkan tone seluruh meeting. Mirror neurons bekerja untuk emosi positif sama seperti negatif. Jadilah sumber yang kamu ingin cerminkan oleh ruangan.</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>06 — STRATEGI INTERCEPT</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 7 — CTA -->
+      <section class="slide bg-light s7">
+        <div class="header">
+          <span class="pillar-tag">Sekarang giliranmu</span>
+          <span>07 / 07</span>
+        </div>
+        <div>
+          <p class="lead-q">Dari 1–10, seberapa sering kamu keluar meeting dengan mood <em>yang berbeda dari saat masuk?</em></p>
+          <p class="ask">Jawab dengan angka di komentar. Dan pernah sadar "ternyata aku terbawa emosi ruangan" setelah meeting selesai? Cerita singkat.</p>
+        </div>
+        <div class="actions">
+          <div class="btn">
+            <span>Simpan — baca lagi sebelum meeting yang paling berat</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+          </div>
+          <div class="btn">
+            <span>Kirim ke tim yang sering keluar meeting kelelahan</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </div>
+        <div class="signoff">
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="1.5"><path d="M4 14c0-5 3-8 8-8 4 0 6 2 6 5 0 2-1.5 3.5-4 3.5-2 0-3 1-3 2.5 0 1.5 1 2.5 2.5 2.5"/><circle cx="15" cy="9" r="1" fill="#1A6B5A"/></svg>
+            <span class="tag">Neuro Daily</span>
+          </div>
+          <div class="sub">Kerja lebih cerdas, bukan lebih keras. Ini sains-nya.</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="caption-panel">
+  <div class="label">Caption · Formula B — Explain Your Life · ≤ 500 karakter</div>
+  <p><strong style="color:var(--parchment)">Kamu masuk meeting dengan mood netral. Tapi satu orang bicara defensif — dan dalam beberapa menit, semua ikut tegang. Termasuk kamu.</strong></p>
+  <p>Ini emotional contagion: otak mencerminkan emosi orang di sekitarmu sebelum kamu sadari. Mirror neurons mengaktifkan pola yang sama dalam 30ms — sebelum sadar sempat memproses.</p>
+  <p>Dari 1–10, seberapa sering keluar meeting dengan mood yang beda dari waktu masuk? Jawab dengan angka.</p>
+  <span class="hash">#NeuroDaily #NeurosainsKerja #Meeting #Emosi #Karir #OtakManusia #BrainAtWork</span>
+  <div class="char-count" id="charCount"></div>
+</div>
+
+<div class="controls">
+  <button id="prev">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next">›</button>
+</div>
+
+<script>
+const track=document.getElementById('track'),dotsEl=document.getElementById('dots'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next');
+const total=track.children.length;let i=0;
+for(let k=0;k<total;k++){const b=document.createElement('button');b.className='dot'+(k===0?' active':'');b.addEventListener('click',()=>go(k));dotsEl.appendChild(b)}
+const dots=[...dotsEl.children];
+function go(n){i=Math.max(0,Math.min(total-1,n));track.style.transform=`translateX(-${i*100}%)`;dots.forEach((d,k)=>d.classList.toggle('active',k===i));counter.textContent=`${i+1} / ${total}`;prevBtn.disabled=i===0;nextBtn.disabled=i===total-1}
+prevBtn.addEventListener('click',()=>go(i-1));nextBtn.addEventListener('click',()=>go(i+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(i+1);if(e.key==='ArrowLeft')go(i-1)});
+let sx=0,dx=0,drag=false;const vp=document.querySelector('.viewport');
+vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;drag=true;dx=0});
+vp.addEventListener('touchmove',e=>{if(!drag)return;dx=e.touches[0].clientX-sx});
+vp.addEventListener('touchend',()=>{if(!drag)return;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));drag=false});
+const captionText=`Kamu masuk meeting dengan mood netral. Tapi satu orang bicara defensif — dan dalam beberapa menit, semua ikut tegang. Termasuk kamu.
+
+Ini emotional contagion: otak mencerminkan emosi orang di sekitarmu sebelum kamu sadari. Mirror neurons mengaktifkan pola yang sama dalam 30ms — sebelum sadar sempat memproses.
+
+Dari 1–10, seberapa sering keluar meeting dengan mood yang beda dari waktu masuk? Jawab dengan angka.
+
+#NeuroDaily #NeurosainsKerja #Meeting #Emosi #Karir #OtakManusia #BrainAtWork`;
+const cc=document.getElementById('charCount'),len=captionText.length;
+cc.textContent=`${len} / 500 karakter ${len<=500?'✓':'⚠ Melebihi batas Threads'}`;
+if(len>500)cc.style.color='#e05252';
+go(0);
+</script>
+</body>
+</html>

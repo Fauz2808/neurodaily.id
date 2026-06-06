@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Neuro Daily — Deadline Mepet & Yerkes-Dodson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --forest:#0D2E28;
+  --teal:#1A6B5A;
+  --green:#5EC9A7;
+  --parchment:#F5F3EE;
+  --amber:#C9A96E;
+  --red:#D96A6A;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0a0a0a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 100px}
+
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#7a807d;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:24px}
+.topbar .pill{background:rgba(201,169,110,.1);color:var(--amber);padding:6px 12px;border-radius:99px;border:1px solid rgba(201,169,110,.22)}
+
+.stage{position:relative;width:min(540px,94vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;position:relative;overflow:hidden}
+.cvs{width:1080px;height:1350px;transform-origin:top left;position:absolute;top:0;left:0;font-family:'DM Sans',sans-serif}
+
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+
+.cvs .head,.cvs .foot{position:absolute;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 64px;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase}
+.cvs .head{top:0;height:78px;border-bottom:1px solid rgba(245,243,238,.12)}
+.cvs .foot{bottom:0;height:64px;border-top:1px solid rgba(245,243,238,.12)}
+.bg-light .head,.bg-light .foot{border-color:rgba(13,46,40,.12)}
+.bg-teal .head,.bg-teal .foot{border-color:rgba(245,243,238,.18)}
+.cvs .head span,.cvs .foot span{opacity:.55}
+.cvs .head .dotmark::before{content:"◆ ";color:var(--amber);opacity:1}
+.bg-light .head .dotmark::before{color:var(--teal)}
+.bg-teal .head .dotmark::before{color:var(--amber)}
+
+.hippo-mark{display:flex;align-items:center;gap:10px;opacity:1!important}
+.hippo-mark svg{width:30px;height:30px;flex-shrink:0}
+
+.body{position:absolute;top:78px;bottom:64px;left:0;right:0;padding:52px 72px;display:flex;flex-direction:column}
+
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.bg-dark .eyebrow{color:var(--amber)}
+.bg-light .eyebrow{color:var(--teal)}
+.bg-teal .eyebrow{color:var(--amber)}
+.rule{width:48px;height:3px;border-radius:2px;margin-top:18px}
+.bg-dark .rule{background:var(--amber)}
+.bg-light .rule{background:var(--teal)}
+.bg-teal .rule{background:var(--amber)}
+
+/* ===== S1 — HOOK ===== */
+.s1 .ghost{position:absolute;font-family:'DM Serif Display',serif;font-size:860px;line-height:.85;color:rgba(201,169,110,.06);pointer-events:none;user-select:none;right:-80px;top:-40px}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:88px;line-height:1.02;letter-spacing:-.02em;margin-top:52px;max-width:820px;position:relative;z-index:2}
+.s1 h1 em{font-style:italic;color:var(--amber)}
+.s1 .lead{margin-top:32px;font-size:22px;line-height:1.65;opacity:.72;max-width:640px;font-weight:300;position:relative;z-index:2}
+.s1 .time-vis{position:absolute;bottom:88px;left:72px;right:72px;z-index:2}
+
+/* ===== S2 — RISET ===== */
+.s2 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.06;letter-spacing:-.02em;margin-top:36px;color:var(--forest);max-width:860px}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .curve-box{margin-top:36px;padding:28px 32px;border-radius:16px;background:rgba(26,107,90,.05);border:1.5px solid rgba(26,107,90,.18)}
+.s2 .curve-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);margin-bottom:20px;text-align:center}
+.s2 .data-cards{margin-top:24px;display:flex;flex-direction:column;gap:12px}
+.data-card{display:flex;align-items:flex-start;gap:16px;padding:18px 22px;border-radius:12px;background:rgba(255,255,255,.55);border:1px solid rgba(13,46,40,.1)}
+.data-card .dc-num{font-family:'DM Serif Display',serif;font-size:36px;line-height:1;letter-spacing:-.02em;color:var(--teal);flex-shrink:0}
+.data-card .dc-title{font-size:24px;font-weight:500;color:var(--forest);margin-bottom:4px}
+.data-card .dc-text{font-size:22px;line-height:1.55;color:var(--forest);opacity:.65;font-weight:300}
+.s2 .source{margin-top:auto;font-size:22px;letter-spacing:.04em;color:var(--forest);opacity:.45;font-family:'JetBrains Mono',monospace;line-height:1.6;border-top:1px solid rgba(13,46,40,.1);padding-top:16px}
+
+/* ===== S3 — MEKANISME ===== */
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:66px;line-height:1.06;letter-spacing:-.02em;margin-top:44px;max-width:860px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .mech-cards{margin-top:44px;display:flex;flex-direction:column;gap:18px}
+.mech-card{padding:24px 28px;border-radius:14px;display:flex;align-items:flex-start;gap:20px}
+.mech-card.a{background:rgba(201,169,110,.07);border:1.5px solid rgba(201,169,110,.22)}
+.mech-card.b{background:rgba(94,201,167,.07);border:1.5px solid rgba(94,201,167,.2)}
+.mech-card.c{background:rgba(217,106,106,.06);border:1.5px solid rgba(217,106,106,.2)}
+.mech-card .mc-icon{width:48px;height:48px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.mech-card.a .mc-icon{background:rgba(201,169,110,.18)}
+.mech-card.b .mc-icon{background:rgba(94,201,167,.18)}
+.mech-card.c .mc-icon{background:rgba(217,106,106,.18)}
+.mech-card .mc-icon svg{width:24px;height:24px}
+.mech-card .mc-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:6px}
+.mech-card.a .mc-label{color:var(--amber)}
+.mech-card.b .mc-label{color:var(--green)}
+.mech-card.c .mc-label{color:var(--red)}
+.mech-card .mc-text{font-size:24px;line-height:1.55;font-weight:300;opacity:.88}
+.s3 .bottom-note{margin-top:auto;padding:20px 26px;border-radius:12px;background:rgba(245,243,238,.05);border:1px solid rgba(245,243,238,.12);font-size:24px;line-height:1.6;opacity:.65;font-weight:300;display:flex;align-items:center;gap:14px}
+.s3 .note-prefix{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--amber);flex-shrink:0}
+
+/* ===== S4 — TEAL ===== */
+.s4 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:66px;line-height:1.04;letter-spacing:-.02em;margin-top:44px;max-width:860px}
+.s4 h2 em{font-style:italic;color:var(--amber)}
+.s4 .zones{margin-top:36px;display:flex;gap:14px}
+.zone{flex:1;padding:24px 18px;border-radius:14px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.zone.low{background:rgba(94,201,167,.08);border:1.5px solid rgba(94,201,167,.25)}
+.zone.peak{background:rgba(201,169,110,.14);border:2px solid rgba(201,169,110,.6)}
+.zone.over{background:rgba(217,106,106,.1);border:1.5px solid rgba(217,106,106,.3)}
+.zone .z-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase}
+.zone.low .z-label{color:var(--green)}
+.zone.peak .z-label{color:var(--amber)}
+.zone.over .z-label{color:var(--red)}
+.zone .z-title{font-family:'DM Serif Display',serif;font-size:28px;line-height:1.1}
+.zone.low .z-title{color:var(--parchment);opacity:.7}
+.zone.peak .z-title{color:var(--amber)}
+.zone.over .z-title{color:var(--red)}
+.zone .z-desc{font-size:20px;line-height:1.5;opacity:.65;font-weight:300}
+.zone-arrow{display:flex;align-items:center;justify-content:center;font-size:24px;opacity:.25;flex-shrink:0;padding-top:22px}
+.s4 .def-card{margin-top:32px;background:rgba(245,243,238,.08);border:1.5px solid rgba(245,243,238,.18);border-radius:14px;padding:22px 28px}
+.s4 .def-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+.s4 .def-text{font-size:18px;line-height:1.6;opacity:.88;font-weight:300}
+.s4 .bottom-note{margin-top:auto;padding:18px 24px;border-radius:12px;background:rgba(245,243,238,.06);border:1px solid rgba(245,243,238,.12);font-size:24px;line-height:1.6;opacity:.65;font-weight:300;display:flex;gap:12px;align-items:center}
+.s4 .bottom-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--amber);flex-shrink:0}
+
+/* ===== S5 — SKENARIO ===== */
+.s5 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.06;letter-spacing:-.02em;margin-top:40px;color:var(--forest);max-width:860px}
+.s5 h2 em{font-style:italic;color:var(--teal)}
+.s5 .scenarios{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.scenario{padding:28px 24px 22px;border-radius:16px;position:relative;display:flex;flex-direction:column;gap:10px}
+.scenario.bad{background:rgba(94,201,167,.05);border:1.5px solid rgba(94,201,167,.18)}
+.scenario.good{background:rgba(201,169,110,.07);border:1.5px solid rgba(201,169,110,.3)}
+.scenario .s-stamp{position:absolute;top:-13px;left:20px;padding:5px 14px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.16em;text-transform:uppercase;font-weight:500}
+.scenario.bad .s-stamp{background:var(--teal);color:#fff}
+.scenario.good .s-stamp{background:var(--amber);color:#0D2E28}
+.scenario .s-number{font-family:'DM Serif Display',serif;font-size:60px;line-height:1;letter-spacing:-.03em}
+.scenario.bad .s-number{color:var(--teal)}
+.scenario.good .s-number{color:var(--amber);font-style:italic}
+.scenario .s-label{font-size:24px;font-weight:500;line-height:1.3;color:var(--forest)}
+.scenario .s-desc{font-size:22px;line-height:1.6;color:var(--forest);opacity:.62;font-weight:300}
+.scenario .s-result{margin-top:6px;padding:10px 14px;border-radius:10px;font-size:22px;line-height:1.5;font-weight:400}
+.scenario.bad .s-result{background:rgba(26,107,90,.1);color:var(--teal)}
+.scenario.good .s-result{background:rgba(201,169,110,.12);color:#7a5a20}
+.s5 .research-note{margin-top:24px;padding:16px 22px;background:rgba(26,107,90,.05);border:1px solid rgba(26,107,90,.15);border-radius:12px;font-size:22px;line-height:1.6;color:var(--forest);font-weight:300}
+.s5 .research-note strong{font-weight:500;color:var(--teal)}
+
+/* ===== S6 — FORMULA ===== */
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:66px;line-height:1.06;letter-spacing:-.02em;margin-top:44px;max-width:860px}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .formula{margin-top:44px;display:flex;flex-direction:column;gap:0}
+.s6 .f-block{width:100%;padding:24px 30px;border-radius:14px;display:flex;align-items:center;gap:20px}
+.s6 .f-block.a{background:rgba(201,169,110,.1);border:2px solid rgba(201,169,110,.28)}
+.s6 .f-block.b{background:rgba(94,201,167,.1);border:2px solid rgba(94,201,167,.25)}
+.s6 .f-block.c{background:rgba(94,201,167,.16);border:2px solid rgba(94,201,167,.5)}
+.s6 .f-op{text-align:center;padding:6px 0;font-family:'DM Serif Display',serif;font-size:36px;color:var(--parchment);opacity:.22;line-height:1}
+.s6 .f-divider{margin:8px 0;border:none;border-top:1px solid rgba(245,243,238,.12)}
+.s6 .f-icon{width:52px;height:52px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.s6 .f-block.a .f-icon{background:rgba(201,169,110,.18)}
+.s6 .f-block.b .f-icon{background:rgba(94,201,167,.18)}
+.s6 .f-block.c .f-icon{background:rgba(94,201,167,.28)}
+.s6 .f-icon svg{width:26px;height:26px}
+.s6 .f-val{font-family:'DM Serif Display',serif;font-size:32px;line-height:1.1;letter-spacing:-.02em}
+.s6 .f-block.a .f-val{color:var(--amber)}
+.s6 .f-block.b .f-val{color:var(--green)}
+.s6 .f-block.c .f-val{color:var(--green)}
+.s6 .f-desc{margin-top:5px;font-size:22px;line-height:1.5;opacity:.70;font-weight:300}
+.s6 .f-note{margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.04em;color:rgba(245,243,238,.48);line-height:1.9;border-top:1px solid rgba(245,243,238,.1);padding-top:20px}
+.s6 .f-note .punch{color:var(--green);font-weight:500;letter-spacing:.02em}
+
+/* ===== S7 — CTA ===== */
+.s7 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:66px;line-height:1.04;letter-spacing:-.02em;margin-top:40px;color:var(--forest);max-width:860px}
+.s7 h2 em{font-style:italic;color:var(--teal)}
+.s7 .sub{margin-top:24px;font-size:20px;line-height:1.65;color:var(--forest);opacity:.65;max-width:780px;font-weight:300}
+.s7 .discussion{margin-top:40px;display:flex;flex-direction:column;gap:14px}
+.s7 .disc-item{display:flex;align-items:center;gap:18px;padding:18px 22px;border:1.5px solid rgba(13,46,40,.12);border-radius:14px;font-size:18px;color:var(--forest);background:rgba(255,255,255,.46);line-height:1.4}
+.s7 .disc-item .ic{width:38px;height:38px;border-radius:10px;background:rgba(26,107,90,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.s7 .disc-item .ic svg{width:20px;height:20px;color:var(--teal)}
+.s7 .shift-note{margin-top:22px;padding:18px 22px;border-radius:12px;border:1px dashed rgba(26,107,90,.35);font-size:24px;line-height:1.6;color:var(--forest);opacity:.62;font-weight:300;display:flex;align-items:center;gap:14px}
+.s7 .shift-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--teal);flex-shrink:0}
+
+/* CHROME */
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--amber);width:24px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:46px;height:46px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.1em;align-self:center;padding:0 10px}
+.caption-panel{width:min(540px,94vw);margin-top:32px;padding:26px 26px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:20px;line-height:1.7}
+.caption-panel .cap-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:14px}
+.caption-panel p{margin-bottom:12px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel strong{color:var(--parchment);font-weight:500}
+.caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:16px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Vol. 41 · Peak Performance · Yerkes-Dodson ]</span>
+</div>
+
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- ════ S1 — HOOK ════ -->
+      <section class="slide">
+        <div class="cvs bg-dark s1">
+          <div class="head">
+            <span class="dotmark">Neuro Daily · Vol. 41 · Peak Performance</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow">⚡ Yerkes-Dodson · Deadline Effect</div>
+            <div class="rule"></div>
+            <div class="ghost">!</div>
+            <h1>Deadline besok.<br>Baru mulai<br>jam 10 malam.<br><em>Dan ini justru saat terbaikmu bekerja.</em></h1>
+            <p class="lead">Bukan kebiasaan buruk. Ini respons biologis yang benar-benar bekerja — dan ada sains di baliknya.</p>
+
+            <div class="time-vis">
+              <svg viewBox="0 0 936 130" fill="none" width="100%">
+                <rect x="0" y="25" width="260" height="56" rx="9" fill="rgba(94,201,167,.06)" stroke="rgba(94,201,167,.18)" stroke-width="1.5"/>
+                <text x="130" y="49" text-anchor="middle" font-family="JetBrains Mono" font-size="20" fill="rgba(94,201,167,.5)" letter-spacing=".16em">SANTAI</text>
+                <text x="130" y="69" text-anchor="middle" font-family="DM Sans" font-size="20" fill="rgba(94,201,167,.32)">Underperform</text>
+
+                <rect x="288" y="13" width="360" height="80" rx="12" fill="rgba(201,169,110,.12)" stroke="rgba(201,169,110,.65)" stroke-width="2"/>
+                <text x="468" y="47" text-anchor="middle" font-family="JetBrains Mono" font-size="26" fill="rgba(201,169,110,.95)" letter-spacing=".16em" font-weight="500">DEADLINE MEPET</text>
+                <text x="468" y="72" text-anchor="middle" font-family="DM Sans" font-size="20" fill="rgba(201,169,110,.65)">Peak Performance Zone</text>
+
+                <rect x="676" y="25" width="260" height="56" rx="9" fill="rgba(217,106,106,.06)" stroke="rgba(217,106,106,.2)" stroke-width="1.5"/>
+                <text x="806" y="49" text-anchor="middle" font-family="JetBrains Mono" font-size="20" fill="rgba(217,106,106,.5)" letter-spacing=".16em">PANIK</text>
+                <text x="806" y="69" text-anchor="middle" font-family="DM Sans" font-size="20" fill="rgba(217,106,106,.32)">Overwhelmed</text>
+
+                <text x="468" y="118" text-anchor="middle" font-family="JetBrains Mono" font-size="20" fill="rgba(201,169,110,.45)" letter-spacing=".14em">← KURVA YERKES-DODSON →</text>
+              </svg>
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span><span>01 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#C9A96E" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#C9A96E"/></svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════ S2 — RISET ════ -->
+      <section class="slide">
+        <div class="cvs bg-light s2">
+          <div class="head">
+            <span class="dotmark">Riset · Yerkes & Dodson · 1908</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow">◇ Riset · The Arousal-Performance Curve</div>
+            <div class="rule"></div>
+            <h2>Ada titik optimal stres untuk <em>performa puncak.</em></h2>
+
+            <div class="curve-box">
+              <div class="curve-label">Yerkes-Dodson Law — Arousal vs Performance</div>
+              <svg viewBox="0 0 800 180" fill="none" width="100%">
+                <!-- curve -->
+                <path d="M40,160 Q200,20 400,12 Q600,20 760,160" stroke="#C9A96E" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <!-- zones -->
+                <line x1="260" y1="10" x2="260" y2="170" stroke="rgba(13,46,40,.1)" stroke-width="1" stroke-dasharray="4,4"/>
+                <line x1="540" y1="10" x2="540" y2="170" stroke="rgba(13,46,40,.1)" stroke-width="1" stroke-dasharray="4,4"/>
+                <!-- labels -->
+                <text x="130" y="175" text-anchor="middle" font-family="JetBrains Mono" font-size="20" fill="rgba(13,46,40,.4)" letter-spacing=".12em">RENDAH</text>
+                <text x="400" y="175" text-anchor="middle" font-family="JetBrains Mono" font-size="22" fill="rgba(201,169,110,.85)" letter-spacing=".12em" font-weight="500">OPTIMAL</text>
+                <text x="660" y="175" text-anchor="middle" font-family="JetBrains Mono" font-size="20" fill="rgba(217,106,106,.5)" letter-spacing=".12em">TINGGI</text>
+                <!-- peak dot -->
+                <circle cx="400" cy="12" r="6" fill="#C9A96E"/>
+                <text x="430" y="16" font-family="DM Sans" font-size="22" fill="rgba(201,169,110,.8)">Peak</text>
+                <!-- axis labels -->
+                <text x="400" y="8" text-anchor="middle" font-family="DM Sans" font-size="20" fill="rgba(13,46,40,.3)"/>
+              </svg>
+            </div>
+
+            <div class="data-cards">
+              <div class="data-card">
+                <div class="dc-num">01</div>
+                <div>
+                  <div class="dc-title">Yerkes & Dodson (1908)</div>
+                  <div class="dc-text">Performa meningkat seiring arousal — tapi hanya sampai titik tertentu. Setelah itu turun drastis. Deadline mepet sering tepat di zona optimal.</div>
+                </div>
+              </div>
+              <div class="data-card">
+                <div class="dc-num">02</div>
+                <div>
+                  <div class="dc-title">Norepinephrine Release</div>
+                  <div class="dc-text">Stres deadline memicu norepinephrine — neurotransmitter yang meningkatkan fokus, working memory, dan kecepatan pemrosesan informasi.</div>
+                </div>
+              </div>
+            </div>
+            <p class="source">→ Yerkes & Dodson (1908) · Journal of Comparative Neurology and Psychology</p>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span><span>02 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/></svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════ S3 — MEKANISME ════ -->
+      <section class="slide">
+        <div class="cvs bg-dark s3">
+          <div class="head">
+            <span class="dotmark">Konteks · Apa yang Terjadi di Otakmu</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow">↺ Konteks · Otak dalam Mode Deadline</div>
+            <div class="rule"></div>
+            <h2>Deadline mengaktifkan sistem yang tidak bisa kamu replikasi dengan <em>niat saja.</em></h2>
+
+            <div class="mech-cards">
+              <div class="mech-card a">
+                <div class="mc-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                </div>
+                <div>
+                  <div class="mc-label">Norepinephrine Surge</div>
+                  <div class="mc-text">Deadline memicu lonjakan norepinephrine — meningkatkan fokus dan mempersempit perhatian hanya ke yang paling penting.</div>
+                </div>
+              </div>
+              <div class="mech-card b">
+                <div class="mc-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#5EC9A7" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><line x1="12" y1="7" x2="12" y2="12"/><line x1="12" y1="12" x2="15.5" y2="14.5"/></svg>
+                </div>
+                <div>
+                  <div class="mc-label">PFC dalam Mode Efisien</div>
+                  <div class="mc-text">Prefrontal cortex dioptimalkan untuk pengambilan keputusan cepat — tidak ada bandwidth untuk perfeksionisme yang melambat.</div>
+                </div>
+              </div>
+              <div class="mech-card c">
+                <div class="mc-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#D96A6A" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </div>
+                <div>
+                  <div class="mc-label">Tapi Ada Batasnya</div>
+                  <div class="mc-text">Kalau stres melewati titik optimal — cortisol berlebih memblokir PFC dan performa justru anjlok. Deadline yang terlalu panik bukan zona optimal.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bottom-note">
+              <span class="note-prefix">→</span>
+              Kamu tidak malas waktu santai. Otakmu hanya belum mendapat sinyal biologis untuk masuk mode performa.
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span><span>03 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#5EC9A7" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#5EC9A7"/></svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════ S4 — TEAL ════ -->
+      <section class="slide">
+        <div class="cvs bg-teal s4">
+          <div class="head">
+            <span class="dotmark">Yerkes-Dodson Law · Tiga Zona</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow">○ The Yerkes-Dodson Law</div>
+            <div class="rule"></div>
+            <h2>Terlalu santai.<br>Terlalu tertekan.<br><em>Ada yang tepat di tengah.</em></h2>
+
+            <div class="zones">
+              <div class="zone low">
+                <div class="z-label">Zona 1</div>
+                <div class="z-title">Understim</div>
+                <div class="z-desc">Tidak ada tekanan — otak tidak punya alasan untuk masuk mode performa</div>
+              </div>
+              <div class="zone-arrow">→</div>
+              <div class="zone peak">
+                <div class="z-label">Zona 2</div>
+                <div class="z-title">Optimal</div>
+                <div class="z-desc">Tekanan cukup untuk aktivasi — tapi tidak berlebihan. Ini zona deadline mepet.</div>
+              </div>
+              <div class="zone-arrow">→</div>
+              <div class="zone over">
+                <div class="z-label">Zona 3</div>
+                <div class="z-title">Overwhelm</div>
+                <div class="z-desc">Terlalu banyak cortisol — PFC offline, performa anjlok, panic mode aktif</div>
+              </div>
+            </div>
+
+            <div class="def-card">
+              <div class="def-label">Yerkes-Dodson Law</div>
+              <div class="def-text">Hubungan berbentuk kurva antara arousal (tingkat stres/aktivasi) dan performa kognitif. Performa optimal berada di titik arousal moderat — bukan terlalu santai, bukan terlalu panik.</div>
+            </div>
+
+            <div class="bottom-note">
+              <span class="bottom-arrow">→</span>
+              Deadline mepet bekerja bukan karena kamu bekerja lebih keras — tapi karena biologi kamu akhirnya aktif.
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span><span>04 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#C9A96E" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#C9A96E"/></svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════ S5 — SKENARIO ════ -->
+      <section class="slide">
+        <div class="cvs bg-light s5">
+          <div class="head">
+            <span class="dotmark">Skenario · Dua Kondisi Kerja</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow">↔ Skenario · Seminggu Tenang vs Satu Malam Mepet</div>
+            <div class="rule"></div>
+            <h2>Waktu yang sama,<br><em>hasil yang berbeda.</em></h2>
+
+            <div class="scenarios">
+              <div class="scenario bad">
+                <span class="s-stamp">5 Hari Tenang</span>
+                <div class="s-number">5D</div>
+                <div class="s-label">Deadline masih lama</div>
+                <div class="s-desc">Tidak ada tekanan — otak tidak aktif sepenuhnya. Kerja terasa lambat, distraksi mudah masuk, output di bawah kapasitas sebenarnya</div>
+                <div class="s-result">→ Output rata-rata. Banyak revisi.</div>
+              </div>
+              <div class="scenario good">
+                <span class="s-stamp">1 Malam Mepet</span>
+                <div class="s-number">1M</div>
+                <div class="s-label">Deadline besok pagi</div>
+                <div class="s-desc">Norepinephrine aktif — fokus tajam, keputusan cepat, tidak ada ruang untuk overthinking. Selesai dalam waktu yang mengejutkan</div>
+                <div class="s-result">→ Output lebih fokus dan solid.</div>
+              </div>
+            </div>
+
+            <div class="research-note">
+              <strong>Catatan penting:</strong> Ini bukan pembenaran untuk selalu mepet. Kualitas tertinggi tetap butuh waktu untuk iterasi — tapi arousal yang tepat adalah komponen yang sering dilewatkan.
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span><span>05 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/></svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════ S6 — FORMULA ════ -->
+      <section class="slide">
+        <div class="cvs bg-dark s6">
+          <div class="head">
+            <span class="dotmark">Formula · Replikasi Efek Deadline</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow">≡ Formula · Tanpa Harus Selalu Mepet</div>
+            <div class="rule"></div>
+            <h2>Cara replikasi efek deadline <em>tanpa perlu panik sungguhan.</em></h2>
+
+            <div class="formula">
+              <div class="f-block a">
+                <div class="f-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </div>
+                <div>
+                  <div class="f-val">Artificial Deadline</div>
+                  <div class="f-desc">Set deadline palsu yang lebih mepet dari deadline asli. Otak tidak bisa membedakan keduanya — respons biologisnya sama.</div>
+                </div>
+              </div>
+              <div class="f-op">+</div>
+              <div class="f-block b">
+                <div class="f-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#5EC9A7" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+                </div>
+                <div>
+                  <div class="f-val">Time Boxing</div>
+                  <div class="f-desc">Beri alokasi waktu terbatas per task. "Selesaikan ini dalam 45 menit" menciptakan arousal yang sama dengan deadline mepet.</div>
+                </div>
+              </div>
+              <hr class="f-divider"/>
+              <div class="f-block c">
+                <div class="f-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#5EC9A7" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                </div>
+                <div>
+                  <div class="f-val">Commitment Device</div>
+                  <div class="f-desc">Umumkan ke orang lain bahwa kamu akan selesai pada waktu tertentu. Social accountability meningkatkan arousal tanpa tekanan palsu.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="f-note">
+              Tujuannya bukan membuat kamu selalu panik —
+              <span class="punch">tapi memberi otakmu sinyal biologis yang ia butuhkan untuk performa optimal.</span>
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span><span>06 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#5EC9A7" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#5EC9A7"/></svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════ S7 — CTA ════ -->
+      <section class="slide">
+        <div class="cvs bg-light s7">
+          <div class="head">
+            <span class="dotmark">Sekarang giliranmu</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow">◆ Sekarang giliranmu</div>
+            <div class="rule"></div>
+            <h2>Jujur: kerja terbaikmu <em>mepet deadline atau jauh hari?</em></h2>
+
+            <p class="sub">Jawab di komentar. Dan kalau mepet — sekarang kamu tahu ini bukan kebiasaan buruk.</p>
+
+            <div class="discussion">
+              <div class="disc-item">
+                <div class="ic">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+                </div>
+                Simpan — coba teknik time boxing besok untuk 1 task yang paling sering ditunda
+              </div>
+              <div class="disc-item">
+                <div class="ic">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                </div>
+                Tag teman yang selalu bilang "nanti aja" sampai deadline kepepet
+              </div>
+            </div>
+
+            <div class="shift-note">
+              <span class="shift-arrow">→</span>
+              Masalahnya bukan disiplin — otakmu butuh sinyal yang tepat. Sekarang kamu tahu cara memberikannya.
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span><span>07 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6"><path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/><circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/></svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="caption-panel">
+  <div class="cap-label">Caption · Vol. 41 — Deadline Mepet & Yerkes-Dodson</div>
+  <p><strong>Deadline besok. Baru mulai jam 10 malam. Dan ini justru saat terbaikmu bekerja.</strong></p>
+  <p>Bukan kebiasaan buruk. Ini Yerkes-Dodson Law — hukum neurosains yang menjelaskan kenapa performa manusia tidak linear dengan waktu yang tersedia.</p>
+  <p>Deadline mepet memicu norepinephrine, mengoptimalkan prefrontal cortex, dan menciptakan zona arousal yang tidak bisa kamu replikasi hanya dengan niat dan disiplin.</p>
+  <p>Yang perlu dipelajari bukan "jangan mepet" — tapi bagaimana menciptakan arousal yang sama tanpa harus selalu tunggu kepepet.</p>
+  <p>Jujur: kerja terbaikmu mepet deadline atau jauh hari? Jawab di komentar.</p>
+  <span class="hash">#neurosains #produktivitas #deadline #yerkesdodson #fokus #kerjacerdas #otakmanusia #performa</span>
+</div>
+
+<div class="controls">
+  <button id="prev">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next">›</button>
+</div>
+
+<script>
+const track=document.getElementById('track'),dotsEl=document.getElementById('dots'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next');
+const total=track.children.length;let i=0;
+function scaleCanvases(){document.querySelectorAll('.slide').forEach(s=>{const c=s.querySelector('.cvs');if(!c)return;c.style.transform=`scale(${s.clientWidth/1080})`;});}
+window.addEventListener('resize',scaleCanvases);scaleCanvases();
+for(let k=0;k<total;k++){const b=document.createElement('button');b.className='dot'+(k===0?' active':'');b.addEventListener('click',()=>go(k));dotsEl.appendChild(b)}
+const dots=[...dotsEl.children];
+function go(n){i=Math.max(0,Math.min(total-1,n));track.style.transform=`translateX(-${i*100}%)`;dots.forEach((d,k)=>d.classList.toggle('active',k===i));counter.textContent=`${i+1} / ${total}`;prevBtn.disabled=i===0;nextBtn.disabled=i===total-1}
+prevBtn.addEventListener('click',()=>go(i-1));nextBtn.addEventListener('click',()=>go(i+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(i+1);if(e.key==='ArrowLeft')go(i-1)});
+let sx=0,dx=0,drag=false;const vp=document.querySelector('.viewport');
+vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;drag=true;dx=0},{passive:true});
+vp.addEventListener('touchmove',e=>{if(!drag)return;dx=e.touches[0].clientX-sx},{passive:true});
+vp.addEventListener('touchend',()=>{if(!drag)return;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));drag=false});
+go(0);
+</script>
+</body>
+</html>

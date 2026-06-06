@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Neuro Daily — Dunning-Kruger Effect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;--red:#D96A6A;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0a0a0a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 100px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#7a807d;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(540px,94vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;position:relative;overflow:hidden}
+.cvs{width:1080px;height:1350px;transform-origin:top left;position:absolute;top:0;left:0;font-family:'DM Sans',sans-serif}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.cvs .head,.cvs .foot{position:absolute;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 64px;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase}
+.cvs .head{top:0;height:78px;border-bottom:1px solid rgba(245,243,238,.12)}
+.cvs .foot{bottom:0;height:64px;border-top:1px solid rgba(245,243,238,.12)}
+.bg-light .head,.bg-light .foot{border-color:rgba(13,46,40,.12)}
+.bg-teal .head,.bg-teal .foot{border-color:rgba(245,243,238,.18)}
+.cvs .head span,.cvs .foot span{opacity:.55}
+.cvs .head .dotmark::before{content:"◆ ";color:var(--green);opacity:1}
+.bg-light .head .dotmark::before{color:var(--teal)}
+.bg-teal .head .dotmark::before{color:var(--amber)}
+.hippo-mark{display:flex;align-items:center;gap:10px;opacity:1!important}
+.hippo-mark svg{width:30px;height:30px;flex-shrink:0}
+.body{position:absolute;top:78px;bottom:64px;left:0;right:0;padding:52px 72px;display:flex;flex-direction:column}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.bg-dark .eyebrow{color:var(--green)}
+.bg-light .eyebrow{color:var(--teal)}
+.bg-teal .eyebrow{color:var(--amber)}
+.rule{width:48px;height:3px;border-radius:2px;margin-top:18px}
+.bg-dark .rule{background:var(--green)}
+.bg-light .rule{background:var(--teal)}
+.bg-teal .rule{background:var(--amber)}
+.s1 .ghost{position:absolute;font-family:'DM Serif Display',serif;font-size:680px;line-height:.88;color:rgba(94,201,167,.04);pointer-events:none;user-select:none;right:-30px;top:30px}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:88px;line-height:1.02;letter-spacing:-.02em;margin-top:44px;max-width:840px;position:relative;z-index:2}
+.s1 h1 em{font-style:italic;color:var(--amber)}
+.s1 .lead{margin-top:30px;font-size:24px;line-height:1.65;opacity:.72;max-width:680px;font-weight:300;position:relative;z-index:2}
+.s1 .curve-vis{position:absolute;bottom:78px;left:72px;right:72px;z-index:2}
+.cv-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,243,238,.55);margin-bottom:12px}
+.cv-stages{display:flex;gap:0;align-items:flex-end}
+.cv-stage{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px}
+.cv-bar{width:80%;border-radius:4px 4px 0 0}
+.cv-stage.peak .cv-bar{background:var(--red);height:80px}
+.cv-stage.valley .cv-bar{background:rgba(201,169,110,.5);height:20px}
+.cv-stage.slope .cv-bar{background:var(--amber);height:50px}
+.cv-stage.plateau .cv-bar{background:var(--green);height:65px}
+.cv-name{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.06em;text-transform:uppercase;text-align:center;line-height:1.3}
+.cv-stage.peak .cv-name{color:var(--red)}
+.cv-stage.valley .cv-name{color:rgba(201,169,110,.8)}
+.cv-stage.slope .cv-name{color:var(--amber)}
+.cv-stage.plateau .cv-name{color:var(--green)}
+.s2 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.06;letter-spacing:-.02em;margin-top:32px;color:var(--forest);max-width:860px}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .stat-row{margin-top:36px;display:flex;gap:20px}
+.stat-card{flex:1;padding:28px 24px;border-radius:16px;display:flex;flex-direction:column;gap:10px}
+.stat-card.a{background:rgba(217,106,106,.06);border:1.5px solid rgba(217,106,106,.22)}
+.stat-card.b{background:rgba(94,201,167,.06);border:1.5px solid rgba(94,201,167,.2)}
+.stat-num{font-family:'DM Serif Display',serif;font-size:68px;line-height:1;letter-spacing:-.03em}
+.stat-card.a .stat-num{color:var(--red)}
+.stat-card.b .stat-num{color:var(--teal)}
+.stat-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;opacity:.6;color:var(--forest)}
+.stat-desc{font-size:22px;line-height:1.55;opacity:.65;font-weight:300;color:var(--forest)}
+.s2 .insight-cards{margin-top:24px;display:flex;flex-direction:column;gap:12px}
+.insight-card{display:flex;align-items:flex-start;gap:16px;padding:20px 24px;border-radius:12px;background:rgba(13,46,40,.04);border:1px solid rgba(13,46,40,.1)}
+.insight-card .ic-icon{font-family:'DM Serif Display',serif;font-style:italic;font-size:36px;line-height:1;color:var(--teal);flex-shrink:0;margin-top:2px}
+.insight-card .ic-title{font-size:24px;font-weight:500;color:var(--forest);margin-bottom:4px}
+.insight-card .ic-text{font-size:22px;line-height:1.55;color:var(--forest);opacity:.65;font-weight:300}
+.s2 .source{margin-top:auto;font-size:20px;letter-spacing:.04em;color:var(--forest);opacity:.42;font-family:'JetBrains Mono',monospace;line-height:1.7;border-top:1px solid rgba(13,46,40,.1);padding-top:16px}
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:66px;line-height:1.06;letter-spacing:-.02em;margin-top:40px;max-width:860px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .mech-cards{margin-top:44px;display:flex;flex-direction:column;gap:18px}
+.mech-card{padding:26px 30px;border-radius:14px;display:flex;align-items:flex-start;gap:22px}
+.mech-card.a{background:rgba(94,201,167,.07);border:1.5px solid rgba(94,201,167,.2)}
+.mech-card.b{background:rgba(201,169,110,.07);border:1.5px solid rgba(201,169,110,.22)}
+.mech-card.c{background:rgba(217,106,106,.06);border:1.5px solid rgba(217,106,106,.18)}
+.mech-card .mc-icon{width:52px;height:52px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-style:italic;font-size:26px}
+.mech-card.a .mc-icon{background:rgba(94,201,167,.18);color:var(--green)}
+.mech-card.b .mc-icon{background:rgba(201,169,110,.18);color:var(--amber)}
+.mech-card.c .mc-icon{background:rgba(217,106,106,.15);color:var(--red)}
+.mech-card .mc-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px}
+.mech-card.a .mc-label{color:var(--green)}
+.mech-card.b .mc-label{color:var(--amber)}
+.mech-card.c .mc-label{color:var(--red)}
+.mech-card .mc-text{font-size:24px;line-height:1.55;font-weight:300;opacity:.88}
+.s3 .bottom-note{margin-top:auto;padding:20px 28px;border-radius:12px;background:rgba(245,243,238,.05);border:1px solid rgba(245,243,238,.12);font-size:24px;line-height:1.6;opacity:.65;font-weight:300;display:flex;align-items:center;gap:14px}
+.s3 .note-prefix{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--amber);flex-shrink:0}
+.s4 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-.02em;margin-top:36px;max-width:860px}
+.s4 h2 em{font-style:italic;color:var(--amber)}
+.s4 .def-card{margin-top:28px;background:rgba(245,243,238,.1);border:1.5px solid rgba(245,243,238,.2);border-radius:14px;padding:24px 30px}
+.s4 .def-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+.s4 .def-text{font-size:22px;line-height:1.65;opacity:.88;font-weight:300}
+.s4 .phase-list{margin-top:26px;display:flex;flex-direction:column;gap:0}
+.ph-item{display:flex;align-items:flex-start;gap:22px;padding:14px 0}
+.ph-item+.ph-item{border-top:1px solid rgba(245,243,238,.1)}
+.ph-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.ph-item.p1 .ph-dot{background:var(--red)}
+.ph-item.p2 .ph-dot{background:var(--amber)}
+.ph-item.p3 .ph-dot{background:rgba(94,201,167,.7)}
+.ph-item.p4 .ph-dot{background:var(--green)}
+.ph-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.ph-item.p1 .ph-label{color:var(--red)}
+.ph-item.p2 .ph-label{color:var(--amber)}
+.ph-item.p3 .ph-label{color:rgba(94,201,167,.8)}
+.ph-item.p4 .ph-label{color:var(--green)}
+.ph-text{font-size:22px;line-height:1.5;opacity:.75;font-weight:300}
+.s5 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.06;letter-spacing:-.02em;margin-top:36px;color:var(--forest);max-width:860px}
+.s5 h2 em{font-style:italic;color:var(--teal)}
+.s5 .scenarios{margin-top:36px;display:flex;flex-direction:column;gap:18px}
+.scenario{padding:26px 28px;border-radius:14px;display:flex;align-items:flex-start;gap:20px}
+.scenario.bad{background:rgba(217,106,106,.05);border:1.5px solid rgba(217,106,106,.18)}
+.scenario.good{background:rgba(26,107,90,.06);border:1.5px solid rgba(26,107,90,.22)}
+.scenario .s-tag{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;padding:5px 14px;border-radius:99px;flex-shrink:0;margin-top:3px}
+.scenario.bad .s-tag{background:var(--red);color:#fff}
+.scenario.good .s-tag{background:var(--teal);color:#fff}
+.scenario .s-title{font-size:24px;font-weight:500;color:var(--forest);margin-bottom:6px}
+.scenario .s-desc{font-size:22px;line-height:1.6;color:var(--forest);opacity:.65;font-weight:300}
+.s5 .research-note{margin-top:22px;padding:18px 24px;background:rgba(26,107,90,.05);border:1px solid rgba(26,107,90,.15);border-radius:12px;font-size:22px;line-height:1.6;color:var(--forest);font-weight:300}
+.s5 .research-note strong{font-weight:500;color:var(--teal)}
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:66px;line-height:1.06;letter-spacing:-.02em;margin-top:40px;max-width:860px}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .protocol{margin-top:44px;display:flex;flex-direction:column;gap:0}
+.s6 .p-block{width:100%;padding:26px 32px;border-radius:14px;display:flex;align-items:flex-start;gap:22px}
+.s6 .p-block.a{background:rgba(94,201,167,.1);border:2px solid rgba(94,201,167,.28)}
+.s6 .p-block.b{background:rgba(201,169,110,.1);border:2px solid rgba(201,169,110,.25)}
+.s6 .p-block.c{background:rgba(94,201,167,.16);border:2px solid rgba(94,201,167,.5)}
+.s6 .p-divider{margin:10px 0;border:none;border-top:1px solid rgba(245,243,238,.1)}
+.s6 .p-num{font-family:'DM Serif Display',serif;font-size:48px;line-height:1;flex-shrink:0;margin-top:-4px}
+.s6 .p-block.a .p-num{color:var(--green)}
+.s6 .p-block.b .p-num{color:var(--amber)}
+.s6 .p-block.c .p-num{color:var(--green)}
+.s6 .p-title{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.s6 .p-block.a .p-title{color:var(--green)}
+.s6 .p-block.b .p-title{color:var(--amber)}
+.s6 .p-block.c .p-title{color:var(--green)}
+.s6 .p-desc{font-size:24px;line-height:1.55;opacity:.85;font-weight:300}
+.s6 .p-note{margin-top:22px;font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.04em;color:rgba(245,243,238,.48);line-height:1.9;border-top:1px solid rgba(245,243,238,.1);padding-top:20px}
+.s6 .p-note .punch{color:var(--green);font-weight:500}
+.s7 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:68px;line-height:1.04;letter-spacing:-.02em;margin-top:36px;color:var(--forest);max-width:860px}
+.s7 h2 em{font-style:italic;color:var(--teal)}
+.s7 .sub{margin-top:22px;font-size:24px;line-height:1.65;color:var(--forest);opacity:.65;max-width:800px;font-weight:300}
+.s7 .discussion{margin-top:36px;display:flex;flex-direction:column;gap:14px}
+.s7 .disc-item{display:flex;align-items:center;gap:18px;padding:20px 24px;border:1.5px solid rgba(13,46,40,.12);border-radius:14px;font-size:22px;color:var(--forest);background:rgba(255,255,255,.46);line-height:1.4}
+.s7 .disc-item .ic{width:40px;height:40px;border-radius:10px;background:rgba(26,107,90,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.s7 .disc-item .ic svg{width:22px;height:22px;color:var(--teal)}
+.s7 .shift-note{margin-top:24px;padding:20px 24px;border-radius:12px;border:1px dashed rgba(26,107,90,.35);font-size:24px;line-height:1.6;color:var(--forest);opacity:.62;font-weight:300;display:flex;align-items:center;gap:14px}
+.s7 .shift-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:24px;color:var(--teal);flex-shrink:0}
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:24px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:46px;height:46px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.1em;align-self:center;padding:0 10px}
+.caption-panel{width:min(540px,94vw);margin-top:32px;padding:26px 26px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:20px;line-height:1.7}
+.caption-panel .cap-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+.caption-panel p{margin-bottom:12px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel strong{color:var(--parchment);font-weight:500}
+.caption-panel .hash{color:#7a8480;font-size:18px;margin-top:16px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="topbar"><span>Neuro Daily · Carousel Preview</span><span class="pill">[ Vol. 81 · Dunning-Kruger · Kompetensi & Kepercayaan Diri ]</span></div>
+<div class="stage"><div class="viewport"><div class="track" id="track">
+
+<!-- S1 DARK -->
+<section class="slide"><div class="cvs bg-dark s1">
+  <div class="head"><span class="dotmark">Neuro Daily · Vol. 81 · Dunning-Kruger & Metakognisi</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Dunning-Kruger Effect · Metacognition</div>
+    <div class="rule"></div>
+    <div class="ghost">↑</div>
+    <h1>Makin sedikit<br>yang kamu tahu,<br>makin yakin<br><em>kamu merasa tahu.</em></h1>
+    <p class="lead">Ini bukan orang bodoh yang sombong. Ini semua orang — di bidang yang mereka baru pelajari. Dan mengetahui ini adalah langkah pertama keluar dari jebakan itu.</p>
+    <div class="curve-vis">
+      <div class="cv-label">Kurva Dunning-Kruger</div>
+      <div class="cv-stages">
+        <div class="cv-stage peak">
+          <div class="cv-bar"></div>
+          <div class="cv-name">Peak of Stupid</div>
+        </div>
+        <div class="cv-stage valley">
+          <div class="cv-bar"></div>
+          <div class="cv-name">Valley of Despair</div>
+        </div>
+        <div class="cv-stage slope">
+          <div class="cv-bar"></div>
+          <div class="cv-name">Slope of Enlighten</div>
+        </div>
+        <div class="cv-stage plateau">
+          <div class="cv-bar"></div>
+          <div class="cv-name">Plateau of Wisdom</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>01 / 07</span></div>
+</div></section>
+
+<!-- S2 LIGHT -->
+<section class="slide"><div class="cvs bg-light s2">
+  <div class="head"><span class="dotmark">Dunning-Kruger · Research Evidence</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Efek yang berlaku untuk semua orang — termasuk kamu</div>
+    <div class="rule"></div>
+    <h2">Orang yang <em>paling tidak kompeten</em> paling tidak sadar akan ketidakkompetenannya.</h2>
+    <div class="stat-row">
+      <div class="stat-card a">
+        <div class="stat-num">bottom</div>
+        <div class="stat-label">25% Performa</div>
+        <div class="stat-desc">Kelompok yang performanya di bawah 25% rata-rata menilai diri mereka berada di atas rata-rata dalam kemampuan yang sama</div>
+      </div>
+      <div class="stat-card b">
+        <div class="stat-num">top</div>
+        <div class="stat-label">10% Underestimate</div>
+        <div class="stat-desc">Kelompok terbaik justru cenderung underestimate kemampuan mereka — karena mereka tahu seberapa banyak yang tidak mereka ketahui</div>
+      </div>
+    </div>
+    <div class="insight-cards">
+      <div class="insight-card">
+        <div class="ic-icon">→</div>
+        <div>
+          <div class="ic-title">Studi asli: humor dan logika</div>
+          <div class="ic-text">Kruger & Dunning (1999): peserta yang mendapat skor terendah dalam tes humor dan logika memperkirakan mereka berada di atas rata-rata. Yang terbaik memperkirakan mereka rata-rata</div>
+        </div>
+      </div>
+      <div class="insight-card">
+        <div class="ic-icon">→</div>
+        <div>
+          <div class="ic-title">Ini bukan tentang kebodohan</div>
+          <div class="ic-text">Dunning-Kruger terjadi di semua level — termasuk orang sangat cerdas dalam bidang yang mereka baru mulai pelajari. Penyebabnya bukan IQ rendah, tapi kurangnya metakognisi tentang bidang tersebut</div>
+        </div>
+      </div>
+    </div>
+    <div class="source">Kruger & Dunning (1999) · Pennycook et al. (2017) · Cornell Psychology</div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>02 / 07</span></div>
+</div></section>
+
+<!-- S3 DARK -->
+<section class="slide"><div class="cvs bg-dark s3">
+  <div class="head"><span class="dotmark">Metacognition · Why It Happens</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Kenapa kurang tahu membuat merasa lebih yakin</div>
+    <div class="rule"></div>
+    <h2">Tiga alasan neurologis kenapa <em>novice lebih confident dari expert.</em></h2>
+    <div class="mech-cards">
+      <div class="mech-card a">
+        <div class="mc-icon">◎</div>
+        <div>
+          <div class="mc-label">Metacognitive Gap</div>
+          <div class="mc-text">Untuk menilai kompetensi diri sendiri, kamu butuh kompetensi di bidang yang sama. Yang tidak kompeten tidak punya "kalibrasi" untuk mengetahui seberapa banyak yang mereka tidak tahu — sehingga estimasi mereka selalu terlalu optimis</div>
+        </div>
+      </div>
+      <div class="mech-card b">
+        <div class="mc-icon">⚡</div>
+        <div>
+          <div class="mc-label">Limited Reference Point</div>
+          <div class="mc-text">Novice hanya tahu sedikit — tapi "sedikit" itu tampak seperti "banyak" karena tidak ada referensi untuk membandingkan. Expert tahu berapa banyak yang ada, jadi tahu berapa banyak yang belum mereka kuasai</div>
+        </div>
+      </div>
+      <div class="mech-card c">
+        <div class="mc-icon">↓</div>
+        <div>
+          <div class="mc-label">Imposter Syndrome di Expert</div>
+          <div class="mc-text">Semakin kamu tahu, semakin kamu sadar tentang "unknown unknowns" — hal yang tidak kamu ketahui yang bahkan tidak kamu tahu kamu tidak ketahui. Ini yang membuat expert cenderung meragukan diri sendiri</div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-note">
+      <span class="note-prefix">Paradoks:</span>
+      Keraguan adalah tanda kompetensi. Kepastian berlebihan adalah tanda novice.
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>03 / 07</span></div>
+</div></section>
+
+<!-- S4 TEAL -->
+<section class="slide"><div class="cvs bg-teal s4">
+  <div class="head"><span class="dotmark">Four Phases · The Learning Journey</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Empat fase yang semua orang lewati saat belajar sesuatu baru</div>
+    <div class="rule"></div>
+    <h2">Empat fase <em>kurva Dunning-Kruger</em> yang semua orang lalui.</h2>
+    <div class="def-card">
+      <div class="def-label">Dunning-Kruger Effect</div>
+      <div class="def-text">Bias kognitif di mana orang dengan kemampuan rendah di suatu bidang melebih-lebahkan kemampuan mereka, sementara orang dengan kemampuan tinggi meremehkan kemampuan mereka relatif terhadap orang lain.</div>
+    </div>
+    <div class="phase-list">
+      <div class="ph-item p1">
+        <div class="ph-dot"></div>
+        <div>
+          <div class="ph-label">Peak of Stupid</div>
+          <div class="ph-text">Tahu sedikit → merasa tahu banyak. Confident tinggi, tidak tahu yang tidak diketahui. "Ini gampang!"</div>
+        </div>
+      </div>
+      <div class="ph-item p2">
+        <div class="ph-dot"></div>
+        <div>
+          <div class="ph-label">Valley of Despair</div>
+          <div class="ph-text">Mulai tahu lebih banyak → sadar betapa banyak yang tidak tahu. Confidence anjlok. "Saya tidak tahu apa-apa!"</div>
+        </div>
+      </div>
+      <div class="ph-item p3">
+        <div class="ph-dot"></div>
+        <div>
+          <div class="ph-label">Slope of Enlightenment</div>
+          <div class="ph-text">Mulai dapat pemahaman nyata. Confidence naik berbasis kompetensi, bukan ilusi. "Saya mulai paham."</div>
+        </div>
+      </div>
+      <div class="ph-item p4">
+        <div class="ph-dot"></div>
+        <div>
+          <div class="ph-label">Plateau of Wisdom</div>
+          <div class="ph-text">Kompeten sebenarnya. Confident tapi humble — tahu batas kemampuan. "Saya tahu apa yang saya ketahui dan tidak ketahui."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(201,169,110,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#C9A96E">N</text></svg>NEURODAILY.ID</span><span>04 / 07</span></div>
+</div></section>
+
+<!-- S5 LIGHT -->
+<section class="slide"><div class="cvs bg-light s5">
+  <div class="head"><span class="dotmark">DK at Work · Blind Spot vs Calibrated</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Dua mode yang menghasilkan outcome sangat berbeda</div>
+    <div class="rule"></div>
+    <h2">Di "Peak of Stupid" vs sudah <em>melewatinya</em> — output kerja yang berbeda jauh.</h2>
+    <div class="scenarios">
+      <div class="scenario bad">
+        <div class="s-tag">Peak of Stupid</div>
+        <div>
+          <div class="s-title">Baru 3 bulan belajar, merasa sudah expert</div>
+          <div class="s-desc">Tidak bertanya karena merasa sudah tahu. Tidak mencari feedback karena yakin benar. Keputusan dibuat dengan data yang tidak lengkap tapi dengan keyakinan penuh. Risiko yang tidak disadari sangat tinggi</div>
+        </div>
+      </div>
+      <div class="scenario good">
+        <div class="s-tag">Calibrated</div>
+        <div>
+          <div class="s-title">Tahu batas kompetensi, aktif mengisi gap</div>
+          <div class="s-desc">Banyak bertanya karena tahu apa yang tidak diketahui. Mencari feedback secara aktif. Keputusan dibuat dengan sadar akan keterbatasan informasi. Hasilnya lebih baik meski terasa less confident</div>
+        </div>
+      </div>
+    </div>
+    <div class="research-note">Dunning: <strong>"The first rule of the Dunning-Kruger club is you don't know you're in the Dunning-Kruger club."</strong> Mengetahui tentang efek ini adalah satu-satunya "vaksin" yang tersedia.</div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>05 / 07</span></div>
+</div></section>
+
+<!-- S6 DARK -->
+<section class="slide"><div class="cvs bg-dark s6">
+  <div class="head"><span class="dotmark">Calibration Protocol · Three Practices</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Cara melatih kalibrasi diri yang akurat</div>
+    <div class="rule"></div>
+    <h2">Tiga cara <em>mengkalibrasi kepercayaan diri</em> agar sesuai kompetensi nyata.</h2>
+    <div class="protocol">
+      <div class="p-block a">
+        <div class="p-num">1</div>
+        <div>
+          <div class="p-title">Seek Disconfirmation</div>
+          <div class="p-desc">Secara aktif cari orang yang bisa menemukan lubang dalam pikiranmu. "Apa yang salah dari analisis ini?" lebih berharga dari "apakah ini bagus?" Orang yang paling tahu akan memberimu gambaran realistis</div>
+        </div>
+      </div>
+      <hr class="p-divider"/>
+      <div class="p-block b">
+        <div class="p-num">2</div>
+        <div>
+          <div class="p-title">Map Your Unknowns</div>
+          <div class="p-desc">Di setiap domain yang kamu kerjakan, secara eksplisit list: "Apa yang saya tahu? Apa yang saya tahu saya tidak tahu? Apa yang mungkin saya tidak tahu bahwa saya tidak tahu?" Latihan ini membangun metacognition</div>
+        </div>
+      </div>
+      <hr class="p-divider"/>
+      <div class="p-block c">
+        <div class="p-num">3</div>
+        <div>
+          <div class="p-title">Test Before Claiming</div>
+          <div class="p-desc">Sebelum menyatakan expertise, uji dengan: "Bisakah saya menjelaskan ini kepada orang yang tidak tahu?" dan "Bisakah saya memprediksi hasilnya?" Kemampuan menjelaskan dan memprediksi adalah proxy kompetensi yang lebih akurat dari rasa yakin</div>
+        </div>
+      </div>
+    </div>
+    <div class="p-note">Rasa tidak yakin yang tepat adalah <span class="punch">tanda kecerdasan yang matang</span> — bukan kelemahan.</div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>06 / 07</span></div>
+</div></section>
+
+<!-- S7 LIGHT -->
+<section class="slide"><div class="cvs bg-light s7">
+  <div class="head"><span class="dotmark">Dunning-Kruger · Intellectual Humility</span><span>Edisi · Mei 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Refleksi & diskusi</div>
+    <div class="rule"></div>
+    <h2">Semakin dalam kamu tahu sesuatu, semakin <em>humble</em> kamu terhadapnya — itu tanda yang benar.</h2>
+    <p class="sub">Dunning-Kruger bukan tentang orang tertentu. Kita semua ada di berbagai titik kurva ini untuk berbagai bidang yang berbeda — secara bersamaan. Mengetahui posisimu adalah keunggulan kompetitif yang nyata.</p>
+    <div class="discussion">
+      <div class="disc-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
+        Di bidang pekerjaan mana kamu berada di "Peak of Stupid" — dan mungkin belum menyadarinya?
+      </div>
+      <div class="disc-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        Kapan terakhir kamu merasakan "Valley of Despair" — dan apa yang membawa kamu melewatinya?
+      </div>
+      <div class="disc-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        Siapa orang di sekitarmu yang paling sering menunjukkan confidence tinggi — dan apakah itu sesuai dengan hasil kerjanya?
+      </div>
+    </div>
+    <div class="shift-note">
+      <span class="shift-arrow">→</span>
+      Pilih satu bidang yang kamu anggap sudah kuasai. Tanya pada expert: "Apa yang sering diabaikan pemula dalam bidang ini?" Jawabannya akan mengungkapkan posisimu di kurva.
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>07 / 07</span></div>
+</div></section>
+
+</div></div></div>
+<div class="dots"><button class="dot active" onclick="goTo(0)"></button><button class="dot" onclick="goTo(1)"></button><button class="dot" onclick="goTo(2)"></button><button class="dot" onclick="goTo(3)"></button><button class="dot" onclick="goTo(4)"></button><button class="dot" onclick="goTo(5)"></button><button class="dot" onclick="goTo(6)"></button></div>
+<div class="controls"><button id="prev" onclick="prev()" disabled>←</button><span class="counter" id="counter">1 / 7</span><button id="next" onclick="next()">→</button></div>
+<div class="caption-panel">
+  <div class="cap-label">Caption · Instagram / TikTok</div>
+  <p>Makin sedikit yang kamu tahu, makin yakin kamu merasa tahu. ↑</p>
+  <p>Ini <strong>Dunning-Kruger Effect</strong> (Kruger & Dunning, 1999) — bukan tentang orang bodoh yang sombong, tapi tentang bagaimana otak bekerja saat mempelajari sesuatu yang baru.</p>
+  <p>Yang mendapat skor terendah dalam tes kemampuan justru menilai diri mereka di atas rata-rata. Yang terbaik justru meremehkan diri mereka. Karena untuk menilai kompetensi, kamu butuh kompetensi di bidang yang sama — dan novice tidak punya kalibrasi itu.</p>
+  <p>Tanda kamu melewati Peak of Stupid: <strong>kamu mulai banyak bertanya</strong>, bukan banyak menyatakan.</p>
+  <span class="hash">#NeuroscienceIndonesia #DunningKruger #BiasKognitif #NeurodailyID #Metacognition #Belajar #IntellectualHumility #Kompetensi #GrowthMindset</span>
+</div>
+<script>
+const track=document.getElementById('track'),dots=document.querySelectorAll('.dot'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next'),TOTAL=7;let cur=0;
+function scale(){const vw=document.querySelector('.viewport').offsetWidth;document.querySelectorAll('.cvs').forEach(c=>{c.style.transform=`scale(${vw/1080})`});}
+scale();window.addEventListener('resize',scale);
+function goTo(i){cur=i;track.style.transform=`translateX(-${cur*100}%)`;dots.forEach((d,j)=>d.classList.toggle('active',j===cur));counter.textContent=`${cur+1} / ${TOTAL}`;prevBtn.disabled=cur===0;nextBtn.disabled=cur===TOTAL-1;}
+function prev(){if(cur>0)goTo(cur-1);}function next(){if(cur<TOTAL-1)goTo(cur+1);}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')prev();if(e.key==='ArrowRight')next();});
+</script>
+</body>
+</html>

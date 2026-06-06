@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Neuro Daily — Musik dan Fokus Kerja</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#1a1a1a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#9aa39f;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(440px,92vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;display:flex;flex-direction:column;padding:36px 32px 28px;position:relative;overflow:hidden}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.slide .header{display:flex;justify-content:space-between;align-items:center;font-family:'DM Sans',sans-serif;font-weight:500;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.85}
+.bg-light .header{opacity:.7}
+.pillar-tag{display:inline-flex;align-items:center;gap:6px}
+.pillar-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--green)}
+.bg-light .pillar-tag::before{background:var(--teal)}
+.slide .footer{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;opacity:.55;text-transform:uppercase}
+.s1 .body{margin-top:auto;margin-bottom:auto}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:44px;line-height:1.05;letter-spacing:-.01em;color:var(--parchment)}
+.s1 h1 em{color:var(--amber);font-style:italic}
+.s1 .lead{margin-top:18px;font-size:13px;line-height:1.7;opacity:.7;max-width:300px}
+.s1 .swipe{position:absolute;bottom:24px;right:32px;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.s1 .arrow{display:inline-block;animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+.static-bg{position:absolute;inset:0;pointer-events:none;opacity:.045}
+.s2-diag{justify-content:space-between}
+.s2-diag .eyebrow{margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);opacity:.8}
+.s2-diag h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:30px;line-height:1.13;letter-spacing:-.01em;margin-top:10px;color:var(--forest)}
+.s2-diag h2 em{font-style:italic;color:var(--teal)}
+.s2-diag .desc{margin-top:14px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.8;max-width:340px}
+.s2-diag .pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.s2-diag .pill{padding:7px 13px;border-radius:99px;font-size:11px;font-weight:500;letter-spacing:.06em}
+.pill-amber{background:rgba(201,169,110,.15);color:#9a7940;border:1px solid rgba(201,169,110,.3)}
+.pill-teal{background:rgba(26,107,90,.1);color:var(--teal);border:1px solid rgba(26,107,90,.2)}
+.pill-red{background:rgba(224,112,112,.1);color:#c05050;border:1px solid rgba(224,112,112,.25)}
+.s2-diag .note{margin-top:14px;font-size:11.5px;line-height:1.6;color:var(--forest);opacity:.6;border-top:1px solid rgba(13,46,40,.1);padding-top:12px}
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:26px;line-height:1.24;letter-spacing:-.01em;margin-top:20px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .term{margin-top:16px;padding:14px 16px;border-radius:10px;background:rgba(94,201,167,.08);border-left:2px solid var(--green)}
+.s3 .term .name{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+.s3 .term .def{margin-top:7px;font-size:12.5px;line-height:1.65;color:var(--parchment);opacity:.92}
+.s3 .priority-list{margin-top:14px;display:flex;flex-direction:column;gap:6px}
+.s3 .prio-item{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;border-radius:7px}
+.prio-high{background:rgba(94,201,167,.1);border:1px solid rgba(94,201,167,.18)}
+.prio-med{background:rgba(201,169,110,.08);border:1px solid rgba(201,169,110,.15)}
+.prio-low{background:rgba(224,112,112,.08);border:1px solid rgba(224,112,112,.15)}
+.s3 .prio-num{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;width:18px;flex-shrink:0;margin-top:2px}
+.prio-high .prio-num{color:var(--green)}
+.prio-med .prio-num{color:var(--amber)}
+.prio-low .prio-num{color:#e07070}
+.s3 .prio-text{font-size:11px;line-height:1.4;color:var(--parchment);opacity:.85}
+.s3 .source{margin-top:10px;font-size:10.5px;color:var(--parchment);opacity:.5;line-height:1.55}
+.s4-guide h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:20px;line-height:1.28;margin-top:14px;color:var(--forest)}
+.s4-guide h2 em{font-style:italic;color:var(--teal)}
+.music-list{margin-top:14px;display:flex;flex-direction:column;gap:7px}
+.music-row{display:flex;align-items:flex-start;gap:10px;padding:10px 13px;border-radius:8px;background:rgba(255,255,255,.55);border:1px solid rgba(13,46,40,.1)}
+.music-row.ok{background:rgba(26,107,90,.06);border-color:rgba(26,107,90,.2)}
+.music-row.bad{background:rgba(224,112,112,.06);border-color:rgba(224,112,112,.2)}
+.music-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.music-body .music-task{font-size:11px;font-weight:500;color:var(--forest);margin-bottom:2px}
+.music-body .music-rec{font-size:10.5px;color:var(--forest);opacity:.65;line-height:1.4}
+.music-body .music-rec strong{color:var(--teal);font-weight:500;opacity:1}
+.music-body .music-rec.warn strong{color:#c05050}
+.s5{padding-top:28px}
+.s5 .stat-big{margin-top:auto;display:flex;align-items:baseline;gap:12px}
+.s5 .stat-big .n{font-family:'DM Serif Display',serif;font-size:80px;line-height:.85;color:var(--parchment);letter-spacing:-.03em}
+.s5 .stat-big .n em{color:var(--amber);font-style:italic}
+.s5 .stat-big .u{font-family:'DM Sans';font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);max-width:130px;line-height:1.5}
+.s5 .copy{margin-top:16px;font-size:13px;line-height:1.65;opacity:.85;max-width:340px}
+.s5 .copy strong{font-weight:500;color:var(--green)}
+.s5 .math{margin-top:16px;padding:13px 16px;border:1px dashed rgba(94,201,167,.3);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);letter-spacing:.04em;line-height:1.85}
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:26px;line-height:1.18;margin-top:22px;letter-spacing:-.01em}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .ps{margin-top:14px;font-size:12.5px;line-height:1.65;opacity:.82;max-width:340px}
+.s6 .steps{margin-top:14px;display:flex;flex-direction:column;gap:0}
+.s6 .step{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(245,243,238,.07)}
+.s6 .step:last-child{border-bottom:none}
+.s6 .step-num{width:20px;height:20px;border-radius:50%;background:rgba(94,201,167,.15);color:var(--green);font-family:'JetBrains Mono',monospace;font-size:8.5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.s6 .step-title{font-size:11.5px;font-weight:500;color:var(--parchment);line-height:1.3;margin-bottom:2px}
+.s6 .step-desc{font-size:10.5px;color:var(--parchment);opacity:.62;line-height:1.5}
+.s7{justify-content:space-between}
+.s7 .lead-q{font-family:'DM Serif Display',serif;font-size:26px;line-height:1.24;letter-spacing:-.01em;margin-top:26px;color:var(--forest)}
+.s7 .lead-q em{font-style:italic;color:var(--teal)}
+.s7 .ask{margin-top:13px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.7;max-width:300px}
+.s7 .actions{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.s7 .btn{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border:1px solid rgba(13,46,40,.15);border-radius:10px;font-size:12.5px;color:var(--forest)}
+.s7 .btn .ic{width:18px;height:18px;color:var(--teal);flex-shrink:0}
+.s7 .signoff{margin-top:18px;padding-top:14px;border-top:1px solid rgba(13,46,40,.12)}
+.s7 .tag{font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;color:var(--teal);line-height:1.3}
+.s7 .sub{margin-top:6px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--forest);opacity:.6;font-weight:500}
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:22px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:42px;height:42px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.controls button:hover{background:rgba(94,201,167,.12);border-color:rgba(94,201,167,.3)}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 8px}
+.caption-panel{width:min(440px,92vw);margin-top:32px;padding:22px 22px 24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:13px;line-height:1.7}
+.caption-panel .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+.caption-panel .char-count{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--amber);margin-top:10px;opacity:.7}
+.caption-panel p{margin-bottom:10px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:14px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Peak Performance · P2 ]</span>
+</div>
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- SLIDE 1 — HOOK -->
+      <section class="slide bg-dark s1">
+        <svg class="static-bg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <!-- Sound wave visualization -->
+          <path d="M60 250 Q80 180 100 250 Q120 320 140 250 Q160 180 180 250 Q200 320 220 250 Q240 180 260 250 Q280 320 300 250 Q320 180 340 250" fill="none" stroke="rgba(94,201,167,.25)" stroke-width="1.5"/>
+          <path d="M60 250 Q80 210 100 250 Q120 290 140 250 Q160 210 180 250 Q200 290 220 250 Q240 210 260 250 Q280 290 300 250 Q320 210 340 250" fill="none" stroke="rgba(201,169,110,.2)" stroke-width="1"/>
+          <!-- Music note subtle -->
+          <text x="190" y="200" font-family="DM Serif Display" font-size="48" fill="rgba(245,243,238,.04)" font-style="italic">♪</text>
+          <!-- Task labels -->
+          <text x="90" y="140" text-anchor="middle" font-family="DM Sans" font-size="8" fill="rgba(94,201,167,.35)">deep work</text>
+          <text x="200" y="140" text-anchor="middle" font-family="DM Sans" font-size="8" fill="rgba(201,169,110,.35)">creative</text>
+          <text x="310" y="140" text-anchor="middle" font-family="DM Sans" font-size="8" fill="rgba(94,201,167,.35)">routine</text>
+        </svg>
+        <div class="header">
+          <span class="pillar-tag">Peak Performance · P2</span>
+          <span>01 / 07</span>
+        </div>
+        <div class="body">
+          <h1>Tidak semua playlist "focus music" itu <em>sama.</em></h1>
+          <p class="lead">Neurosains bilang: musik yang tepat bergantung pada jenis task-mu — dan pilihan yang salah bisa menurunkan performa.</p>
+        </div>
+        <div class="swipe"><span>Geser</span><span class="arrow">→</span></div>
+      </section>
+
+      <!-- SLIDE 2 — MYTH BUST -->
+      <section class="slide bg-light s2-diag">
+        <div class="header">
+          <span class="pillar-tag">Mitosnya</span>
+          <span>02 / 07</span>
+        </div>
+        <div class="eyebrow">Myth Buster · Formula A</div>
+        <h2>Musik instrumental <em>tidak selalu</em> meningkatkan fokus kerja.</h2>
+        <p class="desc">Banyak yang percaya bahwa musik instrumental (lo-fi, klasik, ambient) selalu membantu konsentrasi. Kenyataannya: efeknya bergantung pada jenis task, level expertise kamu, dan apakah kamu introvert atau ekstrovert.</p>
+        <div class="pill-row">
+          <span class="pill pill-red">Mitos: musik = fokus</span>
+          <span class="pill pill-teal">Fakta: tergantung task</span>
+          <span class="pill pill-amber">Arousal regulation</span>
+        </div>
+        <p class="note">Furnham & Strbac (2002): musik dengan lirik secara signifikan mengganggu reading comprehension dan writing. Salamé & Baddeley (1989): irrelevant speech effect — suara dengan struktur linguistik kompetisi working memory verbal.</p>
+        <div class="footer"><span>NEURO DAILY</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 3 — MECHANISM -->
+      <section class="slide bg-dark s3">
+        <div class="header">
+          <span class="pillar-tag">Yang terjadi di otakmu</span>
+          <span>03 / 07</span>
+        </div>
+        <h2>Arousal regulation: musik mengubah <em>cortical arousal level.</em></h2>
+        <div class="term">
+          <div class="name">Arousal Regulation Theory</div>
+          <div class="def">Musik mempengaruhi tingkat cortical arousal (kewaspadaan otak). Task yang berbeda butuh level arousal yang berbeda. Musik yang terlalu stimulatif untuk task fokus tinggi = overarousal = performa turun.</div>
+        </div>
+        <div class="priority-list">
+          <div class="prio-item prio-high">
+            <span class="prio-num">✓</span>
+            <span class="prio-text">Task rutin/repetitif → butuh arousal lebih tinggi → musik upbeat OK</span>
+          </div>
+          <div class="prio-item prio-med">
+            <span class="prio-num">~</span>
+            <span class="prio-text">Task kreatif → arousal medium → ambient/instrumental tanpa lirik</span>
+          </div>
+          <div class="prio-item prio-low">
+            <span class="prio-num">✗</span>
+            <span class="prio-text">Deep work / writing / coding → butuh arousal rendah → sunyi atau white noise</span>
+          </div>
+        </div>
+        <p class="source">Furnham & Strbac (2002) · Salamé & Baddeley (1989) · Ritter & Ferguson (2017): blue noise dan creative cognition</p>
+      </section>
+
+      <!-- SLIDE 4 — GUIDE -->
+      <section class="slide bg-light s4-guide">
+        <div class="header">
+          <span class="pillar-tag">Panduan praktisnya</span>
+          <span>04 / 07</span>
+        </div>
+        <h2>Musik apa untuk <em>task apa?</em></h2>
+        <div class="music-list">
+          <div class="music-row ok">
+            <span class="music-icon">✍️</span>
+            <div class="music-body">
+              <div class="music-task">Deep work / writing / coding</div>
+              <div class="music-rec"><strong>Sunyi atau white noise (40–70dB)</strong> — minimal linguistic interference</div>
+            </div>
+          </div>
+          <div class="music-row ok">
+            <span class="music-icon">💡</span>
+            <div class="music-body">
+              <div class="music-task">Brainstorming / creative work</div>
+              <div class="music-rec"><strong>Ambient / nature sounds / jazz tanpa vokal</strong> — medium arousal, no lyrics</div>
+            </div>
+          </div>
+          <div class="music-row ok">
+            <span class="music-icon">📊</span>
+            <div class="music-body">
+              <div class="music-task">Admin / data entry / email</div>
+              <div class="music-rec"><strong>Lo-fi atau musik familiar (tanpa lirik)</strong> — mood boost, low cognitive load</div>
+            </div>
+          </div>
+          <div class="music-row bad">
+            <span class="music-icon">❌</span>
+            <div class="music-body">
+              <div class="music-task">Menulis / membaca kompleks</div>
+              <div class="music-rec warn"><strong>Musik dengan lirik</strong> — kompetisi langsung dengan verbal working memory</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>04 — PANDUAN</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 5 — CONSEQUENCE -->
+      <section class="slide bg-teal s5">
+        <div class="header">
+          <span class="pillar-tag" style="color:#fff">Faktanya</span>
+          <span>05 / 07</span>
+        </div>
+        <p class="copy" style="margin-top:24px">Musik dengan lirik saat sedang <strong>menulis atau membaca dokumen kompleks</strong> bisa menurunkan performa hingga 20% — karena otak memproses bahasa musik bersamaan dengan teks yang sedang dibaca.</p>
+        <div class="stat-big">
+          <span class="n"><em>↓20%</em></span>
+          <span class="u">performa reading & writing dengan musik berlirik</span>
+        </div>
+        <div class="math">
+          Musik berlirik → otak proses 2 aliran verbal<br>
+          → interference di working memory verbal<br>
+          → comprehension & recall turun<br>
+          <span style="color:var(--amber)">────────────────────────────</span><br>
+          Bukan soal "fokus" — soal <span style="color:#fff;font-weight:500">kapasitas neural</span><br>
+          yang terbatas untuk proses bahasa<br>
+          <span style="opacity:.6;font-size:10px">*Furnham & Strbac (2002) · Cambridge Applied Linguistics</span>
+        </div>
+        <div class="footer"><span>05 — FAKTA</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 6 — STRATEGY -->
+      <section class="slide bg-dark s6">
+        <div class="header">
+          <span class="pillar-tag">Framework praktisnya</span>
+          <span>06 / 07</span>
+        </div>
+        <h2>Match musik ke <em>jenis task</em> — bukan mood.</h2>
+        <p class="ps">Kebiasaan memutar playlist yang sama untuk semua jenis kerja adalah salah satu sumber "sabotase diam-diam" produktivitas yang paling sering diabaikan.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <div class="step-title">Identifikasi jenis task sebelum mulai</div>
+              <div class="step-desc">Deep work (analitis, menulis, coding)? Kreativitas? Atau admin? Setiap jenis butuh setup audio yang berbeda.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <div class="step-title">Deep work = sunyi atau white noise</div>
+              <div class="step-desc">Coba 1 sesi 25 menit dalam sunyi total. Kebanyakan orang menemukan output jauh lebih berkualitas — walau terasa aneh di awal.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <div class="step-title">Musik familiar tanpa lirik untuk creative</div>
+              <div class="step-desc">Musik yang sudah dikenal tidak menstimulasi perhatian baru — otak memproses secara background. Efek mood boost tanpa cognitive interference.</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>06 — STRATEGI</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 7 — CTA -->
+      <section class="slide bg-light s7">
+        <div class="header">
+          <span class="pillar-tag">Sekarang giliranmu</span>
+          <span>07 / 07</span>
+        </div>
+        <div>
+          <p class="lead-q">Kerja sambil musik atau <em>sunyi?</em></p>
+          <p class="ask">Cerita di komentar — dan jenis task apa yang biasanya kamu kerjakan sambil musik? Setelah baca ini, ada yang mau dicoba beda?</p>
+        </div>
+        <div class="actions">
+          <div class="btn">
+            <span>Simpan — referensi sebelum mulai kerja</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+          </div>
+          <div class="btn">
+            <span>Kirim ke yang selalu kerja pakai earphone</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </div>
+        <div class="signoff">
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="1.5"><path d="M4 14c0-5 3-8 8-8 4 0 6 2 6 5 0 2-1.5 3.5-4 3.5-2 0-3 1-3 2.5 0 1.5 1 2.5 2.5 2.5"/><circle cx="15" cy="9" r="1" fill="#1A6B5A"/></svg>
+            <span class="tag">Neuro Daily</span>
+          </div>
+          <div class="sub">Kerja lebih cerdas, bukan lebih keras. Ini sains-nya.</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="caption-panel">
+  <div class="label">Caption · Formula A — Myth Buster · ≤ 500 karakter</div>
+  <p><strong style="color:var(--parchment)">Tidak semua playlist "focus music" itu sama — dan musik yang salah bisa menurunkan performa.</strong></p>
+  <p>Arousal Regulation Theory: musik mempengaruhi tingkat kewaspadaan otak. Task yang berbeda butuh level arousal yang berbeda. Musik berlirik saat menulis = kompetisi langsung di working memory verbal.</p>
+  <p>Kamu kerja sambil musik atau sunyi?</p>
+  <span class="hash">#NeuroDaily #NeurosainsKerja #PeakPerformance #FokusKerja #MusicAndWork #Produktivitas</span>
+  <div class="char-count" id="charCount"></div>
+</div>
+
+<div class="controls">
+  <button id="prev">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next">›</button>
+</div>
+
+<script>
+const track=document.getElementById('track'),dotsEl=document.getElementById('dots'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next');
+const total=track.children.length;let i=0;
+for(let k=0;k<total;k++){const b=document.createElement('button');b.className='dot'+(k===0?' active':'');b.addEventListener('click',()=>go(k));dotsEl.appendChild(b)}
+const dots=[...dotsEl.children];
+function go(n){i=Math.max(0,Math.min(total-1,n));track.style.transform=`translateX(-${i*100}%)`;dots.forEach((d,k)=>d.classList.toggle('active',k===i));counter.textContent=`${i+1} / ${total}`;prevBtn.disabled=i===0;nextBtn.disabled=i===total-1}
+prevBtn.addEventListener('click',()=>go(i-1));nextBtn.addEventListener('click',()=>go(i+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(i+1);if(e.key==='ArrowLeft')go(i-1)});
+let sx=0,dx=0,drag=false;const vp=document.querySelector('.viewport');
+vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;drag=true;dx=0});
+vp.addEventListener('touchmove',e=>{if(!drag)return;dx=e.touches[0].clientX-sx});
+vp.addEventListener('touchend',()=>{if(!drag)return;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));drag=false});
+const captionText=`Tidak semua playlist "focus music" itu sama — dan musik yang salah bisa menurunkan performa.
+
+Arousal Regulation Theory: musik mempengaruhi tingkat kewaspadaan otak. Task yang berbeda butuh level arousal yang berbeda. Musik berlirik saat menulis = kompetisi langsung di working memory verbal.
+
+Kamu kerja sambil musik atau sunyi?
+
+#NeuroDaily #NeurosainsKerja #PeakPerformance #FokusKerja #MusicAndWork #Produktivitas`;
+const cc=document.getElementById('charCount'),len=captionText.length;
+cc.textContent=`${len} / 500 karakter ${len<=500?'✓':'⚠ Melebihi batas Threads'}`;
+if(len>500)cc.style.color='#e05252';
+go(0);
+</script>
+</body>
+</html>

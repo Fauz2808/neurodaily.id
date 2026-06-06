@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Neuro Daily — Kepercayaan Diri Bukan Bawaan: Ini Neural Pathway-nya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;--red:#D96A6A}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#1a1a1a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#9aa39f;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(440px,92vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;display:flex;flex-direction:column;padding:36px 32px 28px;position:relative;overflow:hidden}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.slide .header{display:flex;justify-content:space-between;align-items:center;font-family:'DM Sans',sans-serif;font-weight:500;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.85}
+.bg-light .header{opacity:.7}
+.pillar-tag{display:inline-flex;align-items:center;gap:6px}
+.pillar-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--green)}
+.bg-light .pillar-tag::before{background:var(--teal)}
+.slide .footer{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;opacity:.55;text-transform:uppercase}
+.static-bg{position:absolute;inset:0;pointer-events:none;opacity:.045}
+
+/* S1 */
+.s1 .body{margin-top:auto;margin-bottom:auto}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:36px;line-height:1.1;letter-spacing:-.01em;color:var(--parchment)}
+.s1 h1 em{color:var(--amber);font-style:italic}
+.s1 .lead{margin-top:18px;font-size:13px;line-height:1.7;opacity:.7;max-width:310px}
+.s1 .swipe{position:absolute;bottom:24px;right:32px;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.s1 .arrow{display:inline-block;animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+
+/* S2 */
+.s2 .eyebrow{margin-top:22px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);opacity:.8}
+.s2 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:25px;line-height:1.18;letter-spacing:-.01em;margin-top:10px;color:var(--forest)}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .compare{margin-top:15px;display:flex;flex-direction:column;gap:8px}
+.compare-row{padding:11px 14px;border-radius:9px;font-size:11.5px;line-height:1.55}
+.compare-myth{background:rgba(217,106,106,.08);border:1px solid rgba(217,106,106,.18);color:var(--forest)}
+.compare-fact{background:rgba(26,107,90,.08);border:1px solid rgba(26,107,90,.2);color:var(--forest)}
+.compare-row .label{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:4px;opacity:.7}
+.compare-myth .label{color:var(--red)}
+.compare-fact .label{color:var(--teal)}
+.s2 .note{margin-top:11px;font-size:11px;line-height:1.6;color:var(--forest);opacity:.6;border-top:1px solid rgba(13,46,40,.1);padding-top:10px}
+
+/* S3 */
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:22px;line-height:1.28;letter-spacing:-.01em;margin-top:13px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .term{margin-top:10px;padding:11px 14px;border-radius:10px;background:rgba(94,201,167,.08);border-left:2px solid var(--green)}
+.s3 .term.term-b{background:rgba(201,169,110,.08);border-left-color:var(--amber)}
+.s3 .term .name{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+.s3 .term.term-b .name{color:var(--amber)}
+.s3 .term .def{margin-top:5px;font-size:11.5px;line-height:1.55;color:var(--parchment);opacity:.88}
+.s3 .combo{margin-top:10px;padding:9px 13px;border-radius:8px;background:rgba(245,243,238,.05);border:1px solid rgba(245,243,238,.08);font-size:10.5px;line-height:1.6;color:var(--parchment);opacity:.72}
+.s3 .combo strong{opacity:1;color:var(--parchment);font-weight:500}
+.s3 .source{margin-top:8px;font-size:9.5px;color:var(--parchment);opacity:.4;line-height:1.55}
+
+/* S4 */
+.s4 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:21px;line-height:1.28;margin-top:10px;color:var(--forest)}
+.s4 h2 em{font-style:italic;color:var(--teal)}
+.s4 .intro{margin-top:6px;font-size:11.5px;line-height:1.6;color:var(--forest);opacity:.65}
+.s4 .block-list{margin-top:10px;display:flex;flex-direction:column;gap:5px}
+.block-item{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;background:rgba(255,255,255,.55);border:1px solid rgba(13,46,40,.1);border-radius:9px}
+.block-num{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--teal);font-weight:500;flex-shrink:0;margin-top:2px;width:16px}
+.block-body .block-title{font-size:11px;font-weight:500;color:var(--forest);margin-bottom:2px;line-height:1.3}
+.block-body .block-sub{font-size:10px;color:var(--forest);opacity:.62;line-height:1.45}
+
+/* S5 */
+.s5{padding-top:28px}
+.s5 .stat-big{margin-top:auto;display:flex;align-items:baseline;gap:12px}
+.s5 .stat-big .n{font-family:'DM Serif Display',serif;font-size:80px;line-height:.85;color:var(--parchment);letter-spacing:-.03em}
+.s5 .stat-big .n em{color:var(--amber);font-style:italic}
+.s5 .stat-big .u{font-family:'DM Sans';font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--green);max-width:160px;line-height:1.5}
+.s5 .copy{margin-top:16px;font-size:13px;line-height:1.65;opacity:.85;max-width:340px}
+.s5 .copy strong{font-weight:500;color:var(--green)}
+.s5 .insight{margin-top:14px;padding:12px 16px;border:1px dashed rgba(94,201,167,.3);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);letter-spacing:.04em;line-height:1.9}
+
+/* S6 */
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:24px;line-height:1.2;margin-top:18px;letter-spacing:-.01em}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .ps{margin-top:10px;font-size:12px;line-height:1.65;opacity:.78;max-width:340px}
+.s6 .steps{margin-top:12px;display:flex;flex-direction:column;gap:0}
+.s6 .step{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(245,243,238,.07)}
+.s6 .step:last-child{border-bottom:none}
+.s6 .step-num{width:20px;height:20px;border-radius:50%;background:rgba(94,201,167,.15);color:var(--green);font-family:'JetBrains Mono',monospace;font-size:8.5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.s6 .step-title{font-size:11.5px;font-weight:500;color:var(--parchment);line-height:1.3;margin-bottom:2px}
+.s6 .step-desc{font-size:10.5px;color:var(--parchment);opacity:.62;line-height:1.5}
+
+/* S7 */
+.s7{justify-content:space-between}
+.s7 .lead-q{font-family:'DM Serif Display',serif;font-size:25px;line-height:1.24;letter-spacing:-.01em;margin-top:22px;color:var(--forest)}
+.s7 .lead-q em{font-style:italic;color:var(--teal)}
+.s7 .ask{margin-top:13px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.7;max-width:310px}
+.s7 .actions{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.s7 .btn{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border:1px solid rgba(13,46,40,.15);border-radius:10px;font-size:12.5px;color:var(--forest)}
+.s7 .btn .ic{width:18px;height:18px;color:var(--teal);flex-shrink:0}
+.s7 .signoff{margin-top:18px;padding-top:14px;border-top:1px solid rgba(13,46,40,.12)}
+.s7 .tag{font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;color:var(--teal);line-height:1.3}
+.s7 .sub{margin-top:6px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--forest);opacity:.6;font-weight:500}
+
+/* Nav */
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:22px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:42px;height:42px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.controls button:hover{background:rgba(94,201,167,.12);border-color:rgba(94,201,167,.3)}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 8px}
+.caption-panel{width:min(440px,92vw);margin-top:32px;padding:22px 22px 24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:13px;line-height:1.7}
+.caption-panel .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+.caption-panel .char-count{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--amber);margin-top:10px;opacity:.7}
+.caption-panel p{margin-bottom:10px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:14px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Career Neuroscience · P3 ]</span>
+</div>
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- SLIDE 1 — HOOK -->
+      <section class="slide bg-dark s1">
+        <svg class="static-bg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <!-- Left: sparse neural network (before practice) -->
+          <circle cx="72" cy="195" r="4" fill="rgba(245,243,238,.12)"/>
+          <circle cx="108" cy="178" r="4" fill="rgba(245,243,238,.12)"/>
+          <circle cx="90" cy="225" r="4" fill="rgba(245,243,238,.12)"/>
+          <circle cx="135" cy="208" r="4" fill="rgba(245,243,238,.12)"/>
+          <circle cx="120" cy="248" r="3" fill="rgba(245,243,238,.1)"/>
+          <line x1="72" y1="195" x2="108" y2="178" stroke="rgba(245,243,238,.09)" stroke-width=".8"/>
+          <line x1="108" y1="178" x2="135" y2="208" stroke="rgba(245,243,238,.09)" stroke-width=".8"/>
+          <line x1="90" y1="225" x2="135" y2="208" stroke="rgba(245,243,238,.09)" stroke-width=".8"/>
+          <line x1="90" y1="225" x2="120" y2="248" stroke="rgba(245,243,238,.07)" stroke-width=".7"/>
+          <text x="103" y="275" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="rgba(245,243,238,.18)" letter-spacing=".3">SEBELUM</text>
+
+          <!-- Middle arrow -->
+          <line x1="160" y1="213" x2="218" y2="213" stroke="rgba(94,201,167,.28)" stroke-width="1"/>
+          <polygon points="218,213 212,210 212,216" fill="rgba(94,201,167,.4)"/>
+          <text x="189" y="207" text-anchor="middle" font-family="JetBrains Mono" font-size="6" fill="rgba(94,201,167,.32)" letter-spacing=".3">pengulangan</text>
+
+          <!-- Right: dense neural network (after practice) -->
+          <circle cx="252" cy="178" r="4.5" fill="rgba(94,201,167,.45)"/>
+          <circle cx="285" cy="165" r="4" fill="rgba(94,201,167,.38)"/>
+          <circle cx="318" cy="182" r="4.5" fill="rgba(94,201,167,.45)"/>
+          <circle cx="265" cy="205" r="3.5" fill="rgba(94,201,167,.3)"/>
+          <circle cx="300" cy="210" r="4" fill="rgba(94,201,167,.35)"/>
+          <circle cx="338" cy="198" r="3.5" fill="rgba(94,201,167,.3)"/>
+          <circle cx="255" cy="232" r="3" fill="rgba(94,201,167,.25)"/>
+          <circle cx="322" cy="232" r="3" fill="rgba(94,201,167,.25)"/>
+          <circle cx="288" cy="245" r="3" fill="rgba(94,201,167,.22)"/>
+          <!-- Dense connections -->
+          <line x1="252" y1="178" x2="285" y2="165" stroke="rgba(94,201,167,.28)" stroke-width="1.1"/>
+          <line x1="285" y1="165" x2="318" y2="182" stroke="rgba(94,201,167,.28)" stroke-width="1.1"/>
+          <line x1="252" y1="178" x2="265" y2="205" stroke="rgba(94,201,167,.22)" stroke-width=".9"/>
+          <line x1="318" y1="182" x2="338" y2="198" stroke="rgba(94,201,167,.22)" stroke-width=".9"/>
+          <line x1="318" y1="182" x2="300" y2="210" stroke="rgba(94,201,167,.2)" stroke-width=".8"/>
+          <line x1="265" y1="205" x2="300" y2="210" stroke="rgba(94,201,167,.2)" stroke-width=".8"/>
+          <line x1="300" y1="210" x2="322" y2="232" stroke="rgba(94,201,167,.18)" stroke-width=".7"/>
+          <line x1="265" y1="205" x2="255" y2="232" stroke="rgba(94,201,167,.15)" stroke-width=".7"/>
+          <line x1="300" y1="210" x2="288" y2="245" stroke="rgba(94,201,167,.15)" stroke-width=".7"/>
+          <line x1="338" y1="198" x2="322" y2="232" stroke="rgba(94,201,167,.15)" stroke-width=".7"/>
+          <!-- Cross-connections for extra density -->
+          <line x1="252" y1="178" x2="318" y2="182" stroke="rgba(94,201,167,.1)" stroke-width=".6" stroke-dasharray="2,2"/>
+          <line x1="285" y1="165" x2="300" y2="210" stroke="rgba(94,201,167,.08)" stroke-width=".6" stroke-dasharray="2,2"/>
+          <text x="293" y="275" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="rgba(94,201,167,.38)" letter-spacing=".3">SETELAH LATIHAN</text>
+
+          <!-- Top label -->
+          <text x="200" y="110" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="rgba(245,243,238,.16)" letter-spacing=".5">NEURAL PATHWAY</text>
+          <text x="200" y="122" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="rgba(245,243,238,.16)" letter-spacing=".5">KEPERCAYAAN DIRI</text>
+          <!-- Divider line -->
+          <line x1="60" y1="133" x2="340" y2="133" stroke="rgba(245,243,238,.06)" stroke-width=".6"/>
+
+          <!-- Brain wave at bottom -->
+          <path d="M30 390 C65 368 88 412 123 390 C158 368 181 412 216 390 C251 368 274 412 309 390 C344 368 367 412 400 390"
+            fill="none" stroke="rgba(245,243,238,.07)" stroke-width=".8"/>
+        </svg>
+        <div class="header">
+          <span class="pillar-tag">Career Neuroscience · P3</span>
+          <span>01 / 07</span>
+        </div>
+        <div class="body">
+          <h1>Kamu lihat rekan bicara percaya diri di depan semua orang dan mikir: <em>mereka memang tipe itu.</em></h1>
+          <p class="lead">Neurosains bilang tidak ada yang lahir dengan neural pathway kepercayaan diri yang sudah jadi. Yang kamu lihat adalah otak yang sudah membangunnya.</p>
+        </div>
+        <div class="swipe"><span>Geser</span><span class="arrow">→</span></div>
+      </section>
+
+      <!-- SLIDE 2 — MYTH BUSTER -->
+      <section class="slide bg-light s2">
+        <div class="header">
+          <span class="pillar-tag">Mitos vs Fakta</span>
+          <span>02 / 07</span>
+        </div>
+        <div class="eyebrow">Myth Buster · Formula A</div>
+        <h2>Percaya diri bukan kepribadian bawaan. <em>Ini neural pathway</em> yang bisa dibangun.</h2>
+        <div class="compare">
+          <div class="compare-row compare-myth">
+            <div class="label">Mitos yang melumpuhkan</div>
+            Ada orang yang memang tipe percaya diri — lahir dengan kepribadian seperti itu. Kalau kamu tidak punya itu dari awal, tidak banyak yang bisa berubah secara signifikan.
+          </div>
+          <div class="compare-row compare-fact">
+            <div class="label">Fakta neurosains</div>
+            Kepercayaan diri adalah pola aktivasi neural yang dibangun lewat pengulangan spesifik. Setiap kali otak berhasil menavigasi situasi yang menantang, koneksi yang mendasari "aku bisa melakukan ini" diperkuat secara struktural.
+          </div>
+        </div>
+        <p class="note">Ini bukan motivasi — ini neuroplasticity. Penelitian neuroimaging menunjukkan bahwa self-efficacy yang tinggi berkorelasi langsung dengan pola aktivasi prefrontal cortex yang berbeda dan terukur. Dan pola itu bisa dibentuk.</p>
+        <div class="footer"><span>NEURO DAILY</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 3 — MECHANISM -->
+      <section class="slide bg-dark s3">
+        <div class="header">
+          <span class="pillar-tag">Dua mekanisme di baliknya</span>
+          <span>03 / 07</span>
+        </div>
+        <h2>Kepercayaan diri bekerja di level <em>neural — dan bisa dilatih</em> seperti otot.</h2>
+        <div class="term">
+          <div class="name">Self-Efficacy & Neural Encoding</div>
+          <div class="def">Keyakinan tentang kemampuan sendiri secara langsung mengubah pola aktivasi otak: self-efficacy tinggi → PFC aktif, amygdala teredam → respons tenang dan fokus. Self-efficacy rendah → amygdala aktif, PFC terblokir → freeze atau overthinking. (Bandura, 1997)</div>
+        </div>
+        <div class="term term-b">
+          <div class="name">Hebbian Plasticity (LTP)</div>
+          <div class="def">"Neurons that fire together, wire together." Setiap kali berhasil menavigasi situasi menantang, koneksi neural untuk "aku mampu" diperkuat — Long-Term Potentiation. Diulang cukup sering: ini jadi respons default, bukan pilihan yang membutuhkan usaha. (Hebb, 1949 · Modern LTP research)</div>
+        </div>
+        <div class="combo"><strong>Artinya:</strong> orang yang terlihat "tipe percaya diri" tidak lahir berbeda — mereka sudah cukup sering mengaktifkan dan memperkuat pathway itu hingga jadi otomatis.</div>
+        <p class="source">Bandura (1997) · Self-Efficacy: The Exercise of Control · Hebb (1949) · The Organization of Behavior</p>
+      </section>
+
+      <!-- SLIDE 4 — 4 TITIK MEMBANGUN PATHWAY -->
+      <section class="slide bg-light s4">
+        <div class="header">
+          <span class="pillar-tag">Di sini pathway terbentuk</span>
+          <span>04 / 07</span>
+        </div>
+        <h2>Pathway confidence dibangun di <em>momen-momen kecil ini</em> — bukan dari event besar.</h2>
+        <p class="intro">Empat kondisi di mana LTP untuk kepercayaan diri paling kuat terbentuk di konteks karir.</p>
+        <div class="block-list">
+          <div class="block-item">
+            <span class="block-num">01</span>
+            <div class="block-body">
+              <div class="block-title">Setiap kali menyampaikan pendapat meski tidak diminta</div>
+              <div class="block-sub">Satu pertanyaan di meeting lebih efektif dari persiapan 2 minggu untuk 1 presentasi besar. Pengulangan kecil yang konsisten membangun pathway jauh lebih kuat dari event besar yang jarang.</div>
+            </div>
+          </div>
+          <div class="block-item">
+            <span class="block-num">02</span>
+            <div class="block-body">
+              <div class="block-title">Setelah melakukan sesuatu yang "terlalu besar" untuk kamu</div>
+              <div class="block-sub">Accomplishment yang melampaui ekspektasi internal memicu dopamine dan norepinephrine paling kuat — ini saat pathway diperkuat paling signifikan. Otak literally mencatat: "aku bisa."</div>
+            </div>
+          </div>
+          <div class="block-item">
+            <span class="block-num">03</span>
+            <div class="block-body">
+              <div class="block-title">Saat mengganti framing dari ancaman ke tantangan</div>
+              <div class="block-sub">Appraisal theory: cara otak menilai situasi (threat vs challenge) mengubah neurokimia secara langsung. Cortisol vs norepinephrine. Framing bisa diubah secara sadar — dan itu mengubah respons neural.</div>
+            </div>
+          </div>
+          <div class="block-item">
+            <span class="block-num">04</span>
+            <div class="block-body">
+              <div class="block-title">Saat failure di-process secara konstruktif, bukan dihindari</div>
+              <div class="block-sub">Failure yang dianalisis dengan tenang memperkuat pathway confidence — otak encode "aku bisa pulih." Failure yang dihindari melemahkan pathway dan memperkuat avoidance loop.</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>04 — TITIK PEMBENTUKAN</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 5 — STAT -->
+      <section class="slide bg-teal s5">
+        <div class="header">
+          <span class="pillar-tag" style="color:#fff">Angkanya</span>
+          <span>05 / 07</span>
+        </div>
+        <p class="copy" style="margin-top:20px">Kebiasaan neural bukan terbentuk dalam semalam. Tapi juga bukan sesuatu yang harus menunggu bertahun-tahun. <strong>Ada angka spesifik dari riset.</strong></p>
+        <div class="stat-big">
+          <span class="n">66<em>hr</em></span>
+          <span class="u">rata-rata waktu membentuk kebiasaan neural baru</span>
+        </div>
+        <div class="insight">
+          Situasi menantang + tindakan berhasil →<br>
+          Dopamine/NE perkuat koneksi (LTP) →<br>
+          Diulang konsisten 66+ hari →<br>
+          <span style="color:var(--amber)">────────────────────────────────</span><br>
+          Pathway jadi respons default →<br>
+          "tipe percaya diri" yang kamu lihat<br>
+          adalah orang yang sudah di titik ini<br>
+          <span style="opacity:.55;font-size:9.5px">*Lally et al. (2010) · Eur J Social Psychology · n=96</span>
+        </div>
+        <div class="footer"><span>05 — DATA</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 6 — STRATEGY -->
+      <section class="slide bg-dark s6">
+        <div class="header">
+          <span class="pillar-tag">Cara membangunnya</span>
+          <span>06 / 07</span>
+        </div>
+        <h2>Bangun pathwaynya secara sadar. <em>Otak kamu akan mengikuti.</em></h2>
+        <p class="ps">Tidak ada shortcut untuk LTP — tapi ada cara yang lebih efisien dari yang kebanyakan orang lakukan. Pengulangan yang benar lebih penting dari intensitas.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <div class="step-title">Micro-exposures harian — kecil tapi konsisten</div>
+              <div class="step-desc">Satu pertanyaan di meeting. Satu opini di grup chat. Satu email yang biasanya kamu tunda. Setiap tindakan kecil adalah satu repetisi LTP — jauh lebih efektif dari persiapan mental yang tidak diikuti tindakan.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <div class="step-title">Encode keberhasilan secara eksplisit — lawan negativity bias</div>
+              <div class="step-desc">Otak secara default mengenkode momen negatif lebih kuat (negativity bias). Secara aktif mencatat 1–2 keberhasilan kecil setiap hari secara harfiah membantu menyeimbangkan dan memperkuat pathway yang benar.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <div class="step-title">Process goal > outcome goal untuk LTP yang konsisten</div>
+              <div class="step-desc">"Aku akan menyampaikan satu pendapat" > "Aku harus tampil sempurna." Process goal yang bisa dikontrol menghasilkan accomplishment signal yang konsisten — hasilnya LTP yang stabil, bukan sporadis.</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>06 — METODE BERBASIS LTP</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 7 — CTA -->
+      <section class="slide bg-light s7">
+        <div class="header">
+          <span class="pillar-tag">Sekarang giliranmu</span>
+          <span>07 / 07</span>
+        </div>
+        <div>
+          <p class="lead-q">Situasi kerja mana yang paling menguras <em>kepercayaan diri kamu?</em></p>
+          <p class="ask">Pilih di komentar: meeting / presentasi / negosiasi / one-on-one dengan atasan / lainnya. Dan kalau sudah berhasil overcome salah satunya — cerita singkat di komentar.</p>
+        </div>
+        <div class="actions">
+          <div class="btn">
+            <span>Simpan — baca lagi sebelum situasi yang paling berat</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+          </div>
+          <div class="btn">
+            <span>Kirim ke teman yang sering bilang "aku emang ga PD"</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </div>
+        <div class="signoff">
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="1.5"><path d="M4 14c0-5 3-8 8-8 4 0 6 2 6 5 0 2-1.5 3.5-4 3.5-2 0-3 1-3 2.5 0 1.5 1 2.5 2.5 2.5"/><circle cx="15" cy="9" r="1" fill="#1A6B5A"/></svg>
+            <span class="tag">Neuro Daily</span>
+          </div>
+          <div class="sub">Kerja lebih cerdas, bukan lebih keras. Ini sains-nya.</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="caption-panel">
+  <div class="label">Caption · Formula A — Myth Buster · ≤ 500 karakter</div>
+  <p><strong style="color:var(--parchment)">Kamu lihat orang bicara percaya diri di depan semua orang dan pikir: mereka memang tipe itu.</strong></p>
+  <p>Neurosains bilang tidak ada yang lahir dengan neural pathway kepercayaan diri yang sudah jadi. Yang kamu lihat adalah otak yang sudah membangunnya lewat pengulangan — dan otak kamu bisa melakukan hal yang sama.</p>
+  <p>Situasi kerja yang paling menguras kepercayaan diri kamu: meeting / presentasi / negosiasi / lainnya?</p>
+  <span class="hash">#NeuroDaily #NeurosainsKerja #PercayaDiri #SelfConfidence #Karir #KerjaCerdas #CareerNeuroscience</span>
+  <div class="char-count" id="charCount"></div>
+</div>
+
+<div class="controls">
+  <button id="prev">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next">›</button>
+</div>
+
+<script>
+const track=document.getElementById('track'),dotsEl=document.getElementById('dots'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next');
+const total=track.children.length;let i=0;
+for(let k=0;k<total;k++){const b=document.createElement('button');b.className='dot'+(k===0?' active':'');b.addEventListener('click',()=>go(k));dotsEl.appendChild(b)}
+const dots=[...dotsEl.children];
+function go(n){i=Math.max(0,Math.min(total-1,n));track.style.transform=`translateX(-${i*100}%)`;dots.forEach((d,k)=>d.classList.toggle('active',k===i));counter.textContent=`${i+1} / ${total}`;prevBtn.disabled=i===0;nextBtn.disabled=i===total-1}
+prevBtn.addEventListener('click',()=>go(i-1));nextBtn.addEventListener('click',()=>go(i+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(i+1);if(e.key==='ArrowLeft')go(i-1)});
+let sx=0,dx=0,drag=false;const vp=document.querySelector('.viewport');
+vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;drag=true;dx=0});
+vp.addEventListener('touchmove',e=>{if(!drag)return;dx=e.touches[0].clientX-sx});
+vp.addEventListener('touchend',()=>{if(!drag)return;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));drag=false});
+const captionText=`Kamu lihat orang bicara percaya diri di depan semua orang dan pikir: mereka memang tipe itu.
+
+Neurosains bilang tidak ada yang lahir dengan neural pathway kepercayaan diri yang sudah jadi. Yang kamu lihat adalah otak yang sudah membangunnya lewat pengulangan — dan otak kamu bisa melakukan hal yang sama.
+
+Situasi kerja yang paling menguras kepercayaan diri kamu: meeting / presentasi / negosiasi / lainnya?
+
+#NeuroDaily #NeurosainsKerja #PercayaDiri #SelfConfidence #Karir #KerjaCerdas #CareerNeuroscience`;
+const cc=document.getElementById('charCount'),len=captionText.length;
+cc.textContent=`${len} / 500 karakter ${len<=500?'✓':'⚠ Melebihi batas Threads'}`;
+if(len>500)cc.style.color='#e05252';
+go(0);
+</script>
+</body>
+</html>

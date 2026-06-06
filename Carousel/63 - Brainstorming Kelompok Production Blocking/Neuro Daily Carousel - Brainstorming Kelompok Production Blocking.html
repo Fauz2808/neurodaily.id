@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Neuro Daily — Brainstorming Kelompok & Production Blocking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;--red:#D96A6A;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0a0a0a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 100px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#7a807d;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(540px,94vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;position:relative;overflow:hidden}
+.cvs{width:1080px;height:1350px;transform-origin:top left;position:absolute;top:0;left:0;font-family:'DM Sans',sans-serif}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.cvs .head,.cvs .foot{position:absolute;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 64px;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase}
+.cvs .head{top:0;height:78px;border-bottom:1px solid rgba(245,243,238,.12)}
+.cvs .foot{bottom:0;height:64px;border-top:1px solid rgba(245,243,238,.12)}
+.bg-light .head,.bg-light .foot{border-color:rgba(13,46,40,.12)}
+.bg-teal .head,.bg-teal .foot{border-color:rgba(245,243,238,.18)}
+.cvs .head span,.cvs .foot span{opacity:.55}
+.cvs .head .dotmark::before{content:"◆ ";color:var(--green);opacity:1}
+.bg-light .head .dotmark::before{color:var(--teal)}
+.bg-teal .head .dotmark::before{color:var(--amber)}
+.hippo-mark{display:flex;align-items:center;gap:10px;opacity:1!important}
+.hippo-mark svg{width:30px;height:30px;flex-shrink:0}
+.body{position:absolute;top:78px;bottom:64px;left:0;right:0;padding:52px 72px;display:flex;flex-direction:column}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.bg-dark .eyebrow{color:var(--green)}
+.bg-light .eyebrow{color:var(--teal)}
+.bg-teal .eyebrow{color:var(--amber)}
+.rule{width:48px;height:3px;border-radius:2px;margin-top:18px}
+.bg-dark .rule{background:var(--green)}
+.bg-light .rule{background:var(--teal)}
+.bg-teal .rule{background:var(--amber)}
+
+/* S1 */
+.s1 .ghost{position:absolute;font-family:'DM Serif Display',serif;font-size:680px;line-height:.88;color:rgba(94,201,167,.04);pointer-events:none;user-select:none;right:-30px;top:30px;letter-spacing:-.05em}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:88px;line-height:1.02;letter-spacing:-.02em;margin-top:44px;max-width:840px;position:relative;z-index:2}
+.s1 h1 em{font-style:italic;color:var(--red)}
+.s1 .lead{margin-top:30px;font-size:24px;line-height:1.65;opacity:.72;max-width:680px;font-weight:300;position:relative;z-index:2}
+.s1 .bs-compare{position:absolute;bottom:78px;left:72px;right:72px;z-index:2;display:flex;gap:16px}
+.bs-box{flex:1;padding:20px 22px;border-radius:12px}
+.bs-box.myth{background:rgba(217,106,106,.08);border:1.5px solid rgba(217,106,106,.2)}
+.bs-box.fact{background:rgba(94,201,167,.08);border:1.5px solid rgba(94,201,167,.2)}
+.bs-tag{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.bs-box.myth .bs-tag{color:var(--red)}
+.bs-box.fact .bs-tag{color:var(--green)}
+.bs-text{font-size:22px;line-height:1.5;font-weight:300;opacity:.85}
+
+/* S2 */
+.s2 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.06;letter-spacing:-.02em;margin-top:32px;color:var(--forest);max-width:860px}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .stat-row{margin-top:36px;display:flex;gap:20px}
+.stat-card{flex:1;padding:28px 24px;border-radius:16px;display:flex;flex-direction:column;gap:10px}
+.stat-card.a{background:rgba(217,106,106,.06);border:1.5px solid rgba(217,106,106,.22)}
+.stat-card.b{background:rgba(201,169,110,.06);border:1.5px solid rgba(201,169,110,.2)}
+.stat-num{font-family:'DM Serif Display',serif;font-size:68px;line-height:1;letter-spacing:-.03em}
+.stat-card.a .stat-num{color:var(--red)}
+.stat-card.b .stat-num{color:var(--amber)}
+.stat-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;opacity:.6;color:var(--forest)}
+.stat-desc{font-size:22px;line-height:1.55;opacity:.65;font-weight:300;color:var(--forest)}
+.s2 .insight-cards{margin-top:24px;display:flex;flex-direction:column;gap:12px}
+.insight-card{display:flex;align-items:flex-start;gap:16px;padding:20px 24px;border-radius:12px;background:rgba(13,46,40,.04);border:1px solid rgba(13,46,40,.1)}
+.insight-card .ic-icon{font-family:'DM Serif Display',serif;font-style:italic;font-size:36px;line-height:1;color:var(--teal);flex-shrink:0;margin-top:2px}
+.insight-card .ic-title{font-size:24px;font-weight:500;color:var(--forest);margin-bottom:4px}
+.insight-card .ic-text{font-size:22px;line-height:1.55;color:var(--forest);opacity:.65;font-weight:300}
+.s2 .source{margin-top:auto;font-size:20px;letter-spacing:.04em;color:var(--forest);opacity:.42;font-family:'JetBrains Mono',monospace;line-height:1.7;border-top:1px solid rgba(13,46,40,.1);padding-top:16px}
+
+/* S3 */
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:66px;line-height:1.06;letter-spacing:-.02em;margin-top:40px;max-width:860px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .mech-cards{margin-top:44px;display:flex;flex-direction:column;gap:18px}
+.mech-card{padding:26px 30px;border-radius:14px;display:flex;align-items:flex-start;gap:22px}
+.mech-card.a{background:rgba(94,201,167,.07);border:1.5px solid rgba(94,201,167,.2)}
+.mech-card.b{background:rgba(201,169,110,.07);border:1.5px solid rgba(201,169,110,.22)}
+.mech-card.c{background:rgba(217,106,106,.06);border:1.5px solid rgba(217,106,106,.18)}
+.mech-card .mc-icon{width:52px;height:52px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-style:italic;font-size:26px}
+.mech-card.a .mc-icon{background:rgba(94,201,167,.18);color:var(--green)}
+.mech-card.b .mc-icon{background:rgba(201,169,110,.18);color:var(--amber)}
+.mech-card.c .mc-icon{background:rgba(217,106,106,.15);color:var(--red)}
+.mech-card .mc-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px}
+.mech-card.a .mc-label{color:var(--green)}
+.mech-card.b .mc-label{color:var(--amber)}
+.mech-card.c .mc-label{color:var(--red)}
+.mech-card .mc-text{font-size:24px;line-height:1.55;font-weight:300;opacity:.88}
+.s3 .bottom-note{margin-top:auto;padding:20px 28px;border-radius:12px;background:rgba(245,243,238,.05);border:1px solid rgba(245,243,238,.12);font-size:24px;line-height:1.6;opacity:.65;font-weight:300;display:flex;align-items:center;gap:14px}
+.s3 .note-prefix{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--amber);flex-shrink:0}
+
+/* S4 */
+.s4 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-.02em;margin-top:36px;max-width:860px}
+.s4 h2 em{font-style:italic;color:var(--amber)}
+.s4 .def-card{margin-top:28px;background:rgba(245,243,238,.1);border:1.5px solid rgba(245,243,238,.2);border-radius:14px;padding:24px 30px}
+.s4 .def-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+.s4 .def-text{font-size:22px;line-height:1.65;opacity:.88;font-weight:300}
+.s4 .block-list{margin-top:26px;display:flex;flex-direction:column;gap:0}
+.block-item{display:flex;align-items:flex-start;gap:22px;padding:18px 0}
+.block-item+.block-item{border-top:1px solid rgba(245,243,238,.1)}
+.block-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.block-item.b1 .block-dot{background:var(--red)}
+.block-item.b2 .block-dot{background:rgba(217,106,106,.7)}
+.block-item.b3 .block-dot{background:rgba(201,169,110,.7)}
+.block-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+.block-item.b1 .block-label{color:var(--red)}
+.block-item.b2 .block-label{color:rgba(217,106,106,.8)}
+.block-item.b3 .block-label{color:var(--amber)}
+.block-text{font-size:22px;line-height:1.5;opacity:.75;font-weight:300}
+.s4 .bottom-note{margin-top:auto;padding:18px 24px;border-radius:12px;background:rgba(245,243,238,.07);border:1px solid rgba(245,243,238,.14);font-size:24px;line-height:1.6;opacity:.65;font-weight:300;display:flex;gap:12px;align-items:center}
+.s4 .bottom-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--amber);flex-shrink:0}
+
+/* S5 */
+.s5 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.06;letter-spacing:-.02em;margin-top:36px;color:var(--forest);max-width:860px}
+.s5 h2 em{font-style:italic;color:var(--teal)}
+.s5 .scenarios{margin-top:36px;display:flex;flex-direction:column;gap:18px}
+.scenario{padding:26px 28px;border-radius:14px;display:flex;align-items:flex-start;gap:20px}
+.scenario.bad{background:rgba(217,106,106,.05);border:1.5px solid rgba(217,106,106,.18)}
+.scenario.good{background:rgba(26,107,90,.06);border:1.5px solid rgba(26,107,90,.22)}
+.scenario .s-tag{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;padding:5px 14px;border-radius:99px;flex-shrink:0;margin-top:3px}
+.scenario.bad .s-tag{background:var(--red);color:#fff}
+.scenario.good .s-tag{background:var(--teal);color:#fff}
+.scenario .s-title{font-size:24px;font-weight:500;color:var(--forest);margin-bottom:6px}
+.scenario .s-desc{font-size:22px;line-height:1.6;color:var(--forest);opacity:.65;font-weight:300}
+.s5 .research-note{margin-top:22px;padding:18px 24px;background:rgba(26,107,90,.05);border:1px solid rgba(26,107,90,.15);border-radius:12px;font-size:22px;line-height:1.6;color:var(--forest);font-weight:300}
+.s5 .research-note strong{font-weight:500;color:var(--teal)}
+
+/* S6 */
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:66px;line-height:1.06;letter-spacing:-.02em;margin-top:40px;max-width:860px}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .protocol{margin-top:44px;display:flex;flex-direction:column;gap:0}
+.s6 .p-block{width:100%;padding:26px 32px;border-radius:14px;display:flex;align-items:flex-start;gap:22px}
+.s6 .p-block.a{background:rgba(94,201,167,.1);border:2px solid rgba(94,201,167,.28)}
+.s6 .p-block.b{background:rgba(201,169,110,.1);border:2px solid rgba(201,169,110,.25)}
+.s6 .p-block.c{background:rgba(94,201,167,.16);border:2px solid rgba(94,201,167,.5)}
+.s6 .p-divider{margin:10px 0;border:none;border-top:1px solid rgba(245,243,238,.1)}
+.s6 .p-num{font-family:'DM Serif Display',serif;font-size:48px;line-height:1;flex-shrink:0;margin-top:-4px}
+.s6 .p-block.a .p-num{color:var(--green)}
+.s6 .p-block.b .p-num{color:var(--amber)}
+.s6 .p-block.c .p-num{color:var(--green)}
+.s6 .p-title{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.s6 .p-block.a .p-title{color:var(--green)}
+.s6 .p-block.b .p-title{color:var(--amber)}
+.s6 .p-block.c .p-title{color:var(--green)}
+.s6 .p-desc{font-size:24px;line-height:1.55;opacity:.85;font-weight:300}
+.s6 .p-note{margin-top:22px;font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.04em;color:rgba(245,243,238,.48);line-height:1.9;border-top:1px solid rgba(245,243,238,.1);padding-top:20px}
+.s6 .p-note .punch{color:var(--green);font-weight:500;letter-spacing:.02em}
+
+/* S7 */
+.s7 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:68px;line-height:1.04;letter-spacing:-.02em;margin-top:36px;color:var(--forest);max-width:860px}
+.s7 h2 em{font-style:italic;color:var(--teal)}
+.s7 .sub{margin-top:22px;font-size:24px;line-height:1.65;color:var(--forest);opacity:.65;max-width:800px;font-weight:300}
+.s7 .discussion{margin-top:36px;display:flex;flex-direction:column;gap:14px}
+.s7 .disc-item{display:flex;align-items:center;gap:18px;padding:20px 24px;border:1.5px solid rgba(13,46,40,.12);border-radius:14px;font-size:22px;color:var(--forest);background:rgba(255,255,255,.46);line-height:1.4}
+.s7 .disc-item .ic{width:40px;height:40px;border-radius:10px;background:rgba(26,107,90,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.s7 .disc-item .ic svg{width:22px;height:22px;color:var(--teal)}
+.s7 .shift-note{margin-top:24px;padding:20px 24px;border-radius:12px;border:1px dashed rgba(26,107,90,.35);font-size:24px;line-height:1.6;color:var(--forest);opacity:.62;font-weight:300;display:flex;align-items:center;gap:14px}
+.s7 .shift-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:24px;color:var(--teal);flex-shrink:0}
+
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:24px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:46px;height:46px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.1em;align-self:center;padding:0 10px}
+.caption-panel{width:min(540px,94vw);margin-top:32px;padding:26px 26px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:20px;line-height:1.7}
+.caption-panel .cap-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+.caption-panel p{margin-bottom:12px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel strong{color:var(--parchment);font-weight:500}
+.caption-panel .hash{color:#7a8480;font-size:18px;margin-top:16px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Vol. 63 · Brainstorming · Production Blocking ]</span>
+</div>
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- S1 DARK -->
+      <section class="slide">
+        <div class="cvs bg-dark s1">
+          <div class="head"><span class="dotmark">Neuro Daily · Vol. 63 · Kolaborasi & Kognisi</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Production Blocking · Group Creativity</div>
+            <div class="rule"></div>
+            <div class="ghost">⊞</div>
+            <h1>Brainstorming<br>ramai-ramai justru<br><em>membunuh ide.</em></h1>
+            <p class="lead">Sains sudah membuktikannya sejak 1958. Brainstorming klasik — kumpul, lempar ide bareng — menghasilkan lebih sedikit dan lebih buruk dari bekerja sendiri. Ini alasannya.</p>
+            <div class="bs-compare">
+              <div class="bs-box myth">
+                <div class="bs-tag">Mitos</div>
+                <div class="bs-text">Lebih banyak kepala = lebih banyak ide</div>
+              </div>
+              <div class="bs-box fact">
+                <div class="bs-tag">Fakta</div>
+                <div class="bs-text">Sendiri dulu, lalu kolaborasi = hasil lebih baik</div>
+              </div>
+            </div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>01 / 07</span></div>
+        </div>
+      </section>
+
+      <!-- S2 LIGHT -->
+      <section class="slide">
+        <div class="cvs bg-light s2">
+          <div class="head"><span class="dotmark">Brainstorming Research · 60+ Years of Data</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Data yang kontra-intuitif</div>
+            <div class="rule"></div>
+            <h2>Riset selama 60 tahun: brainstorming kelompok <em>tidak bekerja</em> seperti yang dikira.</h2>
+            <div class="stat-row">
+              <div class="stat-card a">
+                <div class="stat-num">−39%</div>
+                <div class="stat-label">Lebih Sedikit</div>
+                <div class="stat-desc">Ide yang dihasilkan grup brainstorming vs nominal group (orang sama bekerja sendiri-sendiri) dalam riset Mullen et al.</div>
+              </div>
+              <div class="stat-card b">
+                <div class="stat-num">1958</div>
+                <div class="stat-label">Pertama Dibuktikan</div>
+                <div class="stat-desc">Tahun studi pertama Taylor et al. membuktikan kelompok nominal lebih produktif dari kelompok interaktif</div>
+              </div>
+            </div>
+            <div class="insight-cards">
+              <div class="insight-card">
+                <div class="ic-icon">→</div>
+                <div>
+                  <div class="ic-title">Bukan soal orangnya</div>
+                  <div class="ic-text">Orang yang sama menghasilkan lebih banyak ide jika bekerja sendiri lebih dulu, baru kemudian berbagi hasilnya secara berkelompok</div>
+                </div>
+              </div>
+              <div class="insight-card">
+                <div class="ic-icon">→</div>
+                <div>
+                  <div class="ic-title">Evaluasi gabungan</div>
+                  <div class="ic-text">Kualitas ide dari brainwriting (tulis sendiri) juga terbukti lebih tinggi — lebih beragam dan lebih orisinal secara rata-rata</div>
+                </div>
+              </div>
+            </div>
+            <div class="source">Taylor, Berry & Block (1958) · Mullen, Johnson & Salas (1991) · Paulus & Yang (2000)</div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>02 / 07</span></div>
+        </div>
+      </section>
+
+      <!-- S3 DARK -->
+      <section class="slide">
+        <div class="cvs bg-dark s3">
+          <div class="head"><span class="dotmark">Production Blocking · Three Killers</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Tiga alasan neurologis kenapa ini terjadi</div>
+            <div class="rule"></div>
+            <h2>Tiga mekanisme yang <em>membunuh ide</em> dalam sesi brainstorming.</h2>
+            <div class="mech-cards">
+              <div class="mech-card a">
+                <div class="mc-icon">⊘</div>
+                <div>
+                  <div class="mc-label">Production Blocking</div>
+                  <div class="mc-text">Hanya satu orang bisa bicara dalam satu waktu — sementara otak yang lain harus menunggu, mendengar, dan melupakan ide yang baru saja muncul. Working memory overflow</div>
+                </div>
+              </div>
+              <div class="mech-card b">
+                <div class="mc-icon">↓</div>
+                <div>
+                  <div class="mc-label">Evaluation Apprehension</div>
+                  <div class="mc-text">Amygdala aktif ketika ada orang lain yang mendengarkan — otak self-censor secara otomatis, menyaring ide yang "terasa aneh" sebelum diucapkan</div>
+                </div>
+              </div>
+              <div class="mech-card c">
+                <div class="mc-icon">⟳</div>
+                <div>
+                  <div class="mc-label">Social Loafing</div>
+                  <div class="mc-text">Dalam kelompok, otak secara otomatis mengurangi effort kognitifnya — "yang lain juga mikir kok." Kontribusi individual rata-rata turun drastis</div>
+                </div>
+              </div>
+            </div>
+            <div class="bottom-note">
+              <span class="note-prefix">Paradoks:</span>
+              Semakin besar grupnya, semakin besar production blocking — tapi kita terus melakukannya.
+            </div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>03 / 07</span></div>
+        </div>
+      </section>
+
+      <!-- S4 TEAL -->
+      <section class="slide">
+        <div class="cvs bg-teal s4">
+          <div class="head"><span class="dotmark">Production Blocking · Definition</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Kenapa otak kita tidak dirancang untuk ini</div>
+            <div class="rule"></div>
+            <h2>Otak tidak bisa <em>mendengar</em> dan <em>menghasilkan ide</em> secara bersamaan.</h2>
+            <div class="def-card">
+              <div class="def-label">Production Blocking</div>
+              <div class="def-text">Hambatan kognitif yang terjadi saat seseorang harus mendengarkan orang lain berbicara sambil mencoba mempertahankan idenya sendiri di working memory. Karena kapasitas working memory terbatas, salah satu harus dikorbankan — dan biasanya idenyalah yang hilang.</div>
+            </div>
+            <div class="block-list">
+              <div class="block-item b1">
+                <div class="block-dot"></div>
+                <div>
+                  <div class="block-label">Working Memory Overload</div>
+                  <div class="block-text">Mencoba mempertahankan ide sambil mendengar orang lain = kapasitas penuh, ide baru tidak bisa masuk atau tersimpan</div>
+                </div>
+              </div>
+              <div class="block-item b2">
+                <div class="block-dot"></div>
+                <div>
+                  <div class="block-label">Idea Anchoring</div>
+                  <div class="block-text">Mendengar ide orang lain lebih dulu "mengunci" jalur berpikir kita — ide berikutnya cenderung serupa, bukan orisinal</div>
+                </div>
+              </div>
+              <div class="block-item b3">
+                <div class="block-dot"></div>
+                <div>
+                  <div class="block-label">Anxiety Filter</div>
+                  <div class="block-text">Rasa takut dinilai menyaring 30-50% ide sebelum diucapkan — terutama ide yang paling unconventional</div>
+                </div>
+              </div>
+            </div>
+            <div class="bottom-note">
+              <span class="bottom-arrow">→</span>
+              Ide terbaik sering mati diam-diam sebelum sempat keluar dari mulut pemikirinya.
+            </div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(201,169,110,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#C9A96E">N</text></svg>NEURODAILY.ID</span><span>04 / 07</span></div>
+        </div>
+      </section>
+
+      <!-- S5 LIGHT -->
+      <section class="slide">
+        <div class="cvs bg-light s5">
+          <div class="head"><span class="dotmark">Brainstorming vs Brainwriting</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Metode lama vs metode yang terbukti</div>
+            <div class="rule"></div>
+            <h2>Brainstorming vs <em>Brainwriting</em> — perbedaannya mengejutkan.</h2>
+            <div class="scenarios">
+              <div class="scenario bad">
+                <div class="s-tag">Brainstorming</div>
+                <div>
+                  <div class="s-title">Semua orang bicara bergantian</div>
+                  <div class="s-desc">Production blocking aktif sepanjang sesi. Ide tersaring sebelum diucapkan. Suara paling keras mendominasi. Hasil: volume ide sedikit, kualitas condong ke yang aman</div>
+                </div>
+              </div>
+              <div class="scenario good">
+                <div class="s-tag">Brainwriting</div>
+                <div>
+                  <div class="s-title">Tulis sendiri dulu, baru share</div>
+                  <div class="s-desc">10 menit sendiri → tulis semua ide → baru diskusi bersama. Production blocking hilang. Social loafing turun. Semua orang berkontribusi setara. Hasilnya: lebih banyak, lebih beragam</div>
+                </div>
+              </div>
+            </div>
+            <div class="research-note">Studi Paulus & Yang: <strong>brainwriting menghasilkan 42% lebih banyak ide</strong> dari brainstorming klasik — dengan kualitas rata-rata yang lebih tinggi.</div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>05 / 07</span></div>
+        </div>
+      </section>
+
+      <!-- S6 DARK -->
+      <section class="slide">
+        <div class="cvs bg-dark s6">
+          <div class="head"><span class="dotmark">Better Brainstorm · Three Methods</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Format yang benar-benar berhasil</div>
+            <div class="rule"></div>
+            <h2>Tiga format yang <em>menghilangkan</em> production blocking.</h2>
+            <div class="protocol">
+              <div class="p-block a">
+                <div class="p-num">1</div>
+                <div>
+                  <div class="p-title">Solo First, Share Second</div>
+                  <div class="p-desc">Beri semua orang 10-15 menit menulis ide sendiri sebelum diskusi dimulai. Sederhana dan terbukti paling efektif — langsung eliminasi production blocking</div>
+                </div>
+              </div>
+              <hr class="p-divider"/>
+              <div class="p-block b">
+                <div class="p-num">2</div>
+                <div>
+                  <div class="p-title">Async Ideation</div>
+                  <div class="p-desc">Kirim brief ide 24 jam sebelum meeting. Otak punya waktu untuk incubation — periode berpikir bawah sadar yang sering menghasilkan ide paling orisinal</div>
+                </div>
+              </div>
+              <hr class="p-divider"/>
+              <div class="p-block c">
+                <div class="p-num">3</div>
+                <div>
+                  <div class="p-title">Anonymous Contribution</div>
+                  <div class="p-desc">Kumpulkan ide tanpa nama sebelum dibagikan — eliminasi evaluation apprehension. Otak tidak lagi self-censor karena tidak ada "pemilik" ide yang bisa dihakimi</div>
+                </div>
+              </div>
+            </div>
+            <div class="p-note">
+              Kolaborasi bukan tentang <span class="punch">waktu bersama yang lebih lama</span> — tapi tentang desain interaksi yang menghormati cara kerja otak.
+            </div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>06 / 07</span></div>
+        </div>
+      </section>
+
+      <!-- S7 LIGHT -->
+      <section class="slide">
+        <div class="cvs bg-light s7">
+          <div class="head"><span class="dotmark">Collaboration · Better Together</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Refleksi & diskusi</div>
+            <div class="rule"></div>
+            <h2>Ide terbaik lahir dalam <em>keheningan</em> — bukan keramaian.</h2>
+            <p class="sub">Kolaborasi kelompok tetap penting — tapi untuk evaluasi, koneksi, dan keputusan. Bukan untuk generasi ide. Beri otak ruang sendiri dulu, baru bawa ke meja bersama.</p>
+            <div class="discussion">
+              <div class="disc-item">
+                <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
+                Di kantor kamu, kapan terakhir ada sesi brainstorming yang benar-benar menghasilkan ide breakthrough?
+              </div>
+              <div class="disc-item">
+                <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+                Apakah ada ide yang pernah kamu tahan karena takut dianggap aneh dalam meeting?
+              </div>
+              <div class="disc-item">
+                <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                Apa satu perubahan format yang bisa kamu usulkan untuk meeting berikutnya?
+              </div>
+            </div>
+            <div class="shift-note">
+              <span class="shift-arrow">→</span>
+              Bukan lebih banyak meeting — tapi desain meeting yang menghormati cara otak bekerja paling baik.
+            </div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>07 / 07</span></div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<div class="dots">
+  <button class="dot active" onclick="goTo(0)"></button>
+  <button class="dot" onclick="goTo(1)"></button>
+  <button class="dot" onclick="goTo(2)"></button>
+  <button class="dot" onclick="goTo(3)"></button>
+  <button class="dot" onclick="goTo(4)"></button>
+  <button class="dot" onclick="goTo(5)"></button>
+  <button class="dot" onclick="goTo(6)"></button>
+</div>
+<div class="controls">
+  <button id="prev" onclick="prev()" disabled>←</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next" onclick="next()">→</button>
+</div>
+
+<div class="caption-panel">
+  <div class="cap-label">Caption · Instagram / TikTok</div>
+  <p>Brainstorming ramai-ramai justru membunuh ide. Dan sains sudah membuktikannya sejak 1958. 🧠</p>
+  <p>Riset selama 60+ tahun konsisten: orang yang sama menghasilkan lebih banyak dan lebih orisinal ide saat bekerja sendiri lebih dulu, dibanding saat langsung brainstorming bersama.</p>
+  <p>Ini bukan soal orang yang introvert atau kurang kontribusi. Ini soal <strong>Production Blocking</strong> — hambatan neurologis yang terjadi saat otak dipaksa mendengar dan menghasilkan ide sekaligus. Working memory tidak bisa melakukan keduanya secara efektif.</p>
+  <p>Solusinya sederhana: <strong>solo first, share second</strong>. 10 menit tulis sendiri sebelum diskusi dimulai. Hasilnya bisa berbeda total.</p>
+  <span class="hash">#NeuroscienceIndonesia #Brainstorming #ProductionBlocking #Brainwriting #NeurodailyID #MeetingYangBaik #Kolaborasi #Inovasi #WorkplaceProductivity</span>
+</div>
+
+<script>
+const track = document.getElementById('track');
+const dots = document.querySelectorAll('.dot');
+const counter = document.getElementById('counter');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+const TOTAL = 7;
+let cur = 0;
+
+function scale() {
+  const vw = document.querySelector('.viewport').offsetWidth;
+  document.querySelectorAll('.cvs').forEach(c => { c.style.transform = `scale(${vw/1080})`; });
+}
+scale();
+window.addEventListener('resize', scale);
+
+function goTo(i) {
+  cur = i;
+  track.style.transform = `translateX(-${cur * 100}%)`;
+  dots.forEach((d, j) => d.classList.toggle('active', j === cur));
+  counter.textContent = `${cur + 1} / ${TOTAL}`;
+  prevBtn.disabled = cur === 0;
+  nextBtn.disabled = cur === TOTAL - 1;
+}
+function prev() { if (cur > 0) goTo(cur - 1); }
+function next() { if (cur < TOTAL - 1) goTo(cur + 1); }
+document.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') prev(); if (e.key === 'ArrowRight') next(); });
+</script>
+</body>
+</html>

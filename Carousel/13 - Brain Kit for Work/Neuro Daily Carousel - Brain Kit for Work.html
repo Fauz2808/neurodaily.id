@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Neuro Daily — Brain Kit for Work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#1a1a1a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#9aa39f;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(440px,92vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;display:flex;flex-direction:column;padding:36px 32px 28px;position:relative;overflow:hidden}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.bg-amber{background:#2A1F0A;color:var(--parchment)}
+.slide .header{display:flex;justify-content:space-between;align-items:center;font-family:'DM Sans',sans-serif;font-weight:500;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.85}
+.bg-light .header{opacity:.7}
+.pillar-tag{display:inline-flex;align-items:center;gap:6px}
+.pillar-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--green)}
+.bg-light .pillar-tag::before{background:var(--teal)}
+.bg-amber .pillar-tag::before{background:var(--amber)}
+.slide .footer{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;opacity:.55;text-transform:uppercase}
+.static-bg{position:absolute;inset:0;pointer-events:none;opacity:.045}
+
+/* SLIDE 1 — HOOK */
+.s1 .body{margin-top:auto;margin-bottom:auto}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:44px;line-height:1.05;letter-spacing:-.01em;color:var(--parchment)}
+.s1 h1 em{color:var(--amber);font-style:italic}
+.s1 .lead{margin-top:18px;font-size:13px;line-height:1.7;opacity:.7;max-width:320px}
+.s1 .swipe{position:absolute;bottom:24px;right:32px;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.s1 .arrow{display:inline-block;animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+
+/* SLIDE 2 — PAIN POINTS */
+.s2{justify-content:space-between}
+.s2 .eyebrow{margin-top:20px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);opacity:.8}
+.s2 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:22px;line-height:1.2;letter-spacing:-.01em;margin-top:8px;color:var(--forest)}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.pain-list{margin-top:14px;display:flex;flex-direction:column;gap:7px}
+.pain-item{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;background:rgba(255,255,255,.55);border:1px solid rgba(13,46,40,.1);border-radius:8px}
+.pain-check{font-size:13px;flex-shrink:0;margin-top:1px}
+.pain-text{font-size:11.5px;line-height:1.4;color:var(--forest);opacity:.8}
+.pain-text strong{font-weight:500;opacity:1}
+.s2 .note{margin-top:10px;font-size:11px;line-height:1.6;color:var(--forest);opacity:.55;font-style:italic}
+
+/* SLIDE 3 — PRODUCT INTRO */
+.s3{justify-content:center;gap:0}
+.s3 .product-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,169,110,.15);border:1px solid rgba(201,169,110,.35);border-radius:99px;padding:7px 16px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:20px}
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:38px;line-height:.95;letter-spacing:-.02em;color:var(--parchment)}
+.s3 h2 em{color:var(--amber);font-style:italic}
+.s3 .subtitle{margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);opacity:.8}
+.s3 .desc{margin-top:16px;font-size:13px;line-height:1.65;color:var(--parchment);opacity:.75;max-width:340px}
+.s3 .desc strong{opacity:1;color:var(--parchment);font-weight:500}
+.s3 .divider{width:40px;height:2px;background:var(--amber);border-radius:2px;margin:18px 0}
+.s3 .meta-row{display:flex;gap:20px}
+.s3 .meta-item{display:flex;flex-direction:column;gap:3px}
+.s3 .meta-label{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--parchment);opacity:.45}
+.s3 .meta-value{font-size:12px;font-weight:500;color:var(--green)}
+
+/* SLIDE 4 — CHAPTERS */
+.s4{justify-content:space-between}
+.s4 .eyebrow{margin-top:20px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);opacity:.8}
+.s4 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:22px;line-height:1.2;margin-top:8px;color:var(--forest)}
+.s4 h2 em{font-style:italic;color:var(--teal)}
+.chapter-list{margin-top:14px;display:flex;flex-direction:column;gap:7px}
+.chapter-item{display:flex;align-items:center;gap:10px;padding:9px 12px;background:rgba(255,255,255,.55);border:1px solid rgba(13,46,40,.1);border-radius:8px}
+.chapter-num{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--teal);font-weight:500;flex-shrink:0;width:20px}
+.chapter-title{font-size:11.5px;line-height:1.3;color:var(--forest);opacity:.85;font-weight:400}
+.chapter-title strong{font-weight:500;opacity:1}
+.s4 .total{margin-top:10px;display:flex;align-items:center;gap:8px;font-size:11px;color:var(--forest);opacity:.6}
+.s4 .total::before{content:"";width:20px;height:1px;background:currentColor}
+
+/* SLIDE 5 — DIFFERENTIATOR */
+.s5{justify-content:space-between}
+.s5 .eyebrow{margin-top:20px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--parchment);opacity:.7}
+.s5 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:28px;line-height:1.15;margin-top:10px;color:var(--parchment)}
+.s5 h2 em{font-style:italic;color:var(--amber)}
+.diff-list{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+.diff-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.08);border-left:3px solid var(--amber);border-radius:0 8px 8px 0}
+.diff-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.diff-body .diff-title{font-size:12px;font-weight:500;color:var(--parchment);line-height:1.3;margin-bottom:3px}
+.diff-body .diff-sub{font-size:10.5px;color:var(--parchment);opacity:.6;line-height:1.45}
+
+/* SLIDE 6 — PREVIEW INSIGHT */
+.s6{justify-content:space-between}
+.s6 .eyebrow{margin-top:20px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);opacity:.8}
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:24px;line-height:1.2;margin-top:10px;color:var(--parchment)}
+.s6 h2 em{font-style:italic;color:var(--amber)}
+.insight-box{margin-top:16px;padding:16px 18px;background:rgba(94,201,167,.08);border:1px solid rgba(94,201,167,.2);border-radius:10px}
+.insight-label{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:8px}
+.insight-text{font-size:13px;line-height:1.65;color:var(--parchment);opacity:.9}
+.insight-text strong{color:var(--parchment);font-weight:500}
+.insight-text em{font-style:italic;color:var(--green)}
+.s6 .source{margin-top:10px;font-size:10px;color:var(--parchment);opacity:.45;line-height:1.5}
+.s6 .teaser{margin-top:14px;padding:12px 14px;background:rgba(201,169,110,.1);border:1px solid rgba(201,169,110,.2);border-radius:8px;font-size:11.5px;line-height:1.5;color:var(--amber)}
+
+/* SLIDE 7 — CTA */
+.s7{justify-content:space-between}
+.s7 .brand-mark{display:flex;align-items:center;gap:10px;margin-top:20px}
+.s7 .brand-name{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--teal)}
+.s7 .tagline{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--forest);opacity:.5;margin-top:4px}
+.s7 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:28px;line-height:1.18;margin-top:22px;color:var(--forest)}
+.s7 h2 em{font-style:italic;color:var(--teal)}
+.s7 .sub{margin-top:12px;font-size:12.5px;line-height:1.65;color:var(--forest);opacity:.7;max-width:340px}
+.cta-block{margin-top:20px;display:flex;flex-direction:column;gap:8px}
+.cta-primary{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;background:var(--teal);border-radius:10px;font-size:12.5px;font-weight:500;color:#fff}
+.cta-primary .arr{width:20px;height:20px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px}
+.cta-secondary{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:rgba(255,255,255,.55);border:1px solid rgba(13,46,40,.12);border-radius:10px;font-size:12px;color:var(--forest);opacity:.8}
+.s7 .footnote{margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--forest);opacity:.45;text-align:center}
+
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:22px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:42px;height:42px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.controls button:hover{background:rgba(94,201,167,.12);border-color:rgba(94,201,167,.3)}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 8px}
+.caption-panel{width:min(440px,92vw);margin-top:32px;padding:22px 22px 24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:13px;line-height:1.7}
+.caption-panel .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+.caption-panel .char-count{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--amber);margin-top:10px;opacity:.7}
+.caption-panel p{margin-bottom:10px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:14px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Produk · Brain Kit for Work ]</span>
+</div>
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- SLIDE 1 — HOOK -->
+      <section class="slide bg-dark s1" data-screen-label="01 Hook">
+        <svg class="static-bg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <!-- Brain circuits subtle -->
+          <circle cx="200" cy="220" r="90" fill="none" stroke="rgba(245,243,238,.6)" stroke-width=".8"/>
+          <circle cx="200" cy="220" r="55" fill="none" stroke="rgba(94,201,167,.4)" stroke-width=".8"/>
+          <circle cx="200" cy="220" r="22" fill="rgba(94,201,167,.08)" stroke="rgba(94,201,167,.3)" stroke-width=".8"/>
+          <!-- Nodes -->
+          <circle cx="200" cy="130" r="5" fill="rgba(201,169,110,.5)"/>
+          <circle cx="290" cy="175" r="4" fill="rgba(94,201,167,.4)"/>
+          <circle cx="280" cy="280" r="5" fill="rgba(201,169,110,.4)"/>
+          <circle cx="110" cy="270" r="4" fill="rgba(94,201,167,.35)"/>
+          <circle cx="115" cy="170" r="5" fill="rgba(201,169,110,.35)"/>
+          <!-- Connectors -->
+          <line x1="200" y1="135" x2="200" y2="165" stroke="rgba(201,169,110,.25)" stroke-width=".8"/>
+          <line x1="285" y1="178" x2="255" y2="198" stroke="rgba(94,201,167,.2)" stroke-width=".8"/>
+          <line x1="275" y1="275" x2="245" y2="255" stroke="rgba(201,169,110,.2)" stroke-width=".8"/>
+          <line x1="115" y1="265" x2="148" y2="245" stroke="rgba(94,201,167,.18)" stroke-width=".8"/>
+          <line x1="120" y1="174" x2="150" y2="195" stroke="rgba(201,169,110,.18)" stroke-width=".8"/>
+          <!-- Sabotage cracks -->
+          <path d="M185 205 L200 220 L188 232" fill="none" stroke="rgba(201,169,110,.3)" stroke-width="1"/>
+          <path d="M215 208 L200 220 L212 235" fill="none" stroke="rgba(201,169,110,.2)" stroke-width="1"/>
+        </svg>
+        <div class="header">
+          <span class="pillar-tag">Brain Kit for Work</span>
+          <span>01 / 07</span>
+        </div>
+        <div class="body">
+          <h1>Otakmu sabotase performa kerjamu — <em>setiap hari.</em></h1>
+          <p class="lead">Bukan karena tidak semangat. Bukan kurang disiplin. Ini memang cara kerja biologis otakmu — dan kamu belum diajarkan cara mengelolanya.</p>
+        </div>
+        <div class="swipe"><span>Geser</span><span class="arrow">→</span></div>
+      </section>
+
+      <!-- SLIDE 2 — PAIN POINTS -->
+      <section class="slide bg-light s2" data-screen-label="02 Pain Points">
+        <div class="header">
+          <span class="pillar-tag">Kamu pernah mengalami ini?</span>
+          <span>02 / 07</span>
+        </div>
+        <div class="eyebrow">Situasi yang terlalu familiar</div>
+        <h2>Kalau pernah <em>satu saja</em> — kamu butuh baca ini.</h2>
+        <div class="pain-list">
+          <div class="pain-item">
+            <span class="pain-check">😶</span>
+            <span class="pain-text"><strong>Blank total</strong> saat presentasi padahal sudah latihan</span>
+          </div>
+          <div class="pain-item">
+            <span class="pain-check">📱</span>
+            <span class="pain-text"><strong>Multitasking</strong> seharian tapi hasilnya dangkal</span>
+          </div>
+          <div class="pain-item">
+            <span class="pain-check">⏳</span>
+            <span class="pain-text"><strong>Prokrastinasi</strong> task penting terus meski deadline dekat</span>
+          </div>
+          <div class="pain-item">
+            <span class="pain-check">🔴</span>
+            <span class="pain-text"><strong>Sibuk tapi hasilnya buruk</strong> — otak sudah di survival mode</span>
+          </div>
+          <div class="pain-item">
+            <span class="pain-check">💼</span>
+            <span class="pain-text"><strong>Batal negosiasi gaji</strong> di detik terakhir tanpa alasan jelas</span>
+          </div>
+        </div>
+        <p class="note">Ini bukan soal kepribadianmu. Ini cara otakmu bekerja. Dan bisa diubah.</p>
+        <div class="footer"><span>NEURO DAILY</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 3 — PRODUCT INTRO -->
+      <section class="slide bg-dark s3" data-screen-label="03 Produk">
+        <div class="header">
+          <span class="pillar-tag">Memperkenalkan</span>
+          <span>03 / 07</span>
+        </div>
+        <div style="margin-top:auto;margin-bottom:auto">
+          <div class="product-badge">📘 PDF Guide · Neuro Daily</div>
+          <h2>Brain Kit<br>for <em>Work</em></h2>
+          <div class="subtitle">7 Cara Otak Sabotase Performa Kerjamu — dan Cara Mengatasinya</div>
+          <div class="divider"></div>
+          <p class="desc">Bukan buku motivasi. Bukan tips produktivitas biasa. Ini <strong>neurosains terapan</strong> — penjelasan ilmiah tentang kenapa otakmu bereaksi seperti itu di tempat kerja, plus protokol berbasis riset untuk mengubahnya.</p>
+          <div class="meta-row" style="margin-top:16px">
+            <div class="meta-item">
+              <span class="meta-label">Bab</span>
+              <span class="meta-value">6 Bab</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Format</span>
+              <span class="meta-value">PDF</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Bahasa</span>
+              <span class="meta-value">Indonesia</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 4 — CHAPTERS -->
+      <section class="slide bg-light s4" data-screen-label="04 Bab">
+        <div class="header">
+          <span class="pillar-tag">Isi di dalamnya</span>
+          <span>04 / 07</span>
+        </div>
+        <div class="eyebrow">6 Bab Neurosains Terapan</div>
+        <h2>Tiap bab jawab satu <em>pertanyaan nyata</em> dari tempat kerjamu.</h2>
+        <div class="chapter-list">
+          <div class="chapter-item">
+            <span class="chapter-num">01</span>
+            <span class="chapter-title"><strong>Blank saat presentasi</strong> — padahal sudah siap</span>
+          </div>
+          <div class="chapter-item">
+            <span class="chapter-num">02</span>
+            <span class="chapter-title"><strong>Multitasking</strong> — kenapa otakmu kehilangan 40% kapasitas</span>
+          </div>
+          <div class="chapter-item">
+            <span class="chapter-num">03</span>
+            <span class="chapter-title"><strong>Prokrastinasi</strong> — bukan kemalasan, ini desain otakmu</span>
+          </div>
+          <div class="chapter-item">
+            <span class="chapter-num">04</span>
+            <span class="chapter-title"><strong>Mode survival</strong> — otak kamu sudah tidak produktif</span>
+          </div>
+          <div class="chapter-item">
+            <span class="chapter-num">05</span>
+            <span class="chapter-title"><strong>Keputusan karir</strong> — kenapa otak sabotase di detik terakhir</span>
+          </div>
+          <div class="chapter-item">
+            <span class="chapter-num">06</span>
+            <span class="chapter-title"><strong>Peak performance</strong> — jadwal kerja ideal versi neurosains</span>
+          </div>
+        </div>
+        <div class="total">+ Intro: Otakmu adalah aset kerjamu yang paling underrated</div>
+        <div class="footer"><span>04 — ISI</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 5 — DIFFERENTIATOR -->
+      <section class="slide bg-teal s5" data-screen-label="05 Diferensiasi">
+        <div class="header">
+          <span class="pillar-tag" style="color:#fff">Kenapa berbeda</span>
+          <span>05 / 07</span>
+        </div>
+        <div class="eyebrow">Bukan buku motivasi biasa</div>
+        <h2>Setiap bab dimulai dari <em>sains</em> — bukan opini.</h2>
+        <div class="diff-list">
+          <div class="diff-item">
+            <span class="diff-icon">🧪</span>
+            <div class="diff-body">
+              <div class="diff-title">Berbasis riset yang bisa dicek</div>
+              <div class="diff-sub">Setiap klaim merujuk ke studi nyata — dari LeDoux, Leroy, Ratey, Arnsten. Bukan "kata orang."</div>
+            </div>
+          </div>
+          <div class="diff-item">
+            <span class="diff-icon">🎯</span>
+            <div class="diff-body">
+              <div class="diff-title">Spesifik untuk konteks kerja</div>
+              <div class="diff-sub">Bukan neurosains umum. Setiap bab tentang situasi nyata di kantor, meeting, karir, dan performa harian.</div>
+            </div>
+          </div>
+          <div class="diff-item">
+            <span class="diff-icon">⚡</span>
+            <div class="diff-body">
+              <div class="diff-title">Ada protokol yang bisa langsung dipakai</div>
+              <div class="diff-sub">Setiap bab diakhiri dengan satu aksi konkret berbasis sains yang bisa dicoba hari ini.</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>05 — DIFERENSIASI</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 6 — PREVIEW INSIGHT -->
+      <section class="slide bg-dark s6" data-screen-label="06 Preview">
+        <div class="header">
+          <span class="pillar-tag">Sekilas isinya</span>
+          <span>06 / 07</span>
+        </div>
+        <div class="eyebrow">Preview · Bab 03 — Prokrastinasi</div>
+        <h2>Prokrastinasi bukan kelemahan karakter. Ini <em>desain otakmu.</em></h2>
+        <div class="insight-box">
+          <div class="insight-label">Dari Brain Kit for Work</div>
+          <p class="insight-text">Sistem reward otakmu tidak berevolusi untuk menyelesaikan laporan kuartalan. Dia berevolusi untuk <strong>menghindari bahaya dan mengejar reward yang bisa diprediksi</strong>. Task yang hasilnya tidak pasti = sinyal ancaman = <em>otak memilih task yang lebih aman.</em></p>
+        </div>
+        <p class="source">Berdasarkan riset dopamine reward prediction error (Schultz, 1997) · Self-determination theory (Deci & Ryan, 2000)</p>
+        <div class="teaser">+ 5 bab lagi dengan kedalaman yang sama — termasuk protokol actionable di tiap bab.</div>
+        <div class="footer"><span>06 — PREVIEW</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 7 — CTA -->
+      <section class="slide bg-light s7" data-screen-label="07 CTA">
+        <div class="header">
+          <span class="pillar-tag">Dapatkan sekarang</span>
+          <span>07 / 07</span>
+        </div>
+        <div>
+          <div class="brand-mark">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="1.5"><path d="M4 14c0-5 3-8 8-8 4 0 6 2 6 5 0 2-1.5 3.5-4 3.5-2 0-3 1-3 2.5 0 1.5 1 2.5 2.5 2.5"/><circle cx="15" cy="9" r="1" fill="#1A6B5A"/></svg>
+            <span class="brand-name">Neuro Daily</span>
+          </div>
+          <div class="tagline">Kerja lebih cerdas, bukan lebih keras. Ini sains-nya.</div>
+          <h2>Brain Kit for Work — <em>mulai hari ini.</em></h2>
+          <p class="sub">6 bab neurosains terapan. Penjelasan ilmiah dari situasi kerja yang kamu alami setiap hari. Protokol yang bisa langsung dipakai.</p>
+        </div>
+        <div class="cta-block">
+          <div class="cta-primary">
+            <span>Dapatkan Brain Kit for Work</span>
+            <span class="arr">→</span>
+          </div>
+          <div class="cta-secondary">
+            <span>Link di bio @neuro.daily</span>
+            <span>↗</span>
+          </div>
+        </div>
+        <p class="footnote">Tersedia dalam format PDF · Bahasa Indonesia</p>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="caption-panel">
+  <div class="label">Caption · Produk · ≤ 500 karakter</div>
+  <p><strong style="color:var(--parchment)">Otakmu sabotase performa kerjamu — setiap hari.</strong></p>
+  <p>Bukan soal semangat atau disiplin. Ini cara kerja biologis otak yang belum pernah diajarkan di mana pun.</p>
+  <p>Brain Kit for Work: 6 bab neurosains terapan untuk situasi kerja nyata — dari blank saat presentasi, prokrastinasi, sampai keputusan karir yang selalu batal di detik terakhir.</p>
+  <p>Link di bio 🔗</p>
+  <span class="hash">#NeuroDaily #BrainKitForWork #NeurosainsKerja #PeakPerformance #ProduktivitasBerbasisSains</span>
+  <div class="char-count" id="charCount"></div>
+</div>
+
+<div class="controls">
+  <button id="prev">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next">›</button>
+</div>
+
+<script>
+const track=document.getElementById('track'),dotsEl=document.getElementById('dots'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next');
+const total=track.children.length;let i=0;
+for(let k=0;k<total;k++){const b=document.createElement('button');b.className='dot'+(k===0?' active':'');b.addEventListener('click',()=>go(k));dotsEl.appendChild(b)}
+const dots=[...dotsEl.children];
+function go(n){i=Math.max(0,Math.min(total-1,n));track.style.transform=`translateX(-${i*100}%)`;dots.forEach((d,k)=>d.classList.toggle('active',k===i));counter.textContent=`${i+1} / ${total}`;prevBtn.disabled=i===0;nextBtn.disabled=i===total-1}
+prevBtn.addEventListener('click',()=>go(i-1));nextBtn.addEventListener('click',()=>go(i+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(i+1);if(e.key==='ArrowLeft')go(i-1)});
+let sx=0,dx=0,drag=false;const vp=document.querySelector('.viewport');
+vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;drag=true;dx=0});
+vp.addEventListener('touchmove',e=>{if(!drag)return;dx=e.touches[0].clientX-sx});
+vp.addEventListener('touchend',()=>{if(!drag)return;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));drag=false});
+const captionText=`Otakmu sabotase performa kerjamu — setiap hari.
+
+Bukan soal semangat atau disiplin. Ini cara kerja biologis otak yang belum pernah diajarkan di mana pun.
+
+Brain Kit for Work: 6 bab neurosains terapan untuk situasi kerja nyata — dari blank saat presentasi, prokrastinasi, sampai keputusan karir yang selalu batal di detik terakhir.
+
+Link di bio 🔗
+
+#NeuroDaily #BrainKitForWork #NeurosainsKerja #PeakPerformance #ProduktivitasBerbasisSains`;
+const cc=document.getElementById('charCount'),len=captionText.length;
+cc.textContent=`${len} / 500 karakter ${len<=500?'✓':'⚠ Melebihi batas Threads'}`;
+if(len>500)cc.style.color='#e05252';
+go(0);
+</script>
+</body>
+</html>

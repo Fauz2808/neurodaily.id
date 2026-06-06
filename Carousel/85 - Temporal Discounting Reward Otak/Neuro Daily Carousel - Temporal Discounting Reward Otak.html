@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Neuro Daily — Temporal Discounting: Kenapa Otak Selalu Pilih Sekarang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;--red:#D96A6A;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0a0a0a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 100px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#7a807d;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(540px,94vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;position:relative;overflow:hidden}
+.cvs{width:1080px;height:1350px;transform-origin:top left;position:absolute;top:0;left:0;font-family:'DM Sans',sans-serif}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.cvs .head,.cvs .foot{position:absolute;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 64px;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase}
+.cvs .head{top:0;height:78px;border-bottom:1px solid rgba(245,243,238,.12)}
+.cvs .foot{bottom:0;height:64px;border-top:1px solid rgba(245,243,238,.12)}
+.bg-light .head,.bg-light .foot{border-color:rgba(13,46,40,.12)}
+.bg-teal .head,.bg-teal .foot{border-color:rgba(245,243,238,.18)}
+.cvs .head span,.cvs .foot span{opacity:.55}
+.cvs .head .dotmark::before{content:"◆ ";color:var(--green);opacity:1}
+.bg-light .head .dotmark::before{color:var(--teal)}
+.bg-teal .head .dotmark::before{color:var(--amber)}
+.hippo-mark{display:flex;align-items:center;gap:10px;opacity:1!important}
+.hippo-mark svg{width:30px;height:30px;flex-shrink:0}
+.body{position:absolute;top:78px;bottom:64px;left:0;right:0;padding:56px 72px;display:flex;flex-direction:column}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.bg-dark .eyebrow{color:var(--green)}
+.bg-light .eyebrow{color:var(--teal)}
+.bg-teal .eyebrow{color:var(--amber)}
+.rule{width:48px;height:3px;border-radius:2px;margin-top:20px}
+.bg-dark .rule{background:var(--green)}
+.bg-light .rule{background:var(--teal)}
+.bg-teal .rule{background:var(--amber)}
+.nd-logo{display:flex;align-items:center;gap:10px;opacity:1!important}
+.nd-logo svg{width:30px;height:30px;flex-shrink:0}
+
+/* ── S1 DARK ── */
+.s1 .ghost{position:absolute;font-family:'DM Serif Display',serif;font-size:560px;line-height:.9;color:rgba(94,201,167,.04);pointer-events:none;right:-10px;top:80px}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:96px;line-height:1.01;letter-spacing:-.02em;margin-top:48px;max-width:880px;position:relative;z-index:2}
+.s1 h1 em{font-style:italic;color:var(--amber)}
+.s1 .lead{margin-top:32px;font-size:28px;line-height:1.6;opacity:.72;max-width:720px;font-weight:300;position:relative;z-index:2}
+.s1 .vs-row{position:absolute;bottom:78px;left:72px;right:72px;z-index:2;display:flex;gap:12px}
+.vs-pill{flex:1;padding:24px 20px;border-radius:14px;text-align:center}
+.vs-pill.now{background:rgba(217,106,106,.1);border:1.5px solid rgba(217,106,106,.28)}
+.vs-pill.later{background:rgba(94,201,167,.1);border:1.5px solid rgba(94,201,167,.28)}
+.vp-amount{font-family:'DM Serif Display',serif;font-size:52px;line-height:1.1;margin-bottom:6px}
+.vs-pill.now .vp-amount{color:var(--red)}
+.vs-pill.later .vp-amount{color:var(--green)}
+.vp-label{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.1em;text-transform:uppercase;opacity:.7}
+.vs-pill.now .vp-label{color:rgba(217,106,106,.8)}
+.vs-pill.later .vp-label{color:rgba(94,201,167,.8)}
+.vs-arrow{display:flex;align-items:center;padding:0 4px;font-family:'DM Serif Display',serif;font-style:italic;font-size:40px;color:rgba(245,243,238,.3);flex-shrink:0}
+
+/* ── S2 LIGHT ── */
+.s2 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:72px;line-height:1.05;letter-spacing:-.02em;margin-top:36px;color:var(--forest);max-width:880px}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .stat-row{margin-top:44px;display:flex;gap:24px}
+.stat-card{flex:1;padding:36px 28px;border-radius:18px;display:flex;flex-direction:column;gap:12px}
+.stat-card.a{background:rgba(217,106,106,.06);border:1.5px solid rgba(217,106,106,.22)}
+.stat-card.b{background:rgba(94,201,167,.06);border:1.5px solid rgba(94,201,167,.2)}
+.stat-num{font-family:'DM Serif Display',serif;font-size:80px;line-height:1;letter-spacing:-.03em}
+.stat-card.a .stat-num{color:var(--red)}
+.stat-card.b .stat-num{color:var(--teal)}
+.stat-label{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.12em;text-transform:uppercase;opacity:.55;color:var(--forest)}
+.stat-desc{font-size:26px;line-height:1.5;opacity:.68;font-weight:300;color:var(--forest)}
+.s2 .insight{margin-top:36px;display:flex;align-items:flex-start;gap:20px;padding:28px 30px;border-radius:14px;background:rgba(13,46,40,.04);border:1px solid rgba(13,46,40,.1)}
+.insight-ic{font-family:'DM Serif Display',serif;font-style:italic;font-size:40px;line-height:1;color:var(--teal);flex-shrink:0;margin-top:2px}
+.insight-text{font-size:26px;line-height:1.55;color:var(--forest);opacity:.72;font-weight:300}
+.s2 .source{margin-top:auto;font-size:20px;color:var(--forest);opacity:.4;font-family:'JetBrains Mono',monospace;line-height:1.7;border-top:1px solid rgba(13,46,40,.1);padding-top:16px}
+
+/* ── S3 DARK ── */
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:76px;line-height:1.05;letter-spacing:-.02em;margin-top:40px;max-width:880px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .brain-duel{margin-top:52px;display:flex;flex-direction:column;gap:20px}
+.brain-side{padding:32px 34px;border-radius:16px;display:flex;align-items:center;gap:28px}
+.brain-side.limbic{background:rgba(217,106,106,.08);border:1.5px solid rgba(217,106,106,.25)}
+.brain-side.pfc{background:rgba(94,201,167,.08);border:1.5px solid rgba(94,201,167,.25)}
+.bs-icon{width:64px;height:64px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:30px}
+.brain-side.limbic .bs-icon{background:rgba(217,106,106,.2)}
+.brain-side.pfc .bs-icon{background:rgba(94,201,167,.2)}
+.bs-label{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px}
+.brain-side.limbic .bs-label{color:var(--red)}
+.brain-side.pfc .bs-label{color:var(--green)}
+.bs-text{font-size:26px;line-height:1.5;font-weight:300;opacity:.88}
+.s3 .bottom-note{margin-top:auto;padding:24px 30px;border-radius:12px;background:rgba(245,243,238,.05);border:1px solid rgba(245,243,238,.12);font-size:26px;line-height:1.55;opacity:.62;font-weight:300;display:flex;align-items:center;gap:16px}
+.note-prefix{font-family:'DM Serif Display',serif;font-style:italic;font-size:24px;color:var(--amber);flex-shrink:0}
+
+/* ── S4 TEAL ── */
+.s4 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:72px;line-height:1.05;letter-spacing:-.02em;margin-top:36px;max-width:880px}
+.s4 h2 em{font-style:italic;color:var(--amber)}
+.s4 .def-card{margin-top:32px;background:rgba(245,243,238,.1);border:1.5px solid rgba(245,243,238,.2);border-radius:16px;padding:30px 34px}
+.def-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:12px}
+.def-text{font-size:27px;line-height:1.6;opacity:.88;font-weight:300}
+.s4 .curve-block{margin-top:32px;padding:28px 34px;background:rgba(13,46,40,.3);border:1.5px solid rgba(245,243,238,.15);border-radius:16px}
+.curve-label{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:20px}
+.curve-row{display:flex;gap:0;align-items:stretch}
+.curve-col{flex:1;text-align:center;padding:0 10px}
+.curve-col:not(:last-child){border-right:1px solid rgba(245,243,238,.12)}
+.cc-delay{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.1em;text-transform:uppercase;opacity:.55;margin-bottom:10px}
+.cc-val{font-family:'DM Serif Display',serif;font-size:54px;line-height:1;margin-bottom:8px}
+.cc-val.high{color:var(--red)}
+.cc-val.mid{color:var(--amber)}
+.cc-val.low{color:var(--green)}
+.cc-desc{font-size:22px;opacity:.6;font-weight:300;line-height:1.4}
+
+/* ── S5 LIGHT ── */
+.s5 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:72px;line-height:1.05;letter-spacing:-.02em;margin-top:36px;color:var(--forest);max-width:880px}
+.s5 h2 em{font-style:italic;color:var(--teal)}
+.s5 .scenarios{margin-top:44px;display:flex;flex-direction:column;gap:20px}
+.scenario{padding:30px 32px;border-radius:16px;display:flex;align-items:flex-start;gap:22px}
+.scenario.bad{background:rgba(217,106,106,.05);border:1.5px solid rgba(217,106,106,.2)}
+.scenario.good{background:rgba(26,107,90,.06);border:1.5px solid rgba(26,107,90,.22)}
+.s-tag{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;padding:6px 16px;border-radius:99px;flex-shrink:0;margin-top:4px}
+.scenario.bad .s-tag{background:var(--red);color:#fff}
+.scenario.good .s-tag{background:var(--teal);color:#fff}
+.s-title{font-size:26px;font-weight:500;color:var(--forest);margin-bottom:8px}
+.s-desc{font-size:25px;line-height:1.55;color:var(--forest);opacity:.65;font-weight:300}
+.s5 .research-note{margin-top:auto;padding:22px 28px;background:rgba(26,107,90,.05);border:1px solid rgba(26,107,90,.15);border-radius:12px;font-size:25px;line-height:1.6;color:var(--forest);font-weight:300}
+.s5 .research-note strong{font-weight:500;color:var(--teal)}
+
+/* ── S6 DARK ── */
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:76px;line-height:1.05;letter-spacing:-.02em;margin-top:40px;max-width:880px}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .protocol{margin-top:48px;display:flex;flex-direction:column;gap:16px}
+.p-block{padding:30px 34px;border-radius:16px;display:flex;align-items:flex-start;gap:26px}
+.p-block.a{background:rgba(94,201,167,.1);border:2px solid rgba(94,201,167,.28)}
+.p-block.b{background:rgba(201,169,110,.1);border:2px solid rgba(201,169,110,.25)}
+.p-block.c{background:rgba(94,201,167,.15);border:2px solid rgba(94,201,167,.45)}
+.p-num{font-family:'DM Serif Display',serif;font-size:54px;line-height:1;flex-shrink:0;margin-top:-4px}
+.p-block.a .p-num{color:var(--green)}
+.p-block.b .p-num{color:var(--amber)}
+.p-block.c .p-num{color:var(--green)}
+.p-title{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+.p-block.a .p-title{color:var(--green)}
+.p-block.b .p-title{color:var(--amber)}
+.p-block.c .p-title{color:var(--green)}
+.p-desc{font-size:26px;line-height:1.5;opacity:.85;font-weight:300}
+.s6 .p-note{margin-top:auto;font-family:'JetBrains Mono',monospace;font-size:20px;color:rgba(245,243,238,.45);line-height:1.8;border-top:1px solid rgba(245,243,238,.1);padding-top:20px}
+.s6 .punch{color:var(--green);font-weight:500}
+
+/* ── S7 LIGHT ── */
+.s7 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:76px;line-height:1.04;letter-spacing:-.02em;margin-top:36px;color:var(--forest);max-width:880px}
+.s7 h2 em{font-style:italic;color:var(--teal)}
+.s7 .sub{margin-top:24px;font-size:27px;line-height:1.6;color:var(--forest);opacity:.65;max-width:820px;font-weight:300}
+.s7 .discussion{margin-top:36px;display:flex;flex-direction:column;gap:16px}
+.disc-item{display:flex;align-items:center;gap:20px;padding:24px 28px;border:1.5px solid rgba(13,46,40,.12);border-radius:14px;font-size:25px;color:var(--forest);background:rgba(255,255,255,.46);line-height:1.4}
+.disc-ic{width:44px;height:44px;border-radius:10px;background:rgba(26,107,90,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.disc-ic svg{width:24px;height:24px;color:var(--teal)}
+.s7 .shift-note{margin-top:auto;padding:22px 28px;border-radius:12px;border:1px dashed rgba(26,107,90,.35);font-size:26px;line-height:1.55;color:var(--forest);opacity:.62;font-weight:300;display:flex;align-items:center;gap:16px}
+.shift-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:26px;color:var(--teal);flex-shrink:0}
+
+/* Nav */
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:24px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:46px;height:46px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.1em;align-self:center;padding:0 10px}
+.caption-panel{width:min(540px,94vw);margin-top:32px;padding:26px 26px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:20px;line-height:1.7}
+.caption-panel .cap-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+.caption-panel p{margin-bottom:12px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel strong{color:var(--parchment);font-weight:500}
+.caption-panel .hash{color:#7a8480;font-size:18px;margin-top:16px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="topbar"><span>Neuro Daily · Carousel Preview</span><span class="pill">[ Vol. 85 · Temporal Discounting · Otak & Reward ]</span></div>
+<div class="stage"><div class="viewport"><div class="track" id="track">
+
+<!-- S1 DARK -->
+<section class="slide"><div class="cvs bg-dark s1">
+  <div class="head"><span class="dotmark">Neuro Daily · Vol. 85 · Temporal Discounting</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Temporal Discounting · Hyperbolic Discounting · Dopamine</div>
+    <div class="rule"></div>
+    <div class="ghost">⏳</div>
+    <h1>Otak kamu<br>selalu pilih<br><em>sekarang</em> —<br>bukan nanti.</h1>
+    <p class="lead">Bukan soal kurang disiplin. Secara biologis, otak menilai reward yang jauh di masa depan jauh lebih rendah dari yang ada di depan mata. Dan semakin dekat reward-nya, semakin tidak rasional pilihan kita.</p>
+    <div class="vs-row">
+      <div class="vs-pill now">
+        <div class="vp-amount">Rp10rb</div>
+        <div class="vp-label">Sekarang</div>
+      </div>
+      <div class="vs-arrow">vs</div>
+      <div class="vs-pill later">
+        <div class="vp-amount">Rp50rb</div>
+        <div class="vp-label">Bulan Depan</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>01 / 07</span></div>
+</div></section>
+
+<!-- S2 LIGHT -->
+<section class="slide"><div class="cvs bg-light s2">
+  <div class="head"><span class="dotmark">Temporal Discounting · Penelitian & Data</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Seberapa parah otak mendiskon masa depan</div>
+    <div class="rule"></div>
+    <h2>Otak mendiskon nilai masa depan secara <em>eksponensial — bukan linear.</em></h2>
+    <div class="stat-row">
+      <div class="stat-card a">
+        <div class="stat-num">50%</div>
+        <div class="stat-label">Nilai Hilang</div>
+        <div class="stat-desc">Rata-rata otak manusia mendiskon nilai reward yang ditunda 1 minggu hingga separuhnya dibanding reward hari ini</div>
+      </div>
+      <div class="stat-card b">
+        <div class="stat-num">6×</div>
+        <div class="stat-label">Lebih Kuat</div>
+        <div class="stat-desc">Tarikan reward immediate 6× lebih kuat secara neurologis dibanding reward delayed setara — bahkan saat kita "tahu" pilihan mana yang lebih baik</div>
+      </div>
+    </div>
+    <div class="insight">
+      <div class="insight-ic">→</div>
+      <div class="insight-text">Ini yang menjelaskan kenapa kita prokrastinasi, susah nabung, dan terus memilih kenyamanan sekarang meski tahu konsekuensinya — bukan kelemahan karakter, tapi default setting otak yang terbentuk jutaan tahun lalu</div>
+    </div>
+    <div class="source">Ainslie (1975) · Laibson (1997) · McClure et al. (2004) Science · Hyperbolic Discounting Function</div>
+  </div>
+  <div class="foot"><span class="dotmark nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>02 / 07</span></div>
+</div></section>
+
+<!-- S3 DARK -->
+<section class="slide"><div class="cvs bg-dark s3">
+  <div class="head"><span class="dotmark">Neural Mechanism · Limbic vs Prefrontal</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Perang di dalam otak setiap kali kamu memilih</div>
+    <div class="rule"></div>
+    <h2>Dua sistem otak yang <em>bertarung</em> setiap kali ada pilihan reward.</h2>
+    <div class="brain-duel">
+      <div class="brain-side limbic">
+        <div class="bs-icon">⚡</div>
+        <div>
+          <div class="bs-label">Sistem Limbik — "Sekarang!"</div>
+          <div class="bs-text">Amygdala dan striatum memicu respons dopamin yang kuat terhadap reward immediate. Mereka tidak peduli masa depan — hanya sinyal "ambil sekarang sebelum hilang"</div>
+        </div>
+      </div>
+      <div class="brain-side pfc">
+        <div class="bs-icon">🧠</div>
+        <div>
+          <div class="bs-label">Prefrontal Cortex — "Tunggu dulu…"</div>
+          <div class="bs-text">PFC mencoba mempertimbangkan konsekuensi jangka panjang. Tapi ia lebih lambat, lebih mudah lelah, dan kalah kuat saat sistem limbik sudah aktif penuh</div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-note">
+      <span class="note-prefix">Intinya:</span>
+      Prokrastinasi bukan soal malas — tapi sistem limbik yang lebih kencang suaranya dari PFC.
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>03 / 07</span></div>
+</div></section>
+
+<!-- S4 TEAL -->
+<section class="slide"><div class="cvs bg-teal s4">
+  <div class="head"><span class="dotmark">Temporal Discounting · Definisi & Kurva</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Memahami efeknya secara ilmiah</div>
+    <div class="rule"></div>
+    <h2>Temporal Discounting — <em>nilai reward menurun drastis</em> seiring waktu tunda.</h2>
+    <div class="def-card">
+      <div class="def-label">Temporal Discounting</div>
+      <div class="def-text">Kecenderungan otak untuk menilai reward yang tersedia sekarang jauh lebih tinggi dibanding reward identik di masa depan. Makin jauh waktunya, makin besar "diskon" yang diberikan otak — dan penurunannya tidak linear, tapi hyperbolic.</div>
+    </div>
+    <div class="curve-block">
+      <div class="curve-label">Seberapa besar diskon otak terhadap reward?</div>
+      <div class="curve-row">
+        <div class="curve-col">
+          <div class="cc-delay">Sekarang</div>
+          <div class="cc-val high">100%</div>
+          <div class="cc-desc">Nilai penuh</div>
+        </div>
+        <div class="curve-col">
+          <div class="cc-delay">1 Minggu</div>
+          <div class="cc-val mid">~50%</div>
+          <div class="cc-desc">Setengah nilai</div>
+        </div>
+        <div class="curve-col">
+          <div class="cc-delay">1 Bulan</div>
+          <div class="cc-val low">~20%</div>
+          <div class="cc-desc">Hampir tidak terasa</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(201,169,110,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#C9A96E">N</text></svg>NEURODAILY.ID</span><span>04 / 07</span></div>
+</div></section>
+
+<!-- S5 LIGHT -->
+<section class="slide"><div class="cvs bg-light s5">
+  <div class="head"><span class="dotmark">Temporal Discounting · Di Tempat Kerja</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Dua pilihan yang hasilnya jauh berbeda</div>
+    <div class="rule"></div>
+    <h2>Temporal discounting di kantor — <em>lebih merusak dari yang kamu kira.</em></h2>
+    <div class="scenarios">
+      <div class="scenario bad">
+        <div class="s-tag">Discounting</div>
+        <div>
+          <div class="s-title">Balas notif dulu, baru kerja. Besok saja laporannya.</div>
+          <div class="s-desc">Otak memilih dopamin kecil sekarang (notif, scroll, task mudah) dan menunda reward besar yang butuh usaha. Akumulasinya: pekerjaan penting tertunda, kualitas kerja turun, stres meningkat</div>
+        </div>
+      </div>
+      <div class="scenario good">
+        <div class="s-tag">Override</div>
+        <div>
+          <div class="s-title">Buat reward immediate untuk tugas yang sulit.</div>
+          <div class="s-desc">Karena otak tidak bisa menilai reward jauh, jadikan tiap langkah kecil sebagai reward langsung — progress visible, time-box 25 menit, atau pair dengan sesuatu yang menyenangkan</div>
+        </div>
+      </div>
+    </div>
+    <div class="research-note">Kamu tidak bisa mengalahkan temporal discounting dengan willpower saja. Tapi kamu bisa <strong>mendesain ulang struktur rewardnya</strong> agar otak melihat "sekarang" di tempat yang benar.</div>
+  </div>
+  <div class="foot"><span class="dotmark nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>05 / 07</span></div>
+</div></section>
+
+<!-- S6 DARK -->
+<section class="slide"><div class="cvs bg-dark s6">
+  <div class="head"><span class="dotmark">Override Protocol · Reward Design · Praktis</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Cara "menipu" otak agar memilih yang benar</div>
+    <div class="rule"></div>
+    <h2>Tiga cara <em>mendesain reward</em> agar otak tidak melawan dirimu sendiri.</h2>
+    <div class="protocol">
+      <div class="p-block a">
+        <div class="p-num">1</div>
+        <div>
+          <div class="p-title">Shrink the Delay</div>
+          <div class="p-desc">Pecah tujuan besar jadi milestone 25–90 menit. Otak akan menilai reward "lebih dekat" dan termotivasi — tanpa mengubah tujuan akhirnya</div>
+        </div>
+      </div>
+      <div class="p-block b">
+        <div class="p-num">2</div>
+        <div>
+          <div class="p-title">Temptation Bundling</div>
+          <div class="p-desc">Gabungkan tugas sulit dengan sesuatu yang menyenangkan — podcast favorit saat admin, kopi enak saat brainstorm. Bikin otak merasa reward ada sekarang</div>
+        </div>
+      </div>
+      <div class="p-block c">
+        <div class="p-num">3</div>
+        <div>
+          <div class="p-title">Pre-commitment Device</div>
+          <div class="p-desc">Buat keputusan sulit saat kamu jauh dari situasinya — block kalender minggu depan sekarang, bukan saat sudah capek besok. PFC aktif, limbik belum terancam</div>
+        </div>
+      </div>
+    </div>
+    <div class="p-note">Willpower bukan solusinya. <span class="punch">Desain sistemnya.</span></div>
+  </div>
+  <div class="foot"><span class="dotmark nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>06 / 07</span></div>
+</div></section>
+
+<!-- S7 LIGHT -->
+<section class="slide"><div class="cvs bg-light s7">
+  <div class="head"><span class="dotmark">Temporal Discounting · Refleksi</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="eyebrow">◆ Refleksi & diskusi</div>
+    <div class="rule"></div>
+    <h2>Bukan soal disiplin — tapi soal <em>siapa yang mendesain rewardmu.</em></h2>
+    <p class="sub">Otak yang memilih sekarang bukan otak yang lemah. Itu otak yang belum diberi struktur yang tepat. Desain sistemnya, bukan paksa dirimu dengan willpower.</p>
+    <div class="discussion">
+      <div class="disc-item">
+        <div class="disc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
+        Tugas paling penting yang terus kamu tunda — reward apa yang bisa kamu attach ke langkah pertamanya?
+      </div>
+      <div class="disc-item">
+        <div class="disc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        Pre-commitment apa yang bisa kamu buat hari ini untuk dirimu minggu depan?
+      </div>
+    </div>
+    <div class="shift-note">
+      <span class="shift-arrow">→</span>
+      Coba sekarang: pilih satu tugas yang ditunda, pecah jadi langkah 25 menit, dan buat reward kecil untuk langkah pertama itu.
+    </div>
+  </div>
+  <div class="foot"><span class="dotmark nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>07 / 07</span></div>
+</div></section>
+
+</div></div></div>
+<div class="dots"><button class="dot active" onclick="goTo(0)"></button><button class="dot" onclick="goTo(1)"></button><button class="dot" onclick="goTo(2)"></button><button class="dot" onclick="goTo(3)"></button><button class="dot" onclick="goTo(4)"></button><button class="dot" onclick="goTo(5)"></button><button class="dot" onclick="goTo(6)"></button></div>
+<div class="controls"><button id="prev" onclick="prev()" disabled>←</button><span class="counter" id="counter">1 / 7</span><button id="next" onclick="next()">→</button></div>
+<div class="caption-panel">
+  <div class="cap-label">Caption · Instagram / TikTok</div>
+  <p>Otak kamu secara biologis memilih Rp10.000 sekarang daripada Rp100.000 bulan depan. Bukan karena kamu tidak disiplin. ⏳</p>
+  <p>Ini namanya Temporal Discounting — fenomena di mana otak mendiskon nilai reward yang jauh di masa depan secara drastis. Studi McClure et al. (2004) di jurnal Science membuktikan: <strong>sistem limbik jauh lebih aktif untuk reward immediate, sementara prefrontal cortex baru bekerja keras untuk reward yang ditunda.</strong></p>
+  <p>Makanya prokrastinasi, susah nabung, dan terus memilih kenyamanan sekarang itu bukan soal karakter — itu default setting otak yang terbentuk jutaan tahun lalu.</p>
+  <p><strong>Solusinya bukan willpower lebih keras — tapi mendesain ulang strukturnya:</strong> Shrink the delay, temptation bundling, dan pre-commitment device.</p>
+  <span class="hash">#NeuroscienceIndonesia #TemporalDiscounting #HyperbolicDiscounting #Prokrastinasi #NeurodailyID #Produktivitas #BrainScience #Dopamin #PrefrontalCortex</span>
+</div>
+<script>
+const track=document.getElementById('track'),dots=document.querySelectorAll('.dot'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next'),TOTAL=7;let cur=0;
+function scale(){const vw=document.querySelector('.viewport').offsetWidth;document.querySelectorAll('.cvs').forEach(c=>{c.style.transform=`scale(${vw/1080})`});}
+scale();window.addEventListener('resize',scale);
+function goTo(i){cur=i;track.style.transform=`translateX(-${cur*100}%)`;dots.forEach((d,j)=>d.classList.toggle('active',j===cur));counter.textContent=`${cur+1} / ${TOTAL}`;prevBtn.disabled=cur===0;nextBtn.disabled=cur===TOTAL-1;}
+function prev(){if(cur>0)goTo(cur-1);}function next(){if(cur<TOTAL-1)goTo(cur+1);}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')prev();if(e.key==='ArrowRight')next();});
+</script>
+</body>
+</html>

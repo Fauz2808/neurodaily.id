@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konten #07 — 3 Variasi · poliodigital</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700;1,800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0C0C0F; font-family: 'Plus Jakarta Sans', sans-serif; color: #fff; padding: 48px 40px 80px; }
+
+.page-head { max-width: 1040px; margin: 0 auto 52px; }
+.page-eye { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #1A4DFF; margin-bottom: 12px; display: flex; align-items: center; gap: 7px; }
+.page-eye::before { content:''; width:5px; height:5px; border-radius:50%; background:#1A4DFF; }
+.page-h1 { font-size: 24px; font-weight: 800; letter-spacing: -.03em; margin-bottom: 6px; }
+.page-sub { font-size: 13px; color: #333; }
+
+.section { max-width: 1040px; margin: 0 auto 56px; }
+.sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #1A1A20; }
+.sec-name { font-size: 17px; font-weight: 800; letter-spacing: -.02em; }
+.sec-desc { font-size: 11px; color: #2E2E38; margin-top: 3px; }
+.nav-row { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.btn { width: 34px; height: 34px; background: #16161A; border: 1px solid #242430; border-radius: 9px; color: #555; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s; font-family: inherit; }
+.btn:hover { background: #1E1E28; color: #fff; border-color: #1A4DFF; }
+.ctr { font-size: 11px; font-weight: 700; color: #333; letter-spacing: .06em; min-width: 34px; text-align: center; }
+.dots { display: flex; gap: 5px; margin-bottom: 14px; }
+.dot { width: 5px; height: 5px; border-radius: 50%; background: #242430; cursor: pointer; transition: all .2s; }
+.dot.on { background: #1A4DFF; transform: scale(1.45); }
+
+.win { display: flex; justify-content: center; }
+.shell { width: 480px; height: 480px; border-radius: 18px; overflow: hidden; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,.2), 0 12px 40px rgba(0,0,0,.35); transition: box-shadow .3s; }
+.shell:hover { box-shadow: 0 2px 8px rgba(0,0,0,.2), 0 20px 56px rgba(0,0,0,.45), 0 0 0 1.5px rgba(26,77,255,.4); }
+/* 1080px design → 480px display = scale(0.44444) */
+.cvs { width: 1080px; height: 1080px; transform: scale(0.44444); transform-origin: top left; position: absolute; top: 0; left: 0; overflow: hidden; font-family: 'Plus Jakarta Sans', sans-serif; }
+.slide { display: none; }
+.slide.on { display: flex; justify-content: center; }
+</style>
+</head>
+</head>
+<body>
+
+<div class="page-head">
+  <div class="page-eye">Konten #07 · Re-Design 1 — Editorial Warm</div>
+  <div class="page-h1">Nggak punya pengalaman kerja? Ini yang bisa kamu masukin ke portfolio.</div>
+  <div class="page-sub">Instagram Carousel · 7 slide · 1080 × 1080 px · Gunakan ← → atau dot untuk navigate</div>
+</div>
+<div class="section">
+  <div class="sec-head">
+    <div><div class="sec-name">Re-Design 1 — Editorial Warm</div><div class="sec-desc">Cream #F2EEE6 · Instrument Serif italic · JetBrains Mono · Illustrated key visuals</div></div>
+    <div class="nav-row"><button class="btn" onclick="go(-1)">←</button><span class="ctr" id="ctr">1 / 7</span><button class="btn" onclick="go(1)">→</button></div>
+  </div>
+  <div class="dots" id="dots"><div class="dot on" onclick="jmp(0)"></div><div class="dot" onclick="jmp(1)"></div><div class="dot" onclick="jmp(2)"></div><div class="dot" onclick="jmp(3)"></div><div class="dot" onclick="jmp(4)"></div><div class="dot" onclick="jmp(5)"></div><div class="dot" onclick="jmp(6)"></div></div>
+  <div class="win">
+
+    <!-- S1: HOOK -->
+    <div class="slide on" id="s1-0"><div class="shell"><div class="cvs">
+    <div style="background:#F2EEE6;width:1080px;height:1080px;position:relative;overflow:hidden;">
+      <!-- Header -->
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:0 80px;height:68px;border-bottom:1px solid rgba(13,13,13,.1);">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:17px;color:rgba(13,13,13,.4);letter-spacing:.1em;">POLIODIGITAL · EDITORIAL · PORTFOLIO 101</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:17px;color:rgba(13,13,13,.4);letter-spacing:.1em;">NO. 07 · MEI 2026</span>
+      </div>
+      <!-- Content -->
+      <div style="padding:52px 80px 0;position:relative;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:18px;color:#1A4DFF;letter-spacing:.14em;display:flex;align-items:center;gap:8px;">✱ THE OPENING QUESTION</div>
+        <div style="margin-top:36px;">
+          <div style="font-size:132px;font-weight:800;letter-spacing:-5.94px;line-height:.94;color:#0D0D0D;">Nggak punya<br>pengalaman<br>kerja?</div>
+          <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:142px;letter-spacing:-4.26px;line-height:.94;color:#1A4DFF;">Tenang.</div>
+        </div>
+        <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:30px;color:rgba(13,13,13,.7);line-height:1.6;margin-top:28px;max-width:560px;">Ini yang bisa kamu masukin ke portfolio — dan semuanya valid di mata HRD.</div>
+      </div>
+      <!-- Visual: Stacked papers -->
+      <div style="position:absolute;top:130px;right:44px;width:360px;height:460px;">
+        <div style="position:absolute;bottom:0;right:36px;width:274px;height:360px;background:rgba(255,255,255,.42);border-radius:10px;transform:rotate(-7deg);box-shadow:2px 4px 14px rgba(13,13,13,.12);"></div>
+        <div style="position:absolute;bottom:0;right:18px;width:274px;height:360px;background:rgba(255,255,255,.62);border-radius:10px;transform:rotate(-3deg);box-shadow:2px 4px 14px rgba(13,13,13,.14);"></div>
+        <div style="position:absolute;bottom:0;right:0;width:274px;height:360px;background:#fff;border-radius:10px;box-shadow:3px 6px 20px rgba(13,13,13,.18);padding:26px;">
+          <div style="height:7px;background:#0D0D0D;border-radius:2px;margin-bottom:18px;"></div>
+          <div style="height:3px;background:rgba(13,13,13,.18);border-radius:1px;margin-bottom:10px;"></div>
+          <div style="height:3px;background:rgba(13,13,13,.12);border-radius:1px;margin-bottom:10px;width:76%;"></div>
+          <div style="height:3px;background:rgba(13,13,13,.08);border-radius:1px;width:86%;"></div>
+        </div>
+      </div>
+      <!-- Footer -->
+      <div style="position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 80px;height:56px;border-top:1px solid rgba(13,13,13,.1);">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:18px;color:rgba(13,13,13,.28);letter-spacing:.05em;">POLIODIGITAL.COM</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:18px;color:rgba(13,13,13,.28);">01 / 07</span>
+        <svg viewBox="0 0 44 44" width="44" height="44" fill="none"><circle cx="22" cy="22" r="20" stroke="#0D0D0D" stroke-width="1.8"/><circle cx="15.5" cy="18" r="2.5" fill="#0D0D0D"/><circle cx="28.5" cy="18" r="2.5" fill="#0D0D0D"/><path d="M13 27Q22 34 31 27" stroke="#0D0D0D" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+      </div>
+    </div>
+    </div></div></div>
+
+    <!-- S2: AKADEMIS -->
+    <div class="slide" id="s1-1"><div class="shell"><div class="cvs">
+    <div style="background:#fff;width:1080px;height:1080px;position:relative;overflow:hidden;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:0 80px;height:68px;border-bottom:1px solid rgba(13,13,13,.08);">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:17px;color:rgba(13,13,13,.4);letter-spacing:.1em;">POLIODIGITAL · POIN 01 · KARYA AKADEMIS</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:17px;color:rgba(13,13,13,.4);letter-spacing:.1em;">NO. 07 · MEI 2026</span>
+      </div>
+      <div style="padding:48px 80px 0;position:relative;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:18px;color:#1A4DFF;letter-spacing:.12em;display:flex;align-items:center;gap:8px;margin-bottom:10px;">01 / 05 · KARYA AKADEMIS</div>
+        <div style="width:52px;height:3px;background:#1A4DFF;border-radius:2px;margin-bottom:28px;"></div>
+        <div style="font-size:84px;font-weight:800;letter-spacing:-2.94px;line-height:1.05;color:#0D0D0D;max-width:540px;">Project kuliah yang sudah dipresentasikan.</div>
+        <div style="margin-top:28px;">
+          <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:30px;color:rgba(13,13,13,.78);line-height:1.6;margin-bottom:14px;">Tugas besar, skripsi, atau capstone project — itu karya nyata.</div>
+          <div style="font-size:24px;color:#6B6B6B;line-height:1.6;">Tambahkan konteks: <strong style="color:#0D0D0D;">apa masalahnya, apa solusimu, siapa penggunanya.</strong></div>
+          <div style="font-size:24px;color:#6B6B6B;margin-top:6px;">HRD baca cerita, bukan judul tugas.</div>
+        </div>
+      </div>
+      <!-- Visual: Academic paper stack -->
+      <div style="position:absolute;top:100px;right:44px;width:340px;height:440px;">
+        <div style="position:absolute;bottom:10px;right:30px;width:264px;height:340px;background:rgba(242,238,230,.55);border:1px solid rgba(13,13,13,.1);border-radius:8px;transform:rotate(-5deg);"></div>
+        <div style="position:absolute;bottom:4px;right:14px;width:264px;height:340px;background:rgba(242,238,230,.75);border:1px solid rgba(13,13,13,.12);border-radius:8px;transform:rotate(-2deg);"></div>
+        <div style="position:absolute;bottom:0;right:0;width:264px;height:340px;background:#FAF9F5;border:1px solid rgba(13,13,13,.14);border-radius:8px;padding:20px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:14px;color:rgba(13,13,13,.38);margin-bottom:14px;letter-spacing:.06em;">FIG. 03</div>
+          <div style="height:5px;background:#0D0D0D;border-radius:2px;margin-bottom:14px;"></div>
+          <div style="height:2px;background:rgba(13,13,13,.18);margin-bottom:8px;"></div>
+          <div style="height:2px;background:rgba(13,13,13,.13);margin-bottom:8px;width:78%;"></div>
+          <div style="height:2px;background:rgba(13,13,13,.09);margin-bottom:18px;width:68%;"></div>
+          <div style="height:80px;background:rgba(26,77,255,.13);border-radius:4px;"></div>
+          <div style="height:2px;background:rgba(13,13,13,.09);margin-top:14px;"></div>
+          <div style="height:2px;background:rgba(13,13,13,.07);margin-top:8px;width:60%;"></div>
+        </div>
+      </div>
+      <div style="position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 80px;height:56px;border-top:1px solid rgba(13,13,13,.08);">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:18px;color:rgba(13,13,13,.28);">POLIODIGITAL.COM</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:18px;color:rgba(13,13,13,.28);">02 / 07</span>
+        <svg viewBox="0 0 44 44" width="44" height="44" fill="none"><circle cx="22" cy="22" r="20" stroke="#0D0D0D" stroke-width="1.8"/><circle cx="15.5" cy="18" r="2.5" fill="#0D0D0D"/><circle cx="28.5" cy="18" r="2.5" fill="#0D0D0D"/><path d="M13 27Q22 34 31 27" stroke="#0D0D0D" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+      </div>
+    </div>
+    </div></div></div>
+
+    <!-- S3: INISIATIF -->
+    <div class="slide" id="s1-2"><div class="shell"><div class="cvs">
+    <div style="background:#F2EEE6;width:1080px;height:1080px;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:0 80px;height:68px;border-bottom:1px solid rgba(13,13,13,.1);width:100%;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:17px;color:rgba(13,13,13,.4);letter-spacing:.1em;">POLIODIGITAL · POIN 02 · INISIATIF</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:17px;color:rgba(13,13,13,.4);letter-spacing:.1em;">NO. 07 · MEI 2026</span>
+      </div>
+      <!-- Giant asterisk centered -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 80px;text-align:center;">
+        <svg viewBox="0 0 200 200" width="380" height="380" fill="none" stroke="#1A4DFF" stroke-width="2.5" stroke-linecap="round">
+          <line x1="100" y1="4" x2="100" y2="196"/>
+          <line x1="4" y1="100" x2="196" y2="100"/>
+          <line x1="18" y1="18" x2="182" y2="182"/>
+          <line x1="182" y1="18" x2="18" y2="182"/>
+          <circle cx="100" cy="100" r="7" fill="#1A4DFF"/>
+        </svg>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:20px;color:#1A4DFF;letter-spacing:.12em;margin-top:20px;">02 / 05 · INISIATIF</div>
+        <div style="margin-top:16px;">
+          <div style="font-size:96px;font-weight:800;letter-spacing:-3.84px;line-height:.97;color:#0D0D0D;">Personal project yang</div>
+          <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:100px;letter-spacing:-3px;line-height:.97;color:#1A4DFF;">kamu buat sendiri.</div>
+        </div>
+        <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:28px;color:rgba(13,13,13,.7);line-height:1.6;margin-top:20px;max-width:740px;">Aplikasi kecil, desain fiktif, website yang kamu buat karena penasaran. Justru ini yang menunjukkan <strong style="font-style:normal;">inisiatif</strong> — sesuatu yang tidak bisa dibeli dengan pengalaman.</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:0 80px;height:56px;border-top:1px solid rgba(13,13,13,.1);width:100%;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:18px;color:rgba(13,13,13,.28);">POLIODIGITAL.COM</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:18px;color:rgba(13,13,13,.28);">03 / 07</span>
+        <svg viewBox="0 0 44 44" width="44" height="44" fill="none"><circle cx="22" cy="22" r="20" stroke="#0D0D0D" stroke-width="1.8"/><circle cx="15.5" cy="18" r="2.5" fill="#0D0D0D"/><circle cx="28.5" cy="18" r="2.5" fill="#0D0D0D"/><path d="M13 27Q22 34 31 27" stroke="#0D0D0D" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+      </div>
+    </div>
+    </div></div></div>
+
+    <!-- S4: KOMUNITAS -->
+    <div class="slide" id="s1-3"><div class="shell"><div class="cvs">
+    <div style="background:#fff;width:1080px;height:1080px;position:relative;overflow:hidden;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:0 80px;height:68px;border-bottom:1px solid rgba(13,13,13,.08);">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:17px;color:rgba(13,13,13,.4);letter-spacing:.1em;">POLIODIGITAL · POIN 03 · KOMUNITAS</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:17px;color:rgba(13,13,13,.4);letter-spacing:.1em;">NO. 07 · MEI 2026</span>
+      </div>
+      <div style="padding:44px 80px 0;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:18px;color:#1A4DFF;letter-spacing:.12em;margin-bottom:10px;">03 / 05 · KONTRIBUSI KOMUNITAS</div>
+        <div style="width:52px;height:3px;background:#1A4DFF;border-radius:2px;margin-bottom:22px;"></div>
+        <div style="font-size:84px;font-weight:800;letter-spacing:-2.94px;line-height:1.05;color:#0D0D0D;">Volunteer atau pro-bono untuk komunitas.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:24px;">
+          <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:28px;color:rgba(13,13,13,.75);line-height:1.6;">Bantu desain poster UKM, buatin website untuk UMKM, kontribusi di event kampus.</div>
+          <div style="font-size:26px;color:#0D0D0D;line-height:1.6;"><strong>Klien nyata</strong> — meski tidak dibayar. Kerja dengan deadline, brief, dan revisi adalah pengalaman yang sah.</div>
+        </div>
+      </div>
+      <!-- Visual: Network diagram -->
+      <div style="position:absolute;bottom:80px;left:80px;right:80px;">
+        <svg viewBox="0 0 920 280" width="920" height="280" fill="none">
+          <!-- Lines from Kamu -->
+          <line x1="70" y1="140" x2="230" y2="50" stroke="rgba(26,77,255,.25)" stroke-width="1.5"/>
+          <line x1="70" y1="140" x2="290" y2="140" stroke="rgba(26,77,255,.25)" stroke-width="1.5"/>
+          <line x1="70" y1="140" x2="230" y2="230" stroke="rgba(26,77,255,.25)" stroke-width="1.5"/>
+          <line x1="230" y1="50" x2="460" y2="50" stroke="rgba(26,77,255,.2)" stroke-width="1.5"/>
+          <line x1="230" y1="50" x2="460" y2="140" stroke="rgba(26,77,255,.2)" stroke-width="1.5"/>
+          <line x1="290" y1="140" x2="460" y2="140" stroke="rgba(26,77,255,.2)" stroke-width="1.5"/>
+          <line x1="230" y1="230" x2="460" y2="230" stroke="rgba(26,77,255,.2)" stroke-width="1.5"/>
+          <line x1="460" y1="50" x2="680" y2="140" stroke="rgba(26,77,255,.18)" stroke-width="1.5"/>
+          <line x1="460" y1="140" x2="680" y2="140" stroke="rgba(26,77,255,.18)" stroke-width="1.5"/>
+          <line x1="460" y1="230" x2="680" y2="140" stroke="rgba(26,77,255,.18)" stroke-width="1.5"/>
+          <line x1="680" y1="140" x2="850" y2="80" stroke="rgba(26,77,255,.15)" stroke-width="1.5"/>
+          <line x1="680" y1="140" x2="850" y2="200" stroke="rgba(26,77,255,.15)" stroke-width="1.5"/>
+          <!-- Nodes -->
+          <circle cx="70" cy="140" r="22" fill="#1A4DFF"/>
+          <text x="70" y="176" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:16px;fill:rgba(13,13,13,.5);">Kamu</text>
+          <circle cx="230" cy="50" r="15" stroke="rgba(13,13,13,.4)" stroke-width="1.5"/>
+          <text x="230" y="28" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:15px;fill:rgba(13,13,13,.45);">UKM</text>
+          <circle cx="290" cy="140" r="15" stroke="rgba(13,13,13,.4)" stroke-width="1.5"/>
+          <text x="290" y="173" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:15px;fill:rgba(13,13,13,.45);">Komunitas</text>
+          <circle cx="230" cy="230" r="15" stroke="rgba(13,13,13,.4)" stroke-width="1.5"/>
+          <text x="230" y="258" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:15px;fill:rgba(13,13,13,.45);">Event</text>
+          <circle cx="460" cy="50" r="15" stroke="rgba(13,13,13,.35)" stroke-width="1.5"/>
+          <text x="460" y="28" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:15px;fill:rgba(13,13,13,.4);">UMKM</text>
+          <circle cx="460" cy="140" r="15" stroke="rgba(13,13,13,.35)" stroke-width="1.5"/>
+          <text x="460" y="173" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:15px;fill:rgba(13,13,13,.4);">Klien</text>
+          <circle cx="460" cy="230" r="15" stroke="rgba(13,13,13,.35)" stroke-width="1.5"/>
+          <text x="460" y="258" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:15px;fill:rgba(13,13,13,.4);">Mentor</text>
+          <circle cx="680" cy="140" r="15" stroke="rgba(13,13,13,.3)" stroke-width="1.5"/>
+          <text x="680" y="173" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:15px;fill:rgba(13,13,13,.35);">Tim</text>
+          <circle cx="850" cy="80" r="15" stroke="rgba(13,13,13,.25)" stroke-width="1.5"/>
+          <text x="850" y="58" text-anchor="middle" style="font-family:'JetBrains Mono',monospace;font-size:15px;fill:rgba(13,13,13,.3);">Network</text>
+          <circle cx="850" cy="200" r="15" stroke="rgba(13,13,13,.22)" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div style="position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 80px;height:56px;border-top:1px solid rgba(13,13,13,.08);">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:18px;color:rgba(13,13,13,.28);">POLIODIGITAL.COM</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:18px;color:rgba(13,13,13,.28);">04 / 07</span>
+        <svg viewBox="0 0 44 44" width="44" height="44" fill="none"><circle cx="22" cy="22" r="20" stroke="#0D0D0D" stroke-width="1.8"/><circle cx="15.5" cy="18" r="2.5" fill="#0D0D0D"/><circle cx="28.5" cy="18" r="2.5" fill="#0D0D0D"/><path d="M13 27Q22 34 31 27" stroke="#0D0D0D" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+      </div>
+    </div>
+    </div></div></div>
+
+    <!-- S5: DIUJI -->
+    <div class="slide" id="s1-4"><div class="shell"><div class="cvs">
+    <div style="background:#F2EEE6;width:1080px;height:1080px;position:relative;overflow:hidden;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:0 80px;height:68px;border-bottom:1px solid rgba(13,13,13,.1);">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:17px;color:rgba(13,13,13,.4);letter-spacing:.1em;">POLIODIGITAL · POIN 04 · KEBERANIAN DIUJI</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:17px;color:rgba(13,13,13,.4);letter-spacing:.1em;">NO. 07 · MEI 2026</span>
+      </div>
+      <!-- Ghost numeral 4 -->
+      <div style="position:absolute;right:-40px;top:60px;font-family:'Instrument Serif',serif;font-style:italic;font-size:740px;color:rgba(26,77,255,.12);line-height:1;pointer-events:none;user-select:none;letter-spacing:-20px;">4</div>
+      <div style="padding:48px 80px 0;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:18px;color:#1A4DFF;letter-spacing:.12em;margin-bottom:10px;">04 / 05 · DIUJI</div>
+        <div style="width:52px;height:3px;background:#1A4DFF;border-radius:2px;margin-bottom:28px;"></div>
+        <div style="font-size:96px;font-weight:800;letter-spacing:-3.84px;line-height:.97;color:#0D0D0D;">Kompetisi —</div>
+        <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:100px;letter-spacing:-3px;line-height:.97;color:#1A4DFF;">meski tidak menang.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:48px;">
+          <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:28px;color:rgba(13,13,13,.7);line-height:1.6;">Hackathon, lomba desain, atau case competition.</div>
+          <div style="font-size:26px;color:#0D0D0D;line-height:1.6;">Ikut kompetisi menunjukkan kamu <strong>berani diuji.</strong> Menang itu bonus — prosesnya yang jadi cerita.</div>
+        </div>
+      </div>
+      <div style="position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 80px;height:56px;border-top:1px solid rgba(13,13,13,.1);">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:18px;color:rgba(13,13,13,.28);">POLIODIGITAL.COM</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:18px;color:rgba(13,13,13,.28);">05 / 07</span>
+        <svg viewBox="0 0 44 44" width="44" height="44" fill="none"><circle cx="22" cy="22" r="20" stroke="#0D0D0D" stroke-width="1.8"/><circle cx="15.5" cy="18" r="2.5" fill="#0D0D0D"/><circle cx="28.5" cy="18" r="2.5" fill="#0D0D0D"/><path d="M13 27Q22 34 31 27" stroke="#0D0D0D" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+      </div>
+    </div>
+    </div></div></div>
+
+    <!-- S6: CONCEPT -->
+    <div class="slide" id="s1-5"><div class="shell"><div class="cvs">
+    <div style="background:#fff;width:1080px;height:1080px;position:relative;overflow:hidden;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:0 80px;height:68px;border-bottom:1px solid rgba(13,13,13,.08);">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:17px;color:rgba(13,13,13,.4);letter-spacing:.1em;">POLIODIGITAL · POIN 05 · LATIHAN KRITIS</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:17px;color:rgba(13,13,13,.4);letter-spacing:.1em;">NO. 07 · MEI 2026</span>
+      </div>
+      <div style="padding:44px 80px 0;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:18px;color:#1A4DFF;letter-spacing:.12em;margin-bottom:10px;">05 / 05 · CONCEPT</div>
+        <div style="width:52px;height:3px;background:#1A4DFF;border-radius:2px;margin-bottom:22px;"></div>
+        <div style="font-size:84px;font-weight:800;letter-spacing:-2.94px;line-height:1.05;color:#0D0D0D;">Redesign concept</div>
+        <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:88px;letter-spacing:-2.6px;line-height:1.05;color:#1A4DFF;">dari brand yang sudah ada.</div>
+      </div>
+      <!-- Before/After widget -->
+      <div style="position:absolute;bottom:100px;left:80px;right:80px;">
+        <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:center;">
+          <!-- Before -->
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:16px;color:rgba(13,13,13,.35);letter-spacing:.1em;margin-bottom:12px;">BEFORE</div>
+            <div style="background:#F2EEE6;border:1.5px solid rgba(13,13,13,.12);border-radius:10px;padding:22px;">
+              <div style="font-size:24px;font-weight:700;color:#0D0D0D;margin-bottom:12px;">Old Brand</div>
+              <div style="height:3px;background:rgba(13,13,13,.2);margin-bottom:8px;border-radius:1px;"></div>
+              <div style="height:3px;background:rgba(13,13,13,.13);margin-bottom:8px;border-radius:1px;width:80%;"></div>
+              <div style="height:3px;background:rgba(13,13,13,.09);margin-bottom:14px;border-radius:1px;width:65%;"></div>
+              <div style="height:90px;background:rgba(13,13,13,.1);border-radius:6px;"></div>
+            </div>
+          </div>
+          <!-- Arrow -->
+          <div style="font-size:48px;color:#1A4DFF;font-weight:800;">→</div>
+          <!-- Your Concept -->
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:16px;color:#1A4DFF;letter-spacing:.1em;margin-bottom:12px;">YOUR CONCEPT</div>
+            <div style="background:#fff;border:2px solid #1A4DFF;border-radius:10px;padding:22px;">
+              <div style="font-size:24px;font-weight:700;color:#0D0D0D;margin-bottom:8px;">New Concept</div>
+              <div style="height:3px;background:#1A4DFF;margin-bottom:12px;border-radius:2px;width:50%;"></div>
+              <div style="height:3px;background:rgba(13,13,13,.13);margin-bottom:8px;border-radius:1px;"></div>
+              <div style="height:3px;background:rgba(13,13,13,.09);margin-bottom:14px;border-radius:1px;width:70%;"></div>
+              <div style="height:90px;background:rgba(26,77,255,.12);border-radius:6px;border:1.5px dashed rgba(26,77,255,.3);"></div>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:20px;font-size:26px;color:#0D0D0D;">Kasih label <strong>"Concept"</strong> — diakui sebagai latihan kritis, bukan plagiarisme.</div>
+      </div>
+      <div style="position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 80px;height:56px;border-top:1px solid rgba(13,13,13,.08);">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:18px;color:rgba(13,13,13,.28);">POLIODIGITAL.COM</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:18px;color:rgba(13,13,13,.28);">06 / 07</span>
+        <svg viewBox="0 0 44 44" width="44" height="44" fill="none"><circle cx="22" cy="22" r="20" stroke="#0D0D0D" stroke-width="1.8"/><circle cx="15.5" cy="18" r="2.5" fill="#0D0D0D"/><circle cx="28.5" cy="18" r="2.5" fill="#0D0D0D"/><path d="M13 27Q22 34 31 27" stroke="#0D0D0D" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+      </div>
+    </div>
+    </div></div></div>
+
+    <!-- S7: CTA -->
+    <div class="slide" id="s1-6"><div class="shell"><div class="cvs">
+    <div style="background:#F2EEE6;width:1080px;height:1080px;position:relative;overflow:hidden;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:0 80px;height:68px;border-bottom:1px solid rgba(13,13,13,.1);">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:17px;color:rgba(13,13,13,.4);letter-spacing:.1em;">POLIODIGITAL · THE CALL</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:17px;color:rgba(13,13,13,.4);letter-spacing:.1em;">NO. 07 · MEI 2026</span>
+      </div>
+      <div style="padding:52px 80px 0;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:18px;color:#1A4DFF;letter-spacing:.14em;display:flex;align-items:center;gap:8px;margin-bottom:36px;">✱ SUDAH PUNYA BAHAN?</div>
+        <div style="font-size:124px;font-weight:800;letter-spacing:-4.96px;line-height:.92;color:#0D0D0D;">Sekarang</div>
+        <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:124px;letter-spacing:-4.96px;line-height:.92;color:#1A4DFF;">waktunya</div>
+        <div style="font-size:124px;font-weight:800;letter-spacing:-4.96px;line-height:.92;color:#0D0D0D;">tampilkan dengan benar.</div>
+        <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:32px;color:rgba(13,13,13,.7);line-height:1.6;margin-top:32px;margin-bottom:36px;">Tanpa coding. Tanpa ribet. Portfolio live dalam 10 menit.</div>
+        <div style="display:flex;align-items:center;gap:32px;">
+          <div style="display:inline-flex;align-items:center;gap:12px;background:#0D0D0D;color:#fff;font-size:28px;font-weight:700;padding:22px 48px;border-radius:100px;">Coba Polio Digital →</div>
+          <span style="font-size:26px;color:rgba(13,13,13,.4);">poliodigital.com</span>
+        </div>
+      </div>
+      <div style="position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 80px;height:56px;border-top:1px solid rgba(13,13,13,.1);">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:18px;color:rgba(13,13,13,.28);">POLIODIGITAL.COM</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:18px;color:rgba(13,13,13,.28);">07 / 07</span>
+        <svg viewBox="0 0 44 44" width="44" height="44" fill="none"><circle cx="22" cy="22" r="20" stroke="#0D0D0D" stroke-width="1.8"/><circle cx="15.5" cy="18" r="2.5" fill="#0D0D0D"/><circle cx="28.5" cy="18" r="2.5" fill="#0D0D0D"/><path d="M13 27Q22 34 31 27" stroke="#0D0D0D" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+      </div>
+    </div>
+    </div></div></div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     RE-DESIGN 2 — CLEAN & ICONIC
+     Off-white · Small icons top-left · Outline smiley
+═══════════════════════════════════════════════════ -->
+<script>
+let cur = 0;
+const N = 7;
+const v = '1';
+function render(i) {
+  for (let j = 0; j < N; j++) {
+    const el = document.getElementById(`s${v}-${j}`);
+    if (el) el.classList.toggle('on', j === i);
+  }
+  document.getElementById('ctr').textContent = `${i+1} / ${N}`;
+  document.querySelectorAll('#dots .dot').forEach((d, j) => d.classList.toggle('on', j === i));
+  cur = i;
+}
+function go(dir) { render((cur + dir + N) % N); }
+function jmp(i) { render(i); }
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft') go(-1);
+  if (e.key === 'ArrowRight') go(1);
+});
+</script>
+
+</body>
+</html>

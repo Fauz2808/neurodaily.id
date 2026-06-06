@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Neuro Daily — Sleep Debt Merusak Karir Lebih Dari yang Kamu Kira</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;--red:#D96A6A}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#1a1a1a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#9aa39f;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(440px,92vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;display:flex;flex-direction:column;padding:36px 32px 28px;position:relative;overflow:hidden}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.slide .header{display:flex;justify-content:space-between;align-items:center;font-family:'DM Sans',sans-serif;font-weight:500;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.85}
+.bg-light .header{opacity:.7}
+.pillar-tag{display:inline-flex;align-items:center;gap:6px}
+.pillar-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--green)}
+.bg-light .pillar-tag::before{background:var(--teal)}
+.slide .footer{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;opacity:.55;text-transform:uppercase}
+.static-bg{position:absolute;inset:0;pointer-events:none;opacity:.045}
+
+/* S1 — HOOK */
+.s1 .body{margin-top:auto;margin-bottom:auto}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:38px;line-height:1.08;letter-spacing:-.01em;color:var(--parchment)}
+.s1 h1 em{color:var(--amber);font-style:italic}
+.s1 .lead{margin-top:18px;font-size:13px;line-height:1.7;opacity:.7;max-width:310px}
+.s1 .swipe{position:absolute;bottom:24px;right:32px;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.s1 .arrow{display:inline-block;animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+
+/* S2 — MYTH BUSTER */
+.s2 .eyebrow{margin-top:22px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);opacity:.8}
+.s2 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:26px;line-height:1.16;letter-spacing:-.01em;margin-top:10px;color:var(--forest)}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .compare{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.compare-row{padding:11px 14px;border-radius:9px;font-size:11.5px;line-height:1.55}
+.compare-myth{background:rgba(217,106,106,.08);border:1px solid rgba(217,106,106,.18);color:var(--forest)}
+.compare-fact{background:rgba(26,107,90,.08);border:1px solid rgba(26,107,90,.2);color:var(--forest)}
+.compare-row .label{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:4px;opacity:.7}
+.compare-myth .label{color:var(--red)}
+.compare-fact .label{color:var(--teal)}
+.s2 .note{margin-top:12px;font-size:11px;line-height:1.6;color:var(--forest);opacity:.6;border-top:1px solid rgba(13,46,40,.1);padding-top:10px}
+
+/* S3 — MECHANISM */
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:24px;line-height:1.24;letter-spacing:-.01em;margin-top:18px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .term{margin-top:13px;padding:12px 14px;border-radius:10px;background:rgba(94,201,167,.08);border-left:2px solid var(--green)}
+.s3 .term .name{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+.s3 .term .def{margin-top:6px;font-size:12px;line-height:1.6;color:var(--parchment);opacity:.9}
+.s3 .mech-list{margin-top:11px;display:flex;flex-direction:column;gap:5px}
+.s3 .mech-item{display:flex;align-items:flex-start;gap:10px;padding:8px 11px;border-radius:7px}
+.mech-a{background:rgba(94,201,167,.08);border:1px solid rgba(94,201,167,.15)}
+.mech-b{background:rgba(201,169,110,.08);border:1px solid rgba(201,169,110,.18)}
+.mech-c{background:rgba(217,106,106,.08);border:1px solid rgba(217,106,106,.15)}
+.s3 .mech-icon{font-size:11px;flex-shrink:0;margin-top:1px;width:16px;text-align:center}
+.s3 .mech-text{font-size:10.5px;line-height:1.45;color:var(--parchment);opacity:.85}
+.s3 .mech-text strong{font-weight:500;opacity:1;color:var(--parchment)}
+.s3 .source{margin-top:10px;font-size:10px;color:var(--parchment);opacity:.42;line-height:1.55}
+
+/* S4 — IMPACT */
+.s4 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:22px;line-height:1.28;margin-top:12px;color:var(--forest)}
+.s4 h2 em{font-style:italic;color:var(--teal)}
+.s4 .intro{margin-top:8px;font-size:12px;line-height:1.6;color:var(--forest);opacity:.65}
+.s4 .block-list{margin-top:13px;display:flex;flex-direction:column;gap:6px}
+.block-item{display:flex;align-items:flex-start;gap:10px;padding:10px 13px;background:rgba(255,255,255,.55);border:1px solid rgba(13,46,40,.1);border-radius:9px}
+.block-num{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--red);font-weight:500;flex-shrink:0;margin-top:2px;width:16px}
+.block-body .block-title{font-size:11.5px;font-weight:500;color:var(--forest);margin-bottom:3px;line-height:1.3}
+.block-body .block-sub{font-size:10.5px;color:var(--forest);opacity:.62;line-height:1.45}
+
+/* S5 — STAT */
+.s5{padding-top:28px}
+.s5 .stat-big{margin-top:auto;display:flex;align-items:baseline;gap:12px}
+.s5 .stat-big .n{font-family:'DM Serif Display',serif;font-size:80px;line-height:.85;color:var(--parchment);letter-spacing:-.03em}
+.s5 .stat-big .n em{color:var(--amber);font-style:italic}
+.s5 .stat-big .u{font-family:'DM Sans';font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--green);max-width:160px;line-height:1.5}
+.s5 .copy{margin-top:16px;font-size:13px;line-height:1.65;opacity:.85;max-width:340px}
+.s5 .copy strong{font-weight:500;color:var(--green)}
+.s5 .insight{margin-top:16px;padding:13px 16px;border:1px dashed rgba(94,201,167,.3);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);letter-spacing:.04em;line-height:1.9}
+
+/* S6 — STRATEGY */
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:25px;line-height:1.2;margin-top:20px;letter-spacing:-.01em}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .ps{margin-top:12px;font-size:12.5px;line-height:1.65;opacity:.78;max-width:340px}
+.s6 .steps{margin-top:14px;display:flex;flex-direction:column;gap:0}
+.s6 .step{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(245,243,238,.07)}
+.s6 .step:last-child{border-bottom:none}
+.s6 .step-num{width:20px;height:20px;border-radius:50%;background:rgba(94,201,167,.15);color:var(--green);font-family:'JetBrains Mono',monospace;font-size:8.5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.s6 .step-title{font-size:11.5px;font-weight:500;color:var(--parchment);line-height:1.3;margin-bottom:2px}
+.s6 .step-desc{font-size:10.5px;color:var(--parchment);opacity:.62;line-height:1.5}
+
+/* S7 — CTA */
+.s7{justify-content:space-between}
+.s7 .lead-q{font-family:'DM Serif Display',serif;font-size:25px;line-height:1.24;letter-spacing:-.01em;margin-top:22px;color:var(--forest)}
+.s7 .lead-q em{font-style:italic;color:var(--teal)}
+.s7 .ask{margin-top:13px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.7;max-width:310px}
+.s7 .actions{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.s7 .btn{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border:1px solid rgba(13,46,40,.15);border-radius:10px;font-size:12.5px;color:var(--forest)}
+.s7 .btn .ic{width:18px;height:18px;color:var(--teal);flex-shrink:0}
+.s7 .signoff{margin-top:18px;padding-top:14px;border-top:1px solid rgba(13,46,40,.12)}
+.s7 .tag{font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;color:var(--teal);line-height:1.3}
+.s7 .sub{margin-top:6px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--forest);opacity:.6;font-weight:500}
+
+/* Nav */
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:22px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:42px;height:42px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.controls button:hover{background:rgba(94,201,167,.12);border-color:rgba(94,201,167,.3)}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 8px}
+.caption-panel{width:min(440px,92vw);margin-top:32px;padding:22px 22px 24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:13px;line-height:1.7}
+.caption-panel .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+.caption-panel .char-count{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--amber);margin-top:10px;opacity:.7}
+.caption-panel p{margin-bottom:10px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:14px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Work Intelligence · P5 ]</span>
+</div>
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- SLIDE 1 — HOOK -->
+      <section class="slide bg-dark s1">
+        <svg class="static-bg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <!-- Sleep cycle clock arc -->
+          <circle cx="200" cy="105" r="42" fill="none" stroke="rgba(245,243,238,.08)" stroke-width="1"/>
+          <circle cx="200" cy="105" r="28" fill="none" stroke="rgba(245,243,238,.04)" stroke-width=".6"/>
+          <!-- Clock ticks -->
+          <line x1="200" y1="63" x2="200" y2="71" stroke="rgba(245,243,238,.18)" stroke-width=".8"/>
+          <line x1="242" y1="105" x2="234" y2="105" stroke="rgba(245,243,238,.18)" stroke-width=".8"/>
+          <line x1="200" y1="147" x2="200" y2="139" stroke="rgba(245,243,238,.18)" stroke-width=".8"/>
+          <line x1="158" y1="105" x2="166" y2="105" stroke="rgba(245,243,238,.18)" stroke-width=".8"/>
+          <!-- 8h ideal arc (dashed green) — 120° from top -->
+          <path d="M200 63 A42 42 0 0 1 236 126" fill="none" stroke="rgba(94,201,167,.22)" stroke-width="1.2" stroke-dasharray="3,3"/>
+          <!-- 6h arc (solid red) — 90° from top -->
+          <path d="M200 63 A42 42 0 0 1 242 105" fill="none" stroke="rgba(217,106,106,.55)" stroke-width="2.2" stroke-linecap="round"/>
+          <!-- Center label -->
+          <text x="200" y="109" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="rgba(217,106,106,.65)">6h</text>
+          <text x="200" y="123" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="rgba(217,106,106,.38)" letter-spacing=".3">dari 8h ideal</text>
+          <!-- Cut line -->
+          <line x1="55" y1="178" x2="340" y2="178" stroke="rgba(217,106,106,.25)" stroke-width=".8" stroke-dasharray="4,3"/>
+          <text x="150" y="175" font-family="JetBrains Mono" font-size="7" fill="rgba(217,106,106,.4)" letter-spacing=".5">TERPOTONG DI SINI</text>
+          <!-- Delta waves — deep sleep, slow freq -->
+          <path d="M25 245 C75 195 125 295 175 245 C225 195 275 295 325 245 L375 245" fill="none" stroke="rgba(94,201,167,.28)" stroke-width="1.3"/>
+          <text x="30" y="237" font-family="JetBrains Mono" font-size="7" fill="rgba(94,201,167,.42)" letter-spacing=".5">DELTA — TIDUR DALAM</text>
+          <!-- Theta/REM waves — medium freq -->
+          <path d="M25 298 C55 272 85 324 115 298 C145 272 175 324 205 298 C235 272 265 324 295 298 C325 272 355 324 385 298" fill="none" stroke="rgba(201,169,110,.22)" stroke-width="1"/>
+          <text x="30" y="290" font-family="JetBrains Mono" font-size="7" fill="rgba(201,169,110,.36)" letter-spacing=".5">THETA · REM</text>
+          <!-- Alpha waves — higher freq -->
+          <path d="M25 346 C47 331 63 361 85 346 C107 331 123 361 145 346 C167 331 183 361 205 346 C227 331 243 361 265 346 C287 331 303 361 325 346 C347 331 363 361 385 346" fill="none" stroke="rgba(245,243,238,.13)" stroke-width=".8"/>
+          <text x="30" y="338" font-family="JetBrains Mono" font-size="7" fill="rgba(245,243,238,.22)" letter-spacing=".5">ALPHA · TRANSISI</text>
+        </svg>
+        <div class="header">
+          <span class="pillar-tag">Work Intelligence · P5</span>
+          <span>01 / 07</span>
+        </div>
+        <div class="body">
+          <h1>Tidur 6 jam, dua minggu berturut. <em>Otakmu sudah setara tidak tidur 24 jam.</em></h1>
+          <p class="lead">Ini bukan lebay. Riset dari University of Pennsylvania membuktikan bahwa sleep debt terakumulasi diam-diam — dan bagian paling berbahaya: kamu tidak bisa merasakannya.</p>
+        </div>
+        <div class="swipe"><span>Geser</span><span class="arrow">→</span></div>
+      </section>
+
+      <!-- SLIDE 2 — MYTH BUSTER -->
+      <section class="slide bg-light s2">
+        <div class="header">
+          <span class="pillar-tag">Mitos vs Fakta</span>
+          <span>02 / 07</span>
+        </div>
+        <div class="eyebrow">Myth Buster · Formula A</div>
+        <h2>Tidur 6 jam bukan sekadar <em>kurang istirahat.</em></h2>
+        <div class="compare">
+          <div class="compare-row compare-myth">
+            <div class="label">Mitos yang beredar</div>
+            Tidur 6–7 jam sudah cukup. Yang penting bisa bangun dan tidak mengantuk saat kerja — itu tanda tubuh sudah recover.
+          </div>
+          <div class="compare-row compare-fact">
+            <div class="label">Fakta neurosains</div>
+            Setelah 14 hari tidur 6 jam/malam, penurunan kognisi setara total sleep deprivation 24 jam. Dan subjek tidak merasa mengantuk — karena kapasitas menilai kondisi diri sendiri ikut menurun terlebih dahulu.
+          </div>
+        </div>
+        <p class="note">Van Dongen et al. (2003) dalam jurnal Sleep mengukur ini secara objektif menggunakan psychomotor vigilance task — bukan survei perasaan. Sleep debt terakumulasi dan self-assessment menjadi tidak akurat seiring waktu.</p>
+        <div class="footer"><span>NEURO DAILY</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 3 — MECHANISM -->
+      <section class="slide bg-dark s3">
+        <div class="header">
+          <span class="pillar-tag">Yang terjadi saat tidur</span>
+          <span>03 / 07</span>
+        </div>
+        <h2>Tidur bukan istirahat pasif. <em>Ini sesi maintenance otak</em> yang tidak bisa digantikan.</h2>
+        <div class="term">
+          <div class="name">Glymphatic Clearance</div>
+          <div class="def">Sistem pembersihan aktif otak yang hanya berjalan saat tidur — membuang beta-amyloid, adenosine, dan metabolit toksik lain. Volume cairan serebrospinal meningkat 60% saat tidur untuk proses ini.</div>
+        </div>
+        <div class="mech-list">
+          <div class="mech-item mech-a">
+            <span class="mech-icon">🔄</span>
+            <span class="mech-text"><strong>Memory consolidation</strong> — hippocampus memindahkan memori jangka pendek ke korteks. Tanpa ini: pelajaran, keputusan, dan skill tidak terbentuk jadi long-term memory.</span>
+          </div>
+          <div class="mech-item mech-b">
+            <span class="mech-icon">⚡</span>
+            <span class="mech-text"><strong>Prefrontal restoration</strong> — satu-satunya cara memulihkan kapasitas decision-making dan impulse control. Tidak bisa dilakukan saat terjaga, meski dengan kafein sekalipun.</span>
+          </div>
+          <div class="mech-item mech-c">
+            <span class="mech-icon">🧹</span>
+            <span class="mech-text"><strong>Neural waste removal</strong> — dipotong di tengah siklus: toksin tertinggal di otak. Akumulasi jangka panjang terkait penurunan kognitif dan risiko neurodegeneratif.</span>
+          </div>
+        </div>
+        <p class="source">Xie et al. (2013): Science — Sleep drives metabolite clearance from the brain · Stickgold (2005): Nature Reviews Neuroscience — Sleep-dependent memory consolidation</p>
+      </section>
+
+      <!-- SLIDE 4 — CAREER IMPACT -->
+      <section class="slide bg-light s4">
+        <div class="header">
+          <span class="pillar-tag">4 cara ini merusak karir</span>
+          <span>04 / 07</span>
+        </div>
+        <h2>Kurang tidur <em>menyerang tepat di sini:</em> prefrontal cortex.</h2>
+        <p class="intro">Prefrontal cortex — pusat logika, keputusan, dan kontrol emosi — adalah area paling sensitif terhadap sleep deprivation.</p>
+        <div class="block-list">
+          <div class="block-item">
+            <span class="block-num">01</span>
+            <div class="block-body">
+              <div class="block-title">Keputusan lebih impulsif dan berisiko</div>
+              <div class="block-sub">Prefrontal cortex yang kurang tidur underaktif — impulse control melemah, risk assessment menurun. Keputusan buruk lebih sering dibuat saat lelah bukan kebetulan.</div>
+            </div>
+          </div>
+          <div class="block-item">
+            <span class="block-num">02</span>
+            <div class="block-body">
+              <div class="block-title">Lebih reaktif secara emosional di meeting</div>
+              <div class="block-sub">Amygdala hiperaktif ~60% saat kurang tidur. Respons ke feedback dan konflik menjadi tidak proporsional — kamu lebih mudah defensif atau offensif tanpa intensi.</div>
+            </div>
+          </div>
+          <div class="block-item">
+            <span class="block-num">03</span>
+            <div class="block-body">
+              <div class="block-title">Kreativitas dan problem-solving melemah</div>
+              <div class="block-sub">Memory consolidation REM menghasilkan koneksi antar-ide yang tidak mungkin terbentuk saat terjaga. Insight kreatif secara harfiah membutuhkan tidur.</div>
+            </div>
+          </div>
+          <div class="block-item">
+            <span class="block-num">04</span>
+            <div class="block-body">
+              <div class="block-title">Kecepatan berpikir setara mabuk ringan</div>
+              <div class="block-sub">17 jam terjaga = performa kognitif setara 0,05% BAC — batas legal berkendara di banyak negara. Kamu bekerja dengan standar yang tidak legal untuk mengemudi.</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>04 — DAMPAK</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 5 — STAT -->
+      <section class="slide bg-teal s5">
+        <div class="header">
+          <span class="pillar-tag" style="color:#fff">Angkanya</span>
+          <span>05 / 07</span>
+        </div>
+        <p class="copy" style="margin-top:24px">Kamu tidak bisa 'bayar balik' seminggu sleep debt dengan tidur panjang akhir pekan. <strong>Sleep debt tidak bekerja seperti rekening bank.</strong></p>
+        <div class="stat-big">
+          <span class="n">6<em>h</em></span>
+          <span class="u">per malam × 14 hari = kognisi setara tidak tidur 24 jam total</span>
+        </div>
+        <div class="insight">
+          Tidur 6 jam × 14 hari →<br>
+          Kognisi turun setara 24 jam tanpa tidur →<br>
+          Tapi subjek tidak merasa mengantuk →<br>
+          <span style="color:var(--amber)">────────────────────────────────</span><br>
+          Otak kehilangan kemampuan →<br>
+          menilai kondisinya sendiri<br>
+          <span style="opacity:.55;font-size:9.5px">*Van Dongen et al. (2003) · Journal Sleep · Univ. Pennsylvania</span>
+        </div>
+        <div class="footer"><span>05 — DATA</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 6 — STRATEGY -->
+      <section class="slide bg-dark s6">
+        <div class="header">
+          <span class="pillar-tag">Jadikan tidur strategi</span>
+          <span>06 / 07</span>
+        </div>
+        <h2>Tidur bukan reward. <em>Ini input performa</em> yang paling underrated.</h2>
+        <p class="ps">Otak tidak bisa dikelabui dengan kafein atau willpower. Yang bisa dilakukan: optimalkan kondisi yang mendukung kualitas tidur secara konsisten.</p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <div class="step-title">Konsistensi > total jam — atur jadwal tetap</div>
+              <div class="step-desc">Ritme sirkadian dibangun dari konsistensi, bukan total jam. Bangun dan tidur pada jam yang sama setiap hari — termasuk akhir pekan — lebih efektif dari menambah jam tidur secara sporadis.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <div class="step-title">Pre-sleep protocol 30 menit sebelum tidur</div>
+              <div class="step-desc">Blue light dari layar menunda produksi melatonin hingga 90 menit. Matikan layar dan redupkan lampu 30 menit sebelum tidur — sinyal gelap yang otak butuhkan untuk memulai sleep onset.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <div class="step-title">Power nap 20 menit sebagai tool produktivitas</div>
+              <div class="step-desc">Nap 20 menit meningkatkan alertness tanpa sleep inertia. Studi NASA menemukan nap 26 menit meningkatkan performa pilot 34% dan kewaspadaan 100% — bukan kelemahan, ini strategi.</div>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>06 — STRATEGI</span><span>↳ swipe</span></div>
+      </section>
+
+      <!-- SLIDE 7 — CTA -->
+      <section class="slide bg-light s7">
+        <div class="header">
+          <span class="pillar-tag">Sekarang giliranmu</span>
+          <span>07 / 07</span>
+        </div>
+        <div>
+          <p class="lead-q">Kamu tidur berapa jam semalam? Dan <em>sudah berapa lama seperti ini?</em></p>
+          <p class="ask">Jawab dengan angka di komentar. Dan ceritakan: kamu bisa bedakan performa kerja di hari tidur cukup vs kurang?</p>
+        </div>
+        <div class="actions">
+          <div class="btn">
+            <span>Simpan — baca sebelum skip tidur untuk deadline</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+          </div>
+          <div class="btn">
+            <span>Kirim ke rekan kerja yang bangga tidur sedikit</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </div>
+        <div class="signoff">
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="1.5"><path d="M4 14c0-5 3-8 8-8 4 0 6 2 6 5 0 2-1.5 3.5-4 3.5-2 0-3 1-3 2.5 0 1.5 1 2.5 2.5 2.5"/><circle cx="15" cy="9" r="1" fill="#1A6B5A"/></svg>
+            <span class="tag">Neuro Daily</span>
+          </div>
+          <div class="sub">Kerja lebih cerdas, bukan lebih keras. Ini sains-nya.</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="caption-panel">
+  <div class="label">Caption · Formula C — Number Hook · ≤ 500 karakter</div>
+  <p><strong style="color:var(--parchment)">Kamu tidur 6 jam tadi malam? Dan kemarin?</strong></p>
+  <p>Riset University of Pennsylvania menemukan bahwa sleep debt terakumulasi — setelah 14 hari tidur 6 jam/malam, penurunan kognisi setara tidak tidur 24 jam penuh.</p>
+  <p>Dan kamu tidak merasakannya. Karena itulah yang paling berbahaya: otak kehilangan kemampuan menilai kondisinya sendiri.</p>
+  <p>Kamu tidur berapa jam semalam? Jawab dengan angka.</p>
+  <span class="hash">#NeuroDaily #NeurosainsKerja #SleepDebt #Tidur #Produktivitas #WorkIntelligence #Performa</span>
+  <div class="char-count" id="charCount"></div>
+</div>
+
+<div class="controls">
+  <button id="prev">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next">›</button>
+</div>
+
+<script>
+const track=document.getElementById('track'),dotsEl=document.getElementById('dots'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next');
+const total=track.children.length;let i=0;
+for(let k=0;k<total;k++){const b=document.createElement('button');b.className='dot'+(k===0?' active':'');b.addEventListener('click',()=>go(k));dotsEl.appendChild(b)}
+const dots=[...dotsEl.children];
+function go(n){i=Math.max(0,Math.min(total-1,n));track.style.transform=`translateX(-${i*100}%)`;dots.forEach((d,k)=>d.classList.toggle('active',k===i));counter.textContent=`${i+1} / ${total}`;prevBtn.disabled=i===0;nextBtn.disabled=i===total-1}
+prevBtn.addEventListener('click',()=>go(i-1));nextBtn.addEventListener('click',()=>go(i+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(i+1);if(e.key==='ArrowLeft')go(i-1)});
+let sx=0,dx=0,drag=false;const vp=document.querySelector('.viewport');
+vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;drag=true;dx=0});
+vp.addEventListener('touchmove',e=>{if(!drag)return;dx=e.touches[0].clientX-sx});
+vp.addEventListener('touchend',()=>{if(!drag)return;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));drag=false});
+const captionText=`Kamu tidur 6 jam tadi malam? Dan kemarin?
+
+Riset University of Pennsylvania menemukan bahwa sleep debt terakumulasi — setelah 14 hari tidur 6 jam/malam, penurunan kognisi setara tidak tidur 24 jam penuh.
+
+Dan kamu tidak merasakannya. Karena itulah yang paling berbahaya: otak kehilangan kemampuan menilai kondisinya sendiri.
+
+Kamu tidur berapa jam semalam? Jawab dengan angka.
+
+#NeuroDaily #NeurosainsKerja #SleepDebt #Tidur #Produktivitas #WorkIntelligence #Performa`;
+const cc=document.getElementById('charCount'),len=captionText.length;
+cc.textContent=`${len} / 500 karakter ${len<=500?'✓':'⚠ Melebihi batas Threads'}`;
+if(len>500)cc.style.color='#e05252';
+go(0);
+</script>
+</body>
+</html>

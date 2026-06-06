@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Neuro Daily — Kritik dari Atasan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#1a1a1a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+  body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px}
+
+  .topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#9aa39f;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;margin-bottom:24px}
+  .topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+
+  .stage{position:relative;width:min(440px,92vw);aspect-ratio:4/5}
+  .viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04)}
+  .track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+  .slide{flex:0 0 100%;height:100%;display:flex;flex-direction:column;padding:36px 32px 28px;position:relative;overflow:hidden}
+
+  .bg-dark{background:var(--forest);color:var(--parchment)}
+  .bg-light{background:var(--parchment);color:var(--forest)}
+  .bg-teal{background:var(--teal);color:var(--parchment)}
+
+  .slide .header{display:flex;justify-content:space-between;align-items:center;font-family:'DM Sans',sans-serif;font-weight:500;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.85}
+  .bg-light .header{opacity:.7}
+  .pillar-tag{display:inline-flex;align-items:center;gap:6px}
+  .pillar-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--green)}
+  .bg-light .pillar-tag::before{background:var(--teal)}
+  .slide .footer{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;opacity:.55;text-transform:uppercase}
+
+  /* ── SLIDE 1 — HOOK ── */
+  .s1 .body{margin-top:auto;margin-bottom:auto}
+  .s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:44px;line-height:1.06;letter-spacing:-.01em;color:var(--parchment)}
+  .s1 h1 em{color:var(--amber);font-style:italic}
+  .s1 .lead{margin-top:18px;font-size:13px;line-height:1.7;opacity:.7;max-width:300px}
+  .s1 .swipe{position:absolute;bottom:24px;right:32px;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+  .s1 .arrow{display:inline-block;animation:nudge 1.6s ease-in-out infinite}
+  @keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+  .static-bg{position:absolute;inset:0;pointer-events:none;opacity:.045}
+
+  /* ── SLIDE 2 — MYTH BUSTER ── */
+  .s2-myth .eyebrow{margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);opacity:.8}
+  .s2-myth h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:30px;line-height:1.15;letter-spacing:-.01em;margin-top:10px;color:var(--forest)}
+  .s2-myth h2 em{font-style:italic;color:var(--teal)}
+  .myth-list{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+  .myth-item{display:flex;align-items:flex-start;gap:10px;padding:10px 13px;border-radius:8px;background:rgba(201,169,110,.08);border:1px solid rgba(201,169,110,.18)}
+  .myth-x{font-family:'JetBrains Mono',monospace;font-size:10px;color:#9a7940;flex-shrink:0;margin-top:1px;font-weight:500}
+  .myth-text{font-size:12px;line-height:1.55;color:var(--forest);opacity:.85}
+  .myth-text em{font-style:italic;font-size:11px;color:var(--forest);opacity:.55;display:block;margin-top:3px}
+  .s2-myth .bust-box{margin-top:14px;padding:12px 14px;border-radius:8px;background:rgba(26,107,90,.08);border-left:2px solid var(--teal)}
+  .s2-myth .bust-label{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:5px}
+  .s2-myth .bust-text{font-size:12px;line-height:1.6;color:var(--forest);opacity:.8}
+
+  /* ── SLIDE 3 — MECHANISM ── */
+  .s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:26px;line-height:1.24;letter-spacing:-.01em;margin-top:20px}
+  .s3 h2 em{font-style:italic;color:var(--amber)}
+  .s3 .term{margin-top:18px;padding:15px 17px;border-radius:10px;background:rgba(94,201,167,.08);border-left:2px solid var(--green)}
+  .s3 .term .name{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+  .s3 .term .def{margin-top:7px;font-size:12.5px;line-height:1.65;color:var(--parchment);opacity:.92}
+  .s3 .two-col{display:flex;gap:12px;margin-top:14px}
+  .s3 .box{flex:1;padding:11px 13px;border-radius:8px;font-size:11px;line-height:1.55}
+  .box-pain{background:rgba(201,169,110,.12);border:1px solid rgba(201,169,110,.2);color:var(--parchment);opacity:.88}
+  .box-social{background:rgba(94,201,167,.08);border:1px solid rgba(94,201,167,.18);color:var(--parchment);opacity:.88}
+  .s3 .box .box-label{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:5px;display:block}
+  .box-pain .box-label{color:var(--amber)}
+  .box-social .box-label{color:var(--green)}
+  .s3 .source{margin-top:12px;font-size:10.5px;color:var(--parchment);opacity:.5;line-height:1.55}
+
+  /* ── SLIDE 4 — SPEED GAP ── */
+  .s4-speed h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:22px;line-height:1.28;margin-top:14px;color:var(--forest)}
+  .s4-speed h2 em{font-style:italic;color:var(--teal)}
+  .speed-axis{margin-top:16px;position:relative}
+  .speed-bar{height:2px;background:rgba(13,46,40,.12);border-radius:99px;position:relative;margin:0 2px}
+  .speed-event{margin-top:6px;display:flex;flex-direction:column;position:absolute}
+  .speed-dot{width:12px;height:12px;border-radius:50%;margin-bottom:5px;flex-shrink:0}
+  .speed-time{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:var(--teal)}
+  .speed-label{font-size:11px;font-weight:500;color:var(--forest);line-height:1.4;max-width:90px}
+  .speed-sub{font-size:10px;color:var(--forest);opacity:.55;margin-top:2px;max-width:90px;line-height:1.4}
+  .gap-label{position:absolute;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:#9a7940}
+  .s4-speed .insight{margin-top:18px;padding:11px 14px;border-radius:8px;background:rgba(201,169,110,.08);border:1px solid rgba(201,169,110,.18);font-size:11.5px;line-height:1.58;color:var(--forest);opacity:.85}
+  .s4-speed .insight strong{color:var(--teal);font-weight:500}
+
+  /* ── SLIDE 5 — CONSEQUENCE ── */
+  .s5{padding-top:28px}
+  .s5 .stat-big{margin-top:auto;display:flex;align-items:baseline;gap:12px}
+  .s5 .stat-big .n{font-family:'DM Serif Display',serif;font-size:78px;line-height:.85;color:var(--parchment);letter-spacing:-.03em}
+  .s5 .stat-big .n em{color:var(--amber);font-style:italic}
+  .s5 .stat-big .u{font-family:'DM Sans';font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);max-width:130px;line-height:1.5}
+  .s5 .copy{margin-top:18px;font-size:13px;line-height:1.65;opacity:.85;max-width:340px}
+  .s5 .copy strong{font-weight:500;color:var(--green)}
+  .s5 .math{margin-top:16px;padding:13px 17px;border:1px dashed rgba(94,201,167,.3);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);letter-spacing:.04em;line-height:1.85}
+
+  /* ── SLIDE 6 — REFRAME ── */
+  .s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:30px;line-height:1.16;margin-top:24px;letter-spacing:-.01em}
+  .s6 h2 em{font-style:italic;color:var(--green)}
+  .s6 .ps{margin-top:16px;font-size:13px;line-height:1.65;opacity:.88;max-width:340px}
+  .s6 .ps+.ps{margin-top:12px;opacity:.72}
+  .s6 .tip{margin-top:18px;padding:13px 17px;border-radius:10px;background:rgba(94,201,167,.07);border-left:2px solid var(--green);font-size:12px;line-height:1.6;opacity:.9}
+  .s6 .tip .tip-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:5px}
+
+  /* ── SLIDE 7 — CTA ── */
+  .s7{justify-content:space-between}
+  .s7 .lead-q{font-family:'DM Serif Display',serif;font-size:26px;line-height:1.24;letter-spacing:-.01em;margin-top:26px;color:var(--forest)}
+  .s7 .lead-q em{font-style:italic;color:var(--teal)}
+  .s7 .ask{margin-top:13px;font-size:13px;line-height:1.65;color:var(--forest);opacity:.7;max-width:300px}
+  .s7 .actions{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+  .s7 .btn{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border:1px solid rgba(13,46,40,.15);border-radius:10px;font-size:12.5px;color:var(--forest)}
+  .s7 .btn .ic{width:18px;height:18px;color:var(--teal);flex-shrink:0}
+  .s7 .signoff{margin-top:18px;padding-top:14px;border-top:1px solid rgba(13,46,40,.12)}
+  .s7 .tag{font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;color:var(--teal);line-height:1.3}
+  .s7 .sub{margin-top:6px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--forest);opacity:.6;font-weight:500}
+
+  .dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+  .dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+  .dot.active{background:var(--green);width:22px}
+  .controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+  .controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:42px;height:42px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+  .controls button:hover{background:rgba(94,201,167,.12);border-color:rgba(94,201,167,.3)}
+  .controls button:disabled{opacity:.3;cursor:not-allowed}
+  .counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 8px}
+
+  .caption-panel{width:min(440px,92vw);margin-top:32px;padding:22px 22px 24px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:13px;line-height:1.7}
+  .caption-panel .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+  .caption-panel .char-count{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--amber);margin-top:10px;opacity:.7}
+  .caption-panel p{margin-bottom:10px}
+  .caption-panel p:last-child{margin-bottom:0}
+  .caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:14px;display:block;line-height:1.7}
+  /* ── EXPORT MODE ── */
+  html.export-html{width:440px!important;height:550px!important;min-height:0!important;overflow:hidden!important;margin:0!important;padding:0!important;background:#0D2E28}
+  body.export-mode{width:440px!important;height:550px!important;min-height:0!important;overflow:hidden!important;padding:0!important;margin:0!important;background:#0D2E28;display:block!important}
+  body.export-mode .topbar,body.export-mode .caption-panel,body.export-mode .dots,body.export-mode .controls{display:none!important}
+  body.export-mode .stage{position:relative!important;width:440px!important;height:550px!important;aspect-ratio:auto!important}
+  body.export-mode .viewport{position:absolute!important;inset:0!important;border-radius:0!important;box-shadow:none!important;overflow:hidden!important}
+  body.export-mode .track{position:absolute!important;top:0!important;left:0!important;height:100%!important;display:flex!important}
+  body.export-mode .slide{height:550px!important;min-height:550px!important;flex-shrink:0!important}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Brain at Work ]</span>
+</div>
+
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- ── SLIDE 1 — HOOK ── -->
+      <section class="slide bg-dark s1" data-screen-label="01 Hook">
+        <!-- dACC brain SVG — different from previous carousels -->
+        <svg class="static-bg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <!-- Brain outline -->
+          <ellipse cx="200" cy="220" rx="105" ry="85" fill="none" stroke="rgba(245,243,238,1)" stroke-width="1"/>
+          <!-- dACC region — band across top middle of brain -->
+          <path d="M155 170 Q200 152 245 170" fill="none" stroke="rgba(201,169,110,1)" stroke-width="2.5"/>
+          <path d="M150 178 Q200 160 250 178" fill="none" stroke="rgba(201,169,110,.6)" stroke-width="1.5"/>
+          <!-- dACC glow -->
+          <path d="M158 173 Q200 156 242 173" fill="none" stroke="rgba(201,169,110,.3)" stroke-width="8"/>
+          <!-- Physical pain signal (left side) -->
+          <circle cx="110" cy="270" r="6" fill="rgba(201,169,110,.4)"/>
+          <path d="M116 264 Q155 220 185 178" stroke="rgba(201,169,110,.5)" stroke-width="1" stroke-dasharray="3,4"/>
+          <text x="60" y="290" font-family="DM Sans" font-size="9" fill="rgba(201,169,110,.6)">Sakit fisik</text>
+          <!-- Social criticism signal (right side) -->
+          <circle cx="290" cy="270" r="6" fill="rgba(94,201,167,.4)"/>
+          <path d="M284 264 Q245 220 215 178" stroke="rgba(94,201,167,.5)" stroke-width="1" stroke-dasharray="3,4"/>
+          <text x="265" y="290" font-family="DM Sans" font-size="9" fill="rgba(94,201,167,.6)">Kritik sosial</text>
+          <!-- Same area label -->
+          <text x="200" y="148" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(201,169,110,.7)" letter-spacing="1">dACC</text>
+          <!-- Equal sign between the two -->
+          <text x="200" y="320" text-anchor="middle" font-family="DM Serif Display" font-size="18" fill="rgba(245,243,238,.2)">=</text>
+        </svg>
+
+        <div class="header">
+          <span class="pillar-tag">Brain at Work</span>
+          <span>01 / 07</span>
+        </div>
+        <div class="body">
+          <h1>Kenapa kritik atasan terasa seperti <em>serangan?</em></h1>
+          <p class="lead">Karena untuk otakmu — memang begitu. Ini bukan soal ego atau kurangnya kedewasaan. Ini neurosains.</p>
+        </div>
+        <div class="swipe">
+          <span>Geser</span><span class="arrow">→</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 2 — MYTH BUSTER ── -->
+      <section class="slide bg-light s2-myth" data-screen-label="02 Myth Buster">
+        <div class="header">
+          <span class="pillar-tag">Myth Buster</span>
+          <span>02 / 07</span>
+        </div>
+        <div class="eyebrow">3 hal yang sering dikatakan — dan salah semua</div>
+        <h2>Mitos yang <em>salah premis</em> tentang menerima feedback.</h2>
+        <div class="myth-list">
+          <div class="myth-item">
+            <span class="myth-x">✕</span>
+            <div class="myth-text">
+              "Kamu terlalu sensitif."
+              <em>Seolah ini soal karakter yang perlu diperbaiki</em>
+            </div>
+          </div>
+          <div class="myth-item">
+            <span class="myth-x">✕</span>
+            <div class="myth-text">
+              "Ini cuma masukan, jangan dibawa perasaan."
+              <em>Seolah kamu bisa memilih untuk tidak merasakannya</em>
+            </div>
+          </div>
+          <div class="myth-item">
+            <span class="myth-x">✕</span>
+            <div class="myth-text">
+              "Orang dewasa harusnya bisa terima kritik."
+              <em>Seolah ini soal kedewasaan, bukan biologi</em>
+            </div>
+          </div>
+        </div>
+        <div class="bust-box">
+          <div class="bust-label">Faktanya</div>
+          <div class="bust-text">Respons defensif terhadap kritik bukan soal karakter atau kedewasaan — ini respons neurologis yang terjadi dalam hitungan milidetik, jauh sebelum kamu bisa "memilih" untuk tidak merasakannya.</div>
+        </div>
+        <div class="footer">
+          <span>NEURO DAILY</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 3 — MECHANISM ── -->
+      <section class="slide bg-dark s3" data-screen-label="03 Mechanism">
+        <div class="header">
+          <span class="pillar-tag">Yang terjadi di otakmu</span>
+          <span>03 / 07</span>
+        </div>
+        <h2>Otak memperlakukan kritik dan sakit fisik di area yang <em>persis sama.</em></h2>
+        <div class="term">
+          <div class="name">dACC — Dorsal Anterior Cingulate Cortex</div>
+          <div class="def">Area otak yang aktif saat memproses rasa sakit fisik. Eisenberger et al. (Science, 2003) membuktikan area ini juga aktif saat mengalami penolakan atau kritik sosial — dengan intensitas yang sebanding.</div>
+        </div>
+        <div class="two-col">
+          <div class="box box-pain">
+            <span class="box-label">Sakit Fisik</span>
+            Tangan terkena benda panas. dACC aktif. Otak mengirim sinyal: "Bahaya. Hindari."
+          </div>
+          <div class="box box-social">
+            <span class="box-label">Kritik Sosial</span>
+            Feedback negatif dari atasan. dACC aktif. Otak mengirim sinyal: "Bahaya. Hindari."
+          </div>
+        </div>
+        <p class="source">Eisenberger & Lieberman (Science, 2003). Eisenberger et al. (Psychological Science, 2011): social rejection activates dACC — same region as physical pain processing.</p>
+        <div class="footer" style="margin-top:auto">
+          <span>03 — MECHANISM</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 4 — SPEED GAP ── -->
+      <section class="slide bg-light s4-speed" data-screen-label="04 Speed Gap">
+        <div class="header">
+          <span class="pillar-tag">Masalah utamanya</span>
+          <span>04 / 07</span>
+        </div>
+        <h2>Respons neurologis terjadi <em>jauh lebih cepat</em> dari kemampuan berpikirmu.</h2>
+
+        <!-- Speed gap visual -->
+        <div style="margin-top:20px;position:relative;padding-bottom:16px">
+          <!-- Timeline bar -->
+          <div style="height:2px;background:rgba(13,46,40,.1);border-radius:99px;margin:0 4px;position:relative">
+            <!-- Amber segment (fast) -->
+            <div style="position:absolute;left:0;top:0;height:100%;width:18%;background:var(--amber);border-radius:99px"></div>
+            <!-- Teal segment (slow) -->
+            <div style="position:absolute;left:18%;top:0;height:100%;width:82%;background:rgba(26,107,90,.25);border-radius:99px"></div>
+          </div>
+
+          <!-- Event 1: neural response -->
+          <div style="position:absolute;top:-10px;left:calc(18% - 6px)">
+            <div style="width:12px;height:12px;border-radius:50%;background:var(--amber);border:2px solid var(--parchment)"></div>
+          </div>
+          <!-- Event 2: conscious thought -->
+          <div style="position:absolute;top:-10px;right:0">
+            <div style="width:12px;height:12px;border-radius:50%;background:var(--teal);border:2px solid var(--parchment)"></div>
+          </div>
+
+          <!-- Labels below bar -->
+          <div style="display:flex;justify-content:space-between;margin-top:10px">
+            <div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--amber);letter-spacing:.1em">~100ms</div>
+              <div style="font-size:11.5px;font-weight:500;color:var(--forest);margin-top:2px">dACC sudah aktif</div>
+              <div style="font-size:10px;color:var(--forest);opacity:.55;margin-top:2px;max-width:100px;line-height:1.4">Respons sakit terbentuk</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--teal);letter-spacing:.1em">3–5 detik</div>
+              <div style="font-size:11.5px;font-weight:500;color:var(--forest);margin-top:2px">Pikiran sadar aktif</div>
+              <div style="font-size:10px;color:var(--forest);opacity:.55;margin-top:2px;max-width:100px;text-align:right;line-height:1.4">"Oke, ini cuma feedback"</div>
+            </div>
+          </div>
+
+          <!-- Gap label -->
+          <div style="text-align:center;margin-top:8px">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:#9a7940;background:rgba(201,169,110,.08);padding:3px 8px;border-radius:99px;border:1px solid rgba(201,169,110,.2)">Di celah ini: respons defensif terbentuk</span>
+          </div>
+        </div>
+
+        <div class="insight">
+          "Jangan bawa perasaan" tidak bekerja karena <strong>perasaan itu sudah terbentuk secara neurologis sebelum kamu sempat memilih</strong> untuk tidak membawanya.
+        </div>
+
+        <div class="footer">
+          <span>04 — SPEED GAP</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 5 — CONSEQUENCE ── -->
+      <section class="slide bg-teal s5" data-screen-label="05 Consequence">
+        <div class="header">
+          <span class="pillar-tag" style="color:#fff">Dampaknya</span>
+          <span>05 / 07</span>
+        </div>
+        <p class="copy" style="margin-top:24px">Orang yang tidak memahami mekanisme ini cenderung <strong>menghindari situasi feedback</strong> — padahal itu justru yang paling mempercepat pertumbuhan karir.</p>
+
+        <div class="stat-big">
+          <span class="n"><em>Hindari</em></span>
+        </div>
+        <span style="margin-top:8px;font-family:'DM Sans';font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);font-weight:500;display:block">= pertumbuhan melambat</span>
+
+        <div class="math">
+          Tidak paham mekanisme → merasa "lemah" saat defensif<br>
+          → hindari feedback → tidak berkembang<br>
+          <span style="color:var(--amber)">──────────────────────────</span><br>
+          Paham mekanisme → respons defensif normal<br>
+          → bisa kelola → tetap berkembang<br>
+          <span style="opacity:.6;font-size:10px">*Kerangka berbasis riset Eisenberger et al. & Lieberman (UCLA)</span>
+        </div>
+
+        <div class="footer">
+          <span>05 — DAMPAK</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 6 — REFRAME ── -->
+      <section class="slide bg-dark s6" data-screen-label="06 Reframe">
+        <div class="header">
+          <span class="pillar-tag">Reframe</span>
+          <span>06 / 07</span>
+        </div>
+        <h2>Defensif saat dikritik bukan lemah — itu otak yang <em>bekerja normal.</em></h2>
+        <p class="ps">Respons yang kamu rasakan setelah feedback negatif — peningkatan detak jantung, keinginan untuk berargumen, atau menarik diri — itu bukan tanda ketidakdewasaan. Itu tanda dACC sedang melakukan tugasnya.</p>
+        <p class="ps">Perbedaan antara orang yang "bisa terima feedback" dan yang tidak bukan soal sensitivitas yang lebih rendah — tapi soal memahami mekanismenya sehingga bisa merespons setelah gelombang pertama itu mereda.</p>
+        <div class="tip">
+          <div class="tip-label">Teknik berbasis sains: Affect Labeling</div>
+          Beri nama emosi yang muncul dalam hati — "aku merasa defensif sekarang." Riset Lieberman (UCLA) menunjukkan memberi label verbal pada emosi secara aktif menurunkan aktivasi amygdala dan dACC. Bukan supresi — tapi pengakuan yang menurunkan intensitas.
+        </div>
+        <div class="footer">
+          <span>06 — REFRAME</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- ── SLIDE 7 — CTA ── -->
+      <section class="slide bg-light s7" data-screen-label="07 CTA">
+        <div class="header">
+          <span class="pillar-tag">Sekarang giliranmu</span>
+          <span>07 / 07</span>
+        </div>
+
+        <div>
+          <p class="lead-q">Feedback apa yang pernah terasa paling <em>sulit diterima?</em></p>
+          <p class="ask">Tulis di komentar. Sekarang kamu tahu — itu bukan karena kamu terlalu sensitif.</p>
+        </div>
+
+        <div class="actions">
+          <div class="btn">
+            <span>Simpan — baca sebelum performance review berikutnya</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+          </div>
+          <div class="btn">
+            <span>Kirim ke teman yang sering overthink feedback atasan</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </div>
+
+        <div class="signoff">
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="1.5">
+              <path d="M4 14c0-5 3-8 8-8 4 0 6 2 6 5 0 2-1.5 3.5-4 3.5-2 0-3 1-3 2.5 0 1.5 1 2.5 2.5 2.5"/>
+              <circle cx="15" cy="9" r="1" fill="#1A6B5A"/>
+            </svg>
+            <span class="tag">Neuro Daily</span>
+          </div>
+          <div class="sub">Kerja lebih cerdas, bukan lebih keras. Ini sains-nya.</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<!-- CAPTION PANEL -->
+<div class="caption-panel">
+  <div class="label">Caption · Formula A — Myth Buster · ≤ 500 karakter</div>
+  <p><strong style="color:var(--parchment)">Feedback atasan membuat kamu defensif? Bukan karena kamu terlalu sensitif.</strong></p>
+  <p>Otakmu memproses kritik sosial di area yang sama dengan rasa sakit fisik — dorsal anterior cingulate cortex.</p>
+  <p>Mitos: "Jangan baper, itu cuma masukan."<br>Fakta: Untuk otakmu, itu benar-benar menyakitkan secara neurologis.</p>
+  <p>Ini bukan kelemahan karakter. Ini cara otak bekerja — dan bisa dikelola.</p>
+  <p>Simpan ini sebelum meeting review kamu berikutnya.</p>
+  <span class="hash">#NeuroDaily #NeurosainsKerja #BrainAtWork #WorkFeedback #CarirBerbasisSains</span>
+  <div class="char-count" id="charCount"></div>
+</div>
+
+<div class="controls">
+  <button id="prev" aria-label="Sebelumnya">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next" aria-label="Berikutnya">›</button>
+</div>
+
+<script>
+  const track=document.getElementById('track');
+  const dotsEl=document.getElementById('dots');
+  const counter=document.getElementById('counter');
+  const prevBtn=document.getElementById('prev');
+  const nextBtn=document.getElementById('next');
+  const total=track.children.length;
+  let i=0;
+
+  for(let k=0;k<total;k++){
+    const b=document.createElement('button');
+    b.className='dot'+(k===0?' active':'');
+    b.addEventListener('click',()=>go(k));
+    dotsEl.appendChild(b);
+  }
+  const dots=[...dotsEl.children];
+
+  function go(n){
+    i=Math.max(0,Math.min(total-1,n));
+    track.style.transform=`translateX(-${i*100}%)`;
+    dots.forEach((d,k)=>d.classList.toggle('active',k===i));
+    counter.textContent=`${i+1} / ${total}`;
+    prevBtn.disabled=i===0;
+    nextBtn.disabled=i===total-1;
+  }
+  prevBtn.addEventListener('click',()=>go(i-1));
+  nextBtn.addEventListener('click',()=>go(i+1));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight')go(i+1);
+    if(e.key==='ArrowLeft')go(i-1);
+  });
+  let sx=0,dx=0,dragging=false;
+  const vp=document.querySelector('.viewport');
+  vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;dragging=true;dx=0});
+  vp.addEventListener('touchmove',e=>{if(!dragging)return;dx=e.touches[0].clientX-sx});
+  vp.addEventListener('touchend',()=>{
+    if(!dragging)return;
+    if(Math.abs(dx)>40)go(i+(dx<0?1:-1));
+    dragging=false;
+  });
+
+  const captionText=`Feedback atasan membuat kamu defensif? Bukan karena kamu terlalu sensitif.
+
+Otakmu memproses kritik sosial di area yang sama dengan rasa sakit fisik — dorsal anterior cingulate cortex.
+
+Mitos: "Jangan baper, itu cuma masukan."
+Fakta: Untuk otakmu, itu benar-benar menyakitkan secara neurologis.
+
+Ini bukan kelemahan karakter. Ini cara otak bekerja — dan bisa dikelola.
+
+Simpan ini sebelum meeting review kamu berikutnya.
+
+#NeuroDaily #NeurosainsKerja #BrainAtWork #WorkFeedback #CarirBerbasisSains`;
+
+  const cc=document.getElementById('charCount');
+  const len=captionText.length;
+  cc.textContent=`${len} / 500 karakter ${len<=500?'✓':'⚠ Melebihi batas Threads'}`;
+  if(len>500)cc.style.color='#e05252';
+
+    const params=new URLSearchParams(location.search),sp=params.get('slide');
+  if(sp){document.documentElement.classList.add('export-html');document.body.classList.add('export-mode');go(parseInt(sp)-1)}else{go(0)}
+</script>
+</body>
+</html>

@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Neuro Daily — 23 Menit · Editorial Redesign</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --forest:#0D2E28;
+  --teal:#1A6B5A;
+  --green:#5EC9A7;
+  --parchment:#F5F3EE;
+  --amber:#C9A96E;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0a0a0a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 100px}
+
+.topbar{
+  width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;
+  color:#7a807d;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  margin-bottom:24px;
+}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+
+.stage{position:relative;width:min(540px,94vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+
+/* INNER CANVAS — design at 1080×1350, scaled to fit shell */
+.slide{
+  flex:0 0 100%;height:100%;
+  position:relative;overflow:hidden;
+}
+.cvs{
+  width:1080px;height:1350px;
+  transform-origin:top left;
+  position:absolute;top:0;left:0;
+  font-family:'DM Sans',sans-serif;
+}
+/* compute scale via JS for perfect fit */
+
+/* ===== EDITORIAL CHROME (shared) ===== */
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+
+.cvs .head, .cvs .foot{
+  position:absolute;left:0;right:0;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 64px;
+  font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase;
+}
+.cvs .head{top:0;height:78px;border-bottom:1px solid currentColor;border-color:rgba(245,243,238,.12)}
+.cvs .foot{bottom:0;height:64px;border-top:1px solid currentColor;border-color:rgba(245,243,238,.12)}
+.bg-light .head, .bg-light .foot{border-color:rgba(13,46,40,.12)}
+.bg-teal .head, .bg-teal .foot{border-color:rgba(245,243,238,.18)}
+
+.cvs .head span, .cvs .foot span{opacity:.55}
+.cvs .head .dotmark::before{content:"●  ";color:var(--green);opacity:1}
+.bg-light .head .dotmark::before{color:var(--teal)}
+
+/* hippo brandmark in footer */
+.hippo-mark{display:flex;align-items:center;gap:10px;opacity:1!important}
+.hippo-mark svg{width:30px;height:30px;flex-shrink:0}
+
+/* ===== INNER BODY (content area) ===== */
+.body{
+  position:absolute;top:78px;bottom:64px;left:0;right:0;
+  padding:56px 64px;
+}
+
+/* eyebrow */
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;
+  display:flex;align-items:center;gap:10px;
+}
+.eyebrow .sym{font-size:20px;line-height:1}
+.bg-dark .eyebrow{color:var(--green)}
+.bg-light .eyebrow{color:var(--teal)}
+.bg-teal .eyebrow{color:var(--amber)}
+
+/* divider rule under eyebrow */
+.rule{width:48px;height:3px;background:var(--green);border-radius:2px;margin-top:18px}
+.bg-light .rule{background:var(--teal)}
+.bg-teal .rule{background:var(--amber)}
+
+/* headline base */
+.h-display{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  letter-spacing:-.02em;line-height:.94;
+}
+.h-italic{font-style:italic}
+
+/* serif quote ornament */
+.quote-mark{
+  font-family:'DM Serif Display',serif;font-style:italic;
+  font-size:280px;line-height:.7;letter-spacing:-.05em;
+}
+
+/* ===== SLIDE 1 — HOOK ===== */
+.s1 .body{display:flex;flex-direction:column}
+.s1 h1{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:96px;line-height:.98;letter-spacing:-.02em;
+  margin-top:34px;
+  max-width:620px;
+}
+.s1 h1 em{font-style:italic;color:var(--amber)}
+.s1 h1 .grn{font-style:italic;color:var(--green)}
+.s1 .lead{margin-top:36px;font-size:24px;line-height:1.55;opacity:.7;max-width:520px;font-weight:300}
+
+/* notification stack visual — right side */
+.notif-stack{
+  position:absolute;right:64px;top:140px;
+  width:340px;height:520px;
+}
+.notif-card{
+  position:absolute;left:0;right:0;
+  background:rgba(245,243,238,.06);
+  border:1px solid rgba(94,201,167,.22);
+  border-radius:14px;
+  padding:24px 26px;
+  backdrop-filter:blur(2px);
+}
+.notif-card.c1{top:0;transform:rotate(-4deg);opacity:.5}
+.notif-card.c2{top:42px;transform:rotate(2deg);opacity:.75}
+.notif-card.c3{top:96px;background:rgba(94,201,167,.1);border-color:rgba(94,201,167,.45);box-shadow:0 12px 40px rgba(0,0,0,.25)}
+.notif-card.c4{top:336px;background:rgba(201,169,110,.08);border-color:rgba(201,169,110,.35);transform:rotate(-2deg)}
+.notif-card .nrow{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.notif-card .ndot{width:10px;height:10px;border-radius:99px;background:var(--green);flex-shrink:0;box-shadow:0 0 0 0 rgba(94,201,167,.6);animation:pulse 2.4s ease-out infinite}
+.notif-card .nlabel{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);opacity:.85}
+.notif-card .nline{height:5px;background:rgba(245,243,238,.18);border-radius:3px;margin-bottom:9px}
+.notif-card .nline.s{width:62%}
+.notif-card .nline.xs{width:42%}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(94,201,167,.55)}
+  70%{box-shadow:0 0 0 14px rgba(94,201,167,0)}
+  100%{box-shadow:0 0 0 0 rgba(94,201,167,0)}
+}
+
+/* swipe hint */
+.swipe-hint{
+  position:absolute;bottom:96px;right:64px;
+  display:flex;align-items:center;gap:10px;
+  font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.16em;text-transform:uppercase;opacity:.5;
+}
+.swipe-hint .arr{display:inline-block;animation:nudge 1.8s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
+
+/* ===== SLIDE 2 — BIG NUMBER ===== */
+.s2 .body{display:flex;flex-direction:column;justify-content:flex-start}
+.s2 .ghost{
+  position:absolute;
+  font-family:'DM Serif Display',serif;
+  font-size:1100px;line-height:.78;
+  color:var(--amber);opacity:.1;
+  letter-spacing:-.06em;
+  pointer-events:none;user-select:none;
+  right:-80px;top:80px;
+}
+.s2 .number-block{margin-top:auto;position:relative;z-index:2}
+.s2 .num{
+  font-family:'DM Serif Display',serif;
+  font-size:560px;line-height:.78;letter-spacing:-.05em;
+  color:var(--forest);
+  display:flex;align-items:flex-start;
+}
+.s2 .num .dot{color:var(--amber)}
+.s2 .unit{
+  font-family:'DM Serif Display',serif;font-style:italic;
+  font-size:84px;line-height:1;letter-spacing:-.02em;
+  color:var(--teal);
+  margin-top:-14px;
+}
+.s2 .caption{
+  margin-top:36px;font-size:30px;line-height:1.5;color:var(--forest);opacity:.78;max-width:740px;font-weight:300;
+  position:relative;z-index:2;
+}
+.s2 .source{
+  position:absolute;top:160px;right:64px;
+  font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--teal);opacity:.7;
+  text-align:right;line-height:1.6;
+  z-index:2;
+}
+.s2 .source .lbl{color:var(--forest);opacity:.45;display:block;margin-bottom:6px;font-size:11px;letter-spacing:.2em}
+
+/* ===== SLIDE 3 — MECHANISM ===== */
+.s3 .body{display:flex;flex-direction:column}
+.s3 .synapse{
+  margin-top:28px;
+  width:200px;height:120px;
+}
+.s3 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:74px;line-height:1.04;letter-spacing:-.02em;
+  margin-top:36px;
+  max-width:880px;
+}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .term-card{
+  margin-top:48px;
+  background:rgba(94,201,167,.08);border:1px solid rgba(94,201,167,.28);
+  border-radius:14px;padding:32px 36px;
+  position:relative;
+}
+.s3 .term-card::before{
+  content:"";position:absolute;left:-1px;top:24px;bottom:24px;width:4px;background:var(--green);border-radius:0 4px 4px 0;
+}
+.s3 .term-name{
+  font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--green);
+}
+.s3 .term-def{
+  margin-top:16px;font-size:26px;line-height:1.5;color:var(--parchment);opacity:.92;
+  font-weight:300;
+}
+.s3 .source-cite{
+  margin-top:auto;
+  display:flex;justify-content:space-between;align-items:flex-end;gap:30px;
+}
+.s3 .source-cite .src{
+  font-family:'JetBrains Mono',monospace;font-size:14px;line-height:1.7;letter-spacing:.05em;
+  opacity:.55;max-width:680px;
+}
+.s3 .source-cite .src .src-lbl{display:block;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);opacity:.85;margin-bottom:8px}
+
+/* ===== SLIDE 4 — TIMELINE ===== */
+.s4 .body{display:flex;flex-direction:column}
+.s4 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:80px;line-height:1.02;letter-spacing:-.02em;
+  margin-top:36px;color:var(--forest);
+  max-width:880px;
+}
+.s4 h2 em{font-style:italic;color:var(--teal)}
+.s4 .timeline-block{
+  margin-top:64px;
+  position:relative;
+}
+.s4 .tl-label{
+  font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.16em;text-transform:uppercase;color:var(--forest);opacity:.55;margin-bottom:24px;
+}
+.s4 .tl-track{
+  position:relative;height:4px;background:rgba(13,46,40,.15);border-radius:99px;
+}
+.s4 .tl-track::before, .s4 .tl-track::after{
+  content:"";position:absolute;top:50%;width:14px;height:14px;border-radius:99px;background:var(--forest);transform:translateY(-50%);
+}
+.s4 .tl-track::before{left:-2px}
+.s4 .tl-track::after{right:-2px;background:var(--amber)}
+.s4 .ping{
+  position:absolute;top:50%;
+  width:24px;height:24px;border-radius:99px;
+  background:var(--teal);
+  transform:translate(-50%,-50%);
+  box-shadow:0 0 0 0 rgba(26,107,90,.5);
+  animation:tl-ping 2.6s ease-out infinite;
+}
+.s4 .ping::after{
+  content:"";position:absolute;inset:6px;border-radius:99px;background:var(--parchment);opacity:.5;
+}
+.s4 .ping.p1{left:18%;animation-delay:0s}
+.s4 .ping.p2{left:36%;animation-delay:.5s}
+.s4 .ping.p3{left:55%;animation-delay:1s}
+.s4 .ping.p4{left:74%;animation-delay:1.5s}
+.s4 .ping.p5{left:90%;animation-delay:2s}
+@keyframes tl-ping{
+  0%{box-shadow:0 0 0 0 rgba(26,107,90,.5)}
+  70%{box-shadow:0 0 0 22px rgba(26,107,90,0)}
+  100%{box-shadow:0 0 0 0 rgba(26,107,90,0)}
+}
+.s4 .tl-tags{
+  display:flex;justify-content:space-between;margin-top:18px;
+  font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.1em;color:var(--forest);opacity:.5;
+}
+.s4 .tl-types{
+  margin-top:48px;display:flex;justify-content:space-between;
+}
+.s4 .tl-type{
+  text-align:left;font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--forest);opacity:.7;
+  display:flex;align-items:center;gap:8px;
+}
+.s4 .tl-type::before{content:"";width:8px;height:8px;border-radius:99px;background:var(--teal)}
+.s4 .stat-row{
+  margin-top:auto;display:flex;gap:48px;
+  border-top:1px solid rgba(13,46,40,.15);padding-top:36px;
+}
+.s4 .stat{flex:1}
+.s4 .stat .v{font-family:'DM Serif Display',serif;font-size:120px;line-height:.9;color:var(--teal);letter-spacing:-.03em}
+.s4 .stat .v em{font-style:italic;color:var(--amber)}
+.s4 .stat .l{font-size:18px;letter-spacing:.05em;text-transform:uppercase;margin-top:12px;color:var(--forest);opacity:.6;font-family:'JetBrains Mono',monospace;letter-spacing:.1em}
+
+/* ===== SLIDE 5 — CONSEQUENCE ===== */
+.s5 .body{display:flex;flex-direction:column}
+.s5 .ghost-2{
+  position:absolute;
+  font-family:'DM Serif Display',serif;font-style:italic;
+  font-size:1500px;line-height:.78;
+  color:rgba(201,169,110,.18);
+  letter-spacing:-.08em;
+  pointer-events:none;user-select:none;
+  right:-180px;top:-100px;
+}
+.s5 .copy{
+  margin-top:42px;font-size:32px;line-height:1.5;max-width:720px;font-weight:300;
+  position:relative;z-index:2;
+}
+.s5 .copy strong{font-weight:500;color:var(--amber)}
+.s5 .stat-big{margin-top:auto;position:relative;z-index:2;display:flex;align-items:flex-end;gap:30px}
+.s5 .stat-big .n{
+  font-family:'DM Serif Display',serif;
+  font-size:340px;line-height:.78;letter-spacing:-.04em;
+  color:var(--parchment);
+}
+.s5 .stat-big .n em{color:var(--amber);font-style:italic}
+.s5 .stat-big .u{
+  font-family:'DM Sans';font-weight:500;font-size:24px;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--green);max-width:240px;line-height:1.45;
+  padding-bottom:24px;
+}
+.s5 .math-card{
+  margin-top:36px;padding:28px 32px;
+  border:1px dashed rgba(94,201,167,.35);border-radius:12px;
+  font-family:'JetBrains Mono',monospace;font-size:20px;color:var(--green);letter-spacing:.02em;line-height:1.85;
+  position:relative;z-index:2;
+}
+.s5 .math-card .div{color:var(--amber);opacity:.6;font-size:13px;letter-spacing:.4em}
+.s5 .math-card .punch{color:var(--amber);font-weight:500}
+
+/* ===== SLIDE 6 — REFRAME (PULL QUOTE) ===== */
+.s6 .body{display:flex;flex-direction:column;justify-content:flex-start}
+.s6 .qmark{
+  font-family:'DM Serif Display',serif;font-style:italic;
+  font-size:240px;line-height:.7;letter-spacing:-.05em;
+  color:var(--amber);
+  margin-top:24px;
+  height:120px;
+}
+.s6 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:84px;line-height:1.06;letter-spacing:-.02em;
+  margin-top:36px;
+  max-width:920px;
+}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .two-col{
+  margin-top:auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:48px;
+  border-top:1px solid rgba(245,243,238,.12);padding-top:36px;
+}
+.s6 .col-lbl{
+  font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--green);opacity:.85;margin-bottom:14px;
+}
+.s6 .col-body{
+  font-size:22px;line-height:1.6;color:var(--parchment);opacity:.78;font-weight:300;
+}
+.s6 .col-body em{font-style:italic;color:var(--amber);opacity:1}
+.s6 .col-body strong{font-weight:500;color:var(--parchment);opacity:1}
+
+/* ===== SLIDE 7 — CTA ===== */
+.s7 .body{display:flex;flex-direction:column}
+.s7 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:84px;line-height:1.02;letter-spacing:-.02em;
+  margin-top:36px;color:var(--forest);
+  max-width:880px;
+}
+.s7 h2 em{font-style:italic;color:var(--teal)}
+.s7 .ask{margin-top:32px;font-size:26px;line-height:1.55;color:var(--forest);opacity:.7;max-width:760px;font-weight:300}
+.s7 .actions{margin-top:48px;display:flex;flex-direction:column;gap:14px}
+.s7 .btn{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:26px 32px;border:1.5px solid rgba(13,46,40,.15);border-radius:14px;
+  font-size:22px;color:var(--forest);
+  background:rgba(255,255,255,.4);
+}
+.s7 .btn .ic{width:32px;height:32px;color:var(--teal);flex-shrink:0}
+.s7 .signoff{
+  margin-top:auto;padding-top:32px;
+  border-top:1px solid rgba(13,46,40,.15);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.s7 .brand{display:flex;align-items:center;gap:18px}
+.s7 .brand-mark{width:54px;height:54px}
+.s7 .brand-name{
+  font-family:'DM Serif Display',serif;font-style:italic;
+  font-size:38px;color:var(--teal);line-height:1.1;
+}
+.s7 .brand-sub{
+  font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--forest);opacity:.55;margin-top:4px;
+}
+.s7 .cta-pill{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--forest);color:var(--parchment);
+  padding:20px 32px;border-radius:99px;
+  font-size:18px;font-weight:500;letter-spacing:.04em;
+}
+.s7 .cta-pill .arr{font-size:22px;line-height:1}
+
+/* ===== controls / chrome (outer) ===== */
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:24px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);
+  width:46px;height:46px;border-radius:99px;cursor:pointer;font-size:18px;
+  display:flex;align-items:center;justify-content:center;transition:background .2s;
+}
+.controls button:hover{background:rgba(94,201,167,.14);border-color:rgba(94,201,167,.32)}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 10px}
+
+.caption-panel{
+  width:min(540px,94vw);margin-top:32px;padding:26px 26px 28px;
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;
+  color:#cfd3d1;font-size:13px;line-height:1.7;
+}
+.caption-panel .label{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);
+  margin-bottom:14px;
+}
+.caption-panel p{margin-bottom:12px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel strong{color:var(--parchment);font-weight:500}
+.caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:16px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Neuro Daily · Editorial Redesign · Carousel Preview</span>
+  <span class="pill">[ Vol. 29 · Work Intelligence ]</span>
+</div>
+
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- ════════════════════════════════════════════════════════════
+           SLIDE 1 — HOOK
+           ════════════════════════════════════════════════════════════ -->
+      <section class="slide" data-screen-label="01 Hook">
+        <div class="cvs bg-dark s1">
+          <div class="head">
+            <span class="dotmark">Neuro Daily · Vol. 29 · Work Intelligence</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">✱</span><span>The Opening Number</span></div>
+
+            <h1>Setiap notifikasi mencuri <em>23&nbsp;menit</em> <span class="grn">fokusmu.</span></h1>
+
+            <p class="lead">Bukan metafora. Ini durasi yang otakmu butuhkan untuk benar-benar kembali ke task — setelah sekali interupsi.</p>
+
+            <!-- notification cards visual -->
+            <div class="notif-stack">
+              <div class="notif-card c1">
+                <div class="nrow"><span class="ndot"></span><span class="nlabel">Slack</span></div>
+                <div class="nline"></div><div class="nline s"></div>
+              </div>
+              <div class="notif-card c2">
+                <div class="nrow"><span class="ndot"></span><span class="nlabel">Email</span></div>
+                <div class="nline"></div><div class="nline s"></div>
+              </div>
+              <div class="notif-card c3">
+                <div class="nrow"><span class="ndot"></span><span class="nlabel">Mention · 2 menit lalu</span></div>
+                <div class="nline"></div>
+                <div class="nline s"></div>
+                <div class="nline xs"></div>
+              </div>
+              <div class="notif-card c4" style="border-color:rgba(201,169,110,.4)">
+                <div class="nrow"><span class="ndot" style="background:var(--amber)"></span><span class="nlabel" style="color:var(--amber)">+23 min · refocus</span></div>
+                <div class="nline" style="background:rgba(201,169,110,.22)"></div>
+                <div class="nline s" style="background:rgba(201,169,110,.18)"></div>
+              </div>
+            </div>
+
+            <div class="swipe-hint"><span>Geser</span><span class="arr">→</span></div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>01 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#5EC9A7" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#5EC9A7"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════════
+           SLIDE 2 — BIG NUMBER
+           ════════════════════════════════════════════════════════════ -->
+      <section class="slide" data-screen-label="02 Number">
+        <div class="cvs bg-light s2">
+          <div class="head">
+            <span class="dotmark">Poin · 01 · The Number</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">★</span><span>Angkanya</span></div>
+            <div class="rule"></div>
+
+            <div class="source">
+              <span class="lbl">— Sumber Riset</span>
+              Mark, Gudith &amp; Klocke<br>UC Irvine · 2008
+            </div>
+
+            <div class="ghost">23</div>
+
+            <div class="number-block">
+              <div class="num">23<span class="dot">.</span></div>
+              <div class="unit">menit &amp; 15 detik</div>
+              <p class="caption">Itu rata-rata waktu yang dibutuhkan otak untuk fully refocus setelah satu interupsi kecil — pesan masuk, tab baru, sapaan rekan kerja.</p>
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>02 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════════
+           SLIDE 3 — MECHANISM
+           ════════════════════════════════════════════════════════════ -->
+      <section class="slide" data-screen-label="03 Mechanism">
+        <div class="cvs bg-dark s3">
+          <div class="head">
+            <span class="dotmark">Poin · 02 · What's Happening</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">●</span><span>Yang terjadi di otakmu</span></div>
+
+            <!-- synapse network visual -->
+            <svg class="synapse" viewBox="0 0 240 140" fill="none">
+              <line x1="20" y1="70" x2="80" y2="40" stroke="#5EC9A7" stroke-width="1" opacity=".4"/>
+              <line x1="80" y1="40" x2="160" y2="60" stroke="#5EC9A7" stroke-width="1" opacity=".4"/>
+              <line x1="80" y1="40" x2="120" y2="100" stroke="#5EC9A7" stroke-width="1" opacity=".4"/>
+              <line x1="120" y1="100" x2="160" y2="60" stroke="#5EC9A7" stroke-width="1" opacity=".4"/>
+              <line x1="160" y1="60" x2="220" y2="80" stroke="#5EC9A7" stroke-width="2.5" opacity=".95"/>
+              <line x1="120" y1="100" x2="200" y2="120" stroke="#C9A96E" stroke-width="2" opacity=".7" stroke-dasharray="4 3"/>
+              <circle cx="20" cy="70" r="4" fill="#5EC9A7" opacity=".6"/>
+              <circle cx="80" cy="40" r="5" fill="#5EC9A7" opacity=".7"/>
+              <circle cx="160" cy="60" r="6" fill="#5EC9A7"/>
+              <circle cx="120" cy="100" r="5" fill="#5EC9A7" opacity=".7"/>
+              <circle cx="220" cy="80" r="6" fill="#5EC9A7"/>
+              <circle cx="200" cy="120" r="4" fill="#C9A96E" opacity=".7"/>
+            </svg>
+
+            <h2>Setiap interupsi meninggalkan <em>jejak</em> — dan jejak itu nempel.</h2>
+
+            <div class="term-card">
+              <div class="term-name">Attention Residue</div>
+              <div class="term-def">Sebagian dari atensi otak masih tertinggal di task sebelumnya, meskipun kamu sudah pindah ke task baru. Hasilnya: kamu hadir setengah, di dua tempat.</div>
+            </div>
+
+            <div class="source-cite">
+              <div class="src">
+                <span class="src-lbl">— Riset</span>
+                Sophie Leroy (2009) · <em>Why Is It So Hard to Do My Work?</em><br>
+                Organizational Behavior and Human Decision Processes, vol. 109(2)
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>03 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#5EC9A7" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#5EC9A7"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════════
+           SLIDE 4 — TIMELINE
+           ════════════════════════════════════════════════════════════ -->
+      <section class="slide" data-screen-label="04 Timeline">
+        <div class="cvs bg-light s4">
+          <div class="head">
+            <span class="dotmark">Poin · 03 · Hari Kerjamu, Dipotong-Potong</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">●</span><span>Frekuensi Interupsi</span></div>
+            <div class="rule"></div>
+
+            <h2>Pekerja kantoran diinterupsi <em>setiap 11 menit.</em></h2>
+
+            <div class="timeline-block">
+              <div class="tl-label">Garis waktu · 1 jam kerja</div>
+              <div class="tl-track">
+                <span class="ping p1"></span>
+                <span class="ping p2"></span>
+                <span class="ping p3"></span>
+                <span class="ping p4"></span>
+                <span class="ping p5"></span>
+              </div>
+              <div class="tl-tags">
+                <span>0'</span><span>15'</span><span>30'</span><span>45'</span><span>60'</span>
+              </div>
+              <div class="tl-types">
+                <span class="tl-type">Slack</span>
+                <span class="tl-type">Email</span>
+                <span class="tl-type">Mention</span>
+                <span class="tl-type">Sapaan</span>
+                <span class="tl-type">Notif</span>
+              </div>
+            </div>
+
+            <div class="stat-row">
+              <div class="stat">
+                <div class="v">~5×</div>
+                <div class="l">interupsi per jam</div>
+              </div>
+              <div class="stat">
+                <div class="v"><em>0</em></div>
+                <div class="l">menit fokus penuh tersisa</div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id · Sumber: Gloria Mark, UCI</span>
+            <span>04 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════════
+           SLIDE 5 — CONSEQUENCE
+           ════════════════════════════════════════════════════════════ -->
+      <section class="slide" data-screen-label="05 Consequence">
+        <div class="cvs bg-teal s5">
+          <div class="head">
+            <span class="dotmark">Poin · 04 · Hitung Kerugiannya</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">★</span><span>The Cost</span></div>
+
+            <div class="ghost-2">2</div>
+
+            <p class="copy">Kalau kamu diinterupsi 5× per jam selama 8 jam kerja — dan tiap interupsi butuh 23 menit pemulihan…</p>
+
+            <div class="stat-big">
+              <span class="n"><em>2</em>j</span>
+              <span class="u">fokus penuh yang menguap setiap hari kerja</span>
+            </div>
+
+            <div class="math-card">
+              5 × 23 menit ÷ 60 ≈ 1.9 jam<br>
+              × 5 hari kerja ≈ 9.5 jam / minggu<br>
+              <span class="div">────────────────</span><br>
+              ≈ <span class="punch">1 hari kerja penuh</span> menguap
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>05 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#C9A96E" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#C9A96E"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════════
+           SLIDE 6 — REFRAME (PULL QUOTE)
+           ════════════════════════════════════════════════════════════ -->
+      <section class="slide" data-screen-label="06 Reframe">
+        <div class="cvs bg-dark s6">
+          <div class="head">
+            <span class="dotmark">Poin · 05 · Reframe</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">●</span><span>Pengingat untukmu</span></div>
+
+            <div class="qmark">"</div>
+
+            <h2>Fokus penuh hampir tidak pernah terjadi —<br><em>kecuali kamu aktif melindunginya.</em></h2>
+
+            <div class="two-col">
+              <div>
+                <div class="col-lbl">— Yang sebenarnya terjadi</div>
+                <div class="col-body">Otakmu tidak bisa <em>multitasking</em>. Yang dia lakukan adalah <strong>task-switching</strong> — dan setiap switch membayar pajak waktu yang nyata, terukur, dan kumulatif.</div>
+              </div>
+              <div>
+                <div class="col-lbl">— Yang bisa kamu lakukan</div>
+                <div class="col-body">Bukan soal disiplin. Soal <strong>ekologi atensi</strong> — matikan satu sumber interupsi sebelum kamu menambah satu trik produktivitas baru.</div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>06 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#5EC9A7" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#5EC9A7"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════════════════════════════════════════════════
+           SLIDE 7 — CTA
+           ════════════════════════════════════════════════════════════ -->
+      <section class="slide" data-screen-label="07 CTA">
+        <div class="cvs bg-light s7">
+          <div class="head">
+            <span class="dotmark">The Call</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">✱</span><span>Sekarang giliranmu</span></div>
+            <div class="rule"></div>
+
+            <h2>Berapa kali HP-mu <em>bunyi dalam 1 jam terakhir?</em></h2>
+
+            <p class="ask">Hitung sekarang — lalu kalikan 23. Itu menit fokus yang hilang. Tulis angkamu di komentar.</p>
+
+            <div class="actions">
+              <div class="btn">
+                <span>Simpan untuk dibaca lagi besok pagi</span>
+                <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+              </div>
+              <div class="btn">
+                <span>Kirim ke rekan kerja yang notif-nya tidak pernah mati</span>
+                <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+              </div>
+            </div>
+
+            <div class="signoff">
+              <div class="brand">
+                <svg class="brand-mark" viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6">
+                  <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                  <circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/>
+                </svg>
+                <div>
+                  <div class="brand-name">Neuro Daily</div>
+                  <div class="brand-sub">Brain Science · For Your Career</div>
+                </div>
+              </div>
+              <div class="cta-pill">Follow @neurodaily.id <span class="arr">→</span></div>
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>07 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="caption-panel">
+  <div class="label">Caption · Formula C — Number Hook</div>
+  <p><strong>23 menit.</strong></p>
+  <p>Itu waktu yang dibutuhkan otakmu untuk fully refocus setelah satu interupsi kecil — fenomena yang neurosaintis sebut <em>attention residue</em> (Leroy, 2009).</p>
+  <p>Dan riset Gloria Mark di UC Irvine menemukan: rata-rata pekerja kantoran diinterupsi setiap 11 menit.</p>
+  <p>Artinya fokus penuh hampir tidak pernah terjadi — kecuali kamu aktif melindunginya. Bukan dengan trik produktivitas baru. Tapi dengan mematikan satu sumber interupsi.</p>
+  <p>Berapa kali HP kamu bunyi dalam 1 jam terakhir? Coba hitung sekarang.</p>
+  <span class="hash">#NeuroDaily #NeurosainsKerja #DeepWork #FokusKerja #ProduktivitasBerbasisSains #WorkIntelligence #AttentionResidue #KarirBerbasisSains</span>
+</div>
+
+<div class="controls">
+  <button id="prev" aria-label="Sebelumnya">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next" aria-label="Berikutnya">›</button>
+</div>
+
+<script>
+  const track=document.getElementById('track');
+  const dotsEl=document.getElementById('dots');
+  const counter=document.getElementById('counter');
+  const prevBtn=document.getElementById('prev');
+  const nextBtn=document.getElementById('next');
+  const total=track.children.length;
+  let i=0;
+
+  // Scale every .cvs to fit its parent slide
+  function scaleCanvases(){
+    document.querySelectorAll('.slide').forEach(s=>{
+      const cvs=s.querySelector('.cvs');
+      if(!cvs)return;
+      const w=s.clientWidth;
+      const scale=w/1080;
+      cvs.style.transform=`scale(${scale})`;
+    });
+  }
+  window.addEventListener('resize',scaleCanvases);
+  scaleCanvases();
+
+  for(let k=0;k<total;k++){
+    const b=document.createElement('button');
+    b.className='dot'+(k===0?' active':'');
+    b.addEventListener('click',()=>go(k));
+    dotsEl.appendChild(b);
+  }
+  const dots=[...dotsEl.children];
+
+  function go(n){
+    i=Math.max(0,Math.min(total-1,n));
+    track.style.transform=`translateX(-${i*100}%)`;
+    dots.forEach((d,k)=>d.classList.toggle('active',k===i));
+    counter.textContent=`${i+1} / ${total}`;
+    prevBtn.disabled=i===0;
+    nextBtn.disabled=i===total-1;
+  }
+  prevBtn.addEventListener('click',()=>go(i-1));
+  nextBtn.addEventListener('click',()=>go(i+1));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight')go(i+1);
+    if(e.key==='ArrowLeft')go(i-1);
+  });
+
+  // touch swipe
+  let sx=0,dx=0,drag=false;
+  const vp=document.querySelector('.viewport');
+  vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;drag=true;dx=0});
+  vp.addEventListener('touchmove',e=>{if(!drag)return;dx=e.touches[0].clientX-sx});
+  vp.addEventListener('touchend',()=>{
+    if(!drag)return;
+    if(Math.abs(dx)>40)go(i+(dx<0?1:-1));
+    drag=false;
+  });
+
+  go(0);
+</script>
+</body>
+</html>

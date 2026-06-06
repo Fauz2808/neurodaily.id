@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Neuro Daily — AI vs Otak Manusia & Novel Problem Solving</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;--red:#D96A6A;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0a0a0a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 100px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#7a807d;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(540px,94vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;position:relative;overflow:hidden}
+.cvs{width:1080px;height:1350px;transform-origin:top left;position:absolute;top:0;left:0;font-family:'DM Sans',sans-serif}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+.cvs .head,.cvs .foot{position:absolute;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 64px;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase}
+.cvs .head{top:0;height:78px;border-bottom:1px solid rgba(245,243,238,.12)}
+.cvs .foot{bottom:0;height:64px;border-top:1px solid rgba(245,243,238,.12)}
+.bg-light .head,.bg-light .foot{border-color:rgba(13,46,40,.12)}
+.bg-teal .head,.bg-teal .foot{border-color:rgba(245,243,238,.18)}
+.cvs .head span,.cvs .foot span{opacity:.55}
+.cvs .head .dotmark::before{content:"◆ ";color:var(--green);opacity:1}
+.bg-light .head .dotmark::before{color:var(--teal)}
+.bg-teal .head .dotmark::before{color:var(--amber)}
+.hippo-mark{display:flex;align-items:center;gap:10px;opacity:1!important}
+.hippo-mark svg{width:30px;height:30px;flex-shrink:0}
+.body{position:absolute;top:78px;bottom:64px;left:0;right:0;padding:52px 72px;display:flex;flex-direction:column}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.bg-dark .eyebrow{color:var(--green)}
+.bg-light .eyebrow{color:var(--teal)}
+.bg-teal .eyebrow{color:var(--amber)}
+.rule{width:48px;height:3px;border-radius:2px;margin-top:18px}
+.bg-dark .rule{background:var(--green)}
+.bg-light .rule{background:var(--teal)}
+.bg-teal .rule{background:var(--amber)}
+
+/* S1 */
+.s1 .ghost{position:absolute;font-family:'DM Serif Display',serif;font-size:700px;line-height:.88;color:rgba(94,201,167,.04);pointer-events:none;user-select:none;right:-40px;top:30px;letter-spacing:-.05em}
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:88px;line-height:1.02;letter-spacing:-.02em;margin-top:44px;max-width:840px;position:relative;z-index:2}
+.s1 h1 em{font-style:italic;color:var(--amber)}
+.s1 .lead{margin-top:32px;font-size:24px;line-height:1.65;opacity:.72;max-width:680px;font-weight:300;position:relative;z-index:2}
+.s1 .vs-vis{position:absolute;bottom:82px;left:72px;right:72px;z-index:2;display:flex;gap:20px;align-items:stretch}
+.vs-box{flex:1;padding:20px 22px;border-radius:12px;display:flex;flex-direction:column;gap:8px}
+.vs-box.ai{background:rgba(245,243,238,.06);border:1.5px solid rgba(245,243,238,.15)}
+.vs-box.human{background:rgba(94,201,167,.07);border:1.5px solid rgba(94,201,167,.22)}
+.vs-tag{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}
+.vs-box.ai .vs-tag{color:rgba(245,243,238,.5)}
+.vs-box.human .vs-tag{color:var(--green)}
+.vs-trait{font-size:22px;line-height:1.5;font-weight:300;opacity:.75}
+.vs-divider{display:flex;align-items:center;font-family:'DM Serif Display',serif;font-style:italic;font-size:32px;color:rgba(245,243,238,.2);flex-shrink:0}
+
+/* S2 */
+.s2 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.06;letter-spacing:-.02em;margin-top:32px;color:var(--forest);max-width:860px}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .domain-grid{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.domain-card{padding:24px 22px;border-radius:14px;border:1.5px solid}
+.domain-card.ai-wins{background:rgba(217,106,106,.04);border-color:rgba(217,106,106,.18)}
+.domain-card.human-wins{background:rgba(26,107,90,.05);border-color:rgba(26,107,90,.2)}
+.domain-header{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px}
+.domain-card.ai-wins .domain-header{color:var(--red)}
+.domain-card.human-wins .domain-header{color:var(--teal)}
+.domain-item{font-size:22px;line-height:1.6;font-weight:300;color:var(--forest);display:flex;align-items:baseline;gap:8px}
+.domain-item::before{content:"·";opacity:.4;flex-shrink:0}
+.s2 .bottom-note{margin-top:auto;padding:20px 26px;background:rgba(26,107,90,.05);border:1px solid rgba(26,107,90,.15);border-radius:12px;font-size:22px;line-height:1.65;color:var(--forest);font-weight:300}
+.s2 .bottom-note strong{font-weight:500;color:var(--teal)}
+
+/* S3 */
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:68px;line-height:1.06;letter-spacing:-.02em;margin-top:40px;max-width:860px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .mech-cards{margin-top:44px;display:flex;flex-direction:column;gap:18px}
+.mech-card{padding:26px 30px;border-radius:14px;display:flex;align-items:flex-start;gap:22px}
+.mech-card.a{background:rgba(94,201,167,.07);border:1.5px solid rgba(94,201,167,.2)}
+.mech-card.b{background:rgba(201,169,110,.07);border:1.5px solid rgba(201,169,110,.22)}
+.mech-card.c{background:rgba(94,201,167,.05);border:1.5px solid rgba(94,201,167,.15)}
+.mech-card .mc-icon{width:52px;height:52px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-style:italic;font-size:26px}
+.mech-card.a .mc-icon{background:rgba(94,201,167,.18);color:var(--green)}
+.mech-card.b .mc-icon{background:rgba(201,169,110,.18);color:var(--amber)}
+.mech-card.c .mc-icon{background:rgba(94,201,167,.15);color:var(--green)}
+.mech-card .mc-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px}
+.mech-card.a .mc-label{color:var(--green)}
+.mech-card.b .mc-label{color:var(--amber)}
+.mech-card.c .mc-label{color:var(--green)}
+.mech-card .mc-text{font-size:24px;line-height:1.55;font-weight:300;opacity:.88}
+.s3 .bottom-note{margin-top:auto;padding:20px 28px;border-radius:12px;background:rgba(245,243,238,.05);border:1px solid rgba(245,243,238,.12);font-size:24px;line-height:1.6;opacity:.65;font-weight:300;display:flex;align-items:center;gap:14px}
+.s3 .note-prefix{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--amber);flex-shrink:0}
+
+/* S4 */
+.s4 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.04;letter-spacing:-.02em;margin-top:36px;max-width:860px}
+.s4 h2 em{font-style:italic;color:var(--amber)}
+.s4 .def-card{margin-top:28px;background:rgba(245,243,238,.1);border:1.5px solid rgba(245,243,238,.2);border-radius:14px;padding:24px 30px}
+.s4 .def-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+.s4 .def-text{font-size:22px;line-height:1.65;opacity:.88;font-weight:300}
+.s4 .axis-grid{margin-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.axis-item{padding:22px 22px;border-radius:12px}
+.axis-item.ai{background:rgba(217,106,106,.06);border:1.5px solid rgba(217,106,106,.18)}
+.axis-item.human{background:rgba(94,201,167,.07);border:1.5px solid rgba(94,201,167,.2)}
+.axis-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px}
+.axis-item.ai .axis-label{color:rgba(217,106,106,.8)}
+.axis-item.human .axis-label{color:var(--green)}
+.axis-strength{font-family:'DM Serif Display',serif;font-size:32px;line-height:1.2;margin-bottom:8px}
+.axis-desc{font-size:22px;line-height:1.5;opacity:.72;font-weight:300}
+.s4 .bottom-note{margin-top:auto;padding:18px 24px;border-radius:12px;background:rgba(245,243,238,.07);border:1px solid rgba(245,243,238,.14);font-size:24px;line-height:1.6;opacity:.65;font-weight:300;display:flex;gap:12px;align-items:center}
+.s4 .bottom-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--amber);flex-shrink:0}
+
+/* S5 */
+.s5 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:64px;line-height:1.06;letter-spacing:-.02em;margin-top:36px;color:var(--forest);max-width:860px}
+.s5 h2 em{font-style:italic;color:var(--teal)}
+.s5 .scenarios{margin-top:36px;display:flex;flex-direction:column;gap:18px}
+.scenario{padding:26px 28px;border-radius:14px;display:flex;align-items:flex-start;gap:20px}
+.scenario.bad{background:rgba(217,106,106,.05);border:1.5px solid rgba(217,106,106,.18)}
+.scenario.good{background:rgba(26,107,90,.06);border:1.5px solid rgba(26,107,90,.22)}
+.scenario .s-tag{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;padding:5px 14px;border-radius:99px;flex-shrink:0;margin-top:3px}
+.scenario.bad .s-tag{background:var(--red);color:#fff}
+.scenario.good .s-tag{background:var(--teal);color:#fff}
+.scenario .s-title{font-size:24px;font-weight:500;color:var(--forest);margin-bottom:6px}
+.scenario .s-desc{font-size:22px;line-height:1.6;color:var(--forest);opacity:.65;font-weight:300}
+.s5 .research-note{margin-top:22px;padding:18px 24px;background:rgba(26,107,90,.05);border:1px solid rgba(26,107,90,.15);border-radius:12px;font-size:22px;line-height:1.6;color:var(--forest);font-weight:300}
+.s5 .research-note strong{font-weight:500;color:var(--teal)}
+
+/* S6 */
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:66px;line-height:1.06;letter-spacing:-.02em;margin-top:40px;max-width:860px}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .protocol{margin-top:44px;display:flex;flex-direction:column;gap:0}
+.s6 .p-block{width:100%;padding:26px 32px;border-radius:14px;display:flex;align-items:flex-start;gap:22px}
+.s6 .p-block.a{background:rgba(94,201,167,.1);border:2px solid rgba(94,201,167,.28)}
+.s6 .p-block.b{background:rgba(201,169,110,.1);border:2px solid rgba(201,169,110,.25)}
+.s6 .p-block.c{background:rgba(94,201,167,.16);border:2px solid rgba(94,201,167,.5)}
+.s6 .p-divider{margin:10px 0;border:none;border-top:1px solid rgba(245,243,238,.1)}
+.s6 .p-num{font-family:'DM Serif Display',serif;font-size:48px;line-height:1;flex-shrink:0;margin-top:-4px}
+.s6 .p-block.a .p-num{color:var(--green)}
+.s6 .p-block.b .p-num{color:var(--amber)}
+.s6 .p-block.c .p-num{color:var(--green)}
+.s6 .p-title{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.s6 .p-block.a .p-title{color:var(--green)}
+.s6 .p-block.b .p-title{color:var(--amber)}
+.s6 .p-block.c .p-title{color:var(--green)}
+.s6 .p-desc{font-size:24px;line-height:1.55;opacity:.85;font-weight:300}
+.s6 .p-note{margin-top:22px;font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.04em;color:rgba(245,243,238,.48);line-height:1.9;border-top:1px solid rgba(245,243,238,.1);padding-top:20px}
+.s6 .p-note .punch{color:var(--green);font-weight:500;letter-spacing:.02em}
+
+/* S7 */
+.s7 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:68px;line-height:1.04;letter-spacing:-.02em;margin-top:36px;color:var(--forest);max-width:860px}
+.s7 h2 em{font-style:italic;color:var(--teal)}
+.s7 .sub{margin-top:22px;font-size:24px;line-height:1.65;color:var(--forest);opacity:.65;max-width:800px;font-weight:300}
+.s7 .discussion{margin-top:36px;display:flex;flex-direction:column;gap:14px}
+.s7 .disc-item{display:flex;align-items:center;gap:18px;padding:20px 24px;border:1.5px solid rgba(13,46,40,.12);border-radius:14px;font-size:22px;color:var(--forest);background:rgba(255,255,255,.46);line-height:1.4}
+.s7 .disc-item .ic{width:40px;height:40px;border-radius:10px;background:rgba(26,107,90,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.s7 .disc-item .ic svg{width:22px;height:22px;color:var(--teal)}
+.s7 .shift-note{margin-top:24px;padding:20px 24px;border-radius:12px;border:1px dashed rgba(26,107,90,.35);font-size:24px;line-height:1.6;color:var(--forest);opacity:.62;font-weight:300;display:flex;align-items:center;gap:14px}
+.s7 .shift-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:24px;color:var(--teal);flex-shrink:0}
+
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:24px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:46px;height:46px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.1em;align-self:center;padding:0 10px}
+.caption-panel{width:min(540px,94vw);margin-top:32px;padding:26px 26px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:20px;line-height:1.7}
+.caption-panel .cap-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+.caption-panel p{margin-bottom:12px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel strong{color:var(--parchment);font-weight:500}
+.caption-panel .hash{color:#7a8480;font-size:18px;margin-top:16px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Vol. 59 · AI & Kognisi · Novel Problem Solving ]</span>
+</div>
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- S1 DARK -->
+      <section class="slide">
+        <div class="cvs bg-dark s1">
+          <div class="head"><span class="dotmark">Neuro Daily · Vol. 59 · AI & Kognisi</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Novel Problem Solving · Human Cognition</div>
+            <div class="rule"></div>
+            <div class="ghost">≠</div>
+            <h1>AI bisa kalahkan<br>kamu di banyak hal.<br>Tapi <em>bukan</em><br><em>di yang ini.</em></h1>
+            <p class="lead">Takut digantikan AI adalah respons yang valid. Tapi ada sesuatu yang otak manusia lakukan yang AI belum bisa — dan ini bukan tentang kreativitas klise.</p>
+            <div class="vs-vis">
+              <div class="vs-box ai">
+                <div class="vs-tag">AI Unggul</div>
+                <div class="vs-trait">Pattern recognition, kalkulasi, memori, kecepatan, konsistensi</div>
+              </div>
+              <div class="vs-divider">vs</div>
+              <div class="vs-box human">
+                <div class="vs-tag">Otak Manusia</div>
+                <div class="vs-trait">Novel problems, embodied reasoning, ambiguity, ethical judgment</div>
+              </div>
+            </div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>01 / 07</span></div>
+        </div>
+      </section>
+
+      <!-- S2 LIGHT -->
+      <section class="slide">
+        <div class="cvs bg-light s2">
+          <div class="head"><span class="dotmark">Human vs AI · Domain Map</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Peta kekuatan yang jujur</div>
+            <div class="rule"></div>
+            <h2>Di mana AI <em>unggul</em> — dan di mana otak manusia <em>masih menang.</em></h2>
+            <div class="domain-grid">
+              <div class="domain-card ai-wins">
+                <div class="domain-header">AI Menang</div>
+                <div class="domain-item">Pattern recognition dari big data</div>
+                <div class="domain-item">Konsistensi tanpa fatigue</div>
+                <div class="domain-item">Kecepatan eksekusi repetitif</div>
+                <div class="domain-item">Memori tanpa batas waktu</div>
+              </div>
+              <div class="domain-card human-wins">
+                <div class="domain-header">Manusia Menang</div>
+                <div class="domain-item">Masalah tanpa preseden</div>
+                <div class="domain-item">Konteks sosial & emosional</div>
+                <div class="domain-item">Ambiguity &amp; nilai etika</div>
+                <div class="domain-item">Transfer learning lintas domain</div>
+              </div>
+            </div>
+            <div class="bottom-note">Pekerjaan yang <strong>tidak bisa diautomasi</strong> bukan yang paling kreatif atau paling teknis — tapi yang paling membutuhkan <strong>judgment dalam situasi baru.</strong></div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>02 / 07</span></div>
+        </div>
+      </section>
+
+      <!-- S3 DARK -->
+      <section class="slide">
+        <div class="cvs bg-dark s3">
+          <div class="head"><span class="dotmark">Prefrontal Cortex · Novel Cognition</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Apa yang terjadi di otak saat masalah baru muncul</div>
+            <div class="rule"></div>
+            <h2>Tiga kemampuan otak yang <em>belum ada di AI.</em></h2>
+            <div class="mech-cards">
+              <div class="mech-card a">
+                <div class="mc-icon">⟡</div>
+                <div>
+                  <div class="mc-label">Analogical Reasoning</div>
+                  <div class="mc-text">Otak manusia memecahkan masalah baru dengan menganalogikan pengalaman dari domain yang sama sekali berbeda — sesuatu yang AI tidak bisa lakukan tanpa training data yang relevan</div>
+                </div>
+              </div>
+              <div class="mech-card b">
+                <div class="mc-icon">◎</div>
+                <div>
+                  <div class="mc-label">Embodied Intuition</div>
+                  <div class="mc-text">Tubuh dan pengalaman fisik memberi otak data yang tidak bisa didigitasi — rasa urgensi, kepercayaan sosial, dan "gut feeling" berbasis cortisol dan memory episodik</div>
+                </div>
+              </div>
+              <div class="mech-card c">
+                <div class="mc-icon">∞</div>
+                <div>
+                  <div class="mc-label">Value Alignment</div>
+                  <div class="mc-text">Otak manusia mengintegrasikan nilai, etika, dan konteks budaya dalam setiap keputusan — sesuatu yang AI harus diajarkan, bukan sesuatu yang muncul secara biologis</div>
+                </div>
+              </div>
+            </div>
+            <div class="bottom-note">
+              <span class="note-prefix">Kunci:</span>
+              Otak manusia punya "zero-shot learning" biologis — bisa menghadapi situasi yang belum pernah ada sebelumnya.
+            </div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>03 / 07</span></div>
+        </div>
+      </section>
+
+      <!-- S4 TEAL -->
+      <section class="slide">
+        <div class="cvs bg-teal s4">
+          <div class="head"><span class="dotmark">Novel Problem Solving · Definition</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Kenapa ini hard to replace</div>
+            <div class="rule"></div>
+            <h2>AI pandai<br>melanjutkan pola.<br>Otak pandai<br><em>memutus pola.</em></h2>
+            <div class="def-card">
+              <div class="def-label">Novel Problem Solving</div>
+              <div class="def-text">Kemampuan kognitif untuk memecahkan masalah yang tidak memiliki preseden — tanpa template, tanpa training data yang relevan. Melibatkan kombinasi prefrontal cortex, hippocampus, dan default mode network secara bersamaan.</div>
+            </div>
+            <div class="axis-grid">
+              <div class="axis-item ai">
+                <div class="axis-label">AI</div>
+                <div class="axis-strength">Pattern Completion</div>
+                <div class="axis-desc">Mengisi kekosongan berdasarkan data yang sudah ada — sangat akurat dalam domain yang familiar</div>
+              </div>
+              <div class="axis-item human">
+                <div class="axis-label">Manusia</div>
+                <div class="axis-strength">Pattern Breaking</div>
+                <div class="axis-desc">Mengenali kapan pola lama tidak relevan dan menciptakan pendekatan baru dari nol</div>
+              </div>
+            </div>
+            <div class="bottom-note">
+              <span class="bottom-arrow">→</span>
+              Saat krisis, disrupsi, atau situasi yang belum pernah terjadi — manusia yang dibutuhkan di ruangan itu.
+            </div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(201,169,110,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#C9A96E">N</text></svg>NEURODAILY.ID</span><span>04 / 07</span></div>
+        </div>
+      </section>
+
+      <!-- S5 LIGHT -->
+      <section class="slide">
+        <div class="cvs bg-light s5">
+          <div class="head"><span class="dotmark">AI Collaboration · Smart vs Scared</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Dua cara orang menghadapi AI di tempat kerja</div>
+            <div class="rule"></div>
+            <h2>Bukan soal <em>lawan AI</em> — soal menjadi yang paling valuable <em>bersamanya.</em></h2>
+            <div class="scenarios">
+              <div class="scenario bad">
+                <div class="s-tag">Fear Mode</div>
+                <div>
+                  <div class="s-title">Hindari AI, kompetisi dengan AI</div>
+                  <div class="s-desc">Mencoba outperform AI di domain yang AI memang lebih kuat — kecepatan, volume, konsistensi. Hasilnya: kalah dan burnout</div>
+                </div>
+              </div>
+              <div class="scenario good">
+                <div class="s-tag">Leverage Mode</div>
+                <div>
+                  <div class="s-title">Delegasikan pola, ambil judgment</div>
+                  <div class="s-desc">Pakai AI untuk pattern work, lalu fokuskan energi manusia pada novel problems, konteks sosial, dan keputusan etis. Hasilnya: output 10× lebih tinggi</div>
+                </div>
+              </div>
+            </div>
+            <div class="research-note">Studi MIT (2023): pekerja yang menggunakan AI sebagai kolaborator, bukan kompetitor, <strong>menyelesaikan tugas 26% lebih cepat</strong> dengan kualitas lebih tinggi.</div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>05 / 07</span></div>
+        </div>
+      </section>
+
+      <!-- S6 DARK -->
+      <section class="slide">
+        <div class="cvs bg-dark s6">
+          <div class="head"><span class="dotmark">Human Edge · Skills to Develop</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Skill yang makin berharga di era AI</div>
+            <div class="rule"></div>
+            <h2>Tiga kemampuan yang <em>tidak bisa dilatih</em> oleh AI.</h2>
+            <div class="protocol">
+              <div class="p-block a">
+                <div class="p-num">1</div>
+                <div>
+                  <div class="p-title">Cross-Domain Thinking</div>
+                  <div class="p-desc">Latih diri untuk belajar sesuatu yang jauh dari bidangmu. Otak yang bisa menarik analogi dari domain berbeda adalah otak yang paling susah digantikan</div>
+                </div>
+              </div>
+              <hr class="p-divider"/>
+              <div class="p-block b">
+                <div class="p-num">2</div>
+                <div>
+                  <div class="p-title">Ambiguity Tolerance</div>
+                  <div class="p-desc">Biasakan menghadapi masalah tanpa jawaban jelas. PFC yang terlatih pada ketidakpastian adalah aset yang semakin langka saat semua orang bergantung pada AI</div>
+                </div>
+              </div>
+              <hr class="p-divider"/>
+              <div class="p-block c">
+                <div class="p-num">3</div>
+                <div>
+                  <div class="p-title">Contextual Judgment</div>
+                  <div class="p-desc">Asah kemampuan membaca ruangan — motivasi tersembunyi, dinamika kekuasaan, nilai-nilai budaya. Ini adalah kemampuan yang semakin premium semakin AI berkembang</div>
+                </div>
+              </div>
+            </div>
+            <div class="p-note">
+              AI yang paling kuat pun masih butuh manusia yang tahu <span class="punch">pertanyaan mana yang harus ditanyakan.</span>
+            </div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>06 / 07</span></div>
+        </div>
+      </section>
+
+      <!-- S7 LIGHT -->
+      <section class="slide">
+        <div class="cvs bg-light s7">
+          <div class="head"><span class="dotmark">Human Edge · Future of Work</span><span>Edisi · Mei 2026</span></div>
+          <div class="body">
+            <div class="eyebrow">◆ Refleksi & diskusi</div>
+            <div class="rule"></div>
+            <h2>Kamu bukan <em>kompetitor</em> AI — kamu yang membuatnya <em>berguna.</em></h2>
+            <p class="sub">AI mengoptimalkan pola yang sudah ada. Manusia yang memutuskan pola mana yang layak ada. Itu bukan sesuatu yang bisa dilatih ke dalam model — itu biologi.</p>
+            <div class="discussion">
+              <div class="disc-item">
+                <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
+                Di pekerjaan kamu, masalah apa yang paling sering tidak ada template-nya?
+              </div>
+              <div class="disc-item">
+                <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+                Tugas mana yang sudah kamu delegasikan ke AI — dan hasilnya bagaimana?
+              </div>
+              <div class="disc-item">
+                <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+                Skill lintas domain apa yang paling ingin kamu kembangkan tahun ini?
+              </div>
+            </div>
+            <div class="shift-note">
+              <span class="shift-arrow">→</span>
+              Di dunia yang penuh AI, kemampuan paling berharga adalah menjadi lebih manusiawi — bukan lebih masinal.
+            </div>
+          </div>
+          <div class="foot"><span class="dotmark hippo-mark"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>07 / 07</span></div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<div class="dots">
+  <button class="dot active" onclick="goTo(0)"></button>
+  <button class="dot" onclick="goTo(1)"></button>
+  <button class="dot" onclick="goTo(2)"></button>
+  <button class="dot" onclick="goTo(3)"></button>
+  <button class="dot" onclick="goTo(4)"></button>
+  <button class="dot" onclick="goTo(5)"></button>
+  <button class="dot" onclick="goTo(6)"></button>
+</div>
+<div class="controls">
+  <button id="prev" onclick="prev()" disabled>←</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next" onclick="next()">→</button>
+</div>
+
+<div class="caption-panel">
+  <div class="cap-label">Caption · Instagram / TikTok</div>
+  <p>AI bisa kalahkan kamu di banyak hal. Tapi bukan di yang satu ini. 🧠</p>
+  <p>Ada satu kemampuan kognitif yang secara biologis hanya dimiliki otak manusia — <strong>Novel Problem Solving</strong>. Kemampuan menghadapi masalah yang belum pernah ada sebelumnya, tanpa template, tanpa preseden.</p>
+  <p>AI sangat hebat mengisi pola yang sudah ada. Tapi saat situasi benar-benar baru muncul — krisis, disrupsi, keputusan etis di tengah ambiguitas — itu domain otak manusia yang tidak bisa digantikan training data.</p>
+  <p>Skill yang paling berharga bukan yang paling teknis. Tapi yang paling tidak bisa dilatih ke dalam model.</p>
+  <span class="hash">#NeuroscienceIndonesia #AIvsHuman #NovelProblemSolving #FutureOfWork #NeurodailyID #HumanEdge #KognisiManusia #AI #Produktivitas</span>
+</div>
+
+<script>
+const track = document.getElementById('track');
+const dots = document.querySelectorAll('.dot');
+const counter = document.getElementById('counter');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+const TOTAL = 7;
+let cur = 0;
+
+function scale() {
+  const vw = document.querySelector('.viewport').offsetWidth;
+  document.querySelectorAll('.cvs').forEach(c => { c.style.transform = `scale(${vw/1080})`; });
+}
+scale();
+window.addEventListener('resize', scale);
+
+function goTo(i) {
+  cur = i;
+  track.style.transform = `translateX(-${cur * 100}%)`;
+  dots.forEach((d, j) => d.classList.toggle('active', j === cur));
+  counter.textContent = `${cur + 1} / ${TOTAL}`;
+  prevBtn.disabled = cur === 0;
+  nextBtn.disabled = cur === TOTAL - 1;
+}
+function prev() { if (cur > 0) goTo(cur - 1); }
+function next() { if (cur < TOTAL - 1) goTo(cur + 1); }
+document.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') prev(); if (e.key === 'ArrowRight') next(); });
+</script>
+</body>
+</html>

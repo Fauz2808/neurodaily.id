@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Neuro Daily — 23 Menit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#0D2E28;
+    --teal:#1A6B5A;
+    --green:#5EC9A7;
+    --parchment:#F5F3EE;
+    --amber:#C9A96E;
+    --ink:#0D2E28;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#1a1a1a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+  body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 80px}
+
+  .topbar{
+    width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;
+    color:#9aa39f;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;
+    margin-bottom:24px;
+  }
+  .topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+
+  .stage{
+    position:relative;
+    width:min(440px, 92vw);
+    aspect-ratio:4/5;
+  }
+  .viewport{
+    position:relative;width:100%;height:100%;
+    border-radius:18px;overflow:hidden;
+    box-shadow:0 30px 80px -20px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.04);
+  }
+  .track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+  .slide{
+    flex:0 0 100%;height:100%;
+    display:flex;flex-direction:column;
+    padding:36px 32px 28px;
+    position:relative;overflow:hidden;
+  }
+
+  /* slide colorways */
+  .bg-dark{background:var(--forest);color:var(--parchment)}
+  .bg-light{background:var(--parchment);color:var(--forest)}
+  .bg-teal{background:var(--teal);color:var(--parchment)}
+
+  /* slide chrome */
+  .slide .header{
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'DM Sans',sans-serif;font-weight:500;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;
+    opacity:.85;
+  }
+  .bg-light .header{opacity:.7}
+  .pillar-tag{display:inline-flex;align-items:center;gap:6px}
+  .pillar-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--green)}
+  .bg-light .pillar-tag::before{background:var(--teal)}
+
+  .slide .footer{
+    margin-top:auto;
+    display:flex;justify-content:space-between;align-items:flex-end;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;
+    opacity:.55;text-transform:uppercase;
+  }
+
+  .brandmark{display:flex;align-items:center;gap:8px;font-family:'DM Sans';font-weight:500;letter-spacing:.14em;font-size:9.5px;text-transform:uppercase;opacity:.85}
+  .brandmark svg{width:14px;height:14px}
+
+  /* slide-specific styles */
+
+  /* SLIDE 1 — HOOK */
+  .s1 .body{margin-top:auto;margin-bottom:auto}
+  .s1 h1{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:54px;line-height:1.02;letter-spacing:-.01em;
+    color:var(--parchment);
+  }
+  .s1 h1 em{color:var(--amber);font-style:italic}
+  .s1 .lead{margin-top:18px;font-size:13px;line-height:1.7;opacity:.7;max-width:300px}
+  .s1 .swipe{
+    position:absolute;bottom:24px;right:32px;display:flex;align-items:center;gap:8px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6;
+  }
+  .s1 .swipe .arrow{display:inline-block;animation:nudge 1.6s ease-in-out infinite}
+  @keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+
+  .neural-bg{
+    position:absolute;inset:0;pointer-events:none;opacity:.5;
+  }
+  .neural-bg circle{fill:var(--green)}
+  .neural-bg line{stroke:var(--green);stroke-width:.5;opacity:.3}
+
+  /* SLIDE 2 — BIG NUMBER */
+  .s2{justify-content:space-between;align-items:stretch}
+  .s2 .num{
+    font-family:'DM Serif Display',serif;font-size:240px;line-height:.85;
+    letter-spacing:-.04em;color:var(--forest);
+    margin-top:auto;
+    position:relative;
+  }
+  .s2 .unit{
+    font-family:'DM Serif Display',serif;font-style:italic;
+    font-size:36px;color:var(--teal);margin-top:-10px;
+  }
+  .s2 .caption{
+    margin-top:12px;font-size:14px;line-height:1.6;color:var(--forest);opacity:.75;max-width:280px;
+  }
+  .s2 .meta{
+    position:absolute;top:80px;left:32px;right:32px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);opacity:.65;
+  }
+
+  /* SLIDE 3 — MECHANISM */
+  .s3 h2{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:32px;line-height:1.15;letter-spacing:-.01em;margin-top:28px;
+  }
+  .s3 .term{
+    margin-top:24px;padding:18px 20px;border-radius:10px;
+    background:rgba(94,201,167,.08);border-left:2px solid var(--green);
+  }
+  .s3 .term .name{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);
+  }
+  .s3 .term .def{
+    margin-top:8px;font-size:13.5px;line-height:1.6;color:var(--parchment);opacity:.92;
+  }
+  .s3 .source{
+    margin-top:18px;font-size:11px;color:var(--parchment);opacity:.55;line-height:1.55;
+  }
+
+  /* SLIDE 4 — TIMELINE */
+  .s4 h2{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:26px;line-height:1.2;margin-top:24px;color:var(--forest);
+  }
+  .s4 h2 em{font-style:italic;color:var(--teal)}
+  .s4 .timeline{
+    margin-top:30px;position:relative;flex:1;display:flex;flex-direction:column;justify-content:center;
+  }
+  .axis{position:relative;height:2px;background:rgba(13,46,40,.15);margin:12px 0}
+  .axis::before,.axis::after{
+    content:"";position:absolute;top:-3px;width:8px;height:8px;border-radius:99px;background:var(--forest);
+  }
+  .axis::before{left:0}
+  .axis::after{right:0;background:var(--amber)}
+  .ticks{display:flex;justify-content:space-between;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--forest);opacity:.55;letter-spacing:.05em}
+  .markers{position:absolute;inset:0;display:flex;align-items:center;}
+  .ping{
+    position:absolute;width:14px;height:14px;border-radius:99px;background:var(--teal);
+    transform:translate(-50%,-50%);top:50%;
+    box-shadow:0 0 0 0 rgba(26,107,90,.4);
+    animation:ping 2.4s ease-out infinite;
+  }
+  .ping.p1{left:18%;animation-delay:0s}
+  .ping.p2{left:42%;animation-delay:.6s}
+  .ping.p3{left:69%;animation-delay:1.2s}
+  .ping.p4{left:88%;animation-delay:1.8s}
+  @keyframes ping{
+    0%{box-shadow:0 0 0 0 rgba(26,107,90,.4)}
+    70%{box-shadow:0 0 0 14px rgba(26,107,90,0)}
+    100%{box-shadow:0 0 0 0 rgba(26,107,90,0)}
+  }
+  .timeline-label{
+    margin-top:18px;font-size:12px;color:var(--forest);opacity:.7;line-height:1.6;
+  }
+  .stat-row{display:flex;gap:20px;margin-top:24px}
+  .stat{flex:1}
+  .stat .v{font-family:'DM Serif Display',serif;font-size:34px;line-height:1;color:var(--teal)}
+  .stat .v em{color:var(--amber);font-style:italic}
+  .stat .l{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;margin-top:6px;color:var(--forest);opacity:.6;line-height:1.4}
+
+  /* SLIDE 5 — CONSEQUENCE */
+  .s5{padding-top:28px}
+  .s5 .stat-big{
+    margin-top:auto;
+    display:flex;align-items:baseline;gap:14px;
+  }
+  .s5 .stat-big .n{
+    font-family:'DM Serif Display',serif;font-size:120px;line-height:.85;color:var(--parchment);
+    letter-spacing:-.03em;
+  }
+  .s5 .stat-big .n em{color:var(--amber);font-style:italic}
+  .s5 .stat-big .u{font-family:'DM Sans';font-weight:500;font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--green);max-width:120px;line-height:1.4}
+  .s5 .copy{margin-top:18px;font-size:14px;line-height:1.65;opacity:.85;max-width:340px}
+  .s5 .copy strong{font-weight:500;color:var(--green)}
+  .s5 .math{
+    margin-top:22px;padding:14px 18px;border:1px dashed rgba(94,201,167,.3);border-radius:10px;
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--green);letter-spacing:.04em;line-height:1.7;
+  }
+
+  /* SLIDE 6 — REFRAME */
+  .s6 h2{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    font-size:38px;line-height:1.1;margin-top:28px;letter-spacing:-.01em;
+  }
+  .s6 h2 em{font-style:italic;color:var(--green)}
+  .s6 .ps{margin-top:20px;font-size:14px;line-height:1.65;opacity:.88;max-width:340px}
+  .s6 .ps + .ps{margin-top:14px;opacity:.7}
+
+  /* SLIDE 7 — CTA */
+  .s7{justify-content:space-between;text-align:left}
+  .s7 .lead-q{
+    font-family:'DM Serif Display',serif;font-size:30px;line-height:1.18;letter-spacing:-.01em;
+    margin-top:36px;color:var(--forest);
+  }
+  .s7 .lead-q em{font-style:italic;color:var(--teal)}
+  .s7 .ask{margin-top:18px;font-size:13.5px;line-height:1.65;color:var(--forest);opacity:.7;max-width:300px}
+  .s7 .actions{margin-top:24px;display:flex;flex-direction:column;gap:10px}
+  .s7 .btn{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 18px;border:1px solid rgba(13,46,40,.15);border-radius:10px;
+    font-size:13px;color:var(--forest);
+  }
+  .s7 .btn .ic{width:18px;height:18px;color:var(--teal)}
+  .s7 .signoff{
+    margin-top:24px;padding-top:18px;border-top:1px solid rgba(13,46,40,.12);
+  }
+  .s7 .tag{font-family:'DM Serif Display',serif;font-style:italic;font-size:18px;color:var(--teal);line-height:1.3}
+  .s7 .sub{margin-top:6px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--forest);opacity:.6;font-weight:500}
+
+  /* HIPPOCAMPUS LOGO */
+  .hippo{
+    width:18px;height:18px;
+  }
+
+  /* dots & nav */
+  .dots{
+    margin-top:18px;display:flex;gap:6px;justify-content:center;
+  }
+  .dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s, background .3s;cursor:pointer;border:0;padding:0}
+  .dot.active{background:var(--green);width:22px}
+
+  .controls{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+    display:flex;gap:8px;z-index:5;
+  }
+  .controls button{
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);
+    width:42px;height:42px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;
+    transition:background .2s;
+  }
+  .controls button:hover{background:rgba(94,201,167,.12);border-color:rgba(94,201,167,.3)}
+  .controls button:disabled{opacity:.3;cursor:not-allowed}
+
+  .counter{
+    color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;
+    align-self:center;padding:0 8px;
+  }
+
+  /* Caption panel */
+  .caption-panel{
+    width:min(440px,92vw);margin-top:32px;padding:22px 22px 24px;
+    background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;
+    color:#cfd3d1;font-size:13px;line-height:1.7;
+  }
+  .caption-panel .label{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);
+    margin-bottom:12px;
+  }
+  .caption-panel p{margin-bottom:10px}
+  .caption-panel p:last-child{margin-bottom:0}
+  .caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:14px;display:block;line-height:1.7}
+
+  /* placeholder pattern utility */
+  .stripe{
+    background:repeating-linear-gradient(45deg,transparent 0 6px, rgba(94,201,167,.08) 6px 7px);
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Neuro Daily · Carousel Preview</span>
+  <span class="pill">[ Work Intelligence ]</span>
+</div>
+
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- SLIDE 1 — HOOK -->
+      <section class="slide bg-dark s1" data-screen-label="01 Hook">
+        <svg class="neural-bg" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <g>
+            <line x1="60" y1="80" x2="180" y2="140"/>
+            <line x1="180" y1="140" x2="320" y2="100"/>
+            <line x1="180" y1="140" x2="240" y2="280"/>
+            <line x1="240" y1="280" x2="100" y2="380"/>
+            <line x1="240" y1="280" x2="340" y2="380"/>
+            <line x1="100" y1="380" x2="180" y2="460"/>
+            <circle cx="60" cy="80" r="2.5"/>
+            <circle cx="180" cy="140" r="3.5"/>
+            <circle cx="320" cy="100" r="2.5"/>
+            <circle cx="240" cy="280" r="3.5"/>
+            <circle cx="100" cy="380" r="2.5"/>
+            <circle cx="340" cy="380" r="2.5"/>
+            <circle cx="180" cy="460" r="2.5"/>
+          </g>
+        </svg>
+        <div class="header">
+          <span class="pillar-tag">Work Intelligence</span>
+          <span>01 / 07</span>
+        </div>
+        <div class="body">
+          <h1>Setiap notifikasi mencuri <em>23&nbsp;menit</em> fokusmu.</h1>
+          <p class="lead">Bukan metafora. Ini durasi yang otakmu butuhkan untuk benar-benar kembali ke task — setelah sekali interupsi.</p>
+        </div>
+        <div class="swipe">
+          <span>Geser</span><span class="arrow">→</span>
+        </div>
+      </section>
+
+      <!-- SLIDE 2 — BIG NUMBER -->
+      <section class="slide bg-light s2" data-screen-label="02 Number">
+        <div class="header">
+          <span class="pillar-tag">The Number</span>
+          <span>02 / 07</span>
+        </div>
+        <div class="meta">Riset · Mark, Gudith &amp; Klocke (UC Irvine, 2008)</div>
+        <div class="num">23<span style="color:var(--amber)">.</span></div>
+        <div class="unit">menit &amp; 15 detik</div>
+        <p class="caption">Itu rata-rata waktu yang dibutuhkan otak untuk fully refocus setelah satu interupsi kecil — pesan masuk, tab baru, sapaan rekan kerja.</p>
+        <div class="footer">
+          <span>NEURO DAILY</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- SLIDE 3 — MECHANISM -->
+      <section class="slide bg-dark s3" data-screen-label="03 Mechanism">
+        <div class="header">
+          <span class="pillar-tag">Yang terjadi di otakmu</span>
+          <span>03 / 07</span>
+        </div>
+        <h2>Setiap interupsi meninggalkan jejak — dan jejak itu nempel.</h2>
+        <div class="term">
+          <div class="name">Attention Residue</div>
+          <div class="def">Sebagian dari atensi otak masih tertinggal di task sebelumnya, meskipun kamu sudah pindah ke task baru. Hasilnya: kamu hadir setengah, di dua tempat.</div>
+        </div>
+        <p class="source">Konsep dari Sophie Leroy (2009), <em>Why Is It So Hard to Do My Work?</em> — Organizational Behavior and Human Decision Processes.</p>
+        <div class="footer" style="margin-top:auto">
+          <span>03 — MECHANISM</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- SLIDE 4 — TIMELINE -->
+      <section class="slide bg-light s4" data-screen-label="04 Timeline">
+        <div class="header">
+          <span class="pillar-tag">Hari kerja kamu, dipotong-potong</span>
+          <span>04 / 07</span>
+        </div>
+        <h2>Rata-rata pekerja kantoran diinterupsi <em>setiap 11 menit.</em></h2>
+
+        <div class="timeline">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:var(--forest);opacity:.55;text-transform:uppercase">1 jam kerja</div>
+          <div class="axis">
+            <div class="markers">
+              <span class="ping p1"></span>
+              <span class="ping p2"></span>
+              <span class="ping p3"></span>
+              <span class="ping p4"></span>
+            </div>
+          </div>
+          <div class="ticks">
+            <span>0'</span><span>15'</span><span>30'</span><span>45'</span><span>60'</span>
+          </div>
+          <p class="timeline-label">Tiap titik teal = satu interupsi (Slack, email, mention, sapaan).</p>
+
+          <div class="stat-row">
+            <div class="stat">
+              <div class="v">~5×</div>
+              <div class="l">interupsi per jam</div>
+            </div>
+            <div class="stat">
+              <div class="v"><em>0</em></div>
+              <div class="l">menit fokus penuh tersisa</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <span>Sumber · Gloria Mark, UCI</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- SLIDE 5 — CONSEQUENCE -->
+      <section class="slide bg-teal s5" data-screen-label="05 Consequence">
+        <div class="header">
+          <span class="pillar-tag" style="color:#fff"><span style="background:var(--amber)!important"></span>Hitung kerugiannya</span>
+          <span>05 / 07</span>
+        </div>
+        <p class="copy" style="margin-top:24px">Kalau kamu diinterupsi 5× per jam selama 8 jam kerja — dan tiap interupsi butuh 23 menit pemulihan…</p>
+
+        <div class="stat-big">
+          <span class="n"><em>2</em>j</span>
+          <span class="u">fokus penuh yang hilang setiap hari</span>
+        </div>
+
+        <div class="math">
+          5 × 23 menit ÷ 60 ≈ 1.9 jam<br>
+          × 5 hari kerja ≈ 9.5 jam / minggu<br>
+          ≈ <span style="color:var(--amber)">1 hari kerja penuh</span> menguap.
+        </div>
+
+        <div class="footer">
+          <span>05 — IMPACT</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- SLIDE 6 — REFRAME -->
+      <section class="slide bg-dark s6" data-screen-label="06 Reframe">
+        <div class="header">
+          <span class="pillar-tag">Reframe</span>
+          <span>06 / 07</span>
+        </div>
+        <h2>Fokus penuh hampir <em>tidak pernah</em> terjadi —<br>kecuali kamu aktif melindunginya.</h2>
+        <p class="ps">Otakmu tidak bisa multitasking. Yang dia lakukan adalah <em>task-switching</em> — dan setiap switch membayar pajak waktu yang nyata, terukur, dan kumulatif.</p>
+        <p class="ps">Bukan soal disiplin. Soal ekologi atensi: matikan satu sumber interupsi sebelum kamu menambah satu trik produktivitas.</p>
+        <div class="footer">
+          <span>06 — REFRAME</span>
+          <span>↳ swipe</span>
+        </div>
+      </section>
+
+      <!-- SLIDE 7 — CTA -->
+      <section class="slide bg-light s7" data-screen-label="07 CTA">
+        <div class="header">
+          <span class="pillar-tag">Sekarang giliranmu</span>
+          <span>07 / 07</span>
+        </div>
+
+        <div>
+          <p class="lead-q">Berapa kali HP kamu bunyi <em>dalam 1 jam terakhir?</em></p>
+          <p class="ask">Hitung sekarang — lalu kalikan 23. Itu menit fokus yang hilang. Tulis angkamu di komentar.</p>
+        </div>
+
+        <div class="actions">
+          <div class="btn">
+            <span>Simpan untuk dibaca lagi besok pagi</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h14v18l-7-5-7 5V3z"/></svg>
+          </div>
+          <div class="btn">
+            <span>Kirim ke rekan kerja yang notif-nya tidak pernah mati</span>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </div>
+
+        <div class="signoff">
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg class="hippo" viewBox="0 0 24 24" fill="none" stroke="#1A6B5A" stroke-width="1.5">
+              <path d="M4 14c0-5 3-8 8-8 4 0 6 2 6 5 0 2-1.5 3.5-4 3.5-2 0-3 1-3 2.5 0 1.5 1 2.5 2.5 2.5"/>
+              <circle cx="15" cy="9" r="1" fill="#1A6B5A"/>
+            </svg>
+            <span class="tag">Neuro Daily</span>
+          </div>
+          <div class="sub">Kerja lebih cerdas, bukan lebih keras. Ini sains-nya.</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="caption-panel">
+  <div class="label">Caption · Formula C — Number Hook</div>
+  <p><strong style="color:var(--parchment)">23 menit.</strong></p>
+  <p>Itu waktu yang dibutuhkan otakmu untuk fully refocus setelah satu interupsi kecil — fenomena yang neurosaintis sebut <em>attention residue</em> (Leroy, 2009).</p>
+  <p>Dan riset Gloria Mark di UC Irvine menemukan: rata-rata pekerja kantoran diinterupsi setiap 11 menit.</p>
+  <p>Artinya fokus penuh hampir tidak pernah terjadi — kecuali kamu aktif melindunginya. Bukan dengan trik produktivitas baru. Tapi dengan mematikan satu sumber interupsi.</p>
+  <p>Berapa kali HP kamu bunyi dalam 1 jam terakhir? Coba hitung sekarang.</p>
+  <span class="hash">#NeuroDaily #NeurosainsKerja #DeepWork #FokusKerja #ProduktivitasBerbasisSains #WorkIntelligence #AttentionResidue #KarirBerbasisSains</span>
+</div>
+
+<div class="controls">
+  <button id="prev" aria-label="Sebelumnya">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next" aria-label="Berikutnya">›</button>
+</div>
+
+<script>
+  const track = document.getElementById('track');
+  const dotsEl = document.getElementById('dots');
+  const counter = document.getElementById('counter');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  const total = track.children.length;
+  let i = 0;
+
+  for(let k=0;k<total;k++){
+    const b = document.createElement('button');
+    b.className = 'dot' + (k===0?' active':'');
+    b.addEventListener('click',()=>go(k));
+    dotsEl.appendChild(b);
+  }
+  const dots = [...dotsEl.children];
+
+  function go(n){
+    i = Math.max(0, Math.min(total-1, n));
+    track.style.transform = `translateX(-${i*100}%)`;
+    dots.forEach((d,k)=>d.classList.toggle('active', k===i));
+    counter.textContent = `${i+1} / ${total}`;
+    prevBtn.disabled = i===0;
+    nextBtn.disabled = i===total-1;
+  }
+  prevBtn.addEventListener('click',()=>go(i-1));
+  nextBtn.addEventListener('click',()=>go(i+1));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight')go(i+1);
+    if(e.key==='ArrowLeft')go(i-1);
+  });
+
+  // touch swipe
+  let sx=0, dx=0, dragging=false;
+  const vp = document.querySelector('.viewport');
+  vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;dragging=true;dx=0});
+  vp.addEventListener('touchmove',e=>{if(!dragging)return;dx=e.touches[0].clientX-sx});
+  vp.addEventListener('touchend',()=>{
+    if(!dragging)return;
+    if(Math.abs(dx)>40){go(i + (dx<0?1:-1));}
+    dragging=false;
+  });
+
+  go(0);
+</script>
+</body>
+</html>

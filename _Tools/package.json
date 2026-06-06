@@ -1,0 +1,12 @@
+{
+  "name": "neuro-daily-logo-export",
+  "version": "1.0.0",
+  "description": "Export Neuro Daily logo variants to PNG and SVG",
+  "main": "export.js",
+  "scripts": {
+    "export": "node export.js"
+  },
+  "dependencies": {
+    "puppeteer-core": "^24.0.0"
+  }
+}

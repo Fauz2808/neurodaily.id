@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Neuro Daily · Sleep Debt Recovery · Vol. 32</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --forest:#0D2E28;
+  --teal:#1A6B5A;
+  --green:#5EC9A7;
+  --parchment:#F5F3EE;
+  --amber:#C9A96E;
+  --red:#D96A6A;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0a0a0a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 100px}
+
+.topbar{
+  width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;
+  color:#7a807d;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  margin-bottom:24px;
+}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+
+.stage{position:relative;width:min(540px,94vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+
+.slide{flex:0 0 100%;height:100%;position:relative;overflow:hidden}
+.cvs{
+  width:1080px;height:1350px;
+  transform-origin:top left;
+  position:absolute;top:0;left:0;
+  font-family:'DM Sans',sans-serif;
+}
+
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+
+.cvs .head,.cvs .foot{
+  position:absolute;left:0;right:0;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 64px;
+  font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase;
+}
+.cvs .head{top:0;height:78px;border-bottom:1px solid rgba(245,243,238,.12)}
+.cvs .foot{bottom:0;height:64px;border-top:1px solid rgba(245,243,238,.12)}
+.bg-light .head,.bg-light .foot{border-color:rgba(13,46,40,.12)}
+.bg-teal .head,.bg-teal .foot{border-color:rgba(245,243,238,.18)}
+.cvs .head span,.cvs .foot span{opacity:.55}
+.cvs .head .dotmark::before{content:"◆ ";color:var(--green);opacity:1}
+.bg-light .head .dotmark::before{color:var(--teal)}
+
+.hippo-mark{display:flex;align-items:center;gap:10px;opacity:1!important}
+.hippo-mark svg{width:30px;height:30px;flex-shrink:0}
+
+.body{position:absolute;top:78px;bottom:64px;left:0;right:0;padding:52px 72px 52px;display:flex;flex-direction:column}
+
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.eyebrow .sym{font-size:20px;line-height:1}
+.bg-dark .eyebrow{color:var(--green)}
+.bg-light .eyebrow{color:var(--teal)}
+.bg-teal .eyebrow{color:var(--amber)}
+.rule{width:48px;height:3px;background:var(--green);border-radius:2px;margin-top:18px}
+.bg-light .rule{background:var(--teal)}
+.bg-teal .rule{background:var(--amber)}
+
+/* ===== SLIDE 1 — HOOK ===== */
+.s1 .ghost-num{
+  position:absolute;
+  font-family:'DM Serif Display',serif;
+  font-size:980px;line-height:.78;
+  color:rgba(201,169,110,.09);letter-spacing:-.06em;
+  pointer-events:none;user-select:none;
+  right:-60px;top:-60px;
+}
+.s1 h1{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:92px;line-height:1.02;letter-spacing:-.02em;
+  margin-top:56px;max-width:800px;position:relative;z-index:2;
+}
+.s1 h1 em{font-style:italic;color:var(--amber)}
+.s1 .trigger{
+  display:block;font-size:56px;line-height:1.1;color:var(--parchment);margin-top:12px;
+  font-style:normal;
+}
+.s1 .lead{margin-top:36px;font-size:22px;line-height:1.65;opacity:.72;max-width:600px;font-weight:300;position:relative;z-index:2}
+.s1 .scale-vis{position:absolute;bottom:100px;left:72px;right:72px;z-index:2}
+
+/* ===== SLIDE 2 — DEFINISI ===== */
+.s2 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:68px;line-height:1.06;letter-spacing:-.02em;
+  margin-top:40px;color:var(--forest);max-width:900px;
+}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.term-card{
+  margin-top:40px;
+  background:rgba(26,107,90,.06);border:1.5px solid rgba(26,107,90,.2);
+  border-radius:14px;padding:28px 32px;
+}
+.bg-dark .term-card{background:rgba(94,201,167,.06);border-color:rgba(94,201,167,.2)}
+.bg-teal .term-card{background:rgba(245,243,238,.08);border-color:rgba(245,243,238,.2)}
+.term-name{
+  font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--teal);
+}
+.bg-dark .term-name{color:var(--green)}
+.bg-teal .term-name{color:var(--amber)}
+.term-def{
+  margin-top:10px;font-size:19px;line-height:1.6;font-weight:300;opacity:.9;
+}
+.s2 .age-section{margin-top:64px;display:flex;flex-direction:column;gap:20px}
+.age-row{display:flex;align-items:center;gap:22px}
+.age-row .lbl{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--teal);width:168px;flex-shrink:0;line-height:1.5;
+}
+.age-row .bar-track{
+  flex:1;height:52px;background:rgba(26,107,90,.07);border-radius:8px;
+  position:relative;border:1px solid rgba(26,107,90,.14);overflow:hidden;
+}
+.age-row .bar-opt{
+  position:absolute;top:8px;bottom:8px;border-radius:5px;
+  background:var(--red);opacity:.75;
+}
+.age-row .bar-range{
+  font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.08em;
+  color:rgba(13,46,40,.6);flex-shrink:0;width:68px;text-align:right;
+}
+.age-scale{display:flex;gap:22px;margin-top:4px}
+.age-scale .spacer{width:168px;flex-shrink:0}
+.age-scale .ticks{flex:1;display:flex;justify-content:space-between}
+.age-scale .ticks span{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(13,46,40,.38);letter-spacing:.06em}
+.age-scale .ticks span.hi{color:rgba(217,106,106,.7);font-weight:500}
+.s2 .src-note{
+  margin-top:auto;font-size:14px;line-height:1.6;color:var(--forest);opacity:.5;
+  font-family:'JetBrains Mono',monospace;letter-spacing:.04em;
+}
+
+/* ===== SLIDE 3 — WEEKEND ===== */
+.s3 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:66px;line-height:1.06;letter-spacing:-.02em;
+  margin-top:50px;max-width:900px;
+}
+.s3 h2 em{font-style:italic;color:var(--green)}
+.s3 .debt-calc{margin-top:64px;display:flex;flex-direction:column;gap:16px}
+.debt-row{display:flex;align-items:center;gap:16px;padding:18px 24px;border-radius:12px}
+.debt-row.workweek{background:rgba(217,106,106,.08);border:1px solid rgba(217,106,106,.2)}
+.debt-row.weekend-r{background:rgba(94,201,167,.08);border:1px solid rgba(94,201,167,.22)}
+.debt-row.net-result{background:rgba(201,169,110,.08);border:1.5px solid rgba(201,169,110,.3)}
+.debt-row .dr-label{
+  font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+  flex-shrink:0;width:240px;
+}
+.debt-row.workweek .dr-label{color:var(--red)}
+.debt-row.weekend-r .dr-label{color:var(--green)}
+.debt-row.net-result .dr-label{color:var(--amber)}
+.debt-row .dr-val{
+  font-family:'DM Serif Display',serif;font-size:52px;line-height:1;letter-spacing:-.02em;
+}
+.debt-row.workweek .dr-val{color:var(--red)}
+.debt-row.weekend-r .dr-val{color:var(--green)}
+.debt-row.net-result .dr-val{color:var(--amber)}
+.debt-row .dr-desc{font-size:16px;line-height:1.5;opacity:.7;font-weight:300;margin-left:auto;max-width:360px;text-align:right}
+.s3 .research-note{
+  margin-top:32px;padding:18px 22px;
+  background:rgba(94,201,167,.05);border:1px solid rgba(94,201,167,.15);border-radius:12px;
+  font-size:15px;line-height:1.6;font-weight:300;opacity:.8;
+}
+.s3 .research-note strong{color:var(--green);font-weight:500}
+
+/* ===== SLIDE 4 — TEAL — OTAK ===== */
+.s4 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:64px;line-height:1.06;letter-spacing:-.02em;
+  margin-top:50px;max-width:900px;
+}
+.s4 h2 em{font-style:italic;color:var(--amber)}
+.s4 .callout-row{margin-top:40px;display:flex;gap:16px}
+.s4 .callout{flex:1;padding:20px 18px;border-radius:12px;border:1px solid rgba(245,243,238,.12)}
+.s4 .callout.a{background:rgba(94,201,167,.1);border-color:rgba(94,201,167,.25)}
+.s4 .callout.b{background:rgba(201,169,110,.1);border-color:rgba(201,169,110,.25)}
+.s4 .callout.c{background:rgba(217,106,106,.1);border-color:rgba(217,106,106,.25)}
+.s4 .callout .c-lbl-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px;font-weight:500;
+}
+.s4 .callout.a .c-lbl-title{color:var(--green)}
+.s4 .callout.b .c-lbl-title{color:var(--amber)}
+.s4 .callout.c .c-lbl-title{color:var(--red)}
+.s4 .callout .c-lbl{font-size:16px;line-height:1.5;color:var(--parchment);opacity:.82;font-weight:300}
+
+/* ===== SLIDE 5 — SCENARIOS ===== */
+.s5 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:66px;line-height:1.06;letter-spacing:-.02em;
+  margin-top:44px;color:var(--forest);max-width:900px;
+}
+.s5 h2 em{font-style:italic;color:var(--teal)}
+.s5 .scenarios{margin-top:64px;display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.scenario{padding:28px 26px 24px;border-radius:16px;position:relative;display:flex;flex-direction:column;gap:12px}
+.scenario.bad{background:rgba(217,106,106,.06);border:1.5px solid rgba(217,106,106,.2)}
+.scenario.good{background:rgba(26,107,90,.06);border:1.5px solid rgba(26,107,90,.25)}
+.scenario .s-stamp{
+  position:absolute;top:-13px;left:22px;
+  padding:5px 14px;border-radius:99px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;
+}
+.scenario.bad .s-stamp{background:var(--red);color:#fff}
+.scenario.good .s-stamp{background:var(--teal);color:#fff}
+.scenario .s-number{
+  font-family:'DM Serif Display',serif;font-size:74px;line-height:1;letter-spacing:-.03em;
+}
+.scenario.bad .s-number{color:var(--red)}
+.scenario.good .s-number{color:var(--teal);font-style:italic}
+.scenario .s-label{font-size:18px;font-weight:500;line-height:1.3;color:var(--forest)}
+.scenario .s-desc{font-size:14px;line-height:1.6;color:var(--forest);opacity:.62;font-weight:300}
+.scenario .s-result{
+  margin-top:12px;padding:10px 14px;border-radius:10px;
+  font-size:14px;line-height:1.5;font-weight:400;
+}
+.scenario.bad .s-result{background:rgba(217,106,106,.1);color:var(--red)}
+.scenario.good .s-result{background:rgba(26,107,90,.1);color:var(--teal)}
+.s5 .research-note{
+  margin-top:26px;padding:18px 22px;
+  background:rgba(26,107,90,.05);border:1px solid rgba(26,107,90,.16);border-radius:12px;
+  font-size:15px;line-height:1.6;color:var(--forest);font-weight:300;
+}
+.s5 .research-note strong{font-weight:500;color:var(--teal)}
+
+/* ===== SLIDE 6 — FORMULA ===== */
+.s6 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:70px;line-height:1.06;letter-spacing:-.02em;
+  margin-top:44px;max-width:900px;
+}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .formula{margin-top:64px;display:flex;flex-direction:column;gap:0}
+.s6 .f-block{
+  width:100%;padding:26px 32px;border-radius:14px;
+  display:flex;align-items:center;gap:22px;
+}
+.s6 .f-block.a{background:rgba(94,201,167,.1);border:2px solid rgba(94,201,167,.32)}
+.s6 .f-block.b{background:rgba(201,169,110,.1);border:2px solid rgba(201,169,110,.28)}
+.s6 .f-block.result{background:rgba(94,201,167,.18);border:2px solid rgba(94,201,167,.55)}
+.s6 .f-op{
+  text-align:center;padding:6px 0;
+  font-family:'DM Serif Display',serif;font-size:40px;color:var(--parchment);opacity:.25;line-height:1;
+}
+.s6 .f-icon{
+  width:54px;height:54px;border-radius:12px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.s6 .f-block.a .f-icon{background:rgba(94,201,167,.18)}
+.s6 .f-block.b .f-icon{background:rgba(201,169,110,.18)}
+.s6 .f-block.result .f-icon{background:rgba(94,201,167,.28)}
+.s6 .f-icon svg{width:28px;height:28px}
+.s6 .f-val{
+  font-family:'DM Serif Display',serif;font-size:34px;line-height:1;letter-spacing:-.02em;
+}
+.s6 .f-block.a .f-val{color:var(--green)}
+.s6 .f-block.b .f-val{color:var(--amber)}
+.s6 .f-block.result .f-val{color:var(--green)}
+.s6 .f-desc{margin-top:5px;font-size:15px;line-height:1.5;opacity:.72;font-weight:300}
+.s6 .f-note{
+  margin-top:28px;
+  font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.04em;
+  color:rgba(245,243,238,.5);text-align:center;line-height:1.9;
+  border-top:1px solid rgba(245,243,238,.1);padding-top:26px;
+}
+.s6 .f-note .punch{color:var(--green);font-weight:500;letter-spacing:.02em}
+
+/* ===== SLIDE 7 — CTA ===== */
+.s7 h2{
+  font-family:'DM Serif Display',serif;font-weight:400;
+  font-size:70px;line-height:1.04;letter-spacing:-.02em;
+  margin-top:44px;color:var(--forest);max-width:900px;
+}
+.s7 h2 em{font-style:italic;color:var(--teal)}
+.s7 .sub{margin-top:32px;font-size:20px;line-height:1.65;color:var(--forest);opacity:.68;max-width:820px;font-weight:300}
+.s7 .discussion{margin-top:44px;display:flex;flex-direction:column;gap:14px}
+.s7 .disc-item{
+  display:flex;align-items:center;gap:18px;padding:18px 22px;
+  border:1.5px solid rgba(13,46,40,.12);border-radius:14px;
+  font-size:17px;color:var(--forest);background:rgba(255,255,255,.46);line-height:1.4;
+}
+.s7 .disc-item .ic{
+  width:38px;height:38px;border-radius:10px;background:rgba(26,107,90,.1);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.s7 .disc-item .ic svg{width:20px;height:20px;color:var(--teal)}
+.s7 .shift-note{
+  margin-top:24px;padding:18px 24px;
+  border-radius:12px;border:1px dashed rgba(26,107,90,.38);
+  font-size:16px;line-height:1.6;color:var(--forest);opacity:.65;font-weight:300;
+  display:flex;align-items:center;gap:14px;
+}
+.s7 .shift-arrow{font-family:'DM Serif Display',serif;font-style:italic;font-size:22px;color:var(--teal);opacity:1;flex-shrink:0}
+.s7 .signoff{display:none}
+
+/* ===== CHROME ===== */
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:24px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:46px;height:46px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.controls button:hover{background:rgba(94,201,167,.14);border-color:rgba(94,201,167,.32)}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;align-self:center;padding:0 10px}
+.caption-panel{
+  width:min(540px,94vw);margin-top:32px;padding:26px 26px 28px;
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;
+  color:#cfd3d1;font-size:13px;line-height:1.7;
+}
+.caption-panel .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+.caption-panel p{margin-bottom:12px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel strong{color:var(--parchment);font-weight:500}
+.caption-panel .hash{color:#7a8480;font-size:11.5px;margin-top:16px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Neuro Daily · Sleep Debt Recovery · Vol. 32</span>
+  <span class="pill">[ Vol. 32 · Sleep &amp; Recovery ]</span>
+</div>
+
+<div class="stage">
+  <div class="viewport">
+    <div class="track" id="track">
+
+      <!-- ════════ SLIDE 1 — HOOK ════════ -->
+      <section class="slide">
+        <div class="cvs bg-dark s1">
+          <div class="head">
+            <span class="dotmark">Neuro Daily · Vol. 32 · Sleep &amp; Recovery</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">⚠</span><span>Sleep Debt · Mitos Recovery</span></div>
+
+            <div class="ghost-num">5</div>
+
+            <h1>Kurang tidur 5 hari,<br><em>recovery di weekend.</em><br>
+              <span class="trigger">Otakmu tidak bisa dilunasi seperti itu.</span>
+            </h1>
+
+            <p class="lead">Ini yang terjadi setiap kali kamu coba 'bayar' tidur yang kurang. Otak punya matematika sendiri — dan sabtu-minggu tidak ada di rumusnya.</p>
+
+            <!-- Zone scale: scale 0–7h debt, showing deficit progression -->
+            <div class="scale-vis">
+              <svg viewBox="0 0 936 190" fill="none" width="100%">
+                <rect x="0" y="55" width="936" height="68" rx="13" fill="rgba(245,243,238,.04)" stroke="rgba(245,243,238,.09)" stroke-width="1"/>
+                <!-- Deficit zone 0–4h (5–6h sleep, -1 to -2h/night) -->
+                <rect x="0" y="55" width="234" height="68" rx="13" fill="rgba(217,106,106,.16)"/>
+                <!-- Warning 4–6h deficit zone -->
+                <rect x="234" y="55" width="117" height="68" fill="rgba(201,169,110,.14)"/>
+                <!-- Optimal 6–9h sleep = 0 deficit -->
+                <rect x="351" y="48" width="234" height="82" rx="6" fill="rgba(94,201,167,.18)"/>
+                <rect x="351" y="48" width="234" height="82" rx="6" stroke="rgba(94,201,167,.55)" stroke-width="2" fill="none"/>
+                <!-- Beyond 9h -->
+                <rect x="585" y="55" width="351" height="68" rx="13" fill="rgba(245,243,238,.04)"/>
+                <!-- Hour labels -->
+                <text x="0"   y="44" font-family="JetBrains Mono" font-size="13" fill="rgba(245,243,238,.38)" letter-spacing=".08em">4h</text>
+                <text x="111" y="44" font-family="JetBrains Mono" font-size="13" fill="rgba(245,243,238,.38)" letter-spacing=".08em">5h</text>
+                <text x="228" y="44" font-family="JetBrains Mono" font-size="13" fill="rgba(245,243,238,.45)" letter-spacing=".08em">6h</text>
+                <text x="345" y="44" font-family="JetBrains Mono" font-size="13" fill="rgba(94,201,167,.95)" letter-spacing=".08em" font-weight="500">7h</text>
+                <text x="462" y="44" font-family="JetBrains Mono" font-size="13" fill="rgba(94,201,167,.95)" letter-spacing=".08em" font-weight="500">8h</text>
+                <text x="579" y="44" font-family="JetBrains Mono" font-size="13" fill="rgba(94,201,167,.95)" letter-spacing=".08em" font-weight="500">9h</text>
+                <text x="696" y="44" font-family="JetBrains Mono" font-size="13" fill="rgba(245,243,238,.32)" letter-spacing=".08em">10h</text>
+                <!-- Zone labels -->
+                <text x="117" y="94" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="rgba(217,106,106,.85)" letter-spacing=".15em">DEFICIT</text>
+                <text x="468" y="90" text-anchor="middle" font-family="DM Serif Display" font-size="30" fill="rgba(94,201,167,.9)" font-style="italic">Optimal</text>
+                <text x="468" y="164" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="rgba(94,201,167,.65)" letter-spacing=".18em">← TARGET TIDUR 7–9 JAM →</text>
+                <!-- Tick lines -->
+                <line x1="234" y1="123" x2="234" y2="132" stroke="rgba(245,243,238,.25)" stroke-width="1"/>
+                <line x1="351" y1="130" x2="351" y2="142" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/>
+                <line x1="585" y1="130" x2="585" y2="142" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/>
+              </svg>
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>01 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#5EC9A7" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#5EC9A7"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════ SLIDE 2 — DEFINISI SLEEP DEBT ════════ -->
+      <section class="slide">
+        <div class="cvs bg-light s2">
+          <div class="head">
+            <span class="dotmark">Sleep Debt · Definisi</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">◇</span><span>Sleep Debt · Definisi</span></div>
+            <div class="rule"></div>
+            <h2>Sleep debt bukan metafora.<br><em>Ini utang biologis.</em></h2>
+
+            <div class="term-card">
+              <div class="term-name">Sleep Debt</div>
+              <div class="term-def">Akumulasi kekurangan tidur yang tersimpan di sistem neurologis. Setiap jam kurang tidur ditambahkan ke total — dan otak memprosesnya secara kumulatif, bukan per malam.</div>
+            </div>
+
+            <!-- Bar chart: Mon-Fri each shows 1h deficit (sleep 6h instead of 7h) -->
+            <!-- Scale: 0-7h, 1h = 14.28% bar width. Deficit (6h sleep) = left:0, width:85.7%. Gap = 14.3% -->
+            <div class="age-section">
+              <div class="age-row">
+                <div class="lbl">Senin<br>Tidur: 6h</div>
+                <div class="bar-track">
+                  <div class="bar-opt" style="left:0;width:85.7%"></div>
+                </div>
+                <div class="bar-range">−1 jam</div>
+              </div>
+              <div class="age-row">
+                <div class="lbl">Selasa<br>Tidur: 6h</div>
+                <div class="bar-track">
+                  <div class="bar-opt" style="left:0;width:85.7%"></div>
+                </div>
+                <div class="bar-range">−1 jam</div>
+              </div>
+              <div class="age-row">
+                <div class="lbl">Rabu<br>Tidur: 6h</div>
+                <div class="bar-track">
+                  <div class="bar-opt" style="left:0;width:85.7%"></div>
+                </div>
+                <div class="bar-range">−1 jam</div>
+              </div>
+              <div class="age-row">
+                <div class="lbl">Kamis<br>Tidur: 6h</div>
+                <div class="bar-track">
+                  <div class="bar-opt" style="left:0;width:85.7%"></div>
+                </div>
+                <div class="bar-range">−1 jam</div>
+              </div>
+              <div class="age-row">
+                <div class="lbl">Jumat<br>Tidur: 6h</div>
+                <div class="bar-track">
+                  <div class="bar-opt" style="left:0;width:85.7%"></div>
+                </div>
+                <div class="bar-range">−1 jam</div>
+              </div>
+              <div class="age-scale">
+                <div class="spacer"></div>
+                <div class="ticks">
+                  <span>0h</span><span>1h</span><span>2h</span><span>3h</span><span>4h</span><span>5h</span><span class="hi">6h</span><span class="hi">7h</span>
+                </div>
+              </div>
+            </div>
+
+            <p class="src-note">→ Sumber: Walker, Why We Sleep (2017) · Belenky et al. (2003) Sleep Research Society</p>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>02 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════ SLIDE 3 — WEEKEND TIDAK CUKUP ════════ -->
+      <section class="slide">
+        <div class="cvs bg-dark s3">
+          <div class="head">
+            <span class="dotmark">Recovery · Yang Sebenarnya Terjadi</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">↺</span><span>Recovery · Yang Sebenarnya Terjadi</span></div>
+            <h2>Tidur 10 jam sabtu-minggu.<br><em>Utangnya tidak lunas.</em></h2>
+
+            <div class="debt-calc">
+              <div class="debt-row workweek">
+                <div class="dr-label">Utang Sen–Jum<br>5 × (−1 jam)</div>
+                <div class="dr-val">−5 jam</div>
+                <div class="dr-desc">Senin–Jumat tidur 6h<br>per malam. Target: 7h.</div>
+              </div>
+              <div class="debt-row weekend-r">
+                <div class="dr-label">Recovery Weekend<br>Sab+Min 10h+10h</div>
+                <div class="dr-val">+4 jam</div>
+                <div class="dr-desc">2 malam tidur 10h = hanya<br>+4 jam ekstra dari normal.</div>
+              </div>
+              <div class="debt-row net-result">
+                <div class="dr-label">Sisa Utang<br>Belum Lunas</div>
+                <div class="dr-val">−1 jam</div>
+                <div class="dr-desc">Masuk Senin lagi dengan<br>1 jam debt tersisa.</div>
+              </div>
+            </div>
+
+            <div class="research-note">
+              <strong>Studi Purdue (2021):</strong> recovery sleep tidak dapat memulihkan kerusakan kognitif jangka panjang dari sleep debt kronis — bahkan setelah weekend penuh istirahat.
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>03 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#5EC9A7" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#5EC9A7"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════ SLIDE 4 — APA YANG RUSAK DI OTAK ════════ -->
+      <section class="slide">
+        <div class="cvs bg-teal s4">
+          <div class="head">
+            <span class="dotmark">Hippocampus · Memori &amp; Kognisi</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">○</span><span>Hippocampus · Memori &amp; Kognisi</span></div>
+            <h2>Yang rusak bukan hanya<br><em>rasa kantuk.</em></h2>
+
+            <div class="term-card">
+              <div class="term-name">Hippocampal LTP</div>
+              <div class="term-def">Long-term potentiation — proses konsolidasi memori yang terjadi selama tidur dalam. Sleep debt kronis mengganggu proses ini secara kumulatif, melemahkan jalur neural memori setiap malamnya.</div>
+            </div>
+
+            <div class="callout-row">
+              <div class="callout a">
+                <div class="c-lbl-title">Memori Jangka Pendek</div>
+                <div class="c-lbl">Informasi baru tidak tersimpan dengan efisien. Hippocampus kekurangan siklus REM untuk konsolidasi.</div>
+              </div>
+              <div class="callout b">
+                <div class="c-lbl-title">Evaluasi Risiko</div>
+                <div class="c-lbl">Kemampuan menilai konsekuensi keputusan menurun. Prefrontal cortex tidak pulih penuh.</div>
+              </div>
+              <div class="callout c">
+                <div class="c-lbl-title">Regulasi Emosi</div>
+                <div class="c-lbl">Amygdala bereaksi berlebihan. Kontrol impuls melemah, reaktivitas emosi meningkat.</div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>04 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#C9A96E" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#C9A96E"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════ SLIDE 5 — DUA SKENARIO ════════ -->
+      <section class="slide">
+        <div class="cvs bg-light s5">
+          <div class="head">
+            <span class="dotmark">Skenario · Perbandingan Nyata</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">↔</span><span>Skenario · Perbandingan Nyata</span></div>
+            <div class="rule"></div>
+            <h2>5 hari tidur 6 jam vs 5 hari tidur 7 jam.<br><em>Bedanya bukan rasa capek.</em></h2>
+
+            <div class="scenarios">
+              <div class="scenario bad">
+                <span class="s-stamp">6 Jam/Malam</span>
+                <div class="s-number">5×6h</div>
+                <div class="s-label">Total: 30 jam seminggu</div>
+                <div class="s-desc">Terasa oke di hari ke-3. Otak sudah kehilangan kemampuan menilai kondisinya sendiri.</div>
+                <div class="s-result">→ Performa kognitif setara tidak tidur 24 jam penuh</div>
+              </div>
+              <div class="scenario good">
+                <span class="s-stamp">7 Jam/Malam</span>
+                <div class="s-number">5×7h</div>
+                <div class="s-label">Total: 35 jam seminggu</div>
+                <div class="s-desc">5 jam lebih banyak. Hippocampal LTP berjalan sempurna. Recovery kognitif terjadi setiap malam.</div>
+                <div class="s-result">→ Memori konsolidasi optimal, regulasi emosi stabil</div>
+              </div>
+            </div>
+
+            <div class="research-note">
+              <strong>Van Dongen et al. (2003):</strong> subjek 6h/malam selama 14 hari mencapai defisit kognitif setara 48h total sleep deprivation — sementara merasa tidak terlalu ngantuk.
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>05 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════ SLIDE 6 — FORMULA RECOVERY ════════ -->
+      <section class="slide">
+        <div class="cvs bg-dark s6">
+          <div class="head">
+            <span class="dotmark">Formula · Recovery Realistis</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">≡</span><span>Formula · Recovery Realistis</span></div>
+            <h2>Cara melunasi sleep debt<br><em>yang benar.</em></h2>
+
+            <div class="formula">
+              <div class="f-block a">
+                <div class="f-icon">
+                  <svg viewBox="0 0 28 28" fill="none" stroke="#5EC9A7" stroke-width="1.8" stroke-linecap="round">
+                    <circle cx="14" cy="14" r="10"/>
+                    <line x1="14" y1="8" x2="14" y2="14"/>
+                    <line x1="14" y1="14" x2="18.5" y2="17"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="f-val">Hitung total defisit</div>
+                  <div class="f-desc">1 jam kurang tidur = 1 jam debt. 5 hari × 1 jam = 5 jam total debt.</div>
+                </div>
+              </div>
+
+              <div class="f-op">+</div>
+
+              <div class="f-block b">
+                <div class="f-icon">
+                  <svg viewBox="0 0 28 28" fill="none" stroke="#C9A96E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="4" y="6" width="20" height="18" rx="3"/>
+                    <line x1="9" y1="4" x2="9" y2="8"/>
+                    <line x1="19" y1="4" x2="19" y2="8"/>
+                    <line x1="4" y1="12" x2="24" y2="12"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="f-val">Tambah 1–2 jam/malam</div>
+                  <div class="f-desc">Bukan 4–5 jam sekaligus. Naikkan bertahap 60–90 menit per malam selama beberapa hari.</div>
+                </div>
+              </div>
+
+              <div class="f-op" style="opacity:.2;font-size:38px;letter-spacing:.1em;padding:6px 0">━━━━━━</div>
+
+              <div class="f-block result">
+                <div class="f-icon">
+                  <svg viewBox="0 0 28 28" fill="none" stroke="#5EC9A7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 14l7 7L23 7"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="f-val">3× durasi debt</div>
+                  <div class="f-desc" style="opacity:.92">Recovery penuh membutuhkan sekitar 3× dari total jam utang — bukan satu weekend.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="f-note">
+              Weekend recovery = <em style="color:var(--amber)">first aid</em>, bukan <em style="color:var(--amber)">cure</em> —<br>
+              <span class="punch">utangnya perlu dilunasi bertahap.</span>
+            </div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>06 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#5EC9A7" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#5EC9A7"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════ SLIDE 7 — CTA ════════ -->
+      <section class="slide">
+        <div class="cvs bg-light s7">
+          <div class="head">
+            <span class="dotmark">Diskusi · Jawab di Komentar</span>
+            <span>Edisi · Mei 2026</span>
+          </div>
+          <div class="body">
+            <div class="eyebrow"><span class="sym">◆</span><span>Sekarang giliranmu</span></div>
+            <div class="rule"></div>
+
+            <h2>Kamu tidur berapa jam<br><em>semalam?</em></h2>
+            <p class="sub">Jawab jujur dengan angka. Kalau di bawah 7, hitung sudah berapa hari berturut-turut.</p>
+
+            <div class="discussion">
+              <div class="disc-item">
+                <div class="ic">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                    <path d="M5 3h14v18l-7-5-7 5V3z"/>
+                  </svg>
+                </div>
+                Simpan — hitung total sleep debt kamu minggu ini
+              </div>
+              <div class="disc-item">
+                <div class="ic">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                  </svg>
+                </div>
+                Kirim ke teman yang percaya bisa recovery dalam satu weekend
+              </div>
+            </div>
+
+            <div class="shift-note">
+              <span class="shift-arrow">→</span>
+              <span>Sudah tahu debt-mu? Post berikutnya: cara mulai melunasinya tanpa drama.</span>
+            </div>
+
+            <div class="signoff"></div>
+          </div>
+          <div class="foot">
+            <span>neurodaily.id</span>
+            <span>07 / 07</span>
+            <span class="hippo-mark">
+              <svg viewBox="0 0 32 32" fill="none" stroke="#1A6B5A" stroke-width="1.6">
+                <path d="M5 19c0-7 4-11 11-11 5 0 8 3 8 7 0 3-2 5-5 5-3 0-4 1.4-4 3.5 0 2 1.4 3.5 3.5 3.5"/>
+                <circle cx="20" cy="12" r="1.4" fill="#1A6B5A"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="caption-panel">
+  <div class="label">Caption · Vol. 32 · Sleep Debt Recovery</div>
+  <p>Kurang tidur 5 hari, recovery di weekend. Otakmu tidak bisa dilunasi seperti itu.</p>
+  <p>Sleep debt bukan kelelahan biasa — ini utang biologis yang tersimpan. Dan sabtu-minggu tidak cukup untuk melunasinya.</p>
+  <p>Yang sering diabaikan: otak kehilangan kemampuan menilai kondisinya sendiri setelah beberapa hari sleep debt. Kamu merasa oke, padahal tidak.</p>
+  <p>Rata-rata kamu tidur berapa jam tiap malam minggu ini? Jawab jujur dengan angka.</p>
+  <span class="hash">#neurosains #produktivitas #tidur #sleepdebt #kerjacerdas #performa #otakmanusia</span>
+</div>
+
+<div class="controls">
+  <button id="prev">‹</button>
+  <span class="counter" id="counter">1 / 7</span>
+  <button id="next">›</button>
+</div>
+
+<script>
+const track=document.getElementById('track'),dotsEl=document.getElementById('dots'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next');
+const total=track.children.length;let i=0;
+function scaleCanvases(){document.querySelectorAll('.slide').forEach(s=>{const c=s.querySelector('.cvs');if(!c)return;c.style.transform=`scale(${s.clientWidth/1080})`;});}
+window.addEventListener('resize',scaleCanvases);scaleCanvases();
+for(let k=0;k<total;k++){const b=document.createElement('button');b.className='dot'+(k===0?' active':'');b.addEventListener('click',()=>go(k));dotsEl.appendChild(b)}
+const dots=[...dotsEl.children];
+function go(n){i=Math.max(0,Math.min(total-1,n));track.style.transform=`translateX(-${i*100}%)`;dots.forEach((d,k)=>d.classList.toggle('active',k===i));counter.textContent=`${i+1} / ${total}`;prevBtn.disabled=i===0;nextBtn.disabled=i===total-1}
+prevBtn.addEventListener('click',()=>go(i-1));nextBtn.addEventListener('click',()=>go(i+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(i+1);if(e.key==='ArrowLeft')go(i-1)});
+let sx=0,dx=0,drag=false;const vp=document.querySelector('.viewport');
+vp.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;drag=true;dx=0},{passive:true});
+vp.addEventListener('touchmove',e=>{if(!drag)return;dx=e.touches[0].clientX-sx},{passive:true});
+vp.addEventListener('touchend',()=>{if(!drag)return;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));drag=false});
+go(0);
+</script>
+</body>
+</html>

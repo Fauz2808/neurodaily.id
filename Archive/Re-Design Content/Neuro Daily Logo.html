@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Neuro Daily — Logo Exploration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<style>
+  :root{
+    --forest:#0D2E28;
+    --teal:#1A6B5A;
+    --green:#5EC9A7;
+    --parchment:#F5F3EE;
+    --amber:#C9A96E;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;height:100%;font-family:'DM Sans',sans-serif;font-weight:300;background:#1a1a1a;color:var(--parchment)}
+  #root{width:100%;height:100vh}
+
+  /* artboard surfaces */
+  .surface{
+    width:100%;height:100%;
+    display:flex;flex-direction:column;
+    font-family:'DM Sans',sans-serif;
+    position:relative;overflow:hidden;
+  }
+  .s-light{background:var(--parchment);color:var(--forest)}
+  .s-dark{background:var(--forest);color:var(--parchment)}
+  .s-mono-light{background:var(--parchment);color:var(--forest)}
+  .s-mono-dark{background:#000;color:#fff}
+
+  .surface .meta{
+    position:absolute;top:14px;left:18px;right:18px;
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;opacity:.45;
+  }
+  .surface .footer{
+    position:absolute;bottom:14px;left:18px;right:18px;
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;opacity:.42;
+  }
+
+  .stage-center{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 32px}
+
+  /* lockup baseline shared classes */
+  .wordmark{
+    font-family:'DM Serif Display',serif;font-weight:400;
+    letter-spacing:-.005em;line-height:1;
+  }
+  .wordmark em{font-style:italic}
+  .subline{
+    font-family:'DM Sans',sans-serif;font-weight:500;
+    letter-spacing:.18em;text-transform:uppercase;font-size:10px;opacity:.78;
+  }
+
+  /* construction grid (notes artboards) */
+  .grid-bg{
+    background-image:
+      linear-gradient(rgba(13,46,40,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(13,46,40,.06) 1px, transparent 1px);
+    background-size:24px 24px;
+  }
+
+  .swatch-row{display:flex;gap:8px;align-items:center}
+  .swatch{width:22px;height:22px;border-radius:4px;border:1px solid rgba(0,0,0,.06)}
+
+  .note-card{
+    padding:32px;color:var(--forest);
+  }
+  .note-card h3{
+    font-family:'DM Serif Display',serif;font-weight:400;font-size:32px;line-height:1.1;margin:0 0 18px;letter-spacing:-.01em;
+  }
+  .note-card p{font-size:13px;line-height:1.65;margin:0 0 10px;opacity:.78;max-width:520px}
+  .note-card .label{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--teal);margin-bottom:14px;
+  }
+  .note-card ul{margin:0;padding-left:18px;font-size:13px;line-height:1.7;opacity:.78}
+  .note-card .row{display:flex;gap:24px;flex-wrap:wrap;margin-top:18px}
+  .note-card .pair{font-size:12px}
+  .note-card .pair .v{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--teal);margin-top:4px}
+
+  /* favicon row */
+  .fav{
+    width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  }
+  .fav.dark{background:var(--forest)}
+  .fav.light{background:var(--parchment);border:1px solid rgba(13,46,40,.1)}
+
+  /* misuse */
+  .misuse{padding:28px;color:var(--forest)}
+  .misuse h4{font-family:'DM Serif Display',serif;font-weight:400;font-size:22px;margin:0 0 14px}
+  .misuse .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .misuse .item{padding:18px;border-radius:6px;background:#fff;border:1px solid rgba(13,46,40,.08);position:relative;min-height:110px;display:flex;align-items:center;justify-content:center}
+  .misuse .item.bad{border-color:rgba(178,55,42,.25)}
+  .misuse .tag{
+    position:absolute;top:8px;left:10px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+  }
+  .misuse .tag.ok{color:var(--teal)}
+  .misuse .tag.no{color:#b2372a}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel">
+const { DesignCanvas, DCSection, DCArtboard } = window;
+
+/* ---------- LOGO MARKS ---------- */
+
+// Mark 1 — Hippocampus literal (single-stroke line illustration)
+function MarkHippoLiteral({ size=120, color="#0D2E28", accent="#1A6B5A" }){
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      {/* hippocampus seahorse-shape stylized as continuous line */}
+      <path
+        d="M30 20 C 28 28, 36 32, 44 30 C 56 27, 66 32, 70 44 C 72 52, 66 58, 58 58 C 50 58, 44 62, 44 70 C 44 76, 50 80, 56 80"
+        stroke={color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"
+      />
+      {/* synapse dots */}
+      <circle cx="30" cy="20" r="2.6" fill={accent}/>
+      <circle cx="56" cy="80" r="2.6" fill={accent}/>
+      <circle cx="70" cy="44" r="2" fill={accent}/>
+    </svg>
+  );
+}
+
+// Mark 2 — Hippocampus + neural nodes (abstract spiral)
+function MarkHippoNodes({ size=120, color="#0D2E28", accent="#5EC9A7" }){
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      {/* spiral interpretation of hippocampus */}
+      <path
+        d="M70 30 C 60 22, 40 22, 32 36 C 24 50, 36 64, 50 60 C 60 57, 60 46, 52 46 C 46 46, 44 52, 50 54"
+        stroke={color} strokeWidth="2.5" strokeLinecap="round" fill="none"
+      />
+      {/* satellite nodes */}
+      <circle cx="78" cy="26" r="3" fill={accent}/>
+      <circle cx="22" cy="44" r="2.4" fill={accent}/>
+      <circle cx="58" cy="74" r="2.4" fill={accent}/>
+      <line x1="70" y1="30" x2="78" y2="26" stroke={accent} strokeWidth="1"/>
+      <line x1="32" y1="36" x2="22" y2="44" stroke={accent} strokeWidth="1"/>
+      <line x1="50" y1="60" x2="58" y2="74" stroke={accent} strokeWidth="1"/>
+    </svg>
+  );
+}
+
+// Mark 3 — ND monogram with synapse connector
+function MarkMonogram({ size=120, color="#0D2E28", accent="#1A6B5A" }){
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      {/* N */}
+      <path d="M22 78 L22 22 L46 70 L46 22" stroke={color} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
+      {/* D */}
+      <path d="M58 22 L58 78 L70 78 C 80 78, 84 70, 84 50 C 84 30, 80 22, 70 22 L58 22 Z"
+        stroke={color} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+      {/* synapse dot connecting */}
+      <circle cx="51" cy="50" r="3.5" fill={accent}/>
+      <line x1="46" y1="50" x2="58" y2="50" stroke={accent} strokeWidth="1.5"/>
+    </svg>
+  );
+}
+
+// Mark 4 — Geometric hippocampus (minimal arc + dot)
+function MarkArc({ size=120, color="#0D2E28", accent="#C9A96E" }){
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      {/* curl */}
+      <path d="M22 70 Q 22 30, 60 30 Q 78 30, 78 50 Q 78 64, 64 64 Q 54 64, 54 54"
+        stroke={color} strokeWidth="4.5" strokeLinecap="round" fill="none"/>
+      <circle cx="54" cy="54" r="4" fill={accent}/>
+    </svg>
+  );
+}
+
+// Mark 5 — Editorial seal/stamp
+function MarkSeal({ size=130, color="#0D2E28", accent="#1A6B5A" }){
+  // text along circle
+  return (
+    <svg width={size} height={size} viewBox="0 0 140 140">
+      <defs>
+        <path id="seal-top" d="M 70,70 m -52,0 a 52,52 0 1,1 104,0" />
+        <path id="seal-bot" d="M 70,70 m -50,0 a 50,50 0 1,0 100,0" />
+      </defs>
+      <circle cx="70" cy="70" r="60" fill="none" stroke={color} strokeWidth="1.5"/>
+      <circle cx="70" cy="70" r="54" fill="none" stroke={color} strokeWidth="0.8" opacity=".6"/>
+      <text fill={color} fontFamily="DM Sans" fontWeight="500" fontSize="8" letterSpacing="3">
+        <textPath href="#seal-top" startOffset="50%" textAnchor="middle">BRAIN SCIENCE · FOR YOUR CAREER ·</textPath>
+      </text>
+      <text fill={color} fontFamily="DM Sans" fontWeight="500" fontSize="8" letterSpacing="3" opacity=".55">
+        <textPath href="#seal-bot" startOffset="50%" textAnchor="middle">EST · 2026 · NEURO DAILY ·</textPath>
+      </text>
+      {/* center mark — small hippocampus curl */}
+      <g transform="translate(70 70)">
+        <path d="M-14 8 Q -14 -10, 6 -10 Q 16 -10, 16 0 Q 16 10, 6 10 Q 0 10, 0 4"
+          stroke={color} strokeWidth="2.2" strokeLinecap="round" fill="none"/>
+        <circle cx="0" cy="4" r="2.4" fill={accent}/>
+      </g>
+    </svg>
+  );
+}
+
+// Mark 6 — Wordmark only with ligature accent
+function MarkWordmarkOnly({ size=1, color="#0D2E28", accent="#1A6B5A" }){
+  return (
+    <div style={{textAlign:"center"}}>
+      <div style={{
+        fontFamily:"'DM Serif Display',serif",fontSize:64,lineHeight:1,letterSpacing:"-.015em",color
+      }}>
+        Neuro<span style={{color:accent,fontStyle:"italic"}}>·</span>Daily
+      </div>
+    </div>
+  );
+}
+
+/* ---------- LOCKUPS (mark + wordmark) ---------- */
+
+function Lockup({ Mark, accent="#1A6B5A", color="#0D2E28", subColor, markSize=104, wordSize=42, italic=false }){
+  return (
+    <div style={{display:"flex",alignItems:"center",gap:18}}>
+      <Mark size={markSize} color={color} accent={accent}/>
+      <div>
+        <div className="wordmark" style={{fontSize:wordSize,color}}>
+          {italic ? <><span>Neuro</span> <em>Daily</em></> : "Neuro Daily"}
+        </div>
+        <div className="subline" style={{color:subColor||color,marginTop:6}}>
+          Brain Science · For Your Career
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StackedLockup({ Mark, accent="#1A6B5A", color="#0D2E28", subColor, markSize=110, wordSize=40 }){
+  return (
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:14}}>
+      <Mark size={markSize} color={color} accent={accent}/>
+      <div className="wordmark" style={{fontSize:wordSize,color}}>Neuro Daily</div>
+      <div className="subline" style={{color:subColor||color}}>Brain Science · For Your Career</div>
+    </div>
+  );
+}
+
+/* ---------- ARTBOARDS ---------- */
+
+function Direction({ name, code, Mark, accent, theme="light", stacked=false, italic=false, descriptor }){
+  const isDark = theme==="dark";
+  const bg = isDark ? "var(--forest)" : "var(--parchment)";
+  const fg = isDark ? "var(--parchment)" : "var(--forest)";
+  return (
+    <div className="surface" style={{background:bg,color:fg}}>
+      <div className="meta">
+        <span>{code}</span>
+        <span>{theme==="dark"?"DARK · INVERSE":"LIGHT · PRIMARY"}</span>
+      </div>
+      <div className="stage-center">
+        {stacked
+          ? <StackedLockup Mark={Mark} accent={accent} color={fg} subColor={fg} markSize={100} wordSize={38}/>
+          : <Lockup Mark={Mark} accent={accent} color={fg} subColor={fg} markSize={94} wordSize={38} italic={italic}/>
+        }
+      </div>
+      <div className="footer">
+        <span>{name}</span>
+        <span>{descriptor}</span>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- APP ---------- */
+
+const accents = {
+  teal:  "#1A6B5A",
+  green: "#5EC9A7",
+  amber: "#C9A96E",
+};
+
+function App(){
+  return (
+    <DesignCanvas title="Neuro Daily — Logo Exploration" subtitle="6 direksi · lockup, monokrom, favicon, dan misuse · April 2026">
+
+      {/* Section 0 — brief */}
+      <DCSection id="brief" title="Brief & Sistem">
+        <DCArtboard id="brief-card" label="Logo brief" width={760} height={520}>
+          <div className="surface s-light grid-bg">
+            <div className="note-card" style={{padding:"40px 44px"}}>
+              <div className="label">Neuro Daily — Logo Brief</div>
+              <h3>Editorial brand, bukan personal brand.</h3>
+              <p>Logo harus terbaca sebagai <em>publikasi</em> (seperti Morning Brew atau Wait But Why) — bukan akun kreator. Mark mengacu pada hippocampus, bagian otak yang menyimpan memori — relevan dengan misi: pengetahuan kerja yang melekat.</p>
+              <p>Wordmark utama: DM Serif Display. Subline: DM Sans Medium uppercase, letter-spacing 0.18em.</p>
+
+              <div className="row" style={{marginTop:24}}>
+                <div className="pair">
+                  <div>Deep Forest</div>
+                  <div className="v">#0D2E28</div>
+                </div>
+                <div className="pair">
+                  <div>Neural Teal</div>
+                  <div className="v">#1A6B5A</div>
+                </div>
+                <div className="pair">
+                  <div>Synapse Green</div>
+                  <div className="v">#5EC9A7</div>
+                </div>
+                <div className="pair">
+                  <div>Warm Parchment</div>
+                  <div className="v">#F5F3EE</div>
+                </div>
+                <div className="pair">
+                  <div>Amber Neuron</div>
+                  <div className="v">#C9A96E</div>
+                </div>
+              </div>
+
+              <div style={{marginTop:24}} className="swatch-row">
+                <span className="swatch" style={{background:"#0D2E28"}}/>
+                <span className="swatch" style={{background:"#1A6B5A"}}/>
+                <span className="swatch" style={{background:"#5EC9A7"}}/>
+                <span className="swatch" style={{background:"#F5F3EE"}}/>
+                <span className="swatch" style={{background:"#C9A96E"}}/>
+              </div>
+            </div>
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      {/* Section 1 — Direction A: Hippocampus literal */}
+      <DCSection id="dir-a" title="Direction A — Hippocampus Literal">
+        <DCArtboard id="a-light" label="Light · primary" width={520} height={320}>
+          <Direction name="DIR A" code="A · 01" Mark={MarkHippoLiteral} accent={accents.teal} theme="light" descriptor="Line illustration"/>
+        </DCArtboard>
+        <DCArtboard id="a-dark" label="Dark · inverse" width={520} height={320}>
+          <Direction name="DIR A" code="A · 02" Mark={MarkHippoLiteral} accent={accents.green} theme="dark" descriptor="Synapse green accent"/>
+        </DCArtboard>
+        <DCArtboard id="a-stacked" label="Stacked lockup" width={420} height={420}>
+          <Direction name="DIR A" code="A · 03" Mark={MarkHippoLiteral} accent={accents.teal} stacked descriptor="Vertical · IG profile"/>
+        </DCArtboard>
+        <DCArtboard id="a-notes" label="Notes" width={420} height={420}>
+          <div className="surface s-light">
+            <div className="note-card">
+              <div className="label">A · Hippocampus Literal</div>
+              <h3>Paling literal terhadap brief.</h3>
+              <p>Garis tunggal yang membentuk siluet hippocampus, dengan tiga titik synapse di ujung-ujung — terbaca sebagai memori yang terkoneksi.</p>
+              <ul>
+                <li>Paling jelas ke topik neurosains</li>
+                <li>Mudah dikenali di feed Instagram</li>
+                <li>Risiko: bisa terbaca seperti ilustrasi medis</li>
+              </ul>
+            </div>
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      {/* Section 2 — Direction B: Hippocampus + nodes */}
+      <DCSection id="dir-b" title="Direction B — Hippocampus + Neural Nodes">
+        <DCArtboard id="b-light" label="Light · primary" width={520} height={320}>
+          <Direction name="DIR B" code="B · 01" Mark={MarkHippoNodes} accent={accents.green} theme="light" descriptor="Spiral + satellites"/>
+        </DCArtboard>
+        <DCArtboard id="b-dark" label="Dark · inverse" width={520} height={320}>
+          <Direction name="DIR B" code="B · 02" Mark={MarkHippoNodes} accent={accents.green} theme="dark" descriptor="Synapse green accent"/>
+        </DCArtboard>
+        <DCArtboard id="b-stacked" label="Stacked lockup" width={420} height={420}>
+          <Direction name="DIR B" code="B · 03" Mark={MarkHippoNodes} accent={accents.green} stacked descriptor="Vertical · IG profile"/>
+        </DCArtboard>
+        <DCArtboard id="b-notes" label="Notes" width={420} height={420}>
+          <div className="surface s-light">
+            <div className="note-card">
+              <div className="label">B · Hippocampus + Nodes</div>
+              <h3>Lebih abstrak, lebih editorial.</h3>
+              <p>Spiral hippocampus dengan tiga node satellite yang terhubung — metafora untuk "ide yang menyebar". Cocok untuk publikasi karena terasa modern, bukan klinis.</p>
+              <ul>
+                <li>Jaringan terbaca sebagai "knowledge network"</li>
+                <li>Mudah di-animasi untuk reels intro</li>
+                <li>Risiko: butuh ukuran ≥48px agar node terbaca</li>
+              </ul>
+            </div>
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      {/* Section 3 — Direction C: ND monogram */}
+      <DCSection id="dir-c" title="Direction C — ND Monogram">
+        <DCArtboard id="c-light" label="Light · primary" width={520} height={320}>
+          <Direction name="DIR C" code="C · 01" Mark={MarkMonogram} accent={accents.teal} theme="light" italic descriptor="Synapse connector"/>
+        </DCArtboard>
+        <DCArtboard id="c-dark" label="Dark · inverse" width={520} height={320}>
+          <Direction name="DIR C" code="C · 02" Mark={MarkMonogram} accent={accents.green} theme="dark" italic descriptor="Geometric · serif"/>
+        </DCArtboard>
+        <DCArtboard id="c-stacked" label="Stacked lockup" width={420} height={420}>
+          <Direction name="DIR C" code="C · 03" Mark={MarkMonogram} accent={accents.teal} stacked descriptor="Untuk avatar app"/>
+        </DCArtboard>
+        <DCArtboard id="c-notes" label="Notes" width={420} height={420}>
+          <div className="surface s-light">
+            <div className="note-card">
+              <div className="label">C · ND Monogram</div>
+              <h3>Paling fleksibel sebagai favicon &amp; avatar.</h3>
+              <p>Huruf N dan D dihubungkan oleh titik synapse di tengah — referensi neurosains tetap ada, tapi tidak butuh ilustrasi figuratif.</p>
+              <ul>
+                <li>Sangat scalable, terbaca di 16px</li>
+                <li>Bisa berdiri sendiri tanpa wordmark</li>
+                <li>Risiko: kurang spesifik ke neurosains</li>
+              </ul>
+            </div>
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      {/* Section 4 — Direction D: Geometric arc */}
+      <DCSection id="dir-d" title="Direction D — Geometric Arc">
+        <DCArtboard id="d-light" label="Light · primary" width={520} height={320}>
+          <Direction name="DIR D" code="D · 01" Mark={MarkArc} accent={accents.amber} theme="light" descriptor="Minimal · curl + neuron"/>
+        </DCArtboard>
+        <DCArtboard id="d-dark" label="Dark · inverse" width={520} height={320}>
+          <Direction name="DIR D" code="D · 02" Mark={MarkArc} accent={accents.amber} theme="dark" descriptor="Amber accent"/>
+        </DCArtboard>
+        <DCArtboard id="d-stacked" label="Stacked lockup" width={420} height={420}>
+          <Direction name="DIR D" code="D · 03" Mark={MarkArc} accent={accents.amber} stacked descriptor="Quiet · editorial"/>
+        </DCArtboard>
+        <DCArtboard id="d-notes" label="Notes" width={420} height={420}>
+          <div className="surface s-light">
+            <div className="note-card">
+              <div className="label">D · Geometric Arc</div>
+              <h3>Paling minimal, paling tenang.</h3>
+              <p>Sebuah curl tunggal — sederhana hippocampus — dengan amber neuron di ujung. Memberi ruang napas pada wordmark, cocok untuk masthead artikel panjang.</p>
+              <ul>
+                <li>Paling ringan secara visual</li>
+                <li>Amber neuron jadi signature ownable</li>
+                <li>Risiko: mungkin terlalu generik tanpa context</li>
+              </ul>
+            </div>
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      {/* Section 5 — Direction E: Editorial seal */}
+      <DCSection id="dir-e" title="Direction E — Editorial Seal">
+        <DCArtboard id="e-light" label="Seal · primary" width={520} height={520}>
+          <div className="surface s-light">
+            <div className="meta"><span>E · 01</span><span>LIGHT · SEAL</span></div>
+            <div className="stage-center">
+              <MarkSeal size={300} color="#0D2E28" accent={accents.teal}/>
+            </div>
+            <div className="footer"><span>DIR E</span><span>Editorial seal</span></div>
+          </div>
+        </DCArtboard>
+        <DCArtboard id="e-dark" label="Seal · dark" width={520} height={520}>
+          <div className="surface s-dark">
+            <div className="meta" style={{opacity:.55}}><span>E · 02</span><span>DARK · SEAL</span></div>
+            <div className="stage-center">
+              <svg width="300" height="300" viewBox="0 0 140 140">
+                <defs>
+                  <path id="seal-top2" d="M 70,70 m -52,0 a 52,52 0 1,1 104,0" />
+                  <path id="seal-bot2" d="M 70,70 m -50,0 a 50,50 0 1,0 100,0" />
+                </defs>
+                <circle cx="70" cy="70" r="60" fill="none" stroke="#F5F3EE" strokeWidth="1.5"/>
+                <circle cx="70" cy="70" r="54" fill="none" stroke="#F5F3EE" strokeWidth="0.8" opacity=".5"/>
+                <text fill="#F5F3EE" fontFamily="DM Sans" fontWeight="500" fontSize="8" letterSpacing="3">
+                  <textPath href="#seal-top2" startOffset="50%" textAnchor="middle">BRAIN SCIENCE · FOR YOUR CAREER ·</textPath>
+                </text>
+                <text fill="#F5F3EE" fontFamily="DM Sans" fontWeight="500" fontSize="8" letterSpacing="3" opacity=".55">
+                  <textPath href="#seal-bot2" startOffset="50%" textAnchor="middle">EST · 2026 · NEURO DAILY ·</textPath>
+                </text>
+                <g transform="translate(70 70)">
+                  <path d="M-14 8 Q -14 -10, 6 -10 Q 16 -10, 16 0 Q 16 10, 6 10 Q 0 10, 0 4"
+                    stroke="#F5F3EE" strokeWidth="2.2" strokeLinecap="round" fill="none"/>
+                  <circle cx="0" cy="4" r="2.4" fill="#5EC9A7"/>
+                </g>
+              </svg>
+            </div>
+            <div className="footer"><span>DIR E</span><span>Inverse on forest</span></div>
+          </div>
+        </DCArtboard>
+        <DCArtboard id="e-stamped" label="Aplikasi · masthead" width={520} height={320}>
+          <div className="surface s-light">
+            <div className="meta"><span>E · 03</span><span>EDITORIAL APPLICATION</span></div>
+            <div className="stage-center" style={{flexDirection:"column",gap:14}}>
+              <div style={{display:"flex",alignItems:"center",gap:14}}>
+                <MarkSeal size={70} color="#0D2E28" accent={accents.teal}/>
+                <div>
+                  <div className="wordmark" style={{fontSize:34,color:"#0D2E28"}}>Neuro Daily</div>
+                  <div className="subline" style={{color:"#0D2E28"}}>Brain Science · For Your Career</div>
+                </div>
+              </div>
+              <div style={{height:1,width:200,background:"rgba(13,46,40,.15)"}}/>
+              <div style={{fontFamily:"'DM Serif Display',serif",fontSize:22,fontStyle:"italic",color:"#1A6B5A"}}>
+                "Kerja lebih cerdas, bukan lebih keras."
+              </div>
+            </div>
+            <div className="footer"><span>DIR E</span><span>Masthead lockup</span></div>
+          </div>
+        </DCArtboard>
+        <DCArtboard id="e-notes" label="Notes" width={420} height={520}>
+          <div className="surface s-light">
+            <div className="note-card">
+              <div className="label">E · Editorial Seal</div>
+              <h3>Paling kuat sebagai media brand.</h3>
+              <p>Mengikuti referensi yang disebut di brand framework: "publikasi seperti Morning Brew, Wait But Why" — seal ini langsung memberi otoritas editorial.</p>
+              <ul>
+                <li>Identitas paling distinct di feed sains</li>
+                <li>Bisa di-print di newsletter, kaos, sticker</li>
+                <li>Risiko: butuh ≥80px agar terbaca</li>
+                <li>Saran: kombinasi seal (avatar) + wordmark (header) untuk fleksibilitas</li>
+              </ul>
+            </div>
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      {/* Section 6 — Direction F: Wordmark only */}
+      <DCSection id="dir-f" title="Direction F — Wordmark-Only">
+        <DCArtboard id="f-light" label="Light · primary" width={520} height={320}>
+          <div className="surface s-light">
+            <div className="meta"><span>F · 01</span><span>LIGHT · WORDMARK</span></div>
+            <div className="stage-center" style={{flexDirection:"column",gap:8}}>
+              <MarkWordmarkOnly accent={accents.teal} color="#0D2E28"/>
+              <div className="subline" style={{color:"#0D2E28"}}>Brain Science · For Your Career</div>
+            </div>
+            <div className="footer"><span>DIR F</span><span>Type-led</span></div>
+          </div>
+        </DCArtboard>
+        <DCArtboard id="f-dark" label="Dark · inverse" width={520} height={320}>
+          <div className="surface s-dark">
+            <div className="meta" style={{opacity:.55}}><span>F · 02</span><span>DARK · WORDMARK</span></div>
+            <div className="stage-center" style={{flexDirection:"column",gap:8}}>
+              <MarkWordmarkOnly accent={accents.green} color="#F5F3EE"/>
+              <div className="subline" style={{color:"#F5F3EE",opacity:.85}}>Brain Science · For Your Career</div>
+            </div>
+            <div className="footer"><span>DIR F</span><span>Type-led · synapse green</span></div>
+          </div>
+        </DCArtboard>
+        <DCArtboard id="f-italic" label="Italic variant" width={520} height={320}>
+          <div className="surface s-light">
+            <div className="meta"><span>F · 03</span><span>ITALIC · LITERARY</span></div>
+            <div className="stage-center" style={{flexDirection:"column",gap:8}}>
+              <div style={{fontFamily:"'DM Serif Display',serif",fontSize:62,lineHeight:1,color:"#0D2E28"}}>
+                Neuro <em style={{color:"#1A6B5A"}}>Daily</em>
+              </div>
+              <div className="subline" style={{color:"#0D2E28"}}>Brain Science · For Your Career</div>
+            </div>
+            <div className="footer"><span>DIR F</span><span>Italic emphasis</span></div>
+          </div>
+        </DCArtboard>
+        <DCArtboard id="f-notes" label="Notes" width={420} height={320}>
+          <div className="surface s-light">
+            <div className="note-card">
+              <div className="label">F · Wordmark Only</div>
+              <h3>Bila ingin se-quiet mungkin.</h3>
+              <p>Tanpa mark — hanya tipografi. Cocok untuk LinkedIn dan masthead artikel panjang. Bisa dipasangkan dengan salah satu mark di atas sebagai sistem.</p>
+            </div>
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      {/* Section 7 — Favicon & sizes */}
+      <DCSection id="favicon" title="Favicon & Avatar Test">
+        <DCArtboard id="fav-grid" label="Mark di berbagai ukuran" width={760} height={300}>
+          <div className="surface s-light">
+            <div className="meta"><span>SIZE · 01</span><span>16PX → 64PX</span></div>
+            <div className="stage-center" style={{gap:36,flexWrap:"wrap"}}>
+              {[
+                {label:"A", Mark:MarkHippoLiteral, accent:accents.teal},
+                {label:"B", Mark:MarkHippoNodes, accent:accents.green},
+                {label:"C", Mark:MarkMonogram, accent:accents.teal},
+                {label:"D", Mark:MarkArc, accent:accents.amber},
+              ].map(({label,Mark,accent})=>(
+                <div key={label} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12}}>
+                  <div className="fav dark"><Mark size={32} color="#F5F3EE" accent={accent}/></div>
+                  <div className="fav light"><Mark size={32} color="#0D2E28" accent={accent}/></div>
+                  <div style={{fontFamily:"'JetBrains Mono',monospace",fontSize:10,color:"#0D2E28",opacity:.6,letterSpacing:".12em"}}>DIR · {label}</div>
+                </div>
+              ))}
+            </div>
+            <div className="footer"><span>FAVICON TEST</span><span>32×32</span></div>
+          </div>
+        </DCArtboard>
+
+        <DCArtboard id="ig-avatar" label="Instagram avatar" width={420} height={420}>
+          <div className="surface s-light">
+            <div className="meta"><span>AVATAR · 01</span><span>IG · 320PX CIRCLE</span></div>
+            <div className="stage-center">
+              <div style={{
+                width:240,height:240,borderRadius:"50%",
+                background:"var(--forest)",
+                display:"flex",alignItems:"center",justifyContent:"center",
+                boxShadow:"0 12px 40px -8px rgba(13,46,40,.4)"
+              }}>
+                <MarkHippoNodes size={120} color="#F5F3EE" accent={accents.green}/>
+              </div>
+            </div>
+            <div className="footer"><span>RECOMMENDED · DIR B</span><span>Synapse green</span></div>
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+      {/* Section 8 — Misuse */}
+      <DCSection id="misuse" title="Do & Don't">
+        <DCArtboard id="rules" label="Misuse guide" width={760} height={460}>
+          <div className="surface s-light">
+            <div className="meta"><span>RULES · 01</span><span>DO &amp; DON'T</span></div>
+            <div className="misuse">
+              <h4>Logo tidak boleh:</h4>
+              <div className="grid">
+                <div className="item bad">
+                  <span className="tag no">✕ jangan gradient</span>
+                  <div style={{
+                    fontFamily:"'DM Serif Display'",fontSize:30,
+                    background:"linear-gradient(90deg,#5EC9A7,#C9A96E)",
+                    WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"
+                  }}>Neuro Daily</div>
+                </div>
+                <div className="item bad">
+                  <span className="tag no">✕ jangan distort</span>
+                  <div style={{fontFamily:"'DM Serif Display'",fontSize:30,color:"#0D2E28",transform:"scaleX(.6)"}}>Neuro Daily</div>
+                </div>
+                <div className="item bad">
+                  <span className="tag no">✕ jangan ganti font</span>
+                  <div style={{fontFamily:"'DM Sans'",fontWeight:700,fontSize:28,color:"#0D2E28"}}>Neuro Daily</div>
+                </div>
+                <div className="item">
+                  <span className="tag ok">✓ kontras cukup</span>
+                  <div style={{fontFamily:"'DM Serif Display'",fontSize:30,color:"#0D2E28"}}>Neuro Daily</div>
+                </div>
+              </div>
+            </div>
+            <div className="footer"><span>MISUSE</span><span>Lihat brand guidelines § 5</span></div>
+          </div>
+        </DCArtboard>
+      </DCSection>
+
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
