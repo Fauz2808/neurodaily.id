@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Marketing 02 — 6 Protokol</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    height: 1080px;
+    background: #F5F3EE;
+    font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .top-bar {
+    position: absolute;
+    top: 56px;
+    left: 60px;
+    right: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .brand-tag {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-dot {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: #0D2E28;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .brand-dot svg { width: 20px; height: 20px; }
+
+  .brand-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: #0D2E28;
+    letter-spacing: 0.05em;
+  }
+
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #1A6B5A;
+    border: 1px solid rgba(26,107,90,0.35);
+    border-radius: 100px;
+    padding: 8px 18px;
+  }
+
+  .heading-block {
+    position: absolute;
+    top: 150px;
+    left: 60px;
+    right: 60px;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #1A6B5A;
+    margin-bottom: 18px;
+  }
+
+  .headline {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px;
+    font-weight: 400;
+    color: #0D2E28;
+    line-height: 1.22;
+    max-width: 880px;
+  }
+
+  .headline em { color: #1A6B5A; font-style: italic; }
+
+  .grid {
+    position: absolute;
+    top: 350px;
+    left: 60px;
+    right: 60px;
+    bottom: 130px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .proto-card {
+    border: 1px solid rgba(13,46,40,0.12);
+    border-radius: 14px;
+    padding: 26px 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: rgba(13,46,40,0.02);
+  }
+
+  .proto-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    color: #C9A96E;
+    margin-bottom: 8px;
+  }
+
+  .proto-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 23px;
+    color: #0D2E28;
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+
+  .proto-desc {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(13,46,40,0.6);
+    line-height: 1.5;
+  }
+
+  .bottom-bar {
+    position: absolute;
+    bottom: 56px;
+    left: 60px;
+    right: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .specs-left {
+    font-family: 'JetBrains Mono', monospace;
+    color: rgba(13,46,40,0.45);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+  }
+  .specs-left .gold { color: #C9A96E; }
+
+  .page-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: rgba(13,46,40,0.2);
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="brand-tag">
+    <div class="brand-dot">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 3C9.5 3 7.5 4.5 7 6.5C5.5 7 4 8.5 4 10.5C4 12 4.8 13.3 6 14C6 16.2 7.8 18 10 18H14C16.2 18 18 16.2 18 14C19.2 13.3 20 12 20 10.5C20 8.5 18.5 7 17 6.5C16.5 4.5 14.5 3 12 3Z" stroke="#F5F3EE" stroke-width="1.5" fill="none"/>
+      </svg>
+    </div>
+    <span class="brand-name">Neuro Daily</span>
+  </div>
+  <div class="badge">Isi Workbook</div>
+</div>
+
+<div class="heading-block">
+  <div class="eyebrow">Apa Saja yang Kamu Dapat</div>
+  <h1 class="headline">6 protokol berbasis sains — lengkap dengan worksheet & log <em>siap praktik</em>.</h1>
+</div>
+
+<div class="grid">
+  <div class="proto-card">
+    <div class="proto-num">BAB 01</div>
+    <div class="proto-name">Presentation Confidence Protocol</div>
+    <div class="proto-desc">Latih ulang amygdala hijack lewat exposure training terstruktur.</div>
+  </div>
+  <div class="proto-card">
+    <div class="proto-num">BAB 02</div>
+    <div class="proto-name">Deep Focus Protocol</div>
+    <div class="proto-desc">Bangun sistem yang melindungi fokusmu — bukan cuma andalkan willpower.</div>
+  </div>
+  <div class="proto-card">
+    <div class="proto-num">BAB 03</div>
+    <div class="proto-name">Anti-Prokrastinasi Protocol</div>
+    <div class="proto-desc">Manfaatkan sistem dopamine alih-alih melawannya tiap hari.</div>
+  </div>
+  <div class="proto-card">
+    <div class="proto-num">BAB 04</div>
+    <div class="proto-name">Recovery Protocol</div>
+    <div class="proto-desc">Kembali ke mode thriving — tanpa harus kerja lebih keras lagi.</div>
+  </div>
+  <div class="proto-card">
+    <div class="proto-num">BAB 05</div>
+    <div class="proto-name">Career Decision Protocol</div>
+    <div class="proto-desc">Rancang keputusan karir yang memperhitungkan bias kognitifmu.</div>
+  </div>
+  <div class="proto-card">
+    <div class="proto-num">BAB 06</div>
+    <div class="proto-name">Peak Performance Blueprint</div>
+    <div class="proto-desc">Lindungi jam-jam terbaikmu — sumber daya paling langka yang kamu punya.</div>
+  </div>
+</div>
+
+<div class="bottom-bar">
+  <div class="specs-left"><span class="gold">22+</span>&nbsp;&nbsp;Worksheet, Log & Reflection Prompt Siap Isi</div>
+  <div class="page-num">02</div>
+</div>
+
+</body>
+</html>

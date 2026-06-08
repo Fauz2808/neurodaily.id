@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Marketing 03 — Format & CTA</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    height: 1080px;
+    background: #0D2E28;
+    font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 55% 50% at 90% 85%, rgba(94,201,167,0.09) 0%, transparent 60%),
+      radial-gradient(ellipse 45% 55% at 8% 10%, rgba(26,107,90,0.16) 0%, transparent 55%);
+  }
+
+  .top-bar {
+    position: absolute;
+    top: 56px;
+    left: 60px;
+    right: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .brand-tag { display: flex; align-items: center; gap: 12px; }
+
+  .brand-dot {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: #5EC9A7;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .brand-dot svg { width: 20px; height: 20px; }
+
+  .brand-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: #5EC9A7;
+    letter-spacing: 0.05em;
+  }
+
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #C9A96E;
+    border: 1px solid rgba(201,169,110,0.4);
+    border-radius: 100px;
+    padding: 8px 18px;
+  }
+
+  .content {
+    position: absolute;
+    top: 220px;
+    left: 60px;
+    right: 60px;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #5EC9A7;
+    margin-bottom: 28px;
+  }
+
+  .headline {
+    font-family: 'DM Serif Display', serif;
+    font-size: 68px;
+    font-weight: 400;
+    color: #F5F3EE;
+    line-height: 1.16;
+    margin-bottom: 36px;
+    max-width: 760px;
+  }
+
+  .headline em { color: #5EC9A7; font-style: italic; }
+
+  .subheading {
+    font-size: 21px;
+    font-weight: 300;
+    color: rgba(245,243,238,0.6);
+    line-height: 1.65;
+    max-width: 620px;
+    margin-bottom: 56px;
+  }
+
+  .feature-row {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    max-width: 880px;
+  }
+
+  .feature-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(94,201,167,0.18);
+    border-radius: 100px;
+    padding: 12px 22px;
+    background: rgba(94,201,167,0.05);
+  }
+
+  .feature-pill .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #C9A96E;
+    flex-shrink: 0;
+  }
+
+  .feature-pill span {
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(245,243,238,0.75);
+  }
+
+  .feature-pill strong { color: #5EC9A7; font-weight: 500; }
+
+  .bottom-bar {
+    position: absolute;
+    bottom: 56px;
+    left: 60px;
+    right: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .cta-block {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .cta-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(245,243,238,0.4);
+  }
+
+  .cta-link {
+    font-family: 'DM Serif Display', serif;
+    font-size: 30px;
+    color: #C9A96E;
+  }
+
+  .page-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: rgba(245,243,238,0.25);
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="brand-tag">
+    <div class="brand-dot">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 3C9.5 3 7.5 4.5 7 6.5C5.5 7 4 8.5 4 10.5C4 12 4.8 13.3 6 14C6 16.2 7.8 18 10 18H14C16.2 18 18 16.2 18 14C19.2 13.3 20 12 20 10.5C20 8.5 18.5 7 17 6.5C16.5 4.5 14.5 3 12 3Z" stroke="#0D2E28" stroke-width="1.5" fill="none"/>
+      </svg>
+    </div>
+    <span class="brand-name">Neuro Daily</span>
+  </div>
+  <div class="badge">Format Interaktif</div>
+</div>
+
+<div class="content">
+  <div class="eyebrow">Bukan PDF Statis</div>
+  <h1 class="headline">Buka di HP, isi langsung.<br>Nggak ada yang perlu di-<em>print</em>.</h1>
+  <p class="subheading">Worksheet, log harian, dan reflection prompt — semuanya dalam satu halaman interaktif yang bisa kamu akses kapan saja, dari perangkat apa saja.</p>
+
+  <div class="feature-row">
+    <div class="feature-pill"><div class="dot"></div><span><strong>6</strong> Protokol Lengkap</span></div>
+    <div class="feature-pill"><div class="dot"></div><span><strong>22+</strong> Worksheet & Log</span></div>
+    <div class="feature-pill"><div class="dot"></div><span>Akses <strong>Selamanya</strong></span></div>
+    <div class="feature-pill"><div class="dot"></div><span>Berbasis <strong>Riset Neurosains</strong></span></div>
+  </div>
+</div>
+
+<div class="bottom-bar">
+  <div class="cta-block">
+    <span class="cta-label">Dapatkan Sekarang</span>
+    <span class="cta-link">lynk.id/neurodaily</span>
+  </div>
+  <div class="page-num">03</div>
+</div>
+
+</body>
+</html>

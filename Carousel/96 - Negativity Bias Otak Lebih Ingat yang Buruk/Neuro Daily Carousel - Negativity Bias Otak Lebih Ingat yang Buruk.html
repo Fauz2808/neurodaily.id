@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Neuro Daily — Negativity Bias: Kenapa Otak Lebih Ingat yang Buruk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;--red:#D96A6A;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0a0a0a;color:var(--parchment);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh}
+body{display:flex;flex-direction:column;align-items:center;padding:32px 16px 100px}
+.topbar{width:100%;max-width:1100px;display:flex;justify-content:space-between;align-items:center;color:#7a807d;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:24px}
+.topbar .pill{background:rgba(94,201,167,.08);color:var(--green);padding:6px 12px;border-radius:99px;border:1px solid rgba(94,201,167,.18)}
+.stage{position:relative;width:min(540px,94vw);aspect-ratio:4/5}
+.viewport{position:relative;width:100%;height:100%;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.04)}
+.track{display:flex;width:100%;height:100%;transition:transform .55s cubic-bezier(.7,.05,.2,1)}
+.slide{flex:0 0 100%;height:100%;position:relative;overflow:hidden}
+.cvs{width:1080px;height:1350px;transform-origin:top left;position:absolute;top:0;left:0;font-family:'DM Sans',sans-serif}
+.bg-dark{background:var(--forest);color:var(--parchment)}
+.bg-light{background:var(--parchment);color:var(--forest)}
+.bg-teal{background:var(--teal);color:var(--parchment)}
+
+/* SHARED HEADER/FOOTER */
+.cvs .head,.cvs .foot{position:absolute;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 72px;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase}
+.cvs .head{top:0;height:80px;border-bottom:1px solid rgba(245,243,238,.1)}
+.cvs .foot{bottom:0;height:68px;border-top:1px solid rgba(245,243,238,.1)}
+.bg-light .head,.bg-light .foot{border-color:rgba(13,46,40,.1)}
+.bg-teal .head,.bg-teal .foot{border-color:rgba(245,243,238,.15)}
+.cvs .head span,.cvs .foot span{opacity:.5}
+.cvs .head .dm::before{content:"◆ ";color:var(--green)}
+.bg-light .head .dm::before{color:var(--teal)}
+.bg-teal .head .dm::before{color:var(--amber)}
+.nd-logo{display:flex;align-items:center;gap:10px;opacity:1!important}
+.nd-logo svg{width:28px;height:28px;flex-shrink:0}
+
+/* BODY AREA */
+.body{position:absolute;top:80px;bottom:68px;left:0;right:0;padding:68px 80px;display:flex;flex-direction:column}
+.ew{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.18em;text-transform:uppercase}
+.bg-dark .ew{color:var(--green)}
+.bg-light .ew{color:var(--teal)}
+.bg-teal .ew{color:var(--amber)}
+.rule{width:44px;height:3px;border-radius:2px;margin-top:22px}
+.bg-dark .rule{background:var(--green)}
+.bg-light .rule{background:var(--teal)}
+.bg-teal .rule{background:var(--amber)}
+
+/* ── SLIDE 1 DARK ── */
+.s1 h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:96px;line-height:1.02;letter-spacing:-.025em;margin-top:54px;max-width:860px}
+.s1 h1 em{font-style:italic;color:var(--red)}
+.s1 .lead{margin-top:36px;font-size:29px;line-height:1.65;opacity:.7;max-width:780px;font-weight:300}
+.s1 .ratio-pill{position:absolute;bottom:96px;left:80px;display:flex;align-items:center;gap:24px;padding:30px 40px;border-radius:18px;background:rgba(217,106,106,.1);border:1.5px solid rgba(217,106,106,.28)}
+.rp-num{font-family:'DM Serif Display',serif;font-size:104px;line-height:1;color:var(--red);letter-spacing:-.04em}
+.rp-text{font-size:28px;line-height:1.55;font-weight:300;max-width:480px}
+
+/* ── SLIDE 2 LIGHT ── */
+.s2 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:82px;line-height:1.04;letter-spacing:-.02em;margin-top:44px;color:var(--forest);max-width:860px}
+.s2 h2 em{font-style:italic;color:var(--teal)}
+.s2 .exp-card{margin-top:52px;padding:44px 48px;border-radius:20px;background:rgba(26,107,90,.05);border:1.5px solid rgba(26,107,90,.16)}
+.ec-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);margin-bottom:20px}
+.ec-text{font-size:29px;line-height:1.65;color:var(--forest);opacity:.76;font-weight:300}
+.s2 .source{margin-top:auto;font-size:20px;color:var(--forest);opacity:.35;font-family:'JetBrains Mono',monospace;line-height:1.7;border-top:1px solid rgba(13,46,40,.1);padding-top:18px}
+
+/* ── SLIDE 3 DARK ── */
+.s3 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:88px;line-height:1.03;letter-spacing:-.025em;margin-top:48px;max-width:860px}
+.s3 h2 em{font-style:italic;color:var(--amber)}
+.s3 .two-blocks{margin-top:60px;display:flex;flex-direction:column;gap:28px}
+.blk{padding:38px 42px;border-radius:18px}
+.blk.a{background:rgba(217,106,106,.1);border:1.5px solid rgba(217,106,106,.25)}
+.blk.b{background:rgba(94,201,167,.1);border:1.5px solid rgba(94,201,167,.22)}
+.blk-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:14px}
+.blk.a .blk-label{color:var(--red)}
+.blk.b .blk-label{color:var(--green)}
+.blk-text{font-size:28px;line-height:1.6;font-weight:300}
+
+/* ── SLIDE 4 TEAL ── */
+.s4 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:82px;line-height:1.04;letter-spacing:-.022em;margin-top:44px;max-width:880px}
+.s4 h2 em{font-style:italic;color:var(--amber)}
+.s4 .def-block{margin-top:48px;padding:42px 48px;border-radius:20px;background:rgba(13,46,40,.3);border:1.5px solid rgba(245,243,238,.18)}
+.db-label{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.17em;text-transform:uppercase;color:var(--amber);margin-bottom:18px}
+.db-text{font-size:29px;line-height:1.65;font-weight:300;opacity:.9}
+.s4 .stat-row{margin-top:32px;display:flex;gap:24px}
+.stat-mini{flex:1;padding:34px 30px;border-radius:16px;background:rgba(13,46,40,.3);border:1px solid rgba(245,243,238,.12);text-align:center}
+.sm-num{font-family:'DM Serif Display',serif;font-size:72px;line-height:1;letter-spacing:-.03em;margin-bottom:10px;color:var(--amber)}
+.sm-text{font-size:25px;line-height:1.5;font-weight:300;opacity:.75}
+
+/* ── SLIDE 5 LIGHT ── */
+.s5 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:82px;line-height:1.04;letter-spacing:-.022em;margin-top:44px;color:var(--forest);max-width:860px}
+.s5 h2 em{font-style:italic;color:var(--teal)}
+.s5 .two-scenarios{margin-top:52px;display:flex;flex-direction:column;gap:26px}
+.sc{padding:36px 40px;border-radius:18px}
+.sc.bad{background:rgba(217,106,106,.06);border:1.5px solid rgba(217,106,106,.2)}
+.sc.good{background:rgba(26,107,90,.06);border:1.5px solid rgba(26,107,90,.2)}
+.sc-tag{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.12em;text-transform:uppercase;padding:5px 16px;border-radius:99px;display:inline-block;margin-bottom:14px}
+.sc.bad .sc-tag{background:var(--red);color:#fff}
+.sc.good .sc-tag{background:var(--teal);color:#fff}
+.sc-text{font-size:27px;line-height:1.6;font-weight:300;color:var(--forest)}
+.s5 .source{margin-top:auto;font-size:20px;color:var(--forest);opacity:.35;font-family:'JetBrains Mono',monospace;line-height:1.7;border-top:1px solid rgba(13,46,40,.1);padding-top:18px}
+
+/* ── SLIDE 6 DARK ── */
+.s6 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:86px;line-height:1.03;letter-spacing:-.025em;margin-top:48px;max-width:860px}
+.s6 h2 em{font-style:italic;color:var(--green)}
+.s6 .three-steps{margin-top:52px;display:flex;flex-direction:column;gap:22px}
+.stp{padding:32px 38px;border-radius:16px;display:flex;gap:28px;align-items:flex-start}
+.stp.a{background:rgba(94,201,167,.1);border:1.5px solid rgba(94,201,167,.25)}
+.stp.b{background:rgba(201,169,110,.08);border:1.5px solid rgba(201,169,110,.2)}
+.stp.c{background:rgba(94,201,167,.14);border:2px solid rgba(94,201,167,.38)}
+.stp-num{font-family:'DM Serif Display',serif;font-size:56px;line-height:1;flex-shrink:0;margin-top:-4px}
+.stp.a .stp-num{color:var(--green)}
+.stp.b .stp-num{color:var(--amber)}
+.stp.c .stp-num{color:var(--green)}
+.stp-title{font-family:'JetBrains Mono',monospace;font-size:19px;letter-spacing:.13em;text-transform:uppercase;margin-bottom:8px}
+.stp.a .stp-title{color:var(--green)}
+.stp.b .stp-title{color:var(--amber)}
+.stp.c .stp-title{color:var(--green)}
+.stp-text{font-size:26px;line-height:1.55;font-weight:300;opacity:.88}
+
+/* ── SLIDE 7 LIGHT ── */
+.s7 h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:84px;line-height:1.04;letter-spacing:-.022em;margin-top:44px;color:var(--forest);max-width:860px}
+.s7 h2 em{font-style:italic;color:var(--teal)}
+.s7 .sub{margin-top:32px;font-size:28px;line-height:1.65;color:var(--forest);opacity:.62;max-width:820px;font-weight:300}
+.s7 .qa{margin-top:48px;display:flex;flex-direction:column;gap:22px}
+.qa-item{padding:30px 34px;border-radius:16px;border:1.5px solid rgba(13,46,40,.12);background:rgba(255,255,255,.45);display:flex;gap:20px;align-items:flex-start}
+.qa-q{font-family:'DM Serif Display',serif;font-style:italic;font-size:38px;color:var(--teal);flex-shrink:0;line-height:1;margin-top:0}
+.qa-text{font-size:26px;line-height:1.55;color:var(--forest);opacity:.75;font-weight:300}
+.s7 .cta{margin-top:auto;padding:26px 32px;border-radius:14px;border:1px dashed rgba(26,107,90,.32);font-size:27px;line-height:1.6;color:var(--forest);opacity:.58;font-weight:300;display:flex;align-items:center;gap:18px}
+.cta-arr{font-family:'DM Serif Display',serif;font-style:italic;font-size:28px;color:var(--teal);flex-shrink:0}
+
+/* NAV */
+.dots{margin-top:18px;display:flex;gap:6px;justify-content:center}
+.dot{width:6px;height:6px;border-radius:99px;background:#3a3a3a;transition:width .3s,background .3s;cursor:pointer;border:0;padding:0}
+.dot.active{background:var(--green);width:24px}
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:5}
+.controls button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--parchment);width:46px;height:46px;border-radius:99px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
+.controls button:disabled{opacity:.3;cursor:not-allowed}
+.counter{color:#9aa39f;font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.1em;align-self:center;padding:0 10px}
+.caption-panel{width:min(540px,94vw);margin-top:32px;padding:26px 26px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;color:#cfd3d1;font-size:20px;line-height:1.7}
+.caption-panel .cap-label{font-family:'JetBrains Mono',monospace;font-size:18px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+.caption-panel p{margin-bottom:12px}
+.caption-panel p:last-child{margin-bottom:0}
+.caption-panel strong{color:var(--parchment);font-weight:500}
+.caption-panel .hash{color:#7a8480;font-size:18px;margin-top:16px;display:block;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="topbar"><span>Neuro Daily · Carousel Preview</span><span class="pill">[ Vol. 96 · Negativity Bias · Otak & Hal Buruk ]</span></div>
+<div class="stage"><div class="viewport"><div class="track" id="track">
+
+<!-- S1 DARK — Hook -->
+<section class="slide"><div class="cvs bg-dark s1">
+  <div class="head"><span class="dm">Neuro Daily · Vol. 96 · Negativity Bias</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="ew">◆ Negativity Bias · Otak · Persepsi</div>
+    <div class="rule"></div>
+    <h1>Satu komentar buruk menghapus<br><em>sepuluh</em> komentar baik.</h1>
+    <p class="lead">Negativity Bias: otak secara biologis memproses pengalaman negatif lebih kuat, lebih cepat, dan lebih lama dibanding pengalaman positif — bahkan ketika keduanya sama intensitasnya.</p>
+    <div class="ratio-pill">
+      <div class="rp-num">5×</div>
+      <div class="rp-text">Lebih kuat dampak pengalaman negatif terhadap kesejahteraan dan memori jangka panjang dibanding pengalaman positif setara</div>
+    </div>
+  </div>
+  <div class="foot"><span class="dm nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>01 / 07</span></div>
+</div></section>
+
+<!-- S2 LIGHT — Data -->
+<section class="slide"><div class="cvs bg-light s2">
+  <div class="head"><span class="dm">Baumeister · Rozin · Negativity Bias Data</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="ew">◆ Penelitian di balik angka ini</div>
+    <div class="rule"></div>
+    <h2>Otak memberi bobot <em>tidak proporsional</em> pada hal-hal yang negatif.</h2>
+    <div class="exp-card">
+      <div class="ec-label">Baumeister et al. (2001) — "Bad is Stronger than Good"</div>
+      <div class="ec-text">Meta-analisis dari ratusan studi di berbagai domain — hubungan, kesehatan, performa, dan ekonomi. Kesimpulan konsisten: hal buruk menghasilkan dampak emosional, kognitif, dan perilaku yang lebih besar dibanding hal baik yang setara kekuatannya.</div>
+    </div>
+    <div class="source">Baumeister, Bratslavsky, Finkenauer & Vohs (2001) Review of General Psychology · Rozin & Royzman (2001) Personality and Social Psychology Review · Vaish, Grossmann & Woodward (2008) Psychological Bulletin</div>
+  </div>
+  <div class="foot"><span class="dm nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>02 / 07</span></div>
+</div></section>
+
+<!-- S3 DARK — Mekanisme -->
+<section class="slide"><div class="cvs bg-dark s3">
+  <div class="head"><span class="dm">Amygdala · Neural · Evolusi</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="ew">◆ Kenapa otak dirancang seperti ini</div>
+    <div class="rule"></div>
+    <h2>Ini bukan kelemahan —<br>ini <em>warisan evolusi</em> yang dulu menyelamatkan nyawa.</h2>
+    <div class="two-blocks">
+      <div class="blk a">
+        <div class="blk-label">Ancaman Diproses Lebih Cepat</div>
+        <div class="blk-text">Amygdala memproses stimulus negatif dalam 100ms — jauh lebih cepat dari stimulus positif. Otak yang cepat mendeteksi bahaya lebih mungkin bertahan hidup.</div>
+      </div>
+      <div class="blk b">
+        <div class="blk-label">Masalah di Dunia Modern</div>
+        <div class="blk-text">Di lingkungan kerja, amygdala tidak bisa membedakan "kritik di meeting" dengan "ancaman nyawa." Respons yang sama dipicu oleh dua konteks yang sangat berbeda.</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="dm nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>03 / 07</span></div>
+</div></section>
+
+<!-- S4 TEAL — Definisi + Data -->
+<section class="slide"><div class="cvs bg-teal s4">
+  <div class="head"><span class="dm">Negativity Bias · Empat Domain</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="ew">◆ Seberapa besar ketidakseimbangan ini?</div>
+    <div class="rule"></div>
+    <h2>Negativity Bias terjadi di <em>hampir semua domain</em> kehidupan dan pekerjaan.</h2>
+    <div class="def-block">
+      <div class="db-label">Negativity Bias</div>
+      <div class="db-text">Kecenderungan otak untuk memberi perhatian, bobot emosional, dan memori yang lebih besar pada pengalaman, informasi, dan stimuli negatif dibanding positif — bahkan ketika keduanya setara intensitasnya.</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-mini">
+        <div class="sm-num">3:1</div>
+        <div class="sm-text">Rasio minimum pengalaman positif yang dibutuhkan untuk mengimbangi satu pengalaman negatif (Gottman, 1994)</div>
+      </div>
+      <div class="stat-mini">
+        <div class="sm-num">9mo</div>
+        <div class="sm-text">Usia saat negativity bias mulai muncul — bayi sudah lebih responsif terhadap ekspresi marah dibanding senang (Vaish et al., 2008)</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="dm nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(201,169,110,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#C9A96E">N</text></svg>NEURODAILY.ID</span><span>04 / 07</span></div>
+</div></section>
+
+<!-- S5 LIGHT — Aplikasi kerja -->
+<section class="slide"><div class="cvs bg-light s5">
+  <div class="head"><span class="dm">Negativity Bias · Tempat Kerja · Feedback</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="ew">◆ Bagaimana ini muncul di lingkungan profesional</div>
+    <div class="rule"></div>
+    <h2>Di tempat kerja, Negativity Bias <em>mendistorsi persepsi</em> tentang performa dan tim.</h2>
+    <div class="two-scenarios">
+      <div class="sc bad">
+        <div class="sc-tag">Tanpa Sadar</div>
+        <div class="sc-text">Satu kesalahan kecil di presentasi penting diingat jauh lebih kuat dibanding dua puluh hal yang berjalan baik. Otak menulis ulang penilaian keseluruhan berdasarkan yang negatif.</div>
+      </div>
+      <div class="sc good">
+        <div class="sc-tag">Dengan Kesadaran</div>
+        <div class="sc-text">Saat memberi atau menerima feedback, secara aktif menghitung: apakah rasio positif–negatif sudah setidaknya 3:1? Jika tidak, persepsi yang terbentuk akan sangat miring.</div>
+      </div>
+    </div>
+    <div class="source">Gottman & Levenson (1992) Journal of Marriage and Family · Baumeister et al. (2001) Review of General Psychology</div>
+  </div>
+  <div class="foot"><span class="dm nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>05 / 07</span></div>
+</div></section>
+
+<!-- S6 DARK — Override -->
+<section class="slide"><div class="cvs bg-dark s6">
+  <div class="head"><span class="dm">Override · Negativity Bias · Praktik</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="ew">◆ Tiga cara berbasis bukti untuk mengimbanginya</div>
+    <div class="rule"></div>
+    <h2>Negativity Bias tidak bisa dihilangkan — tapi bisa <em>dikompensasi secara sadar.</em></h2>
+    <div class="three-steps">
+      <div class="stp a">
+        <div class="stp-num">1</div>
+        <div>
+          <div class="stp-title">Rasio 3:1 untuk Feedback</div>
+          <div class="stp-text">Setiap satu kritik substantif, imbangi dengan tiga apresiasi spesifik. Bukan basa-basi — tapi pengakuan konkret yang nyata.</div>
+        </div>
+      </div>
+      <div class="stp b">
+        <div class="stp-num">2</div>
+        <div>
+          <div class="stp-title">Journaling Harian — 3 Hal Positif</div>
+          <div class="stp-text">Secara aktif mencatat tiga hal yang berjalan baik setiap hari. Melatih otak memperhatikan sinyal positif yang secara default diabaikan.</div>
+        </div>
+      </div>
+      <div class="stp c">
+        <div class="stp-num">3</div>
+        <div>
+          <div class="stp-title">Audit Sebelum Menyimpulkan</div>
+          <div class="stp-text">Sebelum menilai meeting, proyek, atau orang sebagai "buruk" — tanyakan: hal apa yang sebenarnya berjalan baik yang belum diperhitungkan?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="dm nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>06 / 07</span></div>
+</div></section>
+
+<!-- S7 LIGHT — Refleksi -->
+<section class="slide"><div class="cvs bg-light s7">
+  <div class="head"><span class="dm">Negativity Bias · Refleksi</span><span>Edisi · Jun 2026</span></div>
+  <div class="body">
+    <div class="ew">◆ Refleksi & diskusi</div>
+    <div class="rule"></div>
+    <h2>Otak yang terlatih <em>bukan yang bebas dari negatif</em> — tapi yang tidak didominasi olehnya.</h2>
+    <p class="sub">Mengetahui Negativity Bias tidak membuatnya hilang. Tapi memberi kamu satu jeda sebelum menyimpulkan — untuk memeriksa apakah penilaianmu akurat atau sekadar bias biologis.</p>
+    <div class="qa">
+      <div class="qa-item">
+        <div class="qa-q">?</div>
+        <div class="qa-text">Satu kejadian negatif apa yang terakhir mendominasi caramu menilai hari, orang, atau pekerjaan — padahal banyak hal baik yang juga terjadi?</div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-q">?</div>
+        <div class="qa-text">Dalam feedback terakhir yang kamu beri atau terima — apakah rasio positif–negatifnya sudah adil?</div>
+      </div>
+    </div>
+    <div class="cta">
+      <span class="cta-arr">→</span>
+      Malam ini: catat tiga hal yang berjalan baik hari ini — sekecil apapun.
+    </div>
+  </div>
+  <div class="foot"><span class="dm nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(26,107,90,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>07 / 07</span></div>
+</div></section>
+
+</div></div></div>
+<div class="dots"><button class="dot active" onclick="goTo(0)"></button><button class="dot" onclick="goTo(1)"></button><button class="dot" onclick="goTo(2)"></button><button class="dot" onclick="goTo(3)"></button><button class="dot" onclick="goTo(4)"></button><button class="dot" onclick="goTo(5)"></button><button class="dot" onclick="goTo(6)"></button></div>
+<div class="controls"><button id="prev" onclick="prev()" disabled>←</button><span class="counter" id="counter">1 / 7</span><button id="next" onclick="next()">→</button></div>
+<div class="caption-panel">
+  <div class="cap-label">Caption · Instagram / TikTok</div>
+  <p>Satu komentar buruk menghapus sepuluh komentar baik. Ini bukan lebay — ini cara kerja otakmu. ≈</p>
+  <p>Negativity Bias. <strong>Baumeister et al. (2001) dalam meta-analisis ratusan studi menemukan: hal buruk menghasilkan dampak emosional dan kognitif yang jauh lebih besar dibanding hal baik dengan intensitas yang sama.</strong></p>
+  <p>Alasannya: otak yang cepat mendeteksi bahaya lebih mungkin bertahan hidup. Masalahnya, di dunia modern amygdala tidak bisa membedakan "kritik di meeting" dengan "ancaman nyawa."</p>
+  <p>Solusinya bukan menghilangkan negatif — tapi mengimbanginya secara sadar. Rasio minimum: 3 positif untuk setiap 1 negatif.</p>
+  <span class="hash">#NegativityBias #NeuroscienceIndonesia #NeurodailyID #CognitiveBias #Produktivitas #Kepemimpinan #Feedback #KarierIndonesia #MentalHealth</span>
+</div>
+<script>
+const track=document.getElementById('track'),dots=document.querySelectorAll('.dot'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next'),TOTAL=7;let cur=0;
+function scale(){const vw=document.querySelector('.viewport').offsetWidth;document.querySelectorAll('.cvs').forEach(c=>{c.style.transform=`scale(${vw/1080})`});}
+scale();window.addEventListener('resize',scale);
+function goTo(i){cur=i;track.style.transform=`translateX(-${cur*100}%)`;dots.forEach((d,j)=>d.classList.toggle('active',j===cur));counter.textContent=`${cur+1} / ${TOTAL}`;prevBtn.disabled=cur===0;nextBtn.disabled=cur===TOTAL-1;}
+function prev(){if(cur>0)goTo(cur-1);}function next(){if(cur<TOTAL-1)goTo(cur+1);}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')prev();if(e.key==='ArrowRight')next();});
+</script>
+</body>
+</html>

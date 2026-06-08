@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Marketing 01 — Hook</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    height: 1080px;
+    background: #0D2E28;
+    font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 85% 15%, rgba(94,201,167,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 45% 60% at 5% 90%, rgba(26,107,90,0.16) 0%, transparent 55%);
+  }
+
+  .neural-bg {
+    position: absolute;
+    right: -60px;
+    top: -20px;
+    width: 60%;
+    height: 70%;
+    opacity: 0.10;
+  }
+
+  .top-bar {
+    position: absolute;
+    top: 56px;
+    left: 60px;
+    right: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .brand-tag { display: flex; align-items: center; gap: 12px; }
+
+  .brand-dot {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: #5EC9A7;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .brand-dot svg { width: 20px; height: 20px; }
+
+  .brand-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: #5EC9A7;
+    letter-spacing: 0.05em;
+  }
+
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #C9A96E;
+    border: 1px solid rgba(201,169,110,0.4);
+    border-radius: 100px;
+    padding: 8px 18px;
+  }
+
+  .content {
+    position: absolute;
+    top: 200px;
+    left: 60px;
+    right: 60px;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #5EC9A7;
+    margin-bottom: 28px;
+  }
+
+  .headline {
+    font-family: 'DM Serif Display', serif;
+    font-size: 60px;
+    font-weight: 400;
+    color: #F5F3EE;
+    line-height: 1.18;
+    margin-bottom: 32px;
+    max-width: 760px;
+  }
+
+  .headline em { color: #5EC9A7; font-style: italic; }
+
+  .subheading {
+    font-size: 20px;
+    font-weight: 300;
+    color: rgba(245,243,238,0.6);
+    line-height: 1.6;
+    max-width: 620px;
+    margin-bottom: 44px;
+  }
+
+  .subheading strong { color: #C9A96E; font-weight: 500; }
+
+  .divider {
+    width: 56px;
+    height: 2px;
+    background: #1A6B5A;
+    margin-bottom: 40px;
+  }
+
+  .compare-row {
+    display: flex;
+    gap: 20px;
+  }
+
+  .compare-card {
+    flex: 1;
+    border: 1px solid rgba(94,201,167,0.18);
+    border-radius: 14px;
+    padding: 28px 30px;
+    background: rgba(94,201,167,0.04);
+  }
+
+  .compare-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #C9A96E;
+    margin-bottom: 12px;
+  }
+
+  .compare-text {
+    font-size: 18px;
+    font-weight: 300;
+    color: rgba(245,243,238,0.75);
+    line-height: 1.55;
+  }
+
+  .compare-text strong { color: #5EC9A7; font-weight: 500; }
+
+  .bottom-bar {
+    position: absolute;
+    bottom: 56px;
+    left: 60px;
+    right: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .specs-left {
+    font-family: 'JetBrains Mono', monospace;
+    color: rgba(245,243,238,0.4);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+  }
+
+  .specs-left .gold { color: #C9A96E; }
+
+  .page-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: rgba(245,243,238,0.25);
+  }
+</style>
+</head>
+<body>
+
+<svg class="neural-bg" viewBox="0 0 700 800" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="#5EC9A7" stroke-width="1" fill="none" opacity="0.7">
+    <circle cx="420" cy="100" r="6" fill="#5EC9A7"/>
+    <circle cx="560" cy="180" r="4" fill="#5EC9A7"/>
+    <circle cx="380" cy="260" r="7" fill="#5EC9A7"/>
+    <circle cx="600" cy="320" r="3" fill="#5EC9A7"/>
+    <circle cx="480" cy="400" r="5" fill="#5EC9A7"/>
+    <circle cx="620" cy="470" r="4" fill="#5EC9A7"/>
+    <circle cx="420" cy="520" r="4.5" fill="#5EC9A7"/>
+    <circle cx="540" cy="600" r="3" fill="#5EC9A7"/>
+    <line x1="420" y1="100" x2="560" y2="180"/>
+    <line x1="420" y1="100" x2="380" y2="260"/>
+    <line x1="560" y1="180" x2="380" y2="260"/>
+    <line x1="560" y1="180" x2="600" y2="320"/>
+    <line x1="380" y1="260" x2="480" y2="400"/>
+    <line x1="600" y1="320" x2="480" y2="400"/>
+    <line x1="600" y1="320" x2="620" y2="470"/>
+    <line x1="480" y1="400" x2="620" y2="470"/>
+    <line x1="480" y1="400" x2="420" y2="520"/>
+    <line x1="620" y1="470" x2="420" y2="520"/>
+    <line x1="420" y1="520" x2="540" y2="600"/>
+  </g>
+</svg>
+
+<div class="top-bar">
+  <div class="brand-tag">
+    <div class="brand-dot">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 3C9.5 3 7.5 4.5 7 6.5C5.5 7 4 8.5 4 10.5C4 12 4.8 13.3 6 14C6 16.2 7.8 18 10 18H14C16.2 18 18 16.2 18 14C19.2 13.3 20 12 20 10.5C20 8.5 18.5 7 17 6.5C16.5 4.5 14.5 3 12 3Z" stroke="#0D2E28" stroke-width="1.5" fill="none"/>
+      </svg>
+    </div>
+    <span class="brand-name">Neuro Daily</span>
+  </div>
+  <div class="badge">Recovery OS · Interaktif</div>
+</div>
+
+<div class="content">
+  <div class="eyebrow">Recovery OS</div>
+  <h1 class="headline">Liburan udah, capeknya <em>masih</em>.<br>Itu bukan soal kurang istirahat.</h1>
+  <p class="subheading">Brain Kit jelasin <strong>kenapa</strong> kamu gampang burnout. Recovery OS kasih kamu <strong>sistem</strong> untuk benar-benar pulih — bukan sekadar libur lebih lama.</p>
+
+  <div class="divider"></div>
+
+  <div class="compare-row">
+    <div class="compare-card">
+      <div class="compare-label">Yang Biasa Kamu Lakukan</div>
+      <div class="compare-text">Tidur lebih lama di akhir pekan, scroll medsos buat "rehat", lalu Senin <strong>capeknya balik lagi</strong>.</div>
+    </div>
+    <div class="compare-card" style="border-color: rgba(201,169,110,0.3); background: rgba(201,169,110,0.05);">
+      <div class="compare-label" style="color:#5EC9A7;">Yang Recovery OS Kasih</div>
+      <div class="compare-text"><strong>5 modul</strong> — assessment, audit energi, protokol micro-recovery, sampai planner mingguan yang dirancang sesuai ritmemu.</div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-bar">
+  <div class="specs-left"><span class="gold">5</span>&nbsp;&nbsp;Modul Pemulihan Berbasis Riset Neurosains</div>
+  <div class="page-num">01</div>
+</div>
+
+</body>
+</html>

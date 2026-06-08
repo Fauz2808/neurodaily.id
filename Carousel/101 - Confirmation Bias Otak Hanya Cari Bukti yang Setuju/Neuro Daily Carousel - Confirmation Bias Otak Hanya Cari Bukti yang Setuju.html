@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neuro Daily — Confirmation Bias</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--forest:#0D2E28;--teal:#1A6B5A;--green:#5EC9A7;--parchment:#F5F3EE;--amber:#C9A96E;--red:#D96A6A;}
+body{background:#111;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:20px;gap:16px;}
+.viewport{width:min(540px,94vw);position:relative;overflow:hidden;}
+.track{display:flex;transition:transform .45s cubic-bezier(.77,0,.18,1);}
+.slide{flex:0 0 100%;}
+.cvs{width:1080px;height:1350px;transform-origin:top left;position:absolute;top:0;left:0;display:flex;flex-direction:column;font-family:'DM Sans',sans-serif;}
+.bg-dark{background:var(--forest);}
+.bg-light{background:var(--parchment);}
+.bg-teal{background:var(--teal);}
+.head{display:flex;justify-content:space-between;align-items:center;padding:52px 80px 0;font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;letter-spacing:.04em;}
+.bg-dark .head,.bg-teal .head{color:rgba(94,201,167,.65);}
+.bg-light .head{color:rgba(13,46,40,.45);}
+.body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:68px 80px;}
+.foot{display:flex;justify-content:space-between;align-items:center;padding:0 80px 52px;font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;letter-spacing:.04em;}
+.bg-dark .foot,.bg-teal .foot{color:rgba(94,201,167,.65);}
+.bg-light .foot{color:rgba(13,46,40,.45);}
+.nd-logo{display:flex;align-items:center;gap:12px;}
+.nd-logo svg{width:34px;height:34px;}
+.dm{font-family:'DM Serif Display','Georgia',serif;}
+.ew{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:500;letter-spacing:.12em;margin-bottom:28px;}
+.bg-dark .ew{color:var(--green);}
+.bg-teal .ew{color:var(--amber);}
+.bg-light .ew{color:var(--teal);}
+.rule{width:72px;height:3px;margin-bottom:52px;border-radius:2px;}
+.bg-dark .rule{background:var(--green);}
+.bg-teal .rule{background:var(--amber);}
+.bg-light .rule{background:var(--teal);}
+h1,h2{font-family:'DM Serif Display',serif;font-weight:400;line-height:1.1;}
+.bg-dark h1,.bg-dark h2{color:var(--parchment);}
+.bg-teal h1,.bg-teal h2{color:var(--parchment);}
+.bg-light h1,.bg-light h2{color:var(--forest);}
+p{font-size:28px;line-height:1.55;font-weight:400;}
+.bg-dark p{color:rgba(245,243,238,.78);}
+.bg-teal p{color:rgba(245,243,238,.85);}
+.bg-light p{color:rgba(28,28,28,.75);}
+.pill{display:inline-flex;align-items:center;gap:16px;padding:22px 36px;border-radius:16px;margin-top:44px;}
+.bg-dark .pill{background:rgba(94,201,167,.1);border:1.5px solid rgba(94,201,167,.25);}
+.pill-num{font-family:'DM Serif Display',serif;font-size:80px;line-height:1;color:var(--green);}
+.pill-label{font-family:'DM Sans',sans-serif;font-size:27px;font-weight:500;line-height:1.3;color:rgba(245,243,238,.8);}
+.card{padding:44px 52px;border-radius:20px;margin-bottom:28px;}
+.bg-dark .card{background:rgba(255,255,255,.06);border:1.5px solid rgba(94,201,167,.18);}
+.bg-teal .card{background:rgba(255,255,255,.1);border:1.5px solid rgba(201,169,110,.3);}
+.bg-light .card{background:rgba(13,46,40,.05);border:1.5px solid rgba(13,46,40,.12);}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;letter-spacing:.1em;margin-bottom:16px;}
+.bg-dark .card-label{color:var(--green);}
+.bg-teal .card-label{color:var(--amber);}
+.bg-light .card-label{color:var(--teal);}
+.card h3{font-family:'DM Serif Display',serif;font-size:46px;font-weight:400;line-height:1.2;margin-bottom:14px;}
+.bg-dark .card h3{color:var(--parchment);}
+.bg-teal .card h3{color:var(--parchment);}
+.bg-light .card h3{color:var(--forest);}
+.card p{font-size:27px;line-height:1.5;}
+.quote{font-family:'DM Serif Display',serif;font-style:italic;font-size:56px;line-height:1.2;margin-bottom:36px;}
+.bg-dark .quote{color:var(--parchment);}
+.bg-light .quote{color:var(--forest);}
+.cite{font-family:'JetBrains Mono',monospace;font-size:20px;letter-spacing:.04em;margin-top:40px;padding:20px 32px;border-radius:10px;display:inline-block;}
+.bg-light .cite{background:rgba(13,46,40,.06);color:rgba(13,46,40,.55);}
+.bg-dark .cite{background:rgba(94,201,167,.08);color:rgba(94,201,167,.6);}
+.qbox{padding:40px 52px;border-radius:20px;margin-bottom:24px;}
+.bg-light .qbox{background:rgba(13,46,40,.05);border:1.5px solid rgba(13,46,40,.12);}
+.qbox p{font-size:27px;line-height:1.55;}
+.controls{display:flex;justify-content:center;align-items:center;gap:24px;padding:12px;}
+.controls button{background:rgba(255,255,255,.12);color:#fff;border:none;padding:10px 22px;border-radius:8px;cursor:pointer;font-size:18px;}
+.controls button:disabled{opacity:.3;}
+.counter{color:rgba(255,255,255,.6);font-size:16px;font-family:'JetBrains Mono',monospace;}
+.dots{display:flex;justify-content:center;gap:8px;padding:8px;}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.25);border:none;cursor:pointer;}
+.dot.active{background:#fff;}
+.caption-panel{max-width:540px;background:rgba(255,255,255,.06);border-radius:12px;padding:16px 20px;color:rgba(255,255,255,.7);font-size:14px;line-height:1.6;white-space:pre-wrap;}
+</style>
+</head>
+<body>
+<div class="viewport"><div class="track" id="track">
+
+<!-- S1 dark hook -->
+<section class="slide"><div class="cvs bg-dark s1" style="position:relative;">
+  <div class="head"><span class="dm">Neuro Daily · Vol. 101 · Kognisi</span><span>Edisi · Juni 2026</span></div>
+  <div class="body">
+    <div class="ew">◆ CONFIRMATION BIAS</div><div class="rule"></div>
+    <h1 style="font-size:86px;margin-bottom:40px;">Kamu tidak<br>mencari kebenaran.<br>Kamu mencari <em>persetujuan.</em></h1>
+    <p style="color:rgba(245,243,238,.65);max-width:880px;">Dan otakmu sangat pandai menemukannya — bahkan saat data mengatakan sebaliknya.</p>
+    <div class="pill"><span class="pill-num">85%</span><span class="pill-label">informasi yang kita cari<br>mendukung keyakinan awal</span></div>
+  </div>
+  <div class="foot"><span class="dm nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>01 / 07</span></div>
+</div></section>
+
+<!-- S2 light data -->
+<section class="slide"><div class="cvs bg-light s2" style="position:relative;">
+  <div class="head"><span class="dm">Neuro Daily · Vol. 101 · Kognisi</span><span>Edisi · Juni 2026</span></div>
+  <div class="body">
+    <div class="ew">◆ BUKTI RISET</div><div class="rule"></div>
+    <h2 style="font-size:78px;margin-bottom:40px;">Lebih kuat dari<br>yang kita kira.</h2>
+    <div class="card">
+      <div class="card-label">WASON SELECTION TASK</div>
+      <h3>Wason (1960) + Replikasi Modern</h3>
+      <p>Hanya ~10% orang memilih kartu yang bisa membuktikan keyakinannya salah. Mayoritas hanya mencari konfirmasi — bukan falsifikasi.</p>
+    </div>
+    <div class="cite">Nickerson (1998) · Review of General Psychology — meta-analisis: confirmation bias paling konsisten di antara semua bias kognitif yang diteliti</div>
+  </div>
+  <div class="foot"><span class="dm nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(13,46,40,.25)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>02 / 07</span></div>
+</div></section>
+
+<!-- S3 dark mekanisme -->
+<section class="slide"><div class="cvs bg-dark s3" style="position:relative;">
+  <div class="head"><span class="dm">Neuro Daily · Vol. 101 · Kognisi</span><span>Edisi · Juni 2026</span></div>
+  <div class="body">
+    <div class="ew">◆ MEKANISME OTAK</div><div class="rule"></div>
+    <h2 style="font-size:84px;color:var(--parchment);margin-bottom:44px;">Otak menyaring<br>realita.</h2>
+    <div class="card">
+      <div class="card-label">01 — SELECTIVE ATTENTION</div>
+      <p>Otak secara otomatis memprioritaskan informasi yang konsisten dengan belief yang sudah ada — sisanya difilter sebelum sampai ke kesadaran.</p>
+    </div>
+    <div class="card" style="margin-bottom:0;">
+      <div class="card-label">02 — MOTIVATED REASONING</div>
+      <p>Prefrontal cortex aktif lebih keras saat memproses informasi yang bertentangan — otak bekerja keras untuk menolak, bukan menerima.</p>
+    </div>
+  </div>
+  <div class="foot"><span class="dm nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>03 / 07</span></div>
+</div></section>
+
+<!-- S4 teal framework -->
+<section class="slide"><div class="cvs bg-teal s4" style="position:relative;">
+  <div class="head"><span class="dm">Neuro Daily · Vol. 101 · Kognisi</span><span>Edisi · Juni 2026</span></div>
+  <div class="body">
+    <div class="ew">◆ DEFINISI</div><div class="rule"></div>
+    <h2 style="font-size:80px;color:var(--parchment);margin-bottom:32px;">Confirmation Bias</h2>
+    <p style="margin-bottom:52px;font-size:29px;">Kecenderungan untuk mencari, menafsirkan, dan mengingat informasi sedemikian rupa sehingga memperkuat keyakinan yang sudah dimiliki.</p>
+    <div class="card">
+      <div class="card-label">TIGA WUJUDNYA</div>
+      <h3 style="font-size:38px;margin-bottom:10px;">Cari · Tafsir · Ingat</h3>
+      <p>Kita cari bukti yang setuju, tafsirkan bukti ambigu sebagai setuju, dan ingat lebih kuat bukti yang setuju — tiga filter sekaligus.</p>
+    </div>
+  </div>
+  <div class="foot"><span class="dm nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(201,169,110,.4)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#C9A96E">N</text></svg>NEURODAILY.ID</span><span>04 / 07</span></div>
+</div></section>
+
+<!-- S5 light aplikasi -->
+<section class="slide"><div class="cvs bg-light s5" style="position:relative;">
+  <div class="head"><span class="dm">Neuro Daily · Vol. 101 · Kognisi</span><span>Edisi · Juni 2026</span></div>
+  <div class="body">
+    <div class="ew">◆ DUNIA NYATA</div><div class="rule"></div>
+    <h2 style="font-size:80px;margin-bottom:44px;">Di mana ini<br>merugikanmu?</h2>
+    <div class="card">
+      <div class="card-label">MEDIA SOSIAL</div>
+      <p>Algoritma memperkuat confirmation bias — feed-mu menjadi cermin opinimu sendiri. Echo chamber bukan kebetulan, itu sistem yang bekerja.</p>
+    </div>
+    <div class="card" style="margin-bottom:0;">
+      <div class="card-label">EVALUASI BISNIS</div>
+      <p>Founder yang yakin produknya bagus cenderung mengingat feedback positif dan menafsirkan kritik sebagai "tidak ngerti visi" — bukan sinyal untuk pivot.</p>
+    </div>
+    <div class="cite">Sunstein & Vermeule (2009) · University of Chicago Law Review — echo chamber dan filter bubble dikonfirmasi memperkuat bias</div>
+  </div>
+  <div class="foot"><span class="dm nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(13,46,40,.25)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>05 / 07</span></div>
+</div></section>
+
+<!-- S6 dark solusi -->
+<section class="slide"><div class="cvs bg-dark s6" style="position:relative;">
+  <div class="head"><span class="dm">Neuro Daily · Vol. 101 · Kognisi</span><span>Edisi · Juni 2026</span></div>
+  <div class="body">
+    <div class="ew">◆ CARA MELAWAN</div><div class="rule"></div>
+    <h2 style="font-size:86px;color:var(--parchment);margin-bottom:44px;">Cari yang<br>membuktikanmu<br><em style="color:var(--green);">salah.</em></h2>
+    <div class="card">
+      <div class="card-label">01 — STEEL-MAN LAWAN</div>
+      <p>Sebelum memutuskan, bangun argumen terkuat dari sisi berlawanan — bukan versi lemahnya. Jika tak bisa, kamu belum mengerti posisi itu.</p>
+    </div>
+    <div class="card" style="margin-bottom:0;">
+      <div class="card-label">02 — TANYA "APA YANG BISA MEMBUATKU SALAH?"</div>
+      <p>Jadikan ini kebiasaan di setiap keputusan besar. Satu pertanyaan ini mampu membongkar filter yang tak terlihat.</p>
+    </div>
+  </div>
+  <div class="foot"><span class="dm nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(94,201,167,.5)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#5EC9A7">N</text></svg>NEURODAILY.ID</span><span>06 / 07</span></div>
+</div></section>
+
+<!-- S7 light refleksi -->
+<section class="slide"><div class="cvs bg-light s7" style="position:relative;">
+  <div class="head"><span class="dm">Neuro Daily · Vol. 101 · Kognisi</span><span>Edisi · Juni 2026</span></div>
+  <div class="body">
+    <div class="ew">◆ REFLEKSI</div><div class="rule"></div>
+    <div class="quote">"Yang paling<br>meyakinkanmu<br>belum tentu benar."</div>
+    <div class="qbox"><p>Keyakinan apa yang belum pernah kamu uji dari sisi berlawanan — dan apa yang akan terjadi jika kamu salah?</p></div>
+    <p style="margin-top:40px;font-size:26px;color:rgba(13,46,40,.5);">Simpan & bagikan ke yang butuh tahu ini.<br>Follow <strong style="color:var(--teal);">@neurodaily.id</strong> untuk psikologi sehari-hari.</p>
+  </div>
+  <div class="foot"><span class="dm nd-logo"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="17" stroke="rgba(13,46,40,.25)" stroke-width="1.5"/><text x="18" y="24" text-anchor="middle" font-family="DM Serif Display" font-style="italic" font-size="18" fill="#1A6B5A">N</text></svg>NEURODAILY.ID</span><span>07 / 07</span></div>
+</div></section>
+
+</div></div>
+<div class="dots"><button class="dot active" onclick="goTo(0)"></button><button class="dot" onclick="goTo(1)"></button><button class="dot" onclick="goTo(2)"></button><button class="dot" onclick="goTo(3)"></button><button class="dot" onclick="goTo(4)"></button><button class="dot" onclick="goTo(5)"></button><button class="dot" onclick="goTo(6)"></button></div>
+<div class="controls"><button id="prev" onclick="prev()" disabled>←</button><span class="counter" id="counter">1 / 7</span><button id="next" onclick="next()">→</button></div>
+<div class="caption-panel">🧠 Confirmation Bias: Otak Hanya Cari Bukti yang Setuju
+
+Kamu tidak mencari kebenaran — kamu mencari persetujuan. Dan otakmu sangat pandai menemukannya, bahkan saat data mengatakan sebaliknya.
+
+Tiga filter bekerja sekaligus: kita cari bukti yang setuju, tafsirkan yang ambigu sebagai setuju, dan ingat lebih kuat yang mendukung keyakinan kita.
+
+Cara melawan: bangun steel-man dari sisi berlawanan, dan tanyakan "apa yang bisa membuktikanku salah?" sebelum setiap keputusan besar.
+
+#neurodaily #confirmationbias #biaskognitif #psikologi #neurosains #criticalthinking #selfimprovement #mindset #pengambilankeputusan</div>
+<script>
+function scale(){const vw=document.querySelector('.viewport').offsetWidth;document.querySelectorAll('.cvs').forEach(c=>c.style.transform=`scale(${vw/1080})`);document.querySelector('.viewport').style.height=(1350*(vw/1080))+'px';}
+scale();window.addEventListener('resize',scale);
+const track=document.getElementById('track'),dots=document.querySelectorAll('.dot'),counter=document.getElementById('counter'),prevBtn=document.getElementById('prev'),nextBtn=document.getElementById('next'),TOTAL=7;
+let cur=0;
+function goTo(i){cur=i;track.style.transform=`translateX(-${cur*100}%)`;dots.forEach((d,j)=>d.classList.toggle('active',j===cur));counter.textContent=`${cur+1} / ${TOTAL}`;prevBtn.disabled=cur===0;nextBtn.disabled=cur===TOTAL-1;}
+function prev(){if(cur>0)goTo(cur-1);}function next(){if(cur<TOTAL-1)goTo(cur+1);}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')prev();if(e.key==='ArrowRight')next();});
+</script>
+</body></html>
