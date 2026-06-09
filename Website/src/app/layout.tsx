@@ -24,6 +24,11 @@ export const metadata: Metadata = {
     title: 'Neuro Daily',
     description: 'Ilmu Otak untuk Kehidupan Sehari-hari',
   },
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/apple-icon.png',
+  },
   other: {
     'facebook-domain-verification': 'iit4ilqiq8cn1n1k339p2b1d34111q',
   },
