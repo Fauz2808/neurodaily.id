@@ -24,6 +24,9 @@ export const metadata: Metadata = {
     title: 'Neuro Daily',
     description: 'Ilmu Otak untuk Kehidupan Sehari-hari',
   },
+  other: {
+    'facebook-domain-verification': 'iit4ilqiq8cn1n1k339p2b1d34111q',
+  },
 }
 
 export default function RootLayout({
